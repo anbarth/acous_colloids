@@ -1,0 +1,10 @@
+Phi=0.55
+
+V difficult to analyse lower stress data, esp 0.1Pa
+0.2Pa data: can't tell exactly where 5V application is. Chose a minima before the 10V application
+0.4Pa data: can't tell where 5V is. 20V viscosity oddly high
+
+2Pa data has non-monotonic change in dethickened viscosity with acoustic power
+10Pa data looks like 8Pa and has lower viscosity at high V
+
+Flow curve does not show DST
