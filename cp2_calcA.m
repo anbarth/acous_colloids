@@ -1,6 +1,6 @@
 my_vol_frac_markers = ['>','s','o','d','h'];
 
-
+fudge = 0;
 cp2_collapse_parameters;
 
 colorBy = 3; % 1 for V, 2 for phi, 3 for P
@@ -25,6 +25,17 @@ ax2.XLabel.String = "P";
 ax2.YLabel.String = "A";
 colormap(ax2,cmap);
 
+cmap = viridis(256); 
+fig3 = figure;
+ax3 = axes('Parent', fig3,'XScale','log','YScale','log');
+ax3.XLabel.String = "x";
+ax3.YLabel.String = "F";
+%ax3.XLim = [10^(-3),10^1.5]; %TODO delete
+colormap(ax3,cmap);
+if xc ~= 0
+    xline(ax3,xc);
+end
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 stressTable = cp_data_01_18;
 phi_list = [44,48,50,54];
@@ -35,7 +46,7 @@ P_all = zeros(0,1);
 A_all = zeros(0,1);
 
 
-for ii = 1:4
+for ii = 1
     phi = phi_list(ii)/100;
     myMarker = my_vol_frac_markers(ii);
 
@@ -54,6 +65,9 @@ for ii = 1:4
     x_0V = C(ii)*f(sigma_0V).*my_f_mod_0V ./ (-1*phi_fudge+phi0);
     hold(ax1,'on');
     plot(ax1,x_0V,F_0V,strcat(myMarker,'-'),'Color',cmap(1,:),'MarkerFaceColor',cmap(1,:));
+
+    hold(ax3,'on');
+    plot(ax3,x_0V,F_0V,strcat(myMarker,'-'),'Color',cmap(1,:),'MarkerFaceColor',cmap(1,:));
 
 
     % now look at everything else!
@@ -105,6 +119,9 @@ for ii = 1:4
     
     hold(ax1,'on');
     scatter(ax1,x_new,F,[],myColor,'filled',myMarker);
+
+    hold(ax3,'on');
+    scatter(ax3,x,F,[],myColor,'filled',myMarker);
 
     
     hold(ax2,'on');

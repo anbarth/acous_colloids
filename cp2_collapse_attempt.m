@@ -17,7 +17,7 @@ fig1 = figure;
 ax1 = axes('Parent', fig1,'XScale','log','YScale','log');
 ax1.XLabel.String = "x";
 ax1.YLabel.String = "F";
-%ax1.XLim = [10^(-3),10^1.5]; %TODO delete
+ax1.XLim = [10^(-3),10^1.5]; %TODO delete
 colormap(ax1,cmap);
 if xc ~= 0
     xline(ax1,xc);

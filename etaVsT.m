@@ -4,10 +4,10 @@ function etaVsT(myStruct,pas,rheoUnits)
 
 
 if nargin < 3
-    rheoUnits = 1;
+    rheoUnits = 0;
 end
 if nargin < 2
-    pas = 0;
+    pas = 1;
 end
 
 CSS = (50/19)^3;
