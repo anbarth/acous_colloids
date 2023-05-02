@@ -21,7 +21,7 @@ myIter = 0;
 
 figure; hold on; colormap(cmap);
 ax1 = gca;
-ax1.XScale = 'log';
+%ax1.XScale = 'log';
 ax1.YScale = 'log';
 
 while bookmarkIndex <= size(stressTable,1)
@@ -57,3 +57,10 @@ while bookmarkIndex <= size(stressTable,1)
     bookmarkIndex = newBookmarkIndex;
 end
 legend(legendList);
+xlabel('Acoustic voltage (V)')
+ylabel('\eta (Pa s)')
+
+cbh = colorbar ; %Create Colorbar
+cbh.Ticks = linspace(log(5),log(700),3);
+cbh.TickLabels = exp(linspace(log(5),log(700),3));
+caxis([log(sigma(2)) log(sigma(end))]);

@@ -18,14 +18,14 @@ if xc ~= 0
     xline(ax1,xc);
 end
 
+cmap2 = plasma(256);
 fig2 = figure;
 ax2 = axes('Parent', fig2,'XScale','log');
 %ax2 = axes('Parent', fig2);
 ax2.XLabel.String = "P";
 ax2.YLabel.String = "A";
-colormap(ax2,cmap);
+colormap(ax2,cmap2);
 
-cmap = viridis(256); 
 fig3 = figure;
 ax3 = axes('Parent', fig3,'XScale','log','YScale','log');
 ax3.XLabel.String = "x";
@@ -46,7 +46,7 @@ P_all = zeros(0,1);
 A_all = zeros(0,1);
 
 
-for ii = 1
+for ii = 1:4
     phi = phi_list(ii)/100;
     myMarker = my_vol_frac_markers(ii);
 
@@ -125,7 +125,7 @@ for ii = 1
 
     
     hold(ax2,'on');
-    myColor = cmap(round(1+255*(phi-0.44)/(0.55-0.44)),:);
+    myColor = cmap2(round(1+255*(phi-0.44)/(0.55-0.44)),:);
     scatter(ax2,P,A,[],myColor);
     
     x_all(end+1:end+length(x)) = x;

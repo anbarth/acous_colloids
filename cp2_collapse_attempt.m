@@ -3,16 +3,17 @@ my_vol_frac_markers = ['>','s','o','d','h'];
 NAME = '';
 
 vol_frac_plotting_range = 1:4;
-volt_plotting_range = 1:8;
-colorBy = 3; % 1 for V, 2 for phi, 3 for P, 4 for stress
-showLines = false;
+volt_plotting_range = 1;
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
+showLines = true;
 fudge = false;
 xc = 0;
 
 cp2_collapse_parameters;
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-cmap = viridis(256); 
+%cmap = viridis(256); 
+cmap = plasma(256);
 fig1 = figure;
 ax1 = axes('Parent', fig1,'XScale','log','YScale','log');
 ax1.XLabel.String = "x";
