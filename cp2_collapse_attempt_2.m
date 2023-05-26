@@ -7,9 +7,8 @@ volt_plotting_range = 1:8;
 colorBy = 3; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 fudge = false;
-xc = 0;
 
-cp2_collapse_parameters;
+cp2_collapse_parameters_2;
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cmap = viridis(256); 
@@ -19,7 +18,7 @@ ax1 = axes('Parent', fig1,'XScale','log','YScale','log');
 ax1.XLabel.String = "x";
 ax1.YLabel.String = "F";
 hold(ax1,'on');
-%scatter(meeraX,meeraY/0.2*0.04,[],[0.7 0.7 0.7]);
+scatter(meeraX,meeraY/0.2*0.04,[],[0.7 0.7 0.7]);
 ax1.XLim = [10^(-3),10^1.5]; %TODO delete
 ax1.YLim = [10^(-1.5),5]; %TODO delete
 colormap(ax1,cmap);
@@ -27,8 +26,6 @@ if xc ~= 0
     xline(ax1,xc);
 end
 
-%meeraFig = figure(1);
-%meeraAx = axes('Parent', meeraFig);
 
 if xc ~= 0
     fig2 = figure;
@@ -59,7 +56,6 @@ F_all = zeros(0,1);
 
 for ii = vol_frac_plotting_range
     for jj = volt_plotting_range
-    %for jj = 1:length(volt_list)
         voltage = volt_list(jj);
         phi = phi_list(ii)/100;
         myData = stressTable( stressTable(:,1)==phi & stressTable(:,2)==voltage,:);
@@ -68,7 +64,6 @@ for ii = vol_frac_plotting_range
         eta = CSV/1000*myData(:,4);
 
         
-
         % account for missing data (TODO delete)
         for n=1:length(eta)
             if eta(n)==0
@@ -116,12 +111,11 @@ for ii = vol_frac_plotting_range
             myColor = log(sigma);
         end
         
+        mySigmaStar = sigmaStarP(jj);
 
-        my_f_mod = f_mod(ii,1:length(sigma))';
-        xWC = C(ii)*A(P).*f(sigma).*my_f_mod ./ (-1*phi+phi0);
+        xWC = C(ii).*f(mySigmaStar,sigma) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
-        %H = eta.*(G(jj)*C(ii)*f(sigma)).^2;
-        H = eta.*(C(ii)*f(sigma)).^2;
+        H = eta.*(C(ii)*f(mySigmaStar,sigma)).^2;
 
         myMarker = my_vol_frac_markers(ii);
         hold(ax1,'on');
@@ -131,9 +125,6 @@ for ii = vol_frac_plotting_range
             scatter(ax1,xWC,FWC,[],myColor,'filled',myMarker);
             %scatter(ax1,xWC,FWC,[],myColor,'filled',myMarker,'MarkerFaceAlpha',0.5);
         end
-
-        %hold(meeraAx,'on');
-        %scatter(meeraAx,xWC,FWC,[],myColor,'filled',myMarker);
         
         if xc ~= 0
             hold(ax2,'on');

@@ -173,13 +173,21 @@ A_all = A_all(keep_me_too);
 %logP_fake = log10(P_fake); % i'm aware this is silly but it helps my brain ok
 %A_fake = myFit(1)*logP_fake.^2 + myFit(2)*logP_fake + myFit(3);
 
-% maybe a sigmoid of log(P)? aka 1/1+kP?
+% maybe a hill function, 1/(1+aP^b)?
 fitfxn = @(k) 1 ./ (1+k(1)*P_all.^k(2));
 %costfxn = @(k) sum(( (fitfxn(k)-A_all)./A_all ).^2); % gives too much weight to points with small A
 costfxn = @(k) sum(( (fitfxn(k)-A_all) ).^2); 
 myK = fmincon(costfxn,[10^(-2),1],[-1,0;0,0],[0,0]);
 P_fake = logspace(-4,6); 
 A_fake = 1 ./ (1+myK(1)*P_fake.^myK(2));
+
+% maybe a stretched exponential, exp(-c*P)?
+% fitfxn = @(k) exp(-k*P_all);
+% %costfxn = @(k) sum(( (fitfxn(k)-A_all)./A_all ).^2); % gives too much weight to points with small A
+% costfxn = @(k) sum(( (fitfxn(k)-A_all) ).^2); 
+% myK = fmincon(costfxn,0.005,-1,0);
+% P_fake = logspace(-4,6); 
+% A_fake = exp(-k*P_fake);
 
 hold(ax2,'on');
 plot(ax2,P_fake,A_fake,'r')
