@@ -20,8 +20,8 @@ ax1.XLabel.String = "x";
 ax1.YLabel.String = "F";
 hold(ax1,'on');
 %scatter(meeraX,meeraY/0.2*0.04,[],[0.7 0.7 0.7]);
-ax1.XLim = [10^(-3),10^1.5]; %TODO delete
-ax1.YLim = [10^(-1.5),5]; %TODO delete
+%ax1.XLim = [10^(-5),10^1.5]; %TODO delete
+ax1.YLim = [10^(-1.5),3]; %TODO delete
 colormap(ax1,cmap);
 if xc ~= 0
     xline(ax1,xc);

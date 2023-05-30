@@ -124,9 +124,9 @@ for ii = 1:4
     scatter(ax3,x,F,[],myColor,'filled',myMarker);
 
     
-    hold(ax2,'on');
-    myColor = cmap2(round(1+255*(phi-0.44)/(0.55-0.44)),:);
-    scatter(ax2,P,A,[],myColor);
+    %hold(ax2,'on');
+    %myColor = cmap2(round(1+255*(phi-0.44)/(0.55-0.44)),:);
+    %scatter(ax2,P,A,[],myColor);
     
     x_all(end+1:end+length(x)) = x;
     F_all(end+1:end+length(F)) = F;

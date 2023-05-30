@@ -18,7 +18,8 @@ ax1 = axes('Parent', fig1,'XScale','log','YScale','log');
 ax1.XLabel.String = "x";
 ax1.YLabel.String = "F";
 hold(ax1,'on');
-scatter(meeraX,meeraY/0.2*0.04,[],[0.7 0.7 0.7]);
+%scatter(meeraX,meeraY*meeraMultiplier,[],[0.7 0.7 0.7]);
+%scatter(meeraX,meeraY*0.075/1.412,[],[0.7 0.7 0.7]);
 ax1.XLim = [10^(-3),10^1.5]; %TODO delete
 ax1.YLim = [10^(-1.5),5]; %TODO delete
 colormap(ax1,cmap);
@@ -39,6 +40,10 @@ if xc ~= 0
     ax3.YLabel.String = "H";
     ax3.Title.String = strcat("x_c = ",num2str(xc));
     colormap(ax3,cmap);
+
+    hold(ax3,'on');
+    xlim(ax3,[10^(-5) 10^3]);
+    scatter(meeraHX,meeraHY/0.2*0.04,[],[0.7 0.7 0.7]);
 end
 
 fig4 = figure('visible','off');
@@ -104,14 +109,15 @@ for ii = vol_frac_plotting_range
             myColor = cmap(round(1+255*voltage/100),:);
             %myColor = cmap(round(1+255*(log10(voltage+10)-1)/(log10(110)-1)),:);
         elseif colorBy == 2
-            myColor = cmap(round(1+255*(phi-0.44)/(0.55-0.44)),:);
+            myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
         elseif colorBy == 3
             myColor = log(P);
         elseif colorBy == 4
             myColor = log(sigma);
         end
         
-        mySigmaStar = sigmaStarP(jj);
+        mySigmaStar = sigmaStarV(jj);
+        %myMultiplier = sigmaMultiplier(jj);
 
         xWC = C(ii).*f(mySigmaStar,sigma) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
@@ -153,7 +159,7 @@ if colorBy == 1
     %c1.Ticks = log10([0,5,10,20,40,60,80,100]+10)-1;
     %c1.TickLabels = {0,5,10,20,40,60,80,100};
 elseif colorBy == 2
-    caxis(ax1,[.44 .55]);
+    caxis(ax1,[minPhi maxPhi]);
     c1.Ticks = phi_list/100;
 elseif colorBy == 4
     caxis(ax1,[1.6988,6])
