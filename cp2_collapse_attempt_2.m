@@ -4,7 +4,7 @@ NAME = '';
 
 vol_frac_plotting_range = 1:4;
 volt_plotting_range = 1:8;
-colorBy = 3; % 1 for V, 2 for phi, 3 for P, 4 for stress
+colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 fudge = false;
 
@@ -18,9 +18,9 @@ ax1 = axes('Parent', fig1,'XScale','log','YScale','log');
 ax1.XLabel.String = "x";
 ax1.YLabel.String = "F";
 hold(ax1,'on');
-%scatter(meeraX,meeraY*meeraMultiplier,[],[0.7 0.7 0.7]);
+scatter(meeraX,meeraY*meeraMultiplier,[],[0.7 0.7 0.7]);
 %scatter(meeraX,meeraY*0.075/1.412,[],[0.7 0.7 0.7]);
-ax1.XLim = [10^(-3),10^1.5]; %TODO delete
+ax1.XLim = [10^(-5),10^1.5]; %TODO delete
 ax1.YLim = [10^(-1.5),5]; %TODO delete
 colormap(ax1,cmap);
 if xc ~= 0

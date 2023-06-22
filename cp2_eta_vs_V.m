@@ -11,7 +11,8 @@ show_stress_min = 0.3;
 show_stress_max = 160;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-cmap = viridis(256); 
+%cmap = viridis(256); 
+cmap = plasma(256);
 
 legendList = cell(0);
 
@@ -50,7 +51,7 @@ while bookmarkIndex <= size(stressTable,1)
     if any(show_vol_fracs==phi) && sigma_rheo >= show_stress_min && sigma_rheo <= show_stress_max
         %myColor = cmap(round(1+255* (log(sigma_rheo)-log(0.03))/(log(160)-log(0.03)) ),:);
         myColor = cmap(round(1+255* (log(sigma_rheo)-log(0.3))/(log(20)-log(0.3)) ),:);
-        plot(Vnorm,eta,'-o','Color',myColor); hold on;
+        plot(Vnorm,eta,'-*','Color',myColor,'LineWidth',1.5,'MarkerSize',5); hold on;
         legendList{end+1} = strcat("\phi=",num2str(phi),", \sigma=",num2str(sigma_rheo));
     end
     
