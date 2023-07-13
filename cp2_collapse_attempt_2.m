@@ -4,7 +4,7 @@ NAME = '';
 
 vol_frac_plotting_range = 1:4;
 volt_plotting_range = 1:8;
-colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
+colorBy = 4; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 fudge = false;
 

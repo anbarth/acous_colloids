@@ -3,7 +3,7 @@ my_vol_frac_markers = ['>','s','o','d','h'];
 fudge = 0;
 cp2_collapse_parameters;
 
-colorBy = 3; % 1 for V, 2 for phi, 3 for P
+colorBy = 4; % 1 for V, 2 for phi, 3 for P, 4 for sigma
 
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -36,6 +36,15 @@ if xc ~= 0
     xline(ax3,xc);
 end
 
+fig4 = figure;
+%ax4 = axes('Parent', fig4);
+ax4 = axes('Parent', fig4,'XScale','log');
+%ax4.XLabel.String = "P";
+%ax4.YLabel.String = "\sigma^*";
+colormap(ax4,cmap2);
+colorbar;
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 stressTable = cp_data_01_18;
 phi_list = [44,48,50,54];
@@ -54,10 +63,9 @@ for ii = 1:4
     myData_0V = stressTable(stressTable(:,1)==phi & stressTable(:,2)==0,:);
     sigma_0V = myData_0V(:,3)*CSS;
     eta_0V = CSV/1000*myData_0V(:,4);
-    %x_0V = C(ii)*f(sigma_0V) ./ (-1*phi+phi0);
     my_f_mod_0V = f_mod(ii,1:length(sigma_0V))';
 
-    % fudge phi
+    % fudge phi if desired
     phi_fudge = phi_fudge_factors(phi_fudge_factors(:,1)==phi,2);
     disp(phi_fudge)
 
@@ -91,6 +99,7 @@ for ii = 1:4
         my_eta_0V = eta_0V(sigma_0V==sigma(kk));
         my_gamma_dot_0V = sigma(kk)/my_eta_0V;
         P(kk) = voltage(kk)^2/sigma(kk)/my_gamma_dot_0V;
+        %P(kk) = voltage(kk)^2/sigma(kk);
     end
 
     % now find the shift for each point by interpolating onto 0V curve
@@ -111,22 +120,36 @@ for ii = 1:4
         myColor = cmap(round(1+255*voltage/100),:);
     elseif colorBy == 2
         myColor = cmap(round(1+255*(phi-0.44)/(0.55-0.44)),:);
+        if fudge
+            myColor = cmap(round(1+255*(phi_fudge-0.41)/(0.56-0.41)),:);
+        end
     elseif colorBy == 3
         myColor = log(P);
+    elseif colorBy == 4
+        myColor = log(sigma);
     end
     
 
-    
+    % plot collapsed and uncollapsed data
     hold(ax1,'on');
     scatter(ax1,x_new,F,[],myColor,'filled',myMarker);
 
     hold(ax3,'on');
     scatter(ax3,x,F,[],myColor,'filled',myMarker);
 
-    
-    %hold(ax2,'on');
-    %myColor = cmap2(round(1+255*(phi-0.44)/(0.55-0.44)),:);
-    %scatter(ax2,P,A,[],myColor);
+    % don't plot points with A=1
+    keep_me = 1-abs(A)>0.0001;
+    if colorBy == 3 || colorBy == 4
+        myColor = myColor(keep_me,:);
+    end
+
+    hold(ax2,'on');
+    scatter(ax2,P(keep_me),A(keep_me),[],myColor);
+
+    hold(ax4,'on');
+    mySigmaStar = sigmastar-sigma.*log(A);
+    %mySigmaStar = sigmastar-log(A);
+    scatter(ax4,P(keep_me),mySigmaStar(keep_me),[],myColor);
     
     x_all(end+1:end+length(x)) = x;
     F_all(end+1:end+length(F)) = F;
@@ -145,10 +168,18 @@ if colorBy == 1
 elseif colorBy == 2
     caxis(ax1,[.44 .55]);
     c1.Ticks = phi_list/100;
+    if fudge
+        caxis(ax1,[.41 .56]);
+        c1.Ticks = phi_fudge_factors(6:9,2);
+    end
 end
 c2 = colorbar(ax2);
-caxis(ax2,[.44 .55]);
-c2.Ticks = phi_list/100;
+% caxis(ax2,[.44 .55]);
+% c2.Ticks = phi_list/100;
+% if fudge
+%     caxis(ax2,[.41 .56]);
+%     c2.Ticks = phi_fudge_factors(6:9,2);
+% end
 
 % lets find a fit for A!
 % trim out nan values to prepare myself
@@ -174,22 +205,26 @@ A_all = A_all(keep_me_too);
 %A_fake = myFit(1)*logP_fake.^2 + myFit(2)*logP_fake + myFit(3);
 
 % maybe a hill function, 1/(1+aP^b)?
-fitfxn = @(k) 1 ./ (1+k(1)*P_all.^k(2));
-%costfxn = @(k) sum(( (fitfxn(k)-A_all)./A_all ).^2); % gives too much weight to points with small A
-costfxn = @(k) sum(( (fitfxn(k)-A_all) ).^2); 
-myK = fmincon(costfxn,[10^(-2),1],[-1,0;0,0],[0,0]);
-P_fake = logspace(-4,6); 
-A_fake = 1 ./ (1+myK(1)*P_fake.^myK(2));
-
-% maybe a stretched exponential, exp(-c*P)?
-% fitfxn = @(k) exp(-k*P_all);
+% fitfxn = @(k) 1 ./ (1+k(1)*P_all.^k(2));
 % %costfxn = @(k) sum(( (fitfxn(k)-A_all)./A_all ).^2); % gives too much weight to points with small A
 % costfxn = @(k) sum(( (fitfxn(k)-A_all) ).^2); 
-% myK = fmincon(costfxn,0.005,-1,0);
+% myK = fmincon(costfxn,[10^(-2),1],[-1,0;0,0],[0,0]);
 % P_fake = logspace(-4,6); 
-% A_fake = exp(-k*P_fake);
+% A_fake = 1 ./ (1+myK(1)*P_fake.^myK(2));
+
+% maybe a stretched exponential, exp(-c*P)?
+fitfxn = @(k) exp(-(k(1)*P_all).^(k(2)));
+costfxn = @(k) sum(( (fitfxn(k)-A_all) ).^2); 
+myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
+P_fake = logspace(-4,6); 
+A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
 
 hold(ax2,'on');
-plot(ax2,P_fake,A_fake,'r')
+plot(ax2,P_fake,A_fake,'k')
 
 disp(myK)
+
+close(fig1) % uncollapsed
+%close(fig2) % A vs P
+close(fig3) % collapsed
+%close(fig4) % sigma* vs P

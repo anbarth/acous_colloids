@@ -19,7 +19,7 @@ ax1 = axes('Parent', fig1,'XScale','log','YScale','log');
 ax1.XLabel.String = "x";
 ax1.YLabel.String = "F";
 hold(ax1,'on');
-%scatter(meeraX,meeraY/0.2*0.04,[],[0.7 0.7 0.7]);
+scatter(meeraX,meeraY/0.2*0.04,[],[0.7 0.7 0.7]);
 ax1.XLim = [10^(-5),10^1.5]; %TODO delete
 ax1.YLim = [10^(-1.5),5]; %TODO delete
 colormap(ax1,cmap);
@@ -27,8 +27,6 @@ if xc ~= 0
     xline(ax1,xc);
 end
 
-%meeraFig = figure(1);
-%meeraAx = axes('Parent', meeraFig);
 
 if xc ~= 0
     fig2 = figure;
@@ -42,6 +40,9 @@ if xc ~= 0
     ax3.YLabel.String = "H";
     ax3.Title.String = strcat("x_c = ",num2str(xc));
     colormap(ax3,cmap);
+    hold(ax3,'on')
+    scatter(meeraHX,meeraHY*0.2,[],[0.7 0.7 0.7]);
+    xlim([10^(-3.5) 10^12])
 end
 
 fig4 = figure('visible','off');
@@ -121,7 +122,7 @@ for ii = vol_frac_plotting_range
         xWC = C(ii)*A(P).*f(sigma).*my_f_mod ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
         %H = eta.*(G(jj)*C(ii)*f(sigma)).^2;
-        H = eta.*(C(ii)*f(sigma)).^2;
+        H = eta.*(C(ii)*A(P).*f(sigma).*my_f_mod).^2;
 
         myMarker = my_vol_frac_markers(ii);
         hold(ax1,'on');
