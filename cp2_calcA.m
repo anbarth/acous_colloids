@@ -55,7 +55,7 @@ P_all = zeros(0,1);
 A_all = zeros(0,1);
 
 
-for ii = 1:4
+for ii = 4
     phi = phi_list(ii)/100;
     myMarker = my_vol_frac_markers(ii);
 
@@ -219,8 +219,8 @@ myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
 P_fake = logspace(-4,6); 
 A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
 
-hold(ax2,'on');
-plot(ax2,P_fake,A_fake,'k')
+% hold(ax2,'on');
+% plot(ax2,P_fake,A_fake,'k')
 
 disp(myK)
 
