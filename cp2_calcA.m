@@ -1,11 +1,11 @@
 my_vol_frac_markers = ['>','s','o','d','h'];
 
-fudge = 0;
+fudge = 1;
 cp2_collapse_parameters;
 
-colorBy = 4; % 1 for V, 2 for phi, 3 for P, 4 for sigma
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for sigma
 
-
+xc=0;
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cmap = viridis(256); 
 fig1 = figure;
@@ -55,7 +55,7 @@ P_all = zeros(0,1);
 A_all = zeros(0,1);
 
 
-for ii = 4
+for ii = 1:4
     phi = phi_list(ii)/100;
     myMarker = my_vol_frac_markers(ii);
 
@@ -219,12 +219,12 @@ myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
 P_fake = logspace(-4,6); 
 A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
 
-% hold(ax2,'on');
-% plot(ax2,P_fake,A_fake,'k')
+ hold(ax2,'on');
+ plot(ax2,P_fake,A_fake,'k')
 
 disp(myK)
 
 close(fig1) % uncollapsed
 %close(fig2) % A vs P
 close(fig3) % collapsed
-%close(fig4) % sigma* vs P
+close(fig4) % sigma* vs P

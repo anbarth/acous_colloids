@@ -3,9 +3,9 @@ my_vol_frac_markers = ['>','s','o','d','h'];
 NAME = '';
 
 vol_frac_plotting_range = 1:4;
-volt_plotting_range = 1:8;
+volt_plotting_range = 1;
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
-showLines = false;
+showLines = true;
 fudge = true;
 xc = 0;
 
@@ -19,7 +19,7 @@ ax1 = axes('Parent', fig1,'XScale','log','YScale','log');
 ax1.XLabel.String = "x";
 ax1.YLabel.String = "F";
 hold(ax1,'on');
-%scatter(meeraX,meeraY*meeraMultiplier,[],[0.7 0.7 0.7]);
+%scatter(meeraX,meeraY/0.2*0.04,[],[0.7 0.7 0.7]);
 ax1.XLim = [10^(-5),10^1.5]; %TODO delete
 ax1.YLim = [10^(-1.5),5]; %TODO delete
 colormap(ax1,cmap);
@@ -111,8 +111,7 @@ for ii = vol_frac_plotting_range
             %myColor = cmap(round(1+255*(log10(voltage+10)-1)/(log10(110)-1)),:);
         elseif colorBy == 2
             if fudge
-                myColor = cmap(round(1+255*(phi-0.40)/(0.56-0.40)),:);
-                
+                myColor = cmap(round(1+255*(phi-0.44)/(0.55-0.44)),:);
             else
                 myColor = cmap(round(1+255*(phi-0.44)/(0.55-0.44)),:);
             end
@@ -168,13 +167,8 @@ if colorBy == 1
     %c1.Ticks = log10([0,5,10,20,40,60,80,100]+10)-1;
     %c1.TickLabels = {0,5,10,20,40,60,80,100};
 elseif colorBy == 2
-    if fudge
-        caxis(ax1,[.40 .56]);
-        c1.Ticks = phi_fudge_factors(6:end,2);
-    else
-        caxis(ax1,[.44 .55]);
-        c1.Ticks = phi_list/100;
-    end
+    caxis(ax1,[.44 .55]);
+    c1.Ticks = phi_list/100;
 elseif colorBy == 4
     caxis(ax1,[1.6988,6])
 end
