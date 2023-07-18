@@ -1,6 +1,6 @@
 my_vol_frac_markers = ['>','s','o','d','h'];
 
-fudge = 1;
+fudge = 0;
 cp2_collapse_parameters;
 
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for sigma

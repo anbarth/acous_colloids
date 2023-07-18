@@ -6,8 +6,9 @@ vol_frac_plotting_range = 1:4;
 volt_plotting_range = 1:8;
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
-fudge = true;
-xc = 0;
+showMeera = true;
+fudge = false;
+xc = 13.8;
 
 cp2_collapse_parameters;
 
@@ -18,8 +19,11 @@ fig1 = figure;
 ax1 = axes('Parent', fig1,'XScale','log','YScale','log');
 ax1.XLabel.String = "x";
 ax1.YLabel.String = "F";
-hold(ax1,'on');
-%scatter(meeraX,meeraY*meeraMultiplier,[],[0.7 0.7 0.7]);
+
+if showMeera
+    hold(ax1,'on');
+    scatter(meeraX,meeraY*meeraMultiplier,[],[0.7 0.7 0.7]);
+end
 ax1.XLim = [10^(-5),10^1.5]; %TODO delete
 ax1.YLim = [10^(-1.5),5]; %TODO delete
 colormap(ax1,cmap);
@@ -40,8 +44,10 @@ if xc ~= 0
     ax3.YLabel.String = "H";
     ax3.Title.String = strcat("x_c = ",num2str(xc));
     colormap(ax3,cmap);
-    hold(ax3,'on')
-    scatter(meeraHX,meeraHY*0.2,[],[0.7 0.7 0.7]);
+    if showMeera
+        hold(ax3,'on')
+        scatter(meeraHX,meeraHY*0.2,[],[0.7 0.7 0.7]);
+    end
     xlim([10^(-3.5) 10^12])
 end
 
