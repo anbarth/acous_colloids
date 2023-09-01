@@ -6,9 +6,9 @@ vol_frac_plotting_range = 1:4;
 volt_plotting_range = 1:8;
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
-showMeera = true;
-fudge = false;
-xc = 13.8;
+showMeera = false;
+fudge = true;
+xc = 14;
 
 cp2_collapse_parameters;
 

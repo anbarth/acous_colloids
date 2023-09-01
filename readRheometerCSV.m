@@ -1,5 +1,5 @@
 clear a;
-myCells = readcell('55%_01_11_2023.csv','Delimiter','\t');
+myCells = readcell('SiO2_DPG_CP/CP_new_silica/8_24_8_29_phi_48.csv','Delimiter','\t');
 %bigStructName = 'phi20_12_14';
 
 %structNames = {};
