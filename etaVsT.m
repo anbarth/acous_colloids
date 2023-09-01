@@ -1,6 +1,6 @@
 function etaVsT(myStruct,pas,rheoUnits)
-% pas: 1 for pa s, 0 for mpa s
-% rheoUnits: 0 for real units, 1 for rheometer units
+% pas: 1 for pa s, 0 for mpa s (default: pa s)
+% rheoUnits: 0 for real units, 1 for rheometer units (default: real units)
 
 
 if nargin < 3

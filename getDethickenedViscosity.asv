@@ -1,0 +1,27 @@
+function dethickenedEta = getDethickenedViscosity(eta,t,tStart,tEnd)
+
+figure; hold on;
+plot(t,eta);
+
+startIndex = find(t>=tStart,1,'first');
+endIndex = find(t<=tEnd,1,'last');
+
+myEta = eta(startIndex:endIndex);
+myT = t(startIndex:endIndex);
+
+etaRange = max(myEta)-min(myEta);
+xlim([tStart tEnd]);
+ylim([min(myEta)-])
+
+acousticWindowIndexes = findchangepts(myEta,MaxNumChanges=2);
+%findchangepts(myEta,MaxNumChanges=2);
+
+acousStartIndex = acousticWindowIndexes(1);
+acousEndIndex = acousticWindowIndexes(2);
+scatter(myT(acousStartIndex),myEta(acousStartIndex),5,'r');
+scatter(myT(acousEndIndex),myEta(acousEndIndex),5,'r');
+
+dethickenedEta = 0;
+
+
+end
