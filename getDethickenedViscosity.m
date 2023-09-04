@@ -10,7 +10,7 @@ myEta = eta(startIndex:endIndex);
 myT = t(startIndex:endIndex);
 
 etaRange = max(myEta)-min(myEta);
-xlim([tStart tEnd]);
+xlim([tStart-3 tEnd]);
 ylim([min(myEta)-etaRange/4 max(myEta)+etaRange/4]);
 
 acousticWindowIndexes = findchangepts(myEta,MaxNumChanges=2);
