@@ -8,10 +8,3 @@
 %     clean_data_09_03 = fillDataTable(clean_data_09_03,acousticTimeTable,rheoData,0.48,myV,stress);
 % end
 
-fn=fieldnames(phi48_08_29);
-%loop through the fields
-for i=1: numel(fn)
-    myRheoData = phi48_08_29.(fn{i});
-    myRheoData.phi = 0.48;
-    phi48_08_29.(fn{i}) = myRheoData;
-end

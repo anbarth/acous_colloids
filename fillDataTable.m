@@ -1,16 +1,24 @@
-function dataTable = fillDataTable(dataTable,lookupTable,rheoData,phi,V,sigma)
+showPlots = true;
 
-myT = lookupTable(lookupTable(:,1)==phi & lookupTable(:,2)==V & lookupTable(:,3)==sigma,4);
 
-if myT == 0
-    % if myT==0, that means there was no dethickening
-    % use the baseline viscosity for the data table
-    % that should already be an earlier entry in data table
-   eta = dataTable(dataTable(:,1)==phi & dataTable(:,2)==0 & dataTable(:,3)==sigma,4);
-else
-    eta = getDethickenedViscosityWrapper(rheoData,myT,myT+10);
-end
+fn=fieldnames(phi53_09_04);
+%loop through the fields
+for i=1: numel(fn)
+    myRheoData = phi53_09_04.(fn{i});
+    for ii = 1:size(myRheoData.acous,1) 
+        if myRheoData.acous == 0
+            continue
+        end
 
-dataTable(end+1,1:4) = [phi,V,sigma,eta];
+        myRow = myRheoData.acous(ii,:);
+        myPhi = myRow(1);
+        mySigma = myRow(2);
+        myVolt = myRow(3);
+        myT = myRow(4);
 
+        eta = getAcousticViscosity(myRheoData,myT,showPlots);
+        
+        dataTable(end+1,1:4) = [myPhi,mySigma,myVolt,eta];
+    end
+    
 end

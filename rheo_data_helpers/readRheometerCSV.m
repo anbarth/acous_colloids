@@ -1,6 +1,6 @@
 clear a;
-myCells = readcell('SiO2_DPG_CP/CP_new_silica/8_24_8_29_phi_48.csv','Delimiter','\t');
-%bigStructName = 'phi20_12_14';
+myCells = readcell('CP_new_silica/9_4_phi_53.csv','Delimiter','\t');
+
 
 %structNames = {};
 testNameRows = find(strcmp(myCells,'Test:'));
