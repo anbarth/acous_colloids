@@ -10,8 +10,8 @@ showMeera = false;
 fudge = false;
 xc = 0;
 
-%minP = 0.0027;
-%maxP = 6.0765e5; % determined by max(P_all). if you change anything about P you should recalculate this
+minP = 0.0027;
+maxP = 6.0765e5; % determined by max(P_all). if you change anything about P you should recalculate this
 
 cp2_collapse_parameters;
 
@@ -27,7 +27,7 @@ if showMeera
     hold(ax1,'on');
     scatter(meeraX,meeraY*meeraMultiplier,[],[0.7 0.7 0.7]);
 end
-%ax1.XLim = [10^(-5),10^1.5]; %TODO delete
+ax1.XLim = [10^(-5),10^1.5]; %TODO delete
 ax1.YLim = [10^(-1.5),5]; %TODO delete
 colormap(ax1,cmap);
 if xc ~= 0
@@ -128,10 +128,11 @@ for ii = vol_frac_plotting_range
         elseif colorBy == 3
             %myColor = log(P);
             %myColor = P;
-            if jj==1
+            if true 
                 myColor = [0,0,0];
             else
-                myColor = log(P);
+                disp(round(1+255*log(P)/log(maxP)))
+                myColor = cmap(round(1+255*log(P)/log(maxP)),:);
             end
             %disp(P)
         elseif colorBy == 4

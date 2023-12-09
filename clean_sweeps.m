@@ -1,12 +1,12 @@
 my_data = clean_data_09_11;
 
-figure; hold on;
-ax1 = gca;
-ax1.XScale = 'log';
-ax1.YScale = 'log';
+%figure; hold on;
+%ax1 = gca;
+%ax1.XScale = 'log';
+%ax1.YScale = 'log';
 
 phi_high = [.48,.53];
-minPhi = .4;
+minPhi = .2;
 maxPhi = .55;
 %cmap = flipud(viridis(256)); 
 cmap = turbo;
@@ -18,13 +18,13 @@ for ii=1:length(phi_high)
     sigma = myData(:,2);
     eta = myData(:,4);
     gamma_dot = sigma./eta;
-    plot(sigma,eta, '-o','Color',myColor);
+    plot(sigma,eta, '-d','Color',myColor);
     %plot(sigma,sigma.*gamma_dot,'-o','Color',myColor);
 end
-colormap(cmap);
-c = colorbar;
-c.Ticks = [phi_high];
-caxis([minPhi maxPhi])
+%colormap(cmap);
+%c = colorbar;
+%c.Ticks = [phi_high];
+%caxis([minPhi maxPhi])
 
-xlabel('\sigma (Pa)');
-ylabel('\eta (Pa s)');
+%xlabel('\sigma (Pa)');
+%ylabel('\eta (Pa s)');

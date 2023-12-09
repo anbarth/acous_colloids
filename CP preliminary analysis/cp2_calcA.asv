@@ -118,20 +118,15 @@ for ii = 1:4
 
     if colorBy == 1
         myColor = cmap(round(1+255*voltage/100),:);
-        myColor2 = cmap2(round(1+255*voltage/100),:);
     elseif colorBy == 2
         myColor = cmap(round(1+255*(phi-0.44)/(0.55-0.44)),:);
-        myColor2 = cmap2(round(1+255*(phi-0.44)/(0.55-0.44)),:);
         if fudge
             myColor = cmap(round(1+255*(phi_fudge-0.41)/(0.56-0.41)),:);
-            myColor2 = cmap2(round(1+255*(phi_fudge-0.41)/(0.56-0.41)),:);
         end
     elseif colorBy == 3
         myColor = log(P);
-        myColor2 = log(P);
     elseif colorBy == 4
         myColor = log(sigma);
-        myColor2 = log(sigma);
     end
     
 
@@ -149,7 +144,7 @@ for ii = 1:4
     end
 
     hold(ax2,'on');
-    scatter(ax2,P(keep_me),A(keep_me),[],myColor2);
+    scatter(ax2,P(keep_me),A(keep_me),[],myColor);
 
     hold(ax4,'on');
     mySigmaStar = sigmastar-sigma.*log(A);
