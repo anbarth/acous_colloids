@@ -21,10 +21,10 @@ eta_44 = CSV/1000*mean(phi44(1:5,4));
 eta_48 = CSV/1000*mean(phi48(1:5,4));
 eta_50 = CSV/1000*mean(phi50(1:5,4));
 eta_54 = CSV/1000*mean(phi54(1:5,4));
-%phi_list = [.2,.25,.3,.35,.4,.44,.48,0.5,.54];
-%eta_list = [eta_20,eta_25,eta_30,eta_35,eta_40,eta_44,eta_48,eta_50,eta_54];
-phi_list = [.44,.48,.5,.54];
-eta_list = [eta_44,eta_48,eta_50,eta_54];
+phi_list = [.2,.25,.3,.35,.4,.44,.48,0.5,.54];
+eta_list = [eta_20,eta_25,eta_30,eta_35,eta_40,eta_44,eta_48,eta_50,eta_54];
+%phi_list = [.44,.48,.5,.54];
+%eta_list = [eta_44,eta_48,eta_50,eta_54];
 %phi_list = [.2,.3,.35,.4,.44,.48,0.5,.54];
 %eta_list = [eta_20,eta_30,eta_35,eta_40,eta_44,eta_48,eta_50,eta_54];
 

@@ -11,9 +11,9 @@ if nargin < 2
     pas = 1;
 end
 
-CSS = (50/19)^3;
-CSR = 19/50;
-CSV = CSS/CSR;
+CSS = 19;
+CSV = 50;
+CSR = CSS/CSV;
 
 etaColumn = find(strcmp(rheoData.headers,'Viscosity'));
 

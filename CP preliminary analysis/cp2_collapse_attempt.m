@@ -27,7 +27,7 @@ if showMeera
     hold(ax1,'on');
     scatter(meeraX,meeraY*meeraMultiplier,[],[0.7 0.7 0.7]);
 end
-%ax1.XLim = [10^(-5),10^1.5]; %TODO delete
+ax1.XLim = [10^(-5),10^1.5]; %TODO delete
 ax1.YLim = [10^(-1.5),5]; %TODO delete
 colormap(ax1,cmap);
 if xc ~= 0

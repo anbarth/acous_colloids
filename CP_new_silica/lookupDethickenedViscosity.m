@@ -12,17 +12,19 @@ for ii = 1:length(allData)
         if myRheoData.acous == 0
             continue
         end
-
-        myRow = myRheoData.acous(ii,:);
-        myPhi = myRow(1);
-        mySigma = myRow(2);
-        myVolt = myRow(3);
-        myT = myRow(4);
-
-        if myPhi == phi && mySigma == sigma && myVolt == V
-            % found the entry you asjke
-            eta = getDethickenedViscosity(myRheoData,myT,myT+10,true);
-            return;
+        
+        for kk = 1:size(myRheoData.acous,1) 
+            myRow = myRheoData.acous(kk,:);
+            myPhi = myRow(1);
+            mySigma = myRow(2);
+            myVolt = myRow(3);
+            myT = myRow(4);
+    
+            if myPhi == phi && mySigma == sigma && myVolt == V
+                % found the entry you asked for!
+                eta = getAcousticViscosity(myRheoData,myT,true);
+                return;
+            end
         end
 
     end

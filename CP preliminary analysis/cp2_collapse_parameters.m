@@ -78,5 +78,6 @@ end
 k=1;
 f = @(sigma) exp(-(sigmastar ./ sigma).^k);
 %A = @(P) 1 ./ (1 + a*P.^b);
-A = @(P) exp(-c*P).^d;
+%A = @(P) exp(-c*P).^d;
+A = @(P) exp(-(c*P).^d);
 %A = @(P) 1;

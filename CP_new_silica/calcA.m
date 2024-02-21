@@ -1,7 +1,6 @@
 my_vol_frac_markers = ['>','s','o','d','h'];
 
-fudge = 0;
-cp2_collapse_parameters;
+collapse_params;
 
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for sigma
 
@@ -46,8 +45,8 @@ colorbar;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-stressTable = cp_data_01_18;
-phi_list = [44,48,50,54];
+stressTable = clean_data_09_11;
+phi_list = [48,53];
 volt_list = [0,5,10,20,40,60,80,100];
 x_all = zeros(0,1);
 F_all = zeros(0,1);
@@ -55,22 +54,18 @@ P_all = zeros(0,1);
 A_all = zeros(0,1);
 
 
-for ii = 1:4
+for ii = 1
     phi = phi_list(ii)/100;
     myMarker = my_vol_frac_markers(ii);
 
     % first, plot 0V stuff
-    myData_0V = stressTable(stressTable(:,1)==phi & stressTable(:,2)==0,:);
-    sigma_0V = myData_0V(:,3)*CSS;
-    eta_0V = CSV/1000*myData_0V(:,4);
-    my_f_mod_0V = f_mod(ii,1:length(sigma_0V))';
+    myData_0V = stressTable(stressTable(:,1)==phi & stressTable(:,3)==0,:);
+    sigma_0V = myData_0V(:,2);
+    eta_0V = myData_0V(:,4);
 
-    % fudge phi if desired
-    phi_fudge = phi_fudge_factors(phi_fudge_factors(:,1)==phi,2);
-    disp(phi_fudge)
 
-    F_0V = eta_0V*(phi0-phi_fudge)^2;
-    x_0V = C(ii)*f(sigma_0V).*my_f_mod_0V ./ (-1*phi_fudge+phi0);
+    F_0V = eta_0V*(phi0-phi)^2;
+    x_0V = C(ii)*f(sigma_0V) ./ (-1*phi+phi0);
     hold(ax1,'on');
     plot(ax1,x_0V,F_0V,strcat(myMarker,'-'),'Color',cmap(1,:),'MarkerFaceColor',cmap(1,:));
 
@@ -78,19 +73,13 @@ for ii = 1:4
     plot(ax3,x_0V,F_0V,strcat(myMarker,'-'),'Color',cmap(1,:),'MarkerFaceColor',cmap(1,:));
 
 
-    % now look at other voltages!
+    % now look at everything else!
     myData = stressTable(stressTable(:,1)==phi,:);
-    sigma_rheo = myData(:,3);
-    sigma = sigma_rheo*CSS;
-    eta = CSV/1000*myData(:,4);
-    voltage = myData(:,2);
-    x = C(ii)*f(sigma) ./ (-1*phi_fudge+phi0);
-    % TODO logistically hard to get my_f_mod now -- might be easiest to
-    % just loop over all the voltages?
-    %my_f_mod = f_mod(ii,1:length(sigma))';
-    %x = C(ii)*f(sigma).*my_f_mod ./ (-1*phi+phi0);
-    
-    F = eta*(phi0-phi_fudge)^2;
+    sigma = myData(:,2);
+    eta = myData(:,4);
+    voltage = myData(:,3);
+    x = C(ii)*f(sigma) ./ (-1*phi+phi0);    
+    F = eta*(phi0-phi)^2;
 
     % calculate nondimensionalized power
     % TODO i dont like this
@@ -120,9 +109,6 @@ for ii = 1:4
         myColor = cmap(round(1+255*voltage/100),:);
     elseif colorBy == 2
         myColor = cmap(round(1+255*(phi-0.44)/(0.55-0.44)),:);
-        if fudge
-            myColor = cmap(round(1+255*(phi_fudge-0.41)/(0.56-0.41)),:);
-        end
     elseif colorBy == 3
         myColor = log(P);
     elseif colorBy == 4
@@ -168,18 +154,9 @@ if colorBy == 1
 elseif colorBy == 2
     caxis(ax1,[.44 .55]);
     c1.Ticks = phi_list/100;
-    if fudge
-        caxis(ax1,[.41 .56]);
-        c1.Ticks = phi_fudge_factors(6:9,2);
-    end
 end
 c2 = colorbar(ax2);
-caxis(ax2,[.44 .55]);
-c2.Ticks = phi_list/100;
-if fudge
-    caxis(ax2,[.41 .56]);
-    c2.Ticks = phi_fudge_factors(6:9,2);
-end
+
 
 % lets find a fit for A!
 % trim out nan values to prepare myself
@@ -222,11 +199,9 @@ A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
  hold(ax2,'on');
  plot(ax2,P_fake,A_fake,'k')
 
-
-
 disp(myK)
 
-close(fig1) % uncollapsed
+%close(fig1) % uncollapsed
 %close(fig2) % A vs P
-close(fig3) % collapsed
+%close(fig3) % collapsed
 close(fig4) % sigma* vs P
