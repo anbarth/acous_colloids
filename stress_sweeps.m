@@ -1,4 +1,4 @@
-my_data = clean_data_09_11;
+%my_data = ceramic_data_table_02_21_;
 
 figure; hold on;
 ax1 = gca;

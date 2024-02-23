@@ -1,7 +1,7 @@
-my_data = clean_data_09_11;
+my_data = ceramic_data_table_02_22;
 
 % edit this list to change what's included in the fit
-phis = [48,53];
+phis = [30,40,44,48,56,59];
 
 
 
@@ -34,7 +34,7 @@ eta = eta(include_me);
 % x(2) = sigma*
 % x(3) = phi_mu
 % x(4) = phi_0
-fitfxn = @(x) x(1)*10^4*( x(4)*(1-exp(-x(2)./sigma)) + x(3)*exp(-x(2)./sigma) - phi ).^(-2);
+fitfxn = @(x) x(1)*( x(4)*(1-exp(-x(2)./sigma)) + x(3)*exp(-x(2)./sigma) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./eta ).^2);  
 
 constraintMatrix = zeros(4,4);
@@ -42,12 +42,12 @@ constraintMatrix = zeros(4,4);
 constraintMatrix(1,3)=1;
 constraintMatrix(1,4)=-1;
 constraintVector = [0,0,0,0];
-upper_bounds = [Inf,Inf,.74,.74];
-lower_bounds = [0,0,0.5400001,.57];
+upper_bounds = [Inf,Inf,.8,.8];
+lower_bounds = [0,0,0.59,.59];
 
 opts = optimoptions('fmincon','Display','final','StepTolerance',1e-12);
 %opts = optimoptions('fmincon','Display','off');
-s = fmincon(costfxn, [2e-6, 10, 0.55, 0.59],constraintMatrix,constraintVector,...
+s = fmincon(costfxn, [0.1, 5, 0.66, 0.595],constraintMatrix,constraintVector,...
             [],[],lower_bounds,upper_bounds,[],opts);
         
 disp(s);

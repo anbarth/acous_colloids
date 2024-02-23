@@ -2,58 +2,57 @@ my_vol_frac_markers = ['>','s','o','d','h'];
 
 collapse_params;
 
-colorBy = 4; % 1 for V, 2 for phi, 3 for P, 4 for sigma
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for sigma
 
 xc=0;
+
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cmap = viridis(256); 
-fig1 = figure;
-ax1 = axes('Parent', fig1,'XScale','log','YScale','log');
-ax1.XLabel.String = "x";
-ax1.YLabel.String = "F";
-ax1.XLim = [10^-5, 100];
-colormap(ax1,cmap);
+fig_uncollapsed = figure;
+ax_uncollapsed = axes('Parent', fig_uncollapsed,'XScale','log','YScale','log');
+ax_uncollapsed.XLabel.String = "x";
+ax_uncollapsed.YLabel.String = "F";
+ax_uncollapsed.XLim = [10^-5, 100];
+colormap(ax_uncollapsed,cmap);
 if xc ~= 0
-    xline(ax1,xc);
+    xline(ax_uncollapsed,xc);
 end
+hold(ax_uncollapsed,'on');
 
 cmap2 = plasma(256);
-fig2 = figure;
-ax2 = axes('Parent', fig2,'XScale','log');
-%ax2 = axes('Parent', fig2);
-ax2.XLabel.String = "P";
-ax2.YLabel.String = "A";
-colormap(ax2,cmap2);
+fig_A = figure;
+ax_A = axes('Parent', fig_A,'XScale','log');
+%ax_A = axes('Parent', fig2);
+ax_A.XLabel.String = "P";
+ax_A.YLabel.String = "A";
+colormap(ax_A,cmap2);
+hold(ax_A,'on');
 
-fig3 = figure;
-ax3 = axes('Parent', fig3,'XScale','log','YScale','log');
-ax3.XLabel.String = "x";
-ax3.YLabel.String = "F";
-ax3.XLim = [10^-5, 100];
-colormap(ax3,cmap);
+fig_collapsed = figure;
+ax_collapsed = axes('Parent', fig_collapsed,'XScale','log','YScale','log');
+ax_collapsed.XLabel.String = "x";
+ax_collapsed.YLabel.String = "F";
+ax_collapsed.XLim = [10^-5, 100];
+colormap(ax_collapsed,cmap);
 if xc ~= 0
-    xline(ax3,xc);
+    xline(ax_collapsed,xc);
 end
-
-fig4 = figure;
-%ax4 = axes('Parent', fig4);
-ax4 = axes('Parent', fig4,'XScale','log');
-%ax4.XLabel.String = "P";
-%ax4.YLabel.String = "\sigma^*";
-colormap(ax4,cmap2);
-colorbar;
+hold(ax_collapsed,'on');
 
 cmap5 = plasma(256);
-fig5 = figure;
-ax5 = axes('Parent', fig5,'XScale','log','YScale','log');
-ax5.XLabel.String = "P";
-ax5.YLabel.String = "-logA";
-colormap(ax5,cmap5);
+fig_bulbul = figure;
+ax_bulbul = axes('Parent', fig_bulbul,'XScale','log','YScale','log');
+ax_bulbul.XLabel.String = "P";
+ax_bulbul.YLabel.String = "-logA";
+colormap(ax_bulbul,cmap5);
+hold(ax_bulbul,'on');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-stressTable = ceramic_data_table_02_21_b;
-phi_list = [40,48];
+stressTable = ceramic_data_table_02_22;
+phi_list = [40,44,48,56,59];
+minPhi = 0.4;
+maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 x_all = zeros(0,1);
 F_all = zeros(0,1);
@@ -61,7 +60,7 @@ P_all = zeros(0,1);
 A_all = zeros(0,1);
 
 
-for ii = 1:2
+for ii = 1:5
     phi = phi_list(ii)/100;
     myMarker = my_vol_frac_markers(ii);
 
@@ -73,11 +72,9 @@ for ii = 1:2
 
     F_0V = eta_0V*(phi0-phi)^2;
     x_0V = C(ii)*f(sigma_0V) ./ (-1*phi+phi0);
-    hold(ax1,'on');
-    plot(ax1,x_0V,F_0V,strcat(myMarker,'-'),'Color',cmap(1,:),'MarkerFaceColor',cmap(1,:));
-
-    hold(ax3,'on');
-    plot(ax3,x_0V,F_0V,strcat(myMarker,'-'),'Color',cmap(1,:),'MarkerFaceColor',cmap(1,:));
+    
+    plot(ax_uncollapsed,x_0V,F_0V,strcat(myMarker,'-'),'Color',cmap(1,:),'MarkerFaceColor',cmap(1,:));
+    plot(ax_collapsed,x_0V,F_0V,strcat(myMarker,'-'),'Color',cmap(1,:),'MarkerFaceColor',cmap(1,:));
 
 
     % now look at everything else!
@@ -115,7 +112,7 @@ for ii = 1:2
     if colorBy == 1
         myColor = cmap(round(1+255*voltage/100),:);
     elseif colorBy == 2
-        myColor = cmap(round(1+255*(phi-0.4)/(0.55-0.4)),:);
+        myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
     elseif colorBy == 3
         myColor = log(P);
     elseif colorBy == 4
@@ -124,11 +121,8 @@ for ii = 1:2
     
 
     % plot collapsed and uncollapsed data
-    hold(ax1,'on');
-    scatter(ax1,x_new,F,[],myColor,'filled',myMarker);
-
-    hold(ax3,'on');
-    scatter(ax3,x,F,[],myColor,'filled',myMarker);
+    scatter(ax_collapsed,x_new,F,[],myColor,'filled',myMarker);
+    scatter(ax_uncollapsed,x,F,[],myColor,'filled',myMarker);
 
     % don't plot points with A=1
     keep_me = 1-abs(A)>0.0001;
@@ -136,17 +130,11 @@ for ii = 1:2
         myColor = myColor(keep_me,:);
     end
 
-    hold(ax2,'on');
-    scatter(ax2,P(keep_me),A(keep_me),[],myColor);
-    
-    hold(ax5,'on');
-    scatter(ax5,P(keep_me),-1*log(A(keep_me)),[],myColor);
+    % plot A vs P
+    scatter(ax_A,P(keep_me),A(keep_me),[],myColor);
+    scatter(ax_bulbul,P(keep_me),-1*log(A(keep_me)),[],myColor);
 
-    hold(ax4,'on');
-    mySigmaStar = sigmastar-sigma.*log(A);
-    %mySigmaStar = sigmastar-log(A);
-    scatter(ax4,P(keep_me),mySigmaStar(keep_me),[],myColor);
-    
+
     x_all(end+1:end+length(x)) = x;
     F_all(end+1:end+length(F)) = F;
     P_all(end+1:end+length(P)) = P;
@@ -154,18 +142,18 @@ for ii = 1:2
 end
 
 % add colorbars to plots
-c1 = colorbar(ax1);
+c1 = colorbar(ax_uncollapsed);
 if colorBy == 1
-    caxis(ax1,[0 100]);
+    caxis(ax_uncollapsed,[0 100]);
     c1.Ticks = [0,5,10,20,40,60,80,100];
-    %caxis(ax1,[0 log10(110)-1])
+    %caxis(ax_uncollapsed,[0 log10(110)-1])
     %c1.Ticks = log10([0,5,10,20,40,60,80,100]+10)-1;
     %c1.TickLabels = {0,5,10,20,40,60,80,100};
 elseif colorBy == 2
-    caxis(ax1,[.44 .55]);
+    caxis(ax_uncollapsed,[minPhi maxPhi]);
     c1.Ticks = phi_list/100;
 end
-c2 = colorbar(ax2);
+c2 = colorbar(ax_A);
 
 
 % lets find a fit for A!
@@ -207,12 +195,10 @@ P_fake = logspace(-4,6);
 %A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
 A_fake = exp(-(myK(1)*P_fake).^(0.45));
 
- hold(ax2,'on');
- plot(ax2,P_fake,A_fake,'k')
+ hold(ax_A,'on');
+ plot(ax_A,P_fake,A_fake,'k')
 
 disp(myK)
 
-%close(fig1) % uncollapsed
-%close(fig2) % A vs P
-%close(fig3) % collapsed
-close(fig4) % sigma* vs P
+%close(fig_bulbul)
+

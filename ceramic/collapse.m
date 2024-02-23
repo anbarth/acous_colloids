@@ -1,8 +1,8 @@
 my_vol_frac_markers = ['>','s','o','d','h'];
 
-vol_frac_plotting_range = 2;
-volt_plotting_range = 1:8;
-colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
+vol_frac_plotting_range = 1:5;
+volt_plotting_range = 1;
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = true;
 showMeera = false;
 xc = 0;
@@ -55,8 +55,10 @@ ax4.XLabel.String = "\phi_0-\phi";
 ax4.YLabel.String = "\eta";
 colormap(ax4,cmap);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-stressTable = ceramic_data_table_02_21_b;
-phi_list = [40,48];
+stressTable = ceramic_data_table_02_22;
+phi_list = [40,44,48,56,59];
+minPhi = 0.4;
+maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 x_all = zeros(0,1);
 F_all = zeros(0,1);
@@ -91,7 +93,7 @@ for ii = vol_frac_plotting_range
             myColor = cmap(round(1+255*voltage/100),:);
             %myColor = cmap(round(1+255*(log10(voltage+10)-1)/(log10(110)-1)),:);
         elseif colorBy == 2
-            myColor = cmap(round(1+255*(phi-0.40)/(0.55-0.40)),:);
+            myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
 
         elseif colorBy == 3
             myColor = log(P);
@@ -147,7 +149,7 @@ if colorBy == 1
     %c1.TickLabels = {0,5,10,20,40,60,80,100};
 elseif colorBy == 2
 
-    caxis(ax1,[.44 .55]);
+    caxis(ax1,[minPhi maxPhi]);
     c1.Ticks = phi_list/100;
 
 elseif colorBy == 4
