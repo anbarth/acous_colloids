@@ -2,7 +2,7 @@ my_vol_frac_markers = ['>','s','o','d','h'];
 
 collapse_params;
 
-colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for sigma
+colorBy = 4; % 1 for V, 2 for phi, 3 for P, 4 for sigma
 
 xc=0;
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -11,7 +11,7 @@ fig1 = figure;
 ax1 = axes('Parent', fig1,'XScale','log','YScale','log');
 ax1.XLabel.String = "x";
 ax1.YLabel.String = "F";
-%ax1.XLim = [10^(-3),10^1.5]; %TODO delete
+ax1.XLim = [10^-5, 100];
 colormap(ax1,cmap);
 if xc ~= 0
     xline(ax1,xc);
@@ -29,7 +29,7 @@ fig3 = figure;
 ax3 = axes('Parent', fig3,'XScale','log','YScale','log');
 ax3.XLabel.String = "x";
 ax3.YLabel.String = "F";
-%ax3.XLim = [10^(-3),10^1.5]; %TODO delete
+ax3.XLim = [10^-5, 100];
 colormap(ax3,cmap);
 if xc ~= 0
     xline(ax3,xc);
@@ -43,10 +43,17 @@ ax4 = axes('Parent', fig4,'XScale','log');
 colormap(ax4,cmap2);
 colorbar;
 
+cmap5 = plasma(256);
+fig5 = figure;
+ax5 = axes('Parent', fig5,'XScale','log','YScale','log');
+ax5.XLabel.String = "P";
+ax5.YLabel.String = "-logA";
+colormap(ax5,cmap5);
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-stressTable = clean_data_09_11;
-phi_list = [48,53];
+stressTable = ceramic_data_table_02_21_b;
+phi_list = [40,48];
 volt_list = [0,5,10,20,40,60,80,100];
 x_all = zeros(0,1);
 F_all = zeros(0,1);
@@ -54,7 +61,7 @@ P_all = zeros(0,1);
 A_all = zeros(0,1);
 
 
-for ii = 1
+for ii = 1:2
     phi = phi_list(ii)/100;
     myMarker = my_vol_frac_markers(ii);
 
@@ -108,7 +115,7 @@ for ii = 1
     if colorBy == 1
         myColor = cmap(round(1+255*voltage/100),:);
     elseif colorBy == 2
-        myColor = cmap(round(1+255*(phi-0.44)/(0.55-0.44)),:);
+        myColor = cmap(round(1+255*(phi-0.4)/(0.55-0.4)),:);
     elseif colorBy == 3
         myColor = log(P);
     elseif colorBy == 4
@@ -131,6 +138,9 @@ for ii = 1
 
     hold(ax2,'on');
     scatter(ax2,P(keep_me),A(keep_me),[],myColor);
+    
+    hold(ax5,'on');
+    scatter(ax5,P(keep_me),-1*log(A(keep_me)),[],myColor);
 
     hold(ax4,'on');
     mySigmaStar = sigmastar-sigma.*log(A);
@@ -194,7 +204,8 @@ fitfxn = @(k) exp(-(k(1)*P_all).^(k(2)));
 costfxn = @(k) sum(( (fitfxn(k)-A_all) ).^2); 
 myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
 P_fake = logspace(-4,6); 
-A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
+%A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
+A_fake = exp(-(myK(1)*P_fake).^(0.45));
 
  hold(ax2,'on');
  plot(ax2,P_fake,A_fake,'k')

@@ -24,8 +24,8 @@ elseif rheoUnits == 0
     rheometerStr = '';
 end
 
-%figure;
-%hold on;
+figure;
+hold on;
 t = getTime(myStruct);
 eta = getViscosity(myStruct,pas,rheoUnits);
 t = t(eta>0);

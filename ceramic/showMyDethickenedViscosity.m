@@ -1,4 +1,4 @@
-function eta = lookupDethickenedViscosity(phi,sigma,V,allData)
+function showMyDethickenedViscosity(phi,sigma,V,allData)
 
 % allData should be something like {phi48,phi53...}
 for ii = 1:length(allData)
@@ -22,7 +22,9 @@ for ii = 1:length(allData)
     
             if myPhi == phi && mySigma == sigma && myVolt == V
                 % found the entry you asked for!
-                eta = getAcousticViscosity(myRheoData,myT,true);
+                disp(myT)
+                disp(myRheoData)
+                showViscositySection(myRheoData,myT,myT+10)
                 return;
             end
         end
@@ -30,6 +32,3 @@ for ii = 1:length(allData)
     end
 
 end
-
-% failure :(
-eta = -1;

@@ -1,25 +1,10 @@
-showPlots = true;
+% run these individually with showPlots set to true to check that the
+% automated part is working correctly
+phi30_rows = getStressSweepDataTableRows(phi30_02_19.stress_sweep,0.3,[]);
+phi40_rows = getAllDataTableRows(phi40_02_20,phi40_02_20.stress_sweep_low_init,0.4,false);
+phi44_rows = getAllDataTableRows(phi44_02_21,phi44_02_21.stress_sweep_low_init,0.44,false);
+phi48_rows = getAllDataTableRows(phi48_02_20,phi48_02_20.stress_sweep_low_init,0.48,false);
+phi56_rows = getAllDataTableRows(phi56_02_21,phi56_02_21.stress_sweep_low_init,0.56,false);
+phi59_rows = getAllDataTableRows(phi59_02_22,phi59_02_22.stress_sweep_low_init,0.59,false);
 
-
-fn=fieldnames(phi53_09_04);
-%loop through the fields
-for i=1: numel(fn)
-    myRheoData = phi53_09_04.(fn{i});
-    for ii = 1:size(myRheoData.acous,1) 
-        % skip over non-acous test (eg stress sweeps)
-        if myRheoData.acous == 0
-            continue
-        end
-
-        myRow = myRheoData.acous(ii,:);
-        myPhi = myRow(1);
-        mySigma = myRow(2);
-        myVolt = myRow(3);
-        myT = myRow(4);
-
-        eta = getAcousticViscosity(myRheoData,myT,showPlots);
-        
-        dataTable(end+1,1:4) = [myPhi,mySigma,myVolt,eta];
-    end
-    
-end
+dataTable = [phi30_rows;phi40_rows;phi48_rows;phi56_rows];

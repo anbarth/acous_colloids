@@ -1,6 +1,7 @@
 % returns value in Pa s
 function baselineEta = getBaselineViscosity(rheoData,tStart,tEnd,showPlot)
 
+% get eta, t in specified window
 eta = getViscosity(rheoData,1,0);
 t = getTime(rheoData);
 

@@ -1,8 +1,8 @@
 my_vol_frac_markers = ['>','s','o','d','h'];
 
-vol_frac_plotting_range = 1:2;
-volt_plotting_range = 1;
-colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
+vol_frac_plotting_range = 2;
+volt_plotting_range = 1:8;
+colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = true;
 showMeera = false;
 xc = 0;
@@ -22,7 +22,7 @@ if showMeera
     scatter(meeraX,meeraY*meeraMultiplier,[],[0.7 0.7 0.7]);
 end
 %ax1.XLim = [10^(-5),10^1.5]; %TODO delete
-ax1.XLim = [10^-50, 100];
+ax1.XLim = [10^-5, 100];
 %ax1.YLim = [10^(-1.5),5]; %TODO delete
 colormap(ax1,cmap);
 if xc ~= 0
@@ -55,8 +55,8 @@ ax4.XLabel.String = "\phi_0-\phi";
 ax4.YLabel.String = "\eta";
 colormap(ax4,cmap);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-stressTable = clean_data_09_11;
-phi_list = [48,53];
+stressTable = ceramic_data_table_02_21_b;
+phi_list = [40,48];
 volt_list = [0,5,10,20,40,60,80,100];
 x_all = zeros(0,1);
 F_all = zeros(0,1);
@@ -91,7 +91,7 @@ for ii = vol_frac_plotting_range
             myColor = cmap(round(1+255*voltage/100),:);
             %myColor = cmap(round(1+255*(log10(voltage+10)-1)/(log10(110)-1)),:);
         elseif colorBy == 2
-            myColor = cmap(round(1+255*(phi-0.44)/(0.55-0.44)),:);
+            myColor = cmap(round(1+255*(phi-0.40)/(0.55-0.40)),:);
 
         elseif colorBy == 3
             myColor = log(P);
@@ -107,6 +107,9 @@ for ii = vol_frac_plotting_range
         myMarker = my_vol_frac_markers(ii);
         hold(ax1,'on');
         if showLines && colorBy < 3
+            % sort in order of ascending x
+            [xWC,sortIdx] = sort(xWC,'ascend');
+            FWC = FWC(sortIdx);
             plot(ax1,xWC,FWC,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
         else
             scatter(ax1,xWC,FWC,[],myColor,'filled',myMarker);

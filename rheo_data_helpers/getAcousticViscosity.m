@@ -9,7 +9,7 @@ if myT == 0
         tAcous = 60;
     end
     
-    eta = getBaselineViscosity(rheoData,0,tAcous,showPlots);
+    eta = getBaselineViscosity(rheoData,5,tAcous,showPlots);
 
 else
     eta = getDethickenedViscosity(rheoData,myT,myT+10,showPlots);

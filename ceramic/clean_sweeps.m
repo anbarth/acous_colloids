@@ -1,13 +1,13 @@
-my_data = clean_data_09_11;
+my_data = ceramic_data_table_02_21_b;
 
 figure; hold on;
 ax1 = gca;
 ax1.XScale = 'log';
 ax1.YScale = 'log';
 
-phi_high = [.48,.53];
-minPhi = .4;
-maxPhi = .55;
+phi_high = [.3, .40,.48];
+minPhi = .3;
+maxPhi = .5;
 %cmap = flipud(viridis(256)); 
 cmap = turbo;
 
@@ -17,13 +17,15 @@ for ii=1:length(phi_high)
     myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
     sigma = myData(:,2);
     eta = myData(:,4);
-    gamma_dot = sigma./eta;
+    
+    % sort in order of ascending sigma
+    [sigma,sortIdx] = sort(sigma,'ascend');
+    eta = eta(sortIdx);
+    
     plot(sigma,eta, '-d','Color',myColor);
-    %plot(sigma,sigma.*gamma_dot,'-o','Color',myColor);
 end
 
-plot(tween20_02_06_asc(:,1),tween20_02_06_asc(:,2),'-o','Color','k');
-plot(tween20_02_06_des(:,1),tween20_02_06_des(:,2),'-o','Color','b');
+
 
 %colormap(cmap);
 %c = colorbar;
