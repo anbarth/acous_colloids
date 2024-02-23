@@ -19,7 +19,8 @@ myX = NaN;
 for ii = 1:length(y)-1
    if y(ii) <= myY && myY <= y(ii+1)
        y1 = y(ii); y2 = y(ii+1); x1 = x(ii); x2 = x(ii+1);
-       myX = (myY-y1)/(y2-y1)*(x2-x1)+x1;
+       %myX = (myY-y1)/(y2-y1)*(x2-x1)+x1;
+       myX = exp( (log(myY)-log(y1))/(log(y2)-log(y1))*(log(x2)-log(x1))+log(x1) );
        return
    end
 end

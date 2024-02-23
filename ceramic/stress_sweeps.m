@@ -1,4 +1,4 @@
-my_data = ceramic_data_table_02_22;
+dataTable = ceramic_data_table_02_22;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
@@ -21,7 +21,7 @@ cmap = turbo;
 
 for ii=1:length(phi_high)
     phi = phi_high(ii);
-    myData = my_data(my_data(:,1)==phi & my_data(:,3)==0, :);
+    myData = dataTable(dataTable(:,1)==phi & dataTable(:,3)==0, :);
     myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
     sigma = myData(:,2);
     eta = myData(:,4);
