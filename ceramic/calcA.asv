@@ -2,14 +2,14 @@ my_vol_frac_markers = ['>','s','o','d','h'];
 
 collapse_params;
 
-stressTable = ceramic_data_table_02_22;
-phi_list = [40,44,48,56,59];
+stressTable = ceramic_data_table_02_24;
+phi_list = [40,44,48,52,56,59];
 minPhi = 0.4;
 maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 
-colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for sigma
-phi_range = 1; % which volume fractions to include
+colorBy = 4; % 1 for V, 2 for phi, 3 for P, 4 for sigma
+phi_range = 4; % which volume fractions to include
 
 xc=0;
 
@@ -19,12 +19,23 @@ fig_uncollapsed = figure;
 ax_uncollapsed = axes('Parent', fig_uncollapsed,'XScale','log','YScale','log');
 ax_uncollapsed.XLabel.String = "x";
 ax_uncollapsed.YLabel.String = "F";
-ax_uncollapsed.XLim = [10^-5, 100];
+%ax_uncollapsed.XLim = [10^-5, 100];
 colormap(ax_uncollapsed,cmap);
 if xc ~= 0
     xline(ax_uncollapsed,xc);
 end
 hold(ax_uncollapsed,'on');
+
+fig_collapsed = figure;
+ax_collapsed = axes('Parent', fig_collapsed,'XScale','log','YScale','log');
+ax_collapsed.XLabel.String = "x";
+ax_collapsed.YLabel.String = "F";
+%ax_collapsed.XLim = [10^-5, 100];
+colormap(ax_collapsed,cmap);
+if xc ~= 0
+    xline(ax_collapsed,xc);
+end
+hold(ax_collapsed,'on');
 
 cmap2 = plasma(256);
 fig_A = figure;
@@ -32,26 +43,15 @@ ax_A = axes('Parent', fig_A,'XScale','log');
 %ax_A = axes('Parent', fig2);
 ax_A.XLabel.String = "P";
 ax_A.YLabel.String = "A";
-colormap(ax_A,cmap2);
+colormap(ax_A,cmap);
 hold(ax_A,'on');
 
-fig_collapsed = figure;
-ax_collapsed = axes('Parent', fig_collapsed,'XScale','log','YScale','log');
-ax_collapsed.XLabel.String = "x";
-ax_collapsed.YLabel.String = "F";
-ax_collapsed.XLim = [10^-5, 100];
-colormap(ax_collapsed,cmap);
-if xc ~= 0
-    xline(ax_collapsed,xc);
-end
-hold(ax_collapsed,'on');
 
-cmap5 = plasma(256);
 fig_bulbul = figure;
 ax_bulbul = axes('Parent', fig_bulbul,'XScale','log','YScale','log');
 ax_bulbul.XLabel.String = "P";
 ax_bulbul.YLabel.String = "-logA";
-colormap(ax_bulbul,cmap5);
+colormap(ax_bulbul,cmap);
 hold(ax_bulbul,'on');
 
 
@@ -71,6 +71,12 @@ for ii = phi_range
     myData_0V = stressTable(stressTable(:,1)==phi & stressTable(:,3)==0,:);
     sigma_0V = myData_0V(:,2);
     eta_0V = myData_0V(:,4);
+    
+    % it's important for myInterpolate that x_0V and F_0V be sorted
+    % according to ascending stress order
+        [myStress,sortIdx] = sort(myStress,'ascend');
+    myEta = myEta(sortIdx);
+    myEtaFit = myEtaFit(sortIdx);
 
 
     F_0V = eta_0V*(phi0-phi)^2;
@@ -125,9 +131,11 @@ for ii = phi_range
 
     % plot collapsed and uncollapsed data
     scatter(ax_collapsed,x_new,F,[],myColor,'filled',myMarker);
+    scatter(ax_collapsed,x,F,[],myColor,myMarker);
     scatter(ax_uncollapsed,x,F,[],myColor,'filled',myMarker);
 
-    % don't plot points with A=1
+    % don't plot points with A=1 (thats the low stress tail where it doesnt
+    % rly matter)
     keep_me = 1-abs(A)>0.0001;
     if colorBy == 3 || colorBy == 4 || colorBy == 1
         myColor = myColor(keep_me,:);

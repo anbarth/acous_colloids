@@ -1,5 +1,19 @@
-phi = [0.3,0.4,0.44,0.48,0.59];
-eta = [0.6,1.1,2,2.5,9.5];
+dataTable = ceramic_data_table_02_24;
+
+phi = unique(dataTable(:,1));
+eta = zeros(size(phi));
+for ii=1:length(phi)
+    myData = dataTable(dataTable(:,1)==phi(ii) & dataTable(:,3)==0, :);
+    mySigma = myData(:,2);
+    myEta = myData(:,4);
+    
+    % grab eta for lowest sigma
+    %[~,lowStressIndex] = min(sigma); 
+    
+    % actually just grab the value at 0.1pa to avoid low stress weirdness?
+    lowStressIndex = find(0.1==mySigma);
+    eta(ii) = myEta(lowStressIndex);
+end
 
 figure; hold on;
 plot(phi,eta.^(-1/2),'o')

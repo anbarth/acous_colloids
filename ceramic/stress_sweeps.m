@@ -1,4 +1,4 @@
-dataTable = ceramic_data_table_02_22;
+dataTable = ceramic_data_table_02_24;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
@@ -13,7 +13,7 @@ ax_rate.YLabel.String = 'shear rate (1/s)';
 hold(ax_rate,'on');
 
 
-phi_high = [.3, .40,0.44,.48,0.56,0.59];
+phi_high = [.3,.40,0.44,.48,0.52,0.56,0.59];
 minPhi = .3;
 maxPhi = .6;
 %cmap = flipud(viridis(256)); 
@@ -36,8 +36,7 @@ for ii=1:length(phi_high)
 end
 
 
-
-%colormap(cmap);
-%c = colorbar;
-%c.Ticks = [phi_high];
-%caxis([minPhi maxPhi])
+colormap(ax_eta,cmap);
+c_eta = colorbar(ax_eta);
+c_eta.Ticks = [phi_high];
+caxis(ax_eta,[minPhi maxPhi])

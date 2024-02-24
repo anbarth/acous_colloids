@@ -2,6 +2,8 @@ my_data = ceramic_data_table_02_24;
 
 % edit this list to change what's included in the fit
 phis = [30,40,44,48,52,56,59];
+phi0 = 0.68;
+maxSigma = 0;
 
 
 
@@ -25,6 +27,16 @@ for ii=1:length(phi)
         include_me(ii) = true;
     end
 end
+% only include stresses below maxSigma
+if maxSigma ~= 0
+    for ii=1:length(sigma)
+        if sigma(ii) > maxSigma
+            include_me(ii) = false;
+        end
+    end
+end
+
+
 phi = phi(include_me);
 sigma = sigma(include_me);
 eta = eta(include_me);
@@ -33,21 +45,17 @@ eta = eta(include_me);
 % x(1) = A
 % x(2) = sigma*
 % x(3) = phi_mu
-% x(4) = phi_0
-fitfxn = @(x) x(1)*( x(4)*(1-exp(-x(2)./sigma)) + x(3)*exp(-x(2)./sigma) - phi ).^(-2);
+fitfxn = @(x) x(1)*( phi0*(1-exp(-x(2)./sigma)) + x(3)*exp(-x(2)./sigma) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./eta ).^2);  
 
-constraintMatrix = zeros(4,4);
-% phi_mu-phi_0 < 0 (phi_mu < phi_0)
-constraintMatrix(1,3)=1;
-constraintMatrix(1,4)=-1;
-constraintVector = [0,0,0,0];
-upper_bounds = [Inf,Inf,.8,.8];
-lower_bounds = [0,0,0.59,.59];
+constraintMatrix = zeros(3,3);
+constraintVector = [0,0,0];
+upper_bounds = [Inf,Inf,phi0];
+lower_bounds = [0,0,0.59];
 
 opts = optimoptions('fmincon','Display','final','StepTolerance',1e-12);
 %opts = optimoptions('fmincon','Display','off');
-s = fmincon(costfxn, [0.1, 5, 0.595, 0.68],constraintMatrix,constraintVector,...
+s = fmincon(costfxn, [0.1, 5, 0.595],constraintMatrix,constraintVector,...
             [],[],lower_bounds,upper_bounds,[],opts);
         
 disp(s);
