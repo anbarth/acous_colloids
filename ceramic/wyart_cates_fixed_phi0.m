@@ -83,8 +83,8 @@ for ii=1:length(phis)
     myEtaFit = myEtaFit(sortIdx);
     
     myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
-    plot(myStress,myEta,'o','Color',myColor);
-    plot(myStress,myEtaFit,'Color',myColor);
+    plot(myStress,myEta,'o','Color',myColor,'LineWidth',1);
+    plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
 end
 %title('stress sweeps');
 xlabel('\sigma (Pa)');

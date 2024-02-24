@@ -1,7 +1,7 @@
 dataTable = ceramic_data_table_02_22;
-phi_list = [0.40,0.44,.48,0.56,0.59];
+phi_list = [0.40,0.44,.48,0.52,0.56,0.59];
 
-phi_range = 1:5;
+phi_range = 6;
 
 for ii=phi_range
     phi = phi_list(ii);
@@ -14,9 +14,7 @@ for ii=phi_range
     % fill in P values
     P = zeros(size(myData,1),1);
     for kk = 1:length(P)
-        eta_0V = dataTable(dataTable(:,1)==phi & dataTable(:,2)==sigma(kk) & dataTable(:,3)==0,4);
-        gamma_dot_0V = sigma(kk)/eta_0V;
-        P(kk) = V(kk)^2/sigma(kk)/gamma_dot_0V;
+        P(kk) = calculateP(phi,sigma(kk),V(kk),dataTable);
     end
     
     fig_eta = figure;
@@ -24,6 +22,8 @@ for ii=phi_range
     ax_eta.XLabel.String = 'P';
     ax_eta.YLabel.String = '\eta (Pa s)';
     hold(ax_eta,'on');
+    cmap = plasma(256);
+    colormap(ax_eta,cmap);
     
     myColor = log(sigma);
     scatter(ax_eta,P,eta,[],myColor,'filled','o');

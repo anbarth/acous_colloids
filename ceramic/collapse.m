@@ -1,11 +1,11 @@
 my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
 vol_frac_plotting_range = 1:6;
-volt_plotting_range = 1;
-colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
-showLines = true;
+volt_plotting_range = 1:8;
+colorBy = 3; % 1 for V, 2 for phi, 3 for P, 4 for stress
+showLines = false;
 showMeera = false;
-xc = 0;
+xc = 8;
 
 collapse_params;
 stressTable = ceramic_data_table_02_24;
@@ -46,6 +46,7 @@ if xc ~= 0
     ax3.XLabel.String = "1/x-1/x_c";
     ax3.YLabel.String = "H";
     ax3.Title.String = strcat("x_c = ",num2str(xc));
+    ax2.Title.String = strcat("x_c = ",num2str(xc));
     colormap(ax3,cmap);
     if showMeera
         hold(ax3,'on')
@@ -76,8 +77,8 @@ for ii = vol_frac_plotting_range
         
         % calculate nondimensionalized power
         P = zeros(size(sigma));
-        for kk = 1:length(x)
-            P(kk) = calculateP(phi,sigma(kk),voltage(kk),stressTable);
+        for kk = 1:length(P)
+            P(kk) = calculateP(phi,sigma(kk),voltage,stressTable);
         end
 
         %myColor = voltage*ones(size(sigma));

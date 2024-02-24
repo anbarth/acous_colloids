@@ -14,12 +14,13 @@ phi_range = 1:6; % which volume fractions to include
 xc=0;
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-cmap = viridis(256); 
+cmap = turbo;
+%cmap = viridis(256); 
 fig_uncollapsed = figure;
 ax_uncollapsed = axes('Parent', fig_uncollapsed,'XScale','log','YScale','log');
 ax_uncollapsed.XLabel.String = "x";
 ax_uncollapsed.YLabel.String = "F";
-%ax_uncollapsed.XLim = [10^-5, 100];
+ax_uncollapsed.XLim = [10^-5, 100];
 colormap(ax_uncollapsed,cmap);
 if xc ~= 0
     xline(ax_uncollapsed,xc);
@@ -30,7 +31,7 @@ fig_collapsed = figure;
 ax_collapsed = axes('Parent', fig_collapsed,'XScale','log','YScale','log');
 ax_collapsed.XLabel.String = "x";
 ax_collapsed.YLabel.String = "F";
-%ax_collapsed.XLim = [10^-5, 100];
+ax_collapsed.XLim = [10^-5, 100];
 colormap(ax_collapsed,cmap);
 if xc ~= 0
     xline(ax_collapsed,xc);
@@ -200,13 +201,13 @@ P_fake = logspace(-4,6);
 A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
 %A_fake = exp(-(myK(1)*P_fake).^(0.45));
 
- hold(ax_A,'on');
- plot(ax_A,P_fake,A_fake,'k')
+ plot(ax_A,P_fake,A_fake,'k','LineWidth',1)
+ plot(ax_bulbul,P_fake,-1*log(A_fake),'k','LineWidth',1);
 
 disp(myK(1))
 disp(myK(2))
 %close all
-close(fig_collapsed)
-close(fig_uncollapsed)
+%close(fig_collapsed)
+%close(fig_uncollapsed)
 
 

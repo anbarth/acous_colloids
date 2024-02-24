@@ -31,8 +31,8 @@ for ii=1:length(phi_high)
     eta = eta(sortIdx);
     
     
-    plot(ax_eta,sigma,eta, '-d','Color',myColor);
-    plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor);
+    plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',1);
+    plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',1);
 end
 
 
@@ -40,3 +40,4 @@ colormap(ax_eta,cmap);
 c_eta = colorbar(ax_eta);
 c_eta.Ticks = [phi_high];
 caxis(ax_eta,[minPhi maxPhi])
+
