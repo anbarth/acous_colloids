@@ -1,5 +1,5 @@
 % returns value in Pa s
-function dethickenedEta = getDethickenedViscosity(rheoData,tStart,tEnd,showPlot)
+function [dethickenedEta,delta_eta] = getDethickenedViscosity(rheoData,tStart,tEnd,showPlot)
 
 % get eta, t data in the specified window
 eta = getViscosity(rheoData,1,0);
@@ -19,6 +19,7 @@ if length(acousticWindowIndexes) == 2
     acousStartIndex = acousticWindowIndexes(1);
     acousEndIndex = acousticWindowIndexes(2);
     dethickenedEta = mean(myEta(acousStartIndex:acousEndIndex));
+    delta_eta = std(myEta(acousStartIndex:acousEndIndex));
 else
     % failed to find 2 change points
     % ive noticed this error occurs a lot for sections where 
@@ -31,7 +32,7 @@ else
         tAcous = 60;
     end
     
-    dethickenedEta = getBaselineViscosity(rheoData,5,tAcous,false);
+    [dethickenedEta,delta_eta] = getBaselineViscosity(rheoData,5,tAcous,false);
 end
 
 

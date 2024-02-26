@@ -1,11 +1,13 @@
-dataTable = ceramic_data_table_02_24;
+dataTable = ceramic_data_table_02_25;
 
 phi = unique(dataTable(:,1));
 eta = zeros(size(phi));
+delta_eta = zeros(size(phi));
 for ii=1:length(phi)
     myData = dataTable(dataTable(:,1)==phi(ii) & dataTable(:,3)==0, :);
     mySigma = myData(:,2);
     myEta = myData(:,4);
+    myDeltaEta = myData(:,5);
     
     % grab eta for lowest sigma
     %[~,lowStressIndex] = min(sigma); 
@@ -13,10 +15,12 @@ for ii=1:length(phi)
     % actually just grab the value at 0.1pa to avoid low stress weirdness?
     lowStressIndex = find(0.1==mySigma);
     eta(ii) = myEta(lowStressIndex);
+    delta_eta(ii) = myDeltaEta(lowStressIndex);
 end
 
 figure; hold on;
-plot(phi,eta.^(-1/2),'o')
+delta_eta_minushalf = 1/2 * eta.^(-3/2) .* delta_eta;
+errorbar(phi,eta.^(-1/2),delta_eta_minushalf,'o')
 
 p = polyfit(phi,eta.^(-1/2),1);
 disp(-p(2)/p(1))

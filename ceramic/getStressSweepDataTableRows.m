@@ -3,7 +3,7 @@ function dataTable = getStressSweepDataTableRows(mySweep,myPhi,excludeSigma)
 %mySweep = phi40_02_20.stress_sweep_low_init;
 %myPhi = 0.40;
 
-dataTable = zeros(0,4);
+dataTable = zeros(0,5);
 
 sigma = getStress(mySweep);
 eta = getViscosity(mySweep);
@@ -19,7 +19,8 @@ for ii = 1:size(stress_list)
    end
    indices = sigma == mySigma;
    myEta = mean(eta(indices));
-   dataTable(end+1,1:4) = [myPhi,mySigma,0,myEta];
+   myDeltaEta = std(eta(indices));
+   dataTable(end+1,1:5) = [myPhi,mySigma,0,myEta,myDeltaEta];
 end
 
 end

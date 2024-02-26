@@ -1,4 +1,4 @@
-my_data = ceramic_data_table_02_24;
+my_data = ceramic_data_table_02_25;
 
 % edit this list to change what's included in the fit
 phis = [30,40,44,48,52,56,59];
@@ -11,6 +11,7 @@ no_acoustics = my_data(my_data(:,3)==0, :);
 phi = no_acoustics(:,1);
 sigma = no_acoustics(:,2);
 eta = no_acoustics(:,4);
+delta_eta = no_acoustics(:,5);
 
 phi_low = [];
 sigma_low = [];
@@ -75,15 +76,18 @@ for ii=1:length(phis)
     
     myStress=sigma(phi==myPhi);
     myEta=eta(phi==myPhi);
+    myDeltaEta=delta_eta(phi==myPhi);
     myEtaFit=etaFit(phi==myPhi);
     
     % sort in order of ascending sigma
     [myStress,sortIdx] = sort(myStress,'ascend');
     myEta = myEta(sortIdx);
+    myDeltaEta = myDeltaEta(sortIdx);
     myEtaFit = myEtaFit(sortIdx);
     
     myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
     plot(myStress,myEta,'o','Color',myColor,'LineWidth',1);
+    errorbar(myStress,myEta,myDeltaEta,'.','Color',myColor,'LineWidth',1);
     plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
 end
 %title('stress sweeps');

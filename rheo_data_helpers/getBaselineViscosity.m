@@ -1,5 +1,5 @@
 % returns value in Pa s
-function baselineEta = getBaselineViscosity(rheoData,tStart,tEnd,showPlot)
+function [baselineEta,delta_eta] = getBaselineViscosity(rheoData,tStart,tEnd,showPlot)
 
 % get eta, t in specified window
 eta = getViscosity(rheoData,1,0);
@@ -11,6 +11,7 @@ endIndex = find(t<=tEnd,1,'last');
 myEta = eta(startIndex:endIndex);
 
 baselineEta = mean(myEta);
+delta_eta = std(myEta);
 
 if showPlot
     % plot eta vs t

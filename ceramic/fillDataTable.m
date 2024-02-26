@@ -8,4 +8,5 @@ phi52_rows = getAllDataTableRows(phi52_02_23,phi52_02_23.stress_sweep_low_1hr,0.
 phi56_rows = getAllDataTableRows(phi56_02_21,phi56_02_21.stress_sweep_low_init,0.56,false);
 phi59_rows = getAllDataTableRows(phi59_02_22,phi59_02_22.stress_sweep_low_init,0.59,false);
 
+clear dataTable
 dataTable = [phi30_rows;phi40_rows;phi44_rows;phi48_rows;phi52_rows;phi56_rows;phi59_rows];

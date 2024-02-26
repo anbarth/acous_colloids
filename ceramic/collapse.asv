@@ -1,8 +1,8 @@
 my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
 vol_frac_plotting_range = 1:6;
-volt_plotting_range = 1:8;
-colorBy = 4; % 1 for V, 2 for phi, 3 for P, 4 for stress
+volt_plotting_range = 1;
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = true;
 showMeera = false;
 xc=0;
@@ -37,20 +37,20 @@ end
 
 
 if xc ~= 0
-    fig_xc_x = figure;
-    fig_cardy = figure;
-    ax_xc_x = axes('Parent', fig_xc_x,'XScale','log','YScale','log');
-    ax_xc_x.XLabel.String = "x_c-x";
-    ax_xc_x.YLabel.String = "F";
-    colormap(ax_xc_x,cmap);
-    ax_cardy = axes('Parent', fig_cardy,'XScale','log','YScale','log');
-    ax_cardy.XLabel.String = "1/x-1/x_c";
-    ax_cardy.YLabel.String = "H";
-    ax_cardy.Title.String = strcat("x_c = ",num2str(xc));
-    ax_xc_x.Title.String = strcat("x_c = ",num2str(xc));
-    colormap(ax_cardy,cmap);
+    fig2 = figure;
+    fig3 = figure;
+    ax2 = axes('Parent', fig2,'XScale','log','YScale','log');
+    ax2.XLabel.String = "x_c-x";
+    ax2.YLabel.String = "F";
+    colormap(ax2,cmap);
+    ax3 = axes('Parent', fig3,'XScale','log','YScale','log');
+    ax3.XLabel.String = "1/x-1/x_c";
+    ax3.YLabel.String = "H";
+    ax3.Title.String = strcat("x_c = ",num2str(xc));
+    ax2.Title.String = strcat("x_c = ",num2str(xc));
+    colormap(ax3,cmap);
     if showMeera
-        hold(ax_cardy,'on')
+        hold(ax3,'on')
         scatter(meeraHX,meeraHY*0.2,[],[0.7 0.7 0.7]);
     end
     xlim([10^(-3.5) 10^12])
@@ -108,11 +108,9 @@ for ii = vol_frac_plotting_range
             % sort in order of ascending x
             [xWC,sortIdx] = sort(xWC,'ascend');
             FWC = FWC(sortIdx);
-            disp('y axis is not really F right now')
-            plot(ax_collapse,xWC,log(log(100*FWC)),strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
+            plot(ax_collapse,xWC,FWC,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
         else
-            disp('y axis is not really F right now')
-            scatter(ax_collapse,xWC,log(log(100*FWC)),[],myColor,'filled',myMarker);
+            scatter(ax_collapse,xWC,FWC,[],myColor,'filled',myMarker);
             %scatter(ax1,xWC,FWC,[],myColor,'filled',myMarker,'MarkerFaceAlpha',0.5);
         end
 
@@ -120,10 +118,10 @@ for ii = vol_frac_plotting_range
         %scatter(meeraAx,xWC,FWC,[],myColor,'filled',myMarker);
         
         if xc ~= 0
-            hold(ax_xc_x,'on');
-            scatter(ax_xc_x,xc-xWC,FWC,[],myColor,'filled',myMarker);
-            hold(ax_cardy,'on');
-            scatter(ax_cardy, abs(1/xc-1./xWC),H,[],myColor,'filled',myMarker);
+            hold(ax2,'on');
+            scatter(ax2,xc-xWC,FWC,[],myColor,'filled',myMarker);
+            hold(ax3,'on');
+            scatter(ax3, abs(1/xc-1./xWC),H,[],myColor,'filled',myMarker);
         end
         hold(ax4,'on');
         scatter(ax4,(phi0-phi)*ones(size(eta)),eta,[],myColor,'filled',myMarker);
@@ -155,7 +153,7 @@ elseif colorBy == 4
 end
 
 if xc ~= 0
-    colorbar(ax_xc_x);
-    colorbar(ax_cardy);
+    colorbar(ax2);
+    colorbar(ax3);
 end
 

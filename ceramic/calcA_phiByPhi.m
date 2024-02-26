@@ -14,7 +14,8 @@ phi_range = 1:6; % which volume fractions to include
 xc=0;
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-cmap = viridis(256); 
+%cmap = viridis(256); 
+cmap = jet;
 fig_uncollapsed = figure;
 ax_uncollapsed = axes('Parent', fig_uncollapsed,'XScale','log','YScale','log');
 ax_uncollapsed.XLabel.String = "x";
@@ -195,6 +196,7 @@ c2 = colorbar(ax_A);
 
 
 %close all
+close(fig_A)
 close(fig_collapsed)
 close(fig_uncollapsed)
 

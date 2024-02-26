@@ -1,4 +1,4 @@
-dataTable = ceramic_data_table_02_24;
+dataTable = ceramic_data_table_02_25;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
@@ -25,14 +25,19 @@ for ii=1:length(phi_high)
     myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
     sigma = myData(:,2);
     eta = myData(:,4);
+    deltaEta = myData(:,5);
     
     % sort in order of ascending sigma
     [sigma,sortIdx] = sort(sigma,'ascend');
     eta = eta(sortIdx);
+    deltaEta = deltaEta(sortIdx);
     
     
     plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',1);
+    errorbar(ax_eta,sigma,eta,deltaEta,'.','Color',myColor,'LineWidth',1);
+    
     plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',1);
+    errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
 end
 
 

@@ -1,7 +1,7 @@
 function dataTable = getAcousDataTableRows(myVolumeFractionStruct,showPlots)
 
 %showPlots = true;
-dataTable = zeros(0,4);
+dataTable = zeros(0,5);
 
 fn=fieldnames(myVolumeFractionStruct);
 %loop through the fields
@@ -19,9 +19,9 @@ for i=1: numel(fn)
         myVolt = myRow(3);
         myT = myRow(4);
 
-        eta = getAcousticViscosity(myRheoData,myT,showPlots);
+        [eta,delta_eta] = getAcousticViscosity(myRheoData,myT,showPlots);
         
-        dataTable(end+1,1:4) = [myPhi,mySigma,myVolt,eta];
+        dataTable(end+1,1:5) = [myPhi,mySigma,myVolt,eta,delta_eta];
     end
     
 end

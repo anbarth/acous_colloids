@@ -4,5 +4,6 @@ eta_0V = dataTable(dataTable(:,1)==phi & dataTable(:,2)==sigma & dataTable(:,3)=
 gamma_dot_0V = sigma/eta_0V;
 P = V^2/sigma/gamma_dot_0V;
 %P = V^2/sigma^2;
+%P = V^2/sigma^2/gamma_dot_0V/phi^2;
 
 end
