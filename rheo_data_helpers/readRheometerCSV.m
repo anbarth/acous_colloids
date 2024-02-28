@@ -1,5 +1,5 @@
 clear a;
-myCells = readcell('02_23_52%.csv','Delimiter','\t');
+myCells = readcell('02_27_59%_metamaterial.csv','Delimiter','\t');
 
 % optionally input struct field names in order ahead of time
 %structNames = {};

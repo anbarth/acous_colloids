@@ -9,6 +9,7 @@ for ii = 1:length(allData)
     for jj = 1:numel(fn)
         % myRheoData is something like phi48.sig10_60V
         myRheoData = rheoStructSet.(fn{jj});
+        %disp(myRheoData)
         if myRheoData.acous == 0
             continue
         end

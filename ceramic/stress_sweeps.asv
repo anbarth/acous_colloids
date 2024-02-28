@@ -21,7 +21,7 @@ hold(ax_eta_rescaled,'on');
 phi_high = [.3,.40,0.44,.48,0.52,0.56,0.59];
 minPhi = .3;
 maxPhi = .6;
-phi0=0.6804;
+
 %cmap = flipud(viridis(256)); 
 cmap = turbo;
 
@@ -45,18 +45,13 @@ for ii=1:length(phi_high)
     plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',1);
     errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
 
-    plot(ax_eta_rescaled,sigma,eta*(phi0-phi)^2, '-d','Color',myColor,'LineWidth',1);
-    errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);
+    plot(ax_eta_rescaled,sigma,eta*(), '-d','Color',myColor,'LineWidth',1);
+    errorbar(ax_eta_rescaled,sigma,eta,deltaEta,'.','Color',myColor,'LineWidth',1);
 end
 
 
 colormap(ax_eta,cmap);
 c_eta = colorbar(ax_eta);
 c_eta.Ticks = [phi_high];
-caxis(ax_eta,[minPhi maxPhi]);
-
-colormap(ax_eta_rescaled,cmap);
-c_eta = colorbar(ax_eta_rescaled);
-c_eta.Ticks = [phi_high];
-caxis(ax_eta_rescaled,[minPhi maxPhi])
+caxis(ax_eta,[minPhi maxPhi])
 
