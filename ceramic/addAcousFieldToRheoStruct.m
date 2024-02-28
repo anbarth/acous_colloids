@@ -1,7 +1,7 @@
-fn=fieldnames(phi52_02_23);
+fn=fieldnames(metamaterial_phi59_02_27);
 %loop through the fields
 for i=1: numel(fn)
-    myRheoData = phi52_02_23.(fn{i});
+    myRheoData = metamaterial_phi59_02_27.(fn{i});
     myRheoData.acous = 0;
-    phi52_02_23.(fn{i}) = myRheoData;
+    metamaterial_phi59_02_27.(fn{i}) = myRheoData;
 end
