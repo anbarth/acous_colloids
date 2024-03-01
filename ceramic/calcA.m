@@ -2,7 +2,7 @@ my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
 collapse_params;
 
-stressTable = ceramic_data_table_02_24;
+stressTable = ceramic_data_table_02_25;
 phi_list = [40,44,48,52,56,59];
 minPhi = 0.4;
 maxPhi = 0.6;
@@ -104,6 +104,8 @@ for ii = phi_range
         myX = x(jj);
         myF = F(jj);
         myX_target = myInterpolate(myF,x_0V,F_0V);
+        %myXcX_target = myInterpolate(myF,7.9-x_0V,F_0V);
+        %myX_target = 7.9-myXcX_target;
         A(jj) = myX_target/myX;
         if(isnan(A(jj)))
             A(jj)=1;
