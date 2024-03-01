@@ -40,7 +40,7 @@ for ii=1:length(phi_high)
     
     
     plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',1);
-    errorbar(ax_eta,sigma,eta,deltaEta,'.','Color',myColor,'LineWidth',1);
+   % errorbar(ax_eta,sigma,eta,deltaEta,'.','Color',myColor,'LineWidth',1);
     
     plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',1);
     errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);

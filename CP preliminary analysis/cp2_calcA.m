@@ -26,6 +26,12 @@ ax2.XLabel.String = "P";
 ax2.YLabel.String = "A";
 colormap(ax2,cmap2);
 
+fig_bulbul = figure;
+ax_bulbul = axes('Parent', fig_bulbul,'XScale','log','YScale','log');
+ax_bulbul.XLabel.String = "P";
+ax_bulbul.YLabel.String = "-logA";
+colormap(ax_bulbul,cmap2);
+
 fig3 = figure;
 ax3 = axes('Parent', fig3,'XScale','log','YScale','log');
 ax3.XLabel.String = "x";
@@ -143,13 +149,17 @@ for ii = 1:4
     scatter(ax3,x,F,[],myColor,'filled',myMarker);
 
     % don't plot points with A=1
-    keep_me = 1-abs(A)>0.0001;
+    %keep_me = 1-abs(A)>0.0001;
+    keep_me = 1-abs(A)>0.0001 & A > 0.001;
     if colorBy == 3 || colorBy == 4
         myColor = myColor(keep_me,:);
     end
 
     hold(ax2,'on');
     scatter(ax2,P(keep_me),A(keep_me),[],myColor2);
+
+    hold(ax_bulbul,'on');
+    scatter(ax_bulbul,P(keep_me),-1*log(A(keep_me)),[],myColor2);
 
     hold(ax4,'on');
     mySigmaStar = sigmastar-sigma.*log(A);

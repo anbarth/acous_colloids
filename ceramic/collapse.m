@@ -11,14 +11,16 @@ xc = 7.9;
 collapse_params;
 stressTable = ceramic_data_table_02_25;
 phi_list = [40,44,48,52,56,59];
-minPhi = 0.4;
+minPhi = 0.3;
 maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%cmap = turbo;
 cmap = viridis(256); 
 %cmap = plasma(256);
 fig_collapse = figure;
+%box on;
 ax_collapse = axes('Parent', fig_collapse,'XScale','log','YScale','log');
 ax_collapse.XLabel.String = "x";
 ax_collapse.YLabel.String = "F";
@@ -28,7 +30,7 @@ if showMeera
     scatter(meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
 %ax1.XLim = [10^(-5),10^1.5]; %TODO delete
-ax_collapse.XLim = [10^-5, 100];
+%ax_collapse.XLim = [10^-5, 100];
 %ax1.YLim = [10^(-1.5),100]; %TODO delete
 colormap(ax_collapse,cmap);
 if xc ~= 0
