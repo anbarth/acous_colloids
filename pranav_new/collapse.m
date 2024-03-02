@@ -1,26 +1,24 @@
-my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
+my_vol_frac_markers = ['>','s','o','d','h','p','<','^'];
 
-vol_frac_plotting_range = 1:6;
-volt_plotting_range = 1:8;
-colorBy = 3; % 1 for V, 2 for phi, 3 for P, 4 for stress
-showLines = false;
+vol_frac_plotting_range = 1:8;
+volt_plotting_range = 1;
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
+showLines = true;
 showMeera = false;
 xc=0;
-%xc = 7.9;
+%xc = 8;
 
 collapse_params;
-stressTable = ceramic_data_table_02_25;
-phi_list = [40,44,48,52,56,59];
-minPhi = 0.3;
-maxPhi = 0.6;
+stressTable = pranav_data_table;
+phi_list = [44,46,48,50,52,53,54,55];
+minPhi = 0.44;
+maxPhi = 0.55;
 volt_list = [0,5,10,20,40,60,80,100];
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%cmap = turbo;
 cmap = viridis(256); 
 %cmap = plasma(256);
 fig_collapse = figure;
-%box on;
 ax_collapse = axes('Parent', fig_collapse,'XScale','log','YScale','log');
 ax_collapse.XLabel.String = "x";
 ax_collapse.YLabel.String = "F";
@@ -30,7 +28,7 @@ if showMeera
     scatter(meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
 %ax1.XLim = [10^(-5),10^1.5]; %TODO delete
-%ax_collapse.XLim = [10^-5, 100];
+ax_collapse.XLim = [10^-5, 100];
 %ax1.YLim = [10^(-1.5),100]; %TODO delete
 colormap(ax_collapse,cmap);
 if xc ~= 0
@@ -76,7 +74,6 @@ for ii = vol_frac_plotting_range
         myData = stressTable( stressTable(:,1)==phi & stressTable(:,3)==voltage,:);
         sigma = myData(:,2);
         eta = myData(:,4);
-        delta_eta = myData(:,5);
 
         
         % calculate nondimensionalized power
@@ -96,7 +93,6 @@ for ii = vol_frac_plotting_range
 
         elseif colorBy == 3
             myColor = log(P);
-            %myColor(myColor==-Inf) = 0;
         elseif colorBy == 4
             myColor = log(sigma);
         end
@@ -112,16 +108,11 @@ for ii = vol_frac_plotting_range
             % sort in order of ascending x
             [xWC,sortIdx] = sort(xWC,'ascend');
             FWC = FWC(sortIdx);
-            %disp('y axis is not really F right now')
-            %plot(ax_collapse,xWC,log(log(100*FWC)),strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
             plot(ax_collapse,xWC,FWC,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
         else
-            %disp('y axis is not really F right now')
             scatter(ax_collapse,xWC,FWC,[],myColor,'filled',myMarker);
-            %scatter(ax_collapse,xWC,log(log(100*FWC)),[],myColor,'filled',myMarker);
             %scatter(ax1,xWC,FWC,[],myColor,'filled',myMarker,'MarkerFaceAlpha',0.5);
         end
-        %errorbar(ax_collapse,xWC,FWC,delta_eta*(phi0-phi)^2,'.','Color',myColor);
 
         %hold(meeraAx,'on');
         %scatter(meeraAx,xWC,FWC,[],myColor,'filled',myMarker);

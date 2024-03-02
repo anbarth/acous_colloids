@@ -5,7 +5,8 @@ ax1 = gca;
 ax1.XScale = 'log';
 ax1.YScale = 'log';
 
-phi_low = [.2,.25,.3,.35,.4];
+%phi_low = [.2,.25,.3,.35,.4];
+phi_low = [.2,.3,.35,.4];
 phi_high = [.44,.48,.5,.54];
 minPhi = .2;
 maxPhi = .55;
@@ -29,7 +30,7 @@ for ii=1:length(phi_high)
     sigma = CSS*myData(:,3);
     eta = CSV/1000*myData(:,4);
     gamma_dot = sigma./eta;
-    plot(sigma,eta, '-o','Color',myColor);
+    plot(sigma,eta, '-o','Color',myColor,'LineWidth',1);
     %plot(sigma,sigma.*gamma_dot,'-o','Color',myColor);
 end
 colormap(cmap);
@@ -39,3 +40,4 @@ caxis([minPhi maxPhi])
 
 xlabel('\sigma (Pa)');
 ylabel('\eta (Pa s)');
+box on;

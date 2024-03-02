@@ -2,13 +2,13 @@ my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
 collapse_params;
 
-stressTable = ceramic_data_table_02_25;
+stressTable = ceramic_data_table_02_24;
 phi_list = [40,44,48,52,56,59];
 minPhi = 0.4;
 maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 
-colorBy = 0; % 1 for V, 2 for phi, 3 for P, 4 for sigma
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for sigma
 phi_range = 1:6; % which volume fractions to include
 
 xc=0;
@@ -104,8 +104,6 @@ for ii = phi_range
         myX = x(jj);
         myF = F(jj);
         myX_target = myInterpolate(myF,x_0V,F_0V);
-        %myXcX_target = myInterpolate(myF,7.9-x_0V,F_0V);
-        %myX_target = 7.9-myXcX_target;
         A(jj) = myX_target/myX;
         if(isnan(A(jj)))
             A(jj)=1;
@@ -122,8 +120,6 @@ for ii = phi_range
         myColor = log(P);
     elseif colorBy == 4
         myColor = log(sigma);
-    elseif colorBy == 0
-        myColor = [50, 168, 82]*1/256;
     end
     
 

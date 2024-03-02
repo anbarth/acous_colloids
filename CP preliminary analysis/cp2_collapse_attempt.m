@@ -3,9 +3,9 @@ my_vol_frac_markers = ['>','s','o','d','h'];
 NAME = '';
 
 vol_frac_plotting_range = 1:4;
-volt_plotting_range = 1:8;
-colorBy = 3; % 1 for V, 2 for phi, 3 for P, 4 for stress
-showLines = false;
+volt_plotting_range = 1;
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
+showLines = true;
 showMeera = false;
 fudge = false;
 xc = 0;
@@ -15,8 +15,12 @@ xc = 0;
 
 cp2_collapse_parameters;
 
+maxPhi=0.55;
+minPhi=0.2;
+
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-cmap = viridis(256); 
+cmap = turbo;
+%cmap = viridis(256); 
 %cmap = plasma(256);
 fig1 = figure;
 ax1 = axes('Parent', fig1,'XScale','log','YScale','log');
@@ -123,7 +127,7 @@ for ii = vol_frac_plotting_range
             if fudge
                 myColor = cmap(round(1+255*(phi-0.40)/(0.56-0.40)),:);    
             else
-                myColor = cmap(round(1+255*(phi-0.44)/(0.55-0.44)),:);
+                myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
             end
         elseif colorBy == 3
             %myColor = log(P);
@@ -148,7 +152,8 @@ for ii = vol_frac_plotting_range
         myMarker = my_vol_frac_markers(ii);
         hold(ax1,'on');
         if showLines && colorBy < 3
-            plot(ax1,xWC,FWC,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
+            plot(ax1,xWC,FWC,'o-','Color',myColor,'LineWidth',1);
+            %plot(ax1,xWC,FWC,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
         else
             scatter(ax1,xWC,FWC,[],myColor,'filled',myMarker);
             %scatter(ax1,xWC,FWC,[],myColor,'filled',myMarker,'MarkerFaceAlpha',0.5);
@@ -188,7 +193,7 @@ elseif colorBy == 2
         caxis(ax1,[.40 .56]);
         c1.Ticks = phi_fudge_factors(6:end,2);
     else
-        caxis(ax1,[.44 .55]);
+        caxis(ax1,[minPhi maxPhi]);
         c1.Ticks = phi_list/100;
     end
 elseif colorBy == 4

@@ -1,4 +1,4 @@
-dataTable = ceramic_data_table_02_25;
+dataTable = pranav_data_table;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
@@ -18,10 +18,10 @@ ax_eta_rescaled.XLabel.String = '\sigma (Pa)';
 ax_eta_rescaled.YLabel.String = '\eta*(\phi_0-\phi)^2 (Pa s)';
 hold(ax_eta_rescaled,'on');
 
-phi_high = [.3,.40,0.44,.48,0.52,0.56,0.59];
-minPhi = .3;
-maxPhi = .6;
-phi0=0.6804;
+phi_high = [0.44, 0.46, 0.48, 0.5, 0.52, 0.53, 0.54, 0.55];
+minPhi = .44;
+maxPhi = .55;
+%phi0=0.6804;
 %cmap = flipud(viridis(256)); 
 cmap = turbo;
 
@@ -40,13 +40,13 @@ for ii=1:length(phi_high)
     
     
     plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',1);
-   % errorbar(ax_eta,sigma,eta,deltaEta,'.','Color',myColor,'LineWidth',1);
+    %errorbar(ax_eta,sigma,eta,deltaEta,'.','Color',myColor,'LineWidth',1);
     
     plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',1);
-    errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
+    %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
 
-    plot(ax_eta_rescaled,sigma,eta*(phi0-phi)^2, '-d','Color',myColor,'LineWidth',1);
-    errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);
+    %plot(ax_eta_rescaled,sigma,eta*(phi0-phi)^2, '-d','Color',myColor,'LineWidth',1);
+    %errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);
 end
 
 
@@ -59,4 +59,6 @@ colormap(ax_eta_rescaled,cmap);
 c_eta = colorbar(ax_eta_rescaled);
 c_eta.Ticks = [phi_high];
 caxis(ax_eta_rescaled,[minPhi maxPhi])
+
+close(fig_eta_rescaled)
 

@@ -11,9 +11,9 @@ if size(y,1)==1
 end
 
 % guarantee that the points are sorted in ascending order according to y
-xy = sortrows([x,y],2);
-x = xy(:,1);
-y = xy(:,2);
+%xy = sortrows([x,y],2);
+%x = xy(:,1);
+%y = xy(:,2);
 
 myX = NaN;
 for ii = 1:length(y)-1

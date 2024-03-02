@@ -2,25 +2,25 @@ my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
 collapse_params;
 
-stressTable = ceramic_data_table_02_25;
+stressTable = ceramic_data_table_02_24;
 phi_list = [40,44,48,52,56,59];
 minPhi = 0.4;
 maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 
-colorBy = 0; % 1 for V, 2 for phi, 3 for P, 4 for sigma
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for sigma
 phi_range = 1:6; % which volume fractions to include
 
 xc=0;
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-cmap = turbo;
 %cmap = viridis(256); 
+cmap = jet;
 fig_uncollapsed = figure;
 ax_uncollapsed = axes('Parent', fig_uncollapsed,'XScale','log','YScale','log');
 ax_uncollapsed.XLabel.String = "x";
 ax_uncollapsed.YLabel.String = "F";
-ax_uncollapsed.XLim = [10^-5, 100];
+%ax_uncollapsed.XLim = [10^-5, 100];
 colormap(ax_uncollapsed,cmap);
 if xc ~= 0
     xline(ax_uncollapsed,xc);
@@ -31,7 +31,7 @@ fig_collapsed = figure;
 ax_collapsed = axes('Parent', fig_collapsed,'XScale','log','YScale','log');
 ax_collapsed.XLabel.String = "x";
 ax_collapsed.YLabel.String = "F";
-ax_collapsed.XLim = [10^-5, 100];
+%ax_collapsed.XLim = [10^-5, 100];
 colormap(ax_collapsed,cmap);
 if xc ~= 0
     xline(ax_collapsed,xc);
@@ -53,7 +53,8 @@ ax_bulbul.XLabel.String = "P";
 ax_bulbul.YLabel.String = "-logA";
 colormap(ax_bulbul,cmap);
 hold(ax_bulbul,'on');
-
+ax_bulbul.XLim = [10^-1.5, 10^5.5];
+ax_bulbul.YLim = [10^-4.5, 10^1.5];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -104,8 +105,6 @@ for ii = phi_range
         myX = x(jj);
         myF = F(jj);
         myX_target = myInterpolate(myF,x_0V,F_0V);
-        %myXcX_target = myInterpolate(myF,7.9-x_0V,F_0V);
-        %myX_target = 7.9-myXcX_target;
         A(jj) = myX_target/myX;
         if(isnan(A(jj)))
             A(jj)=1;
@@ -122,8 +121,6 @@ for ii = phi_range
         myColor = log(P);
     elseif colorBy == 4
         myColor = log(sigma);
-    elseif colorBy == 0
-        myColor = [50, 168, 82]*1/256;
     end
     
 
@@ -143,7 +140,38 @@ for ii = phi_range
     scatter(ax_A,P(keep_me),A(keep_me),[],myColor);
     scatter(ax_bulbul,P(keep_me),-1*log(A(keep_me)),[],myColor);
 
+    % do the fitting and shit
+    % trim out nan values to prepare myself
+    keep_me = ~isnan(F);
+    x = x(keep_me);
+    F = F(keep_me);
+    P = P(keep_me);
+    A = A(keep_me);
+    
+    % we also need to trim out anything with P=0 so that we can work with logP
+    % i'm also not interested in all the points with A=1
+    P_old = P;
+    A_old = A;
+    keep_me_too = P~=0 & 1-abs(A)>0.001;
+    P = P(keep_me_too);
+    A = A(keep_me_too);
+    
+    
+    % maybe a stretched exponential, exp(-c*P)?
+    fitfxn = @(k) exp(-(k(1)*P).^(k(2)));
+    costfxn = @(k) sum(( (fitfxn(k)-A) ).^2); 
+    myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
+    P_fake = logspace(-4,6); 
+    A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
 
+    myPhiColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
+    plot(ax_A,P_fake,A_fake,'Color',myPhiColor);
+    plot(ax_bulbul,P_fake,-1*log(A_fake),'Color',myPhiColor);
+
+    disp(phi)
+    disp(myK(1))
+    disp(myK(2))
+    
     x_all(end+1:end+length(x)) = x;
     F_all(end+1:end+length(F)) = F;
     P_all(end+1:end+length(P)) = P;
@@ -166,52 +194,10 @@ end
 c2 = colorbar(ax_A);
 
 
-% lets find a fit for A!
-% trim out nan values to prepare myself
-keep_me = ~isnan(F_all);
-x_all = x_all(keep_me);
-F_all = F_all(keep_me);
-P_all = P_all(keep_me);
-A_all = A_all(keep_me);
 
-% we also need to trim out anything with P=0 so that we can work with logP
-% i'm also not interested in all the points with A=1
-P_all_old = P_all;
-A_all_old = A_all;
-keep_me_too = P_all~=0 & 1-abs(A_all)>0.001;
-P_all = P_all(keep_me_too);
-A_all = A_all(keep_me_too);
-
-% maybe A is some quadratic of log(P)?
-%logP_all = log10(P_all);
-%myFit = polyfit(logP_all,A_all,2);
-%P_fake = logspace(-4,4); 
-%logP_fake = log10(P_fake); % i'm aware this is silly but it helps my brain ok
-%A_fake = myFit(1)*logP_fake.^2 + myFit(2)*logP_fake + myFit(3);
-
-% maybe a hill function, 1/(1+aP^b)?
-% fitfxn = @(k) 1 ./ (1+k(1)*P_all.^k(2));
-% %costfxn = @(k) sum(( (fitfxn(k)-A_all)./A_all ).^2); % gives too much weight to points with small A
-% costfxn = @(k) sum(( (fitfxn(k)-A_all) ).^2); 
-% myK = fmincon(costfxn,[10^(-2),1],[-1,0;0,0],[0,0]);
-% P_fake = logspace(-4,6); 
-% A_fake = 1 ./ (1+myK(1)*P_fake.^myK(2));
-
-% maybe a stretched exponential, exp(-c*P)?
-fitfxn = @(k) exp(-(k(1)*P_all).^(k(2)));
-costfxn = @(k) sum(( (fitfxn(k)-A_all) ).^2); 
-myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
-P_fake = logspace(-4,6); 
-A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
-%A_fake = exp(-(myK(1)*P_fake).^(0.45));
-
- plot(ax_A,P_fake,A_fake,'k','LineWidth',1)
- plot(ax_bulbul,P_fake,-1*log(A_fake),'k','LineWidth',1);
-
-disp(myK(1))
-disp(myK(2))
 %close all
-%close(fig_collapsed)
-%close(fig_uncollapsed)
+close(fig_A)
+close(fig_collapsed)
+close(fig_uncollapsed)
 
 
