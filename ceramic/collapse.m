@@ -5,8 +5,8 @@ volt_plotting_range = 1:8;
 colorBy = 3; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 showMeera = false;
-%xc=0;
-xc = 7.9;
+xc=0;
+%xc = 7.9;
 
 collapse_params;
 stressTable = ceramic_data_table_02_25;
