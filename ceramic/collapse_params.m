@@ -7,7 +7,7 @@ C = [0.5,1.1,1.3,1.15,0.93,0.7];
 
 sigmastar = 4.45;
 
-meeraMultiplier_X = 1/2;
+meeraMultiplier_X = 1/2*15.4/13.95;
 % glycerol viscosity 20c: 1.412 Pa s
 % 90-10 GW viscosity 20c: 0.23 Pa s
 % expect this factor to be 0.23/1.412 = 0.163

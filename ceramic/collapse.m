@@ -9,7 +9,7 @@ xc=0;
 %xc = 7.9;
 
 collapse_params;
-stressTable = ceramic_data_table_02_25;
+stressTable = ceramic_data_table_03_02;
 phi_list = [40,44,48,52,56,59];
 minPhi = 0.3;
 maxPhi = 0.6;
@@ -19,11 +19,12 @@ volt_list = [0,5,10,20,40,60,80,100];
 %cmap = turbo;
 cmap = viridis(256); 
 %cmap = plasma(256);
+
 fig_collapse = figure;
-%box on;
 ax_collapse = axes('Parent', fig_collapse,'XScale','log','YScale','log');
 ax_collapse.XLabel.String = "x";
 ax_collapse.YLabel.String = "F";
+%ax_collapse = gca;
 
 if showMeera
     hold(ax_collapse,'on');
@@ -114,12 +115,13 @@ for ii = vol_frac_plotting_range
             FWC = FWC(sortIdx);
             %disp('y axis is not really F right now')
             %plot(ax_collapse,xWC,log(log(100*FWC)),strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
+            
             plot(ax_collapse,xWC,FWC,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
         else
-            %disp('y axis is not really F right now')
             scatter(ax_collapse,xWC,FWC,[],myColor,'filled',myMarker);
+            %disp('y axis is not really F right now')
             %scatter(ax_collapse,xWC,log(log(100*FWC)),[],myColor,'filled',myMarker);
-            %scatter(ax1,xWC,FWC,[],myColor,'filled',myMarker,'MarkerFaceAlpha',0.5);
+            %scatter(ax_collapse,xWC/meeraMultiplier_X,FWC/meeraMultiplier_Y,[],myColor,'filled','o','MarkerEdgeColor','w');
         end
         %errorbar(ax_collapse,xWC,FWC,delta_eta*(phi0-phi)^2,'.','Color',myColor);
 

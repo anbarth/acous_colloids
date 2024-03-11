@@ -2,7 +2,7 @@ my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
 collapse_params;
 
-stressTable = ceramic_data_table_02_25;
+stressTable = ceramic_data_table_03_02;
 phi_list = [40,44,48,52,56,59];
 minPhi = 0.4;
 maxPhi = 0.6;

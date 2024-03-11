@@ -1,7 +1,13 @@
-function dataTable = getStressSweepDataTableRows(mySweep,myPhi,excludeSigma)
+function dataTable = getStressSweepDataTableRows(mySweep,myPhi,excludeSigma,fillInHighVolts)
 
-%mySweep = phi40_02_20.stress_sweep_low_init;
-%myPhi = 0.40;
+if nargin < 4
+   fillInHighVolts = 0; 
+end
+
+volts = 0;
+if fillInHighVolts
+    volts = [0, 5, 10, 20, 40, 60, 80, 100];
+end
 
 dataTable = zeros(0,5);
 
@@ -20,7 +26,9 @@ for ii = 1:size(stress_list)
    indices = sigma == mySigma;
    myEta = mean(eta(indices));
    myDeltaEta = std(eta(indices));
-   dataTable(end+1,1:5) = [myPhi,mySigma,0,myEta,myDeltaEta];
+   for V=volts
+        dataTable(end+1,1:5) = [myPhi,mySigma,V,myEta,myDeltaEta];
+   end
 end
 
 end

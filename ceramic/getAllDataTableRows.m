@@ -7,7 +7,7 @@ acous_rows = getAcousDataTableRows(myVolumeFractionStruct, showPlots);
 % 2. note the stresses included in (1)
 acous_sigma = unique(acous_rows(:,2));
 % 3. fill in any gaps with stresses from the low stress sweep
-low_rows = getStressSweepDataTableRows(mySweep,myPhi,acous_sigma);
+low_rows = getStressSweepDataTableRows(mySweep,myPhi,acous_sigma,1);
 
 dataTable = [low_rows; acous_rows];
 
