@@ -8,10 +8,10 @@ minPhi = 0.4;
 maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 
-colorBy = 0; % 1 for V, 2 for phi, 3 for P, 4 for sigma
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for sigma, 0 for nothing
 phi_range = 1:6; % which volume fractions to include
 
-xc=0;
+xc=10;
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cmap = turbo;
@@ -37,6 +37,15 @@ if xc ~= 0
     xline(ax_collapsed,xc);
 end
 hold(ax_collapsed,'on');
+
+if xc~= 0
+    fig_xc_collapsed = figure;
+    ax_xc_collapsed = axes('Parent', fig_xc_collapsed,'XScale','log','YScale','log');
+    ax_xc_collapsed.XLabel.String = "x_c-x";
+    ax_xc_collapsed.YLabel.String = "F";
+    colormap(ax_xc_collapsed,cmap);
+    hold(ax_xc_collapsed,'on');
+end
 
 cmap2 = plasma(256);
 fig_A = figure;
@@ -82,6 +91,9 @@ for ii = phi_range
     
     plot(ax_uncollapsed,x_0V,F_0V,strcat(myMarker,'-'),'Color',cmap(1,:),'MarkerFaceColor',cmap(1,:));
     plot(ax_collapsed,x_0V,F_0V,strcat(myMarker,'-'),'Color',cmap(1,:),'MarkerFaceColor',cmap(1,:));
+    if xc~= 0
+        plot(ax_xc_collapsed,xc-x_0V,F_0V,strcat(myMarker,'-'),'Color',cmap(1,:),'MarkerFaceColor',cmap(1,:));
+    end
 
 
     % now look at everything else!
@@ -131,6 +143,10 @@ for ii = phi_range
     scatter(ax_collapsed,x_new,F,[],myColor,'filled',myMarker);
     scatter(ax_collapsed,x,F,[],myColor,myMarker);
     scatter(ax_uncollapsed,x,F,[],myColor,'filled',myMarker);
+    if xc~= 0
+        scatter(ax_xc_collapsed,xc-x_new,F,[],myColor,'filled',myMarker);
+        scatter(ax_xc_collapsed,xc-x,F,[],myColor,myMarker);
+    end
 
     % don't plot points with A=1 (thats the low stress tail where it doesnt
     % rly matter)
@@ -212,6 +228,6 @@ disp(myK(1))
 disp(myK(2))
 %close all
 %close(fig_collapsed)
-%close(fig_uncollapsed)
+close(fig_uncollapsed)
 
 
