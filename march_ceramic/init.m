@@ -1,0 +1,10 @@
+addpath(genpath('..\plot_helpers\'))
+addpath(genpath('..\rheo_data_helpers\'))
+addpath(genpath('..\march_ceramic\'))
+addpath(genpath('..\march_ceramic\data\'))
+
+%load("03_02_datatable.mat")
+%load("ceramic_data_02_24.mat")
+load("phi44_03_19.mat")
+load("phi52_03_18.mat")
+load('..\ceramic\data\03_02_datatable')
