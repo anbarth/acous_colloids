@@ -1,8 +1,8 @@
-my_data = ceramic_data_table_02_25;
+my_data = march_data_table_03_21;
 
 % edit this list to change what's included in the fit
-phis = [30,40,44,48,52,56,59];
-phi0 = 0.68;
+phis = [44,52,59];
+phi0 = 0.655;
 maxSigma = 0;
 
 

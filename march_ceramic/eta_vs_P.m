@@ -1,7 +1,7 @@
-dataTable = ceramic_data_table_02_25;
-phi_list = [0.40,0.44,.48,0.52,0.56,0.59];
+dataTable = march_data_table_03_21;
+phi_list = [0.44,0.52,0.59];
 
-phi_range = 6;
+phi_range = 1:3;
 
 for ii=phi_range
     phi = phi_list(ii);

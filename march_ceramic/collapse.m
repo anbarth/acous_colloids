@@ -1,17 +1,17 @@
 my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
-vol_frac_plotting_range = 6:-1:1;
+vol_frac_plotting_range = 3;
 volt_plotting_range = 1:8;
-colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
-showLines = false;
+colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
+showLines = true;
 showMeera = false;
 %xc=0;
-%xc = 7.9;
+%xc = 9;
 xc = 10;
 
 collapse_params;
-stressTable = ceramic_data_table_03_02;
-phi_list = [40,44,48,52,56,59];
+stressTable = march_data_table_03_21;
+phi_list = [44,52,59];
 minPhi = 0.3;
 maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
@@ -29,7 +29,7 @@ ax_collapse.YLabel.String = "F";
 if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
-ax_collapse.XLim = [10^-2, 20];
+ax_collapse.XLim = [10^-2, 30];
 %ax1.YLim = [10^(-1.5),100]; %TODO delete
 colormap(ax_collapse,cmap);
 if xc ~= 0

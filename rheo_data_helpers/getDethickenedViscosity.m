@@ -17,7 +17,7 @@ acousticWindowIndexes = findchangepts(myEta,MaxNumChanges=2);
 
 if length(acousticWindowIndexes) == 2
     acousStartIndex = acousticWindowIndexes(1);
-    acousEndIndex = acousticWindowIndexes(2);
+    acousEndIndex = acousticWindowIndexes(2)-1;
     dethickenedEta = mean(myEta(acousStartIndex:acousEndIndex));
     delta_eta = std(myEta(acousStartIndex:acousEndIndex));
 else
