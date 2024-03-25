@@ -15,12 +15,23 @@ C = [0.8 1.1 0.6];
 
 
 
+%k=3;
 k=1;
 f = @(sigma) exp(-(sigmastar ./ sigma).^k);
 
 
+% vanilla
+c =1.8272e-04;
 
+d=    0.3954;
 
-%A = @(P) exp(-(c*P).^d);
+% Q factor
+%c=1.3e-4;
+%d=0.59;
+
+% k=3
+%c = 0.0012;
+%d = 0.9688;
+A = @(P) exp(-(c*P).^d);
 %A = @(P) exp(-c*P).^d;
-A = @(P) 1;
+%A = @(P) 1;

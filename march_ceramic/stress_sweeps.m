@@ -46,9 +46,9 @@ for ii=1:length(phi_high)
     [sigmaOld,sortIdx] = sort(sigmaOld,'ascend');
     etaOld = etaOld(sortIdx);
     
-    
-    plot(ax_eta,sigma*19,eta*25, '-d','Color',myColor,'LineWidth',1);
-    plot(ax_eta,sigmaOld,etaOld, '--o','Color',myColor,'LineWidth',1);
+    plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',1);
+    %plot(ax_eta,sigma*19,eta*25, '-d','Color',myColor,'LineWidth',1);
+    %plot(ax_eta,sigmaOld,etaOld, '--o','Color',myColor,'LineWidth',1);
     
     %plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',1);
     %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);

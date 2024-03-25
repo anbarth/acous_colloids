@@ -8,8 +8,8 @@ minPhi = 0.4;
 maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 
-colorBy = 4; % 1 for V, 2 for phi, 3 for P, 4 for sigma, 0 for nothing
-phi_range = 1; % which volume fractions to include
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for sigma, 0 for nothing
+phi_range = 1:3; % which volume fractions to include
 
 xc=10;
 
@@ -70,6 +70,7 @@ x_all = zeros(0,1);
 F_all = zeros(0,1);
 P_all = zeros(0,1);
 A_all = zeros(0,1);
+sigma_all = zeros(0,1);
 
 
 for ii = phi_range
@@ -164,6 +165,7 @@ for ii = phi_range
     F_all(end+1:end+length(F)) = F;
     P_all(end+1:end+length(P)) = P;
     A_all(end+1:end+length(A)) = A;
+    sigma_all(end+1:end+length(A)) = sigma;
 end
 
 
@@ -189,6 +191,7 @@ x_all = x_all(keep_me);
 F_all = F_all(keep_me);
 P_all = P_all(keep_me);
 A_all = A_all(keep_me);
+sigma_all = sigma_all(keep_me);
 
 % we also need to trim out anything with P=0 so that we can work with logP
 % i'm also not interested in all the points with A=1
@@ -197,6 +200,7 @@ A_all_old = A_all;
 keep_me_too = P_all~=0 & 1-abs(A_all)>0.001;
 P_all = P_all(keep_me_too);
 A_all = A_all(keep_me_too);
+sigma_all = sigma_all(keep_me_too);
 
 % maybe A is some quadratic of log(P)?
 %logP_all = log10(P_all);
@@ -217,17 +221,26 @@ A_all = A_all(keep_me_too);
 fitfxn = @(k) exp(-(k(1)*P_all).^(k(2)));
 costfxn = @(k) sum(( (fitfxn(k)-A_all) ).^2); 
 myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
+
+
 P_fake = logspace(-4,6); 
 A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
-%A_fake = exp(-(myK(1)*P_fake).^(0.45));
-
  plot(ax_A,P_fake,A_fake,'k','LineWidth',1)
  plot(ax_bulbul,P_fake,-1*log(A_fake),'k','LineWidth',1);
+
+
+
+
+
+
+
 
 disp(myK(1))
 disp(myK(2))
 %close all
-%close(fig_collapsed)
+close(fig_collapsed)
 close(fig_uncollapsed)
-
+close(fig_xc_collapsed)
+%close(fig_A)
+%close(fig_bulbul)
 
