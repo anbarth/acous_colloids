@@ -2,14 +2,14 @@ my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
 collapse_params;
 
-stressTable = march_data_table_03_21;
-phi_list = [44,52,59];
+stressTable = march_data_table_04_02;
+phi_list = [44,48,52,56,59];
 minPhi = 0.4;
 maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for sigma, 0 for nothing
-phi_range = 1:3; % which volume fractions to include
+phi_range = 1:5; % which volume fractions to include
 
 xc=10;
 

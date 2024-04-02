@@ -1,4 +1,4 @@
-dataTable = march_data_table_03_20;
+dataTable = march_data_table_03_21;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
@@ -8,7 +8,7 @@ hold(ax_eta,'on');
 cmap = plasma(256);
 colormap(ax_eta,cmap);
 
-phi = 0.52;
+phi = 0.44;
 volt_list = [0,5,10,20,40,60,80,100];
 
 for ii=1:length(volt_list)

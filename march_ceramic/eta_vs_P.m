@@ -1,7 +1,7 @@
-dataTable = march_data_table_03_21;
-phi_list = [0.44,0.52,0.59];
+dataTable = march_data_table_04_02;
+phi_list = [0.44,0.48,0.52,0.56,0.59];
 
-phi_range = 1:3;
+phi_range = 1:5;
 
 for ii=phi_range
     phi = phi_list(ii);

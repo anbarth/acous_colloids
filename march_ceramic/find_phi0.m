@@ -1,9 +1,15 @@
-dataTable = march_data_table_03_21;
+dataTable = march_data_table_04_02;
 
-phi = unique(dataTable(:,1));
-eta = zeros(size(phi));
-delta_eta = zeros(size(phi));
+%phi = unique(dataTable(:,1));
+phi = [0.44, 0.48, 0.56, 0.59];
+eta = [];
+delta_eta = [];
 for ii=1:length(phi)
+    
+    if phi(ii)==0.52
+        continue
+    end
+
     myData = dataTable(dataTable(:,1)==phi(ii) & dataTable(:,3)==0, :);
     mySigma = myData(:,2);
     myEta = myData(:,4);
@@ -12,10 +18,10 @@ for ii=1:length(phi)
     % grab eta for lowest sigma
     %[~,lowStressIndex] = min(sigma); 
     
-    % actually just grab the value at 0.1pa to avoid low stress weirdness?
-    lowStressIndex = find(0.1==mySigma);
-    eta(ii) = myEta(lowStressIndex);
-    delta_eta(ii) = myDeltaEta(lowStressIndex);
+    % actually just grab the value at 0.03pa to avoid low stress weirdness?
+    lowStressIndex = find(0.03==mySigma);
+    eta(end+1) = myEta(lowStressIndex);
+    delta_eta(end+1) = myDeltaEta(lowStressIndex);
 end
 
 figure; hold on;

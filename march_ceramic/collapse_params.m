@@ -1,7 +1,7 @@
 %phi0=.5923;
-phi0 = 0.6547;
+phi0 = 0.678;
 
-sigmastar = 0.32;
+sigmastar = 0.30;
 
 meeraMultiplier_X = 1/2*15.4/13.95;
 % glycerol viscosity 20c: 1.412 Pa s
@@ -10,28 +10,28 @@ meeraMultiplier_X = 1/2*15.4/13.95;
 meeraMultiplier_Y = 1/0.2*0.09; %=0.45. hm, not what i expected
 %meeraMultiplier = 1/0.2*0.04;
 
-C = [0.8 1.1 0.6];
+C = [0.7 1.3 1.15 0.95 0.8];
 
 
 
 
-%k=3;
-k=1;
+k=3;
+%k=1;
 f = @(sigma) exp(-(sigmastar ./ sigma).^k);
 
 
 % vanilla
-c =1.8272e-04;
-
-d=    0.3954;
+%c=   1.6785e-04;
+%d=    0.3999;
 
 % Q factor
-%c=1.3e-4;
-%d=0.59;
+%c=   8.0606e-05;
+%d=    0.5936;
 
 % k=3
-%c = 0.0012;
-%d = 0.9688;
+c=0.0014;
+d=0.8831;
+
 A = @(P) exp(-(c*P).^d);
-%A = @(P) exp(-c*P).^d;
+
 %A = @(P) 1;

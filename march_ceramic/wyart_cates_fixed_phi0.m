@@ -1,8 +1,8 @@
-my_data = march_data_table_03_21;
+my_data = march_data_table_04_02;
 
 % edit this list to change what's included in the fit
-phis = [44,52,59];
-phi0 = 0.655;
+phis = [44,48,52,56,59];
+phi0 = 0.678;
 maxSigma = 0;
 
 
