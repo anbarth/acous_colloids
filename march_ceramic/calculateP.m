@@ -5,7 +5,7 @@ gamma_dot_0V = sigma/eta_0V;
 
 %P = V^2/sigma/gamma_dot_0V;
 P = V^2/sigma/gamma_dot_0V*Q_factor(phi,sigma);
-
+return
 %P = V^2/sigma/gamma_dot_0V*exp(-1/(0.68-phi));
 %P = V^2/sigma/gamma_dot_0V*exp(-(1/(0.68-phi))^0.75);
 %P = V^2;

@@ -1,4 +1,5 @@
 % three sets of "equivalent" states?
+%phi0 = 0.678;
 phi0=0.65;
 
 figure; hold on;

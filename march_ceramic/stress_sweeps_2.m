@@ -43,7 +43,7 @@ for ii=1:length(phi_high)
 end
 
 phi = 0.59;
-myData = dataTable(dataTable(:,1)==phi & dataTable(:,3)==60, :);
+myData = dataTable(dataTable(:,1)==phi & dataTable(:,3)==40, :);
 myOldData = oldDataTable(oldDataTable(:,1)==phi & oldDataTable(:,3)==0, :);
 myColor = 'r';
 sigma = myData(:,2);
@@ -66,10 +66,10 @@ plot(ax_eta_rescaled,sigma,eta*(phi0-phi)^2, '-d','Color',myColor,'LineWidth',1)
 %errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);
 
 
-colormap(ax_eta,cmap);
-c_eta = colorbar(ax_eta);
-c_eta.Ticks = [phi_high];
-caxis(ax_eta,[minPhi maxPhi]);
+% colormap(ax_eta,cmap);
+% c_eta = colorbar(ax_eta);
+% c_eta.Ticks = [phi_high];
+% caxis(ax_eta,[minPhi maxPhi]);
 
 % colormap(ax_eta_rescaled,cmap);
 % c_eta = colorbar(ax_eta_rescaled);

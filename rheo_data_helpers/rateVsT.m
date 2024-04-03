@@ -26,7 +26,7 @@ rate = getRate(myStruct,rheoUnits);
 
 plot(t,rate,'LineWidth',1.5);
 
-ylabel(strcat( 'Rate, \eta (',rheometerStr,'1/s',')' ));
+ylabel(strcat( 'Rate (',rheometerStr,'1/s',')' ));
 xlabel('Time, {\it t} (s)');
 title(myStruct.name);
 ax1 = gca;

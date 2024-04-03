@@ -1,16 +1,16 @@
 my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
 vol_frac_plotting_range = 1:5;
-volt_plotting_range = 1:8;
-colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
+volt_plotting_range = 1;
+colorBy = 4; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = true;
 showMeera = false;
-%xc=0;
-%xc = 9;
-xc = 10;
+
+%xc=10;
+xc = 0;
 
 collapse_params;
-stressTable = march_data_table_04_02;
+stressTable = march_data_table_04_03;
 phi_list = [44,48,52,56,59];
 minPhi = 0.3;
 maxPhi = 0.6;
@@ -173,6 +173,7 @@ if xc ~= 0
 
 end
 
-close(fig_cardy)
+
+%close(fig_cardy)
 %close(fig_collapse)
 

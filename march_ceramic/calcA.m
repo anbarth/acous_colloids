@@ -2,7 +2,7 @@ my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
 collapse_params;
 
-stressTable = march_data_table_04_02;
+stressTable = march_data_table_04_03;
 phi_list = [44,48,52,56,59];
 minPhi = 0.4;
 maxPhi = 0.6;
@@ -242,5 +242,5 @@ close(fig_collapsed)
 close(fig_uncollapsed)
 close(fig_xc_collapsed)
 %close(fig_A)
-%close(fig_bulbul)
+close(fig_bulbul)
 

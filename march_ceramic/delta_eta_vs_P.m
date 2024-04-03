@@ -1,10 +1,10 @@
-dataTable = ceramic_data_table_02_25;
-phi_list = [0.40,0.44,.48,0.52,0.56,0.59];
+dataTable = march_data_table_04_02;
+phi_list = [0.44,.48,0.52,0.56,0.59];
 maxPhi = 0.6;
 minPhi = 0.4;
-phi0 = 0.68;
+phi0 = 0.678;
 
-phi_range = 4;
+phi_range = 1;
 my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 

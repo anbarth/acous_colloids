@@ -1,5 +1,5 @@
 oldDataTable = ceramic_data_table_03_02;
-dataTable = march_data_table_04_02;
+dataTable = march_data_table_04_03;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
@@ -48,7 +48,7 @@ for ii=1:length(phi_high)
     
     plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',1);
     %plot(ax_eta,sigma*19,eta*25, '-d','Color',myColor,'LineWidth',1);
-    plot(ax_eta,sigmaOld/19,etaOld/25, '--o','Color',myColor,'LineWidth',1);
+    %plot(ax_eta,sigmaOld/19,etaOld/25, '--o','Color',myColor,'LineWidth',1);
     
     %plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',1);
     %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
@@ -57,6 +57,7 @@ for ii=1:length(phi_high)
     %errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);
 end
 
+close(fig_eta_rescaled)
 
 colormap(ax_eta,cmap);
 c_eta = colorbar(ax_eta);
