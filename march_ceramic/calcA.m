@@ -2,7 +2,7 @@ my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
 collapse_params;
 
-stressTable = march_data_table_04_03;
+stressTable = march_data_table_04_04;
 phi_list = [44,48,52,56,59];
 minPhi = 0.4;
 maxPhi = 0.6;
@@ -218,12 +218,14 @@ sigma_all = sigma_all(keep_me_too);
 % A_fake = 1 ./ (1+myK(1)*P_fake.^myK(2));
 
 % maybe a stretched exponential, exp(-c*P)?
+disp("forcing d=0.5")
 fitfxn = @(k) exp(-(k(1)*P_all).^(k(2)));
 costfxn = @(k) sum(( (fitfxn(k)-A_all) ).^2); 
-myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
+%myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
+myK = fmincon(costfxn,[0.000005,0.5],[0,0;0,0],[0,0],[0,1;0,0],[0.5,0]);
 
 
-P_fake = logspace(-4,6); 
+P_fake = logspace(-5,2); 
 A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
  plot(ax_A,P_fake,A_fake,'k','LineWidth',1)
  plot(ax_bulbul,P_fake,-1*log(A_fake),'k','LineWidth',1);
@@ -242,5 +244,5 @@ close(fig_collapsed)
 close(fig_uncollapsed)
 close(fig_xc_collapsed)
 %close(fig_A)
-close(fig_bulbul)
+%close(fig_bulbul)
 

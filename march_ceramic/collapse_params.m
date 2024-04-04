@@ -1,7 +1,7 @@
 %phi0=.5923;
 phi0 = 0.678;
 
-sigmastar = 0.30;
+sigmastar = 0.275;
 
 meeraMultiplier_X = 1/2*15.4/13.95;
 % glycerol viscosity 20c: 1.412 Pa s
@@ -29,9 +29,10 @@ f = @(sigma) exp(-(sigmastar ./ sigma).^k);
 %c=   1.6785e-04;
 %d=    0.3999;
 
-% Q factor
-c=   8.0606e-05;
-d=    0.5936;
+
+% k=0.5 + redefined P based on Q factor
+c=0.1267;
+d=0.5;
 
 % k=3
 %c=0.0014;

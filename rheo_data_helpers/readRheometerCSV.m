@@ -1,8 +1,34 @@
 clear a;
-myCells = readcell('56%_03_28.csv','Delimiter','\t');
+myCells = readcell('equivalent_states_03_26_with_strain.csv','Delimiter','\t');
 
 % optionally input struct field names in order ahead of time
-%structNames = {};
+structNames = {'phi44_stress_sweep'
+'phi44_sig02_cess'
+'phi44_sig02_rev'
+'phi44_sig2_cess'
+'phi44_sig2_rev'
+'phi44_sig20_cess'
+'phi44_sig20_rev'
+'phi59_stress_sweep_init'
+'phi59_stress_sweep'
+'phi59_sig05_0V_cess'
+'phi59_sig05_0V_rev'
+'phi59_sig1_0V_cess'
+'phi59_sig1_0V_rev'
+'phi59_sig1p2_0V_cess'
+'phi59_sig1p2_0V_rev'
+'phi59_sig2_40V_cess'
+'phi59_sig2_40V_rev'
+'phi59_sig4p6_40V_cess'
+'phi59_sig4p6_40V_rev'
+'phi59_sig4p6_0V_cess'
+'phi59_sig4p6_0V_rev'
+'phi59_sig5p6_40V_badreversal'
+'phi59_sig5p6_40V_cess'
+'phi59_sig5p6_0V_cess'
+'phi59_sig5p6_40V_rev'
+'phi59_stress_sweep_2hr'
+'phi59_sig5p6_0V_rev'};
 
 % find all the tests
 testNameRows = find(strcmp(myCells,'Test:'));
