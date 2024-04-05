@@ -1,6 +1,6 @@
 my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
-vol_frac_plotting_range = 1:5;
+vol_frac_plotting_range = 5;
 volt_plotting_range = 1;
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = true;
@@ -16,6 +16,10 @@ minPhi = 0.3;
 maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 
+
+
+
+
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %cmap = turbo;
 cmap = viridis(256); 
@@ -30,7 +34,6 @@ if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
 ax_collapse.XLim = [10^-2, 30];
-%ax1.YLim = [10^(-1.5),100]; %TODO delete
 colormap(ax_collapse,cmap);
 if xc ~= 0
     xline(ax_collapse,xc);
@@ -44,19 +47,6 @@ if xc ~= 0
     ax_xc_x.XLabel.String = "x_c-x";
     ax_xc_x.YLabel.String = "F";
     colormap(ax_xc_x,cmap);
-    
-
-    fig_cardy = figure;
-    ax_cardy = axes('Parent', fig_cardy,'XScale','log','YScale','log');
-    hold(ax_cardy,'on');
-    ax_cardy.XLabel.String = "1/x-1/x_c";
-    ax_cardy.YLabel.String = "H";
-    ax_cardy.Title.String = strcat("x_c = ",num2str(xc));
-    ax_xc_x.Title.String = strcat("x_c = ",num2str(xc));
-    colormap(ax_cardy,cmap);
-    if showMeera
-        scatter(ax_cardy,meeraHX,meeraHY*0.2,[],[0.7 0.7 0.7]);
-    end
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,16 +86,33 @@ for ii = vol_frac_plotting_range
 
         xWC = C(ii)*A(P).*f(sigma) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
-        H = eta.*(C(ii)*A(P).*f(sigma)).^2;
+
+        % try fitting F vs x to F = a (xc-x)^b
+        fitfxn = @(s) s(1)*(xc-xWC).^s(2);
+        costfxn = @(s) sum(( (fitfxn(s)-FWC)./FWC ).^2);
+        
+        %opts = optimoptions('fmincon','Display','off');
+        %best_params = fmincon(costfxn, [0.1,-1.5,xc],[],[],...
+        %    [0,0,1;0,0,0;0,0,0],[0,0,xc],[],[],[]);%,opts);
+        best_params = fmincon(costfxn, [0.1,-1.5],[],[],...
+            [],[],[],[],[]);%,opts);
+        %my_const = 0.15;
+        %my_xc = 10;
+        %my_exp = -3/2;
+        my_const = best_params(1);
+        my_exp = best_params(2);
+        disp(best_params)
+        my_xc = xc;
+
+        x_fake = linspace(min(xWC),max(xWC));
+        F_fake =  my_const*(my_xc-x_fake).^my_exp;
 
         myMarker = my_vol_frac_markers(ii);
         if showLines && colorBy < 3
             % sort in order of ascending x
             [xWC,sortIdx] = sort(xWC,'ascend');
             FWC = FWC(sortIdx);
-            %disp('y axis is not really F right now')
-            %plot(ax_collapse,xWC,log(log(100*FWC)),strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
-            
+   
             plot(ax_collapse,xWC,FWC,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
 
             if xc ~= 0
@@ -114,23 +121,20 @@ for ii = vol_frac_plotting_range
 
         else
             scatter(ax_collapse,xWC,FWC,[],myColor,'filled',myMarker);
-            %disp('y axis is not really F right now')
-            %scatter(ax_collapse,xWC,log(log(100*FWC)),[],myColor,'filled',myMarker);
-            %scatter(ax_collapse,xWC/meeraMultiplier_X,FWC/meeraMultiplier_Y,[],myColor,'filled','o','MarkerEdgeColor','w');
-
+         
             if xc ~= 0
                 scatter(ax_xc_x,xc-xWC,FWC,[],myColor,'filled',myMarker);
             end
 
         end
-        %errorbar(ax_collapse,xWC,FWC,delta_eta*(phi0-phi)^2,'.','Color',myColor);
 
-        %hold(meeraAx,'on');
-        %scatter(meeraAx,xWC,FWC,[],myColor,'filled',myMarker);
         
-        if xc ~= 0
-            
-            scatter(ax_cardy, abs(1/xc-1./xWC),H,[],myColor,'filled',myMarker);
+        if colorBy < 3
+            plot(ax_collapse,x_fake,F_fake,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+
+            if xc ~= 0
+                plot(ax_xc_x,xc-x_fake,F_fake,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+            end
         end
 
         
@@ -158,7 +162,6 @@ end
 
 if xc ~= 0
     c2 = colorbar(ax_xc_x);
-    colorbar(ax_cardy);
 
     if colorBy == 1
         caxis(ax_xc_x,[0 100]);
@@ -173,7 +176,4 @@ if xc ~= 0
 
 end
 
-
-%close(fig_cardy)
-%close(fig_collapse)
 
