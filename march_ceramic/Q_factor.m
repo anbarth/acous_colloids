@@ -1,6 +1,6 @@
 function Q = Q_factor(phi,sigma)
 
-Q_table = Q_tab_k05(phi);
+Q_table = Q_tab_powerlaw(phi);
 if ~Q_table
     Q=1;
     return
