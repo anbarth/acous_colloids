@@ -9,7 +9,7 @@ maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for sigma, 0 for nothing
-phi_range = [2 5]; % which volume fractions to include
+phi_range = 1:5; % which volume fractions to include
 
 xc=10;
 
@@ -126,8 +126,8 @@ for ii = phi_range
         % those are the values in the low-stress tail, where A can 
         % kinda be anything and the collapse still looks fine
         % so im not worried
-        myX_target = xc-(myF/my_const)^(1/my_exp);
-        %myX_target = myInterpolate(myF,x_0V,F_0V);
+        %myX_target = xc-(myF/my_const)^(1/my_exp);
+        myX_target = myInterpolate(myF,x_0V,F_0V);
         %myXcX_target = myInterpolate(myF,7.9-x_0V,F_0V);
         %myX_target = 7.9-myXcX_target;
         A(jj) = myX_target/myX;
@@ -232,8 +232,8 @@ sigma_all = sigma_all(keep_me_too);
 %disp("forcing d=0.5")
 fitfxn = @(k) exp(-(k(1)*P_all).^(k(2)));
 costfxn = @(k) sum(( (fitfxn(k)-A_all) ).^2); 
-myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
-%myK = fmincon(costfxn,[0.000005,0.5],[0,0;0,0],[0,0],[0,1;0,0],[0.5,0]);
+%myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
+myK = fmincon(costfxn,[0.000005,0.5],[0,0;0,0],[0,0],[0,1;0,0],[0.5,0]);
 
 
 P_fake = logspace(log10(min(P_all)),log10(max(P_all))); 

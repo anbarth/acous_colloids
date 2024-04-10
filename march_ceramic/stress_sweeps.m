@@ -57,7 +57,7 @@ for ii=1:length(phi_high)
     %errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);
 end
 
-close(fig_eta_rescaled)
+%close(fig_eta_rescaled)
 
 colormap(ax_eta,cmap);
 c_eta = colorbar(ax_eta);
