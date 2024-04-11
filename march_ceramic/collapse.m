@@ -1,8 +1,8 @@
 my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 
 vol_frac_plotting_range = 1:5;
-volt_plotting_range = 1:8;
-colorBy = 3; % 1 for V, 2 for phi, 3 for P, 4 for stress
+volt_plotting_range = 1;
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = true;
 showMeera = false;
 
