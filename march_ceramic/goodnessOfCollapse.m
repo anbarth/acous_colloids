@@ -1,7 +1,10 @@
-function goodness = goodnessOfCollapse(x,F,print)
+function goodness = goodnessOfCollapse(x,F,print,xc)
 
 if nargin < 3
     print = 0;
+end
+if nargin < 4
+    xc = 10;
 end
 
 % sort from lowest to highest x
@@ -12,7 +15,7 @@ F = sorting_matrix(:,2);
 
 
 % try fitting F vs x to F = a (xc-x)^b
-xc=10;
+%xc=10;
 fitfxn = @(s) s(1)*(xc-x).^s(2);
 costfxn = @(s) sum(( (fitfxn(s)-F)./F ).^2);
 
