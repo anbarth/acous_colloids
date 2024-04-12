@@ -1,4 +1,4 @@
-dataTable = ceramic_data_table_03_02;
+dataTable = march_data_table_04_04;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'YScale','log');
@@ -8,7 +8,7 @@ hold(ax_eta,'on');
 cmap = winter(256);
 colormap(ax_eta,cmap);
 
-phi = 0.4;
+phi = 0.44;
 
 myData = dataTable(dataTable(:,1)==phi, :);
 sigma_list = unique(myData(:,2));
