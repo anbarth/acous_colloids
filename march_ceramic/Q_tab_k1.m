@@ -1,8 +1,8 @@
-function Q_table = Q_tab(phi)
+function Q_table = Q_tab_k1()
 
 
-if phi == 0.44
-    Q_table = [0.1, 0.3;
+
+    rows44 = [0.1, 0.3;
         0.2, 1.5;
         0.3, 5;
         0.5, 10;
@@ -11,9 +11,10 @@ if phi == 0.44
         5, 30];
         %10, 100;
         %20, 600];
-    Q_table(:,2) = Q_table(:,2)*1.2;
-elseif phi == 0.48
-    Q_table = [0.05, 0.5;
+    rows44(:,2) = rows44(:,2)*1.2;
+    rows44 = [0.44*ones(size(rows44,1),1),rows44];
+
+    rows48 = [0.05, 0.5;
         0.1, 10;
         0.2, 10;
         0.3, 5;
@@ -23,9 +24,10 @@ elseif phi == 0.48
         5, 30;
         10, 100];
         %20, 600];
-    Q_table(:,2) = Q_table(:,2)*0.5;
-elseif phi == 0.52
-    Q_table = [0.1, 0.6;
+    rows48(:,2) = rows48(:,2)*0.5;
+    rows48 = [0.48*ones(size(rows48,1),1),rows48];
+
+    rows52 = [0.1, 0.6;
         0.2, 1.5;
         0.3, 0.75;
         0.5, 1.5;
@@ -35,9 +37,10 @@ elseif phi == 0.52
         10, 15;
         20, 30];
         %50, 150];
-    Q_table(:,2) = Q_table(:,2)*2;
-elseif phi == 0.56
-    Q_table = [0.05, 1;
+    rows52(:,2) = rows52(:,2)*2;
+    rows52 = [0.52*ones(size(rows52,1),1),rows52];
+
+    rows56 = [0.05, 1;
         0.1, 3;
         0.2, 1.5;
         0.3, 2;
@@ -49,8 +52,9 @@ elseif phi == 0.56
         20, 10;
         50, 50];
         %100, 450];
-elseif phi == 0.59
-        Q_table = [0.05, 10;
+    rows56 = [0.56*ones(size(rows56,1),1),rows56];
+
+        rows59 = [0.05, 10;
         0.1, 1;
         0.2, 1;
         0.3, 1;
@@ -64,9 +68,8 @@ elseif phi == 0.59
         50, 5;
         100, 10];
         %200, 50];
-else
-    Q_table = false;
-    return
-end
+        rows59 = [0.59*ones(size(rows59,1),1),rows59];
+
+ Q_table = [rows44;rows48;rows52;rows56;rows59];
 
 end

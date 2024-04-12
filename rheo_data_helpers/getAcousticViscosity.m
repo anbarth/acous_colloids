@@ -1,4 +1,4 @@
-function [eta,delta_eta] = getAcousticViscosity(rheoData,myT,showPlots)
+function [eta,delta_eta,sloppy] = getAcousticViscosity(rheoData,myT,showPlots)
 
 if myT == 0
     % t=0 means no dethickening noticable
@@ -10,9 +10,11 @@ if myT == 0
     end
     
     [eta,delta_eta] = getBaselineViscosity(rheoData,5,tAcous,showPlots);
+    sloppy = false;
 
 else
-    [eta,delta_eta] = getDethickenedViscosity(rheoData,myT,myT+10,showPlots);
+    %[eta,delta_eta] = getDethickenedViscosity(rheoData,myT,myT+10,showPlots);
+    [eta,delta_eta,sloppy] = getDethickenedViscosity_excludeSloppy(rheoData,myT,myT+10,showPlots);
 end
 
 end

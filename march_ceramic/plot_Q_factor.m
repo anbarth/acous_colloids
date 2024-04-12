@@ -12,12 +12,15 @@ minPhi=0.44;
 maxPhi=0.6;
 phi0=0.678;
 sigma = logspace(-2,2);
+
 %q05 = [0.2,0.5,1,3,10];
 qpowerlaw = [0.2,0.5,1,3,50];
+
+big_Q_table = Q_tab_k075();
 for ii=1:length(phis)
     phi = phis(ii);
-    Q_table = Q_tab_k05(phi);
-    plot(Q_table(:,1),Q_table(:,2),'-o','Color',cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:))
+    Q_table = big_Q_table(big_Q_table(:,1)==phi,2:3);
+    plot(Q_table(:,1),Q_table(:,2)./Q_table(:,1),'-o','Color',cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:))
     %plot(sigma,sigma*(phi0-phi).^(3.83)/(8.8370e-04) ,'Color',cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:),'LineWidth',1) 
     %plot(sigma,sigma/qpowerlaw(ii) ,'Color',cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:),'LineWidth',1) 
 end

@@ -9,7 +9,7 @@ maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for sigma, 0 for nothing
-phi_range = 1:5; % which volume fractions to include
+phi_range = 5:-1:1; % which volume fractions to include
 
 xc=10;
 
@@ -232,8 +232,8 @@ sigma_all = sigma_all(keep_me_too);
 %disp("forcing d=0.5")
 fitfxn = @(k) exp(-(k(1)*P_all).^(k(2)));
 costfxn = @(k) sum(( (fitfxn(k)-A_all) ).^2); 
-%myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
-myK = fmincon(costfxn,[0.000005,0.5],[0,0;0,0],[0,0],[0,1;0,0],[0.5,0]);
+myK = fmincon(costfxn,[0.005,0.75],[0,0;0,0],[0,0]);
+%myK = fmincon(costfxn,[0.000005,0.5],[0,0;0,0],[0,0],[0,1;0,0],[0.5,0]);
 
 
 P_fake = logspace(log10(min(P_all)),log10(max(P_all))); 
@@ -251,7 +251,7 @@ A_fake = exp(-(myK(1)*P_fake).^(myK(2)));
 disp(myK(1))
 disp(myK(2))
 %close all
-%close(fig_collapsed)
+close(fig_collapsed)
 close(fig_uncollapsed)
 close(fig_xc_collapsed)
 %close(fig_A)

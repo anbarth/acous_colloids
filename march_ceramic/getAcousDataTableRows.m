@@ -19,7 +19,10 @@ for i=1: numel(fn)
         myVolt = myRow(3);
         myT = myRow(4);
 
-        [eta,delta_eta] = getAcousticViscosity(myRheoData,myT,showPlots);
+        [eta,delta_eta,sloppy] = getAcousticViscosity(myRheoData,myT,showPlots);
+        if sloppy
+            continue
+        end
         
         dataTable(end+1,1:5) = [myPhi,mySigma,myVolt,eta,delta_eta];
     end

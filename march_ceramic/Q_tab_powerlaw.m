@@ -1,19 +1,20 @@
-function Q_table = Q_tab_powerlaw(phi)
+function Q_table = Q_tab_powerlaw()
 % Q table for k=1, interpolating onto the best fit power law
 % my_const=0.1423;
 % my_exp=-1.4530;
 
-if phi == 0.44
-    Q_table = [0.1, 0.5;
+
+    rows44 = [0.1, 0.5;
         0.2, 0.3;
         0.3, 1;
         0.5, 5;
         1, 10;
         2, 10;
         5, 40];
-    Q_table(:,2) = Q_table(:,2)*1.2;
-elseif phi == 0.48
-    Q_table = [0.1, 0.01;
+    rows44(:,2) = rows44(:,2)*1.2;
+    rows44 = [0.44*ones(size(rows44,1),1),rows44];
+
+    rows48 = [0.1, 0.01;
         0.2, 0.3;
         0.3, 0.5;
         0.5, 2;
@@ -21,9 +22,10 @@ elseif phi == 0.48
         2, 30;
         5, 100;
         10, 300];
-    Q_table(:,2) = Q_table(:,2)*0.1;
-elseif phi == 0.52
-    Q_table = [0.1, 0.2;
+    rows48(:,2) = rows48(:,2)*0.1;
+    rows48 = [0.48*ones(size(rows48,1),1),rows48];
+
+    rows52 = [0.1, 0.2;
         0.2, 0.2;
         0.3, 0.3;
         0.5, 1;
@@ -32,9 +34,10 @@ elseif phi == 0.52
         5, 6;
         10, 15;
         20, 30];
-    Q_table(:,2) = Q_table(:,2)*1;
-elseif phi == 0.56
-    Q_table = [0.1, 1;
+    rows52(:,2) = rows52(:,2)*1;
+    rows52 = [0.52*ones(size(rows52,1),1),rows52];
+
+    rows56 = [0.1, 1;
         0.2, 0.3;
         0.3, 0.7;
         0.5, 0.8;
@@ -44,9 +47,10 @@ elseif phi == 0.56
         10, 5;
         20, 10;
         50, 50];
-    Q_table(:,2) = Q_table(:,2)*0.25;
-elseif phi == 0.59
-    Q_table = [0.1, 0.3;
+    rows56(:,2) = rows56(:,2)*0.25;
+    rows56 = [0.56*ones(size(rows56,1),1),rows56];
+
+    rows59 = [0.1, 0.3;
         0.2, 0.2;
         0.3, 0.3;
         0.5, 0.5;
@@ -58,10 +62,9 @@ elseif phi == 0.59
         20, 2;
         50, 5;
         100, 10];
-    Q_table(:,2) = Q_table(:,2)*0.2;
-else
-    Q_table = false;
-    return
-end
+    rows59(:,2) = rows59(:,2)*0.2;
+    rows59 = [0.59*ones(size(rows59,1),1),rows59];
+
+    Q_table = [rows44;rows48;rows52;rows56;rows59];
 
 end

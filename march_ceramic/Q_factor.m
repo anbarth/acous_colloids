@@ -1,14 +1,15 @@
-function Q = Q_factor(phi,sigma)
+function Q = Q_factor(phi,sigma,Q_table)
 
-Q_table = Q_tab_k05(phi);
-if ~Q_table
-    Q=1;
-    return
-end
+%Q_table = Q_tab_k05(phi);
+%if ~Q_table
+%    Q=1;
+%    return
+%end
 
-qIndex = find(Q_table(:,1)==sigma);
+my_Q_table = Q_table(Q_table(:,1)==phi,2:3);
+qIndex = find(my_Q_table(:,1)==sigma);
 if qIndex
-    Q=Q_table(qIndex,2);
+    Q=my_Q_table(qIndex,2);
 else
     if sigma>0.05
         % if sigma is high, give a warning

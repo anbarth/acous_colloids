@@ -47,7 +47,7 @@ if showPlot
     ylim([min(myEta)-etaRange/4 max(myEta)+etaRange/4]);
 
     % show change points
-    scatter(myT(acousticWindowIndexes),myEta(acousticWindowIndexes),30,'r');
+    scatter(myT([acousStartIndex,acousEndIndex]),myEta([acousStartIndex,acousEndIndex]),30,'r');
     %scatter(myT(acousStartIndex),myEta(acousStartIndex),30,'r');
     %scatter(myT(acousEndIndex),myEta(acousEndIndex),30,'r');
     

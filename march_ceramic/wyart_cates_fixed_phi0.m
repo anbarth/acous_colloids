@@ -46,7 +46,9 @@ eta = eta(include_me);
 % x(1) = A
 % x(2) = sigma*
 % x(3) = phi_mu
-fitfxn = @(x) x(1)*( phi0*(1-exp(-x(2)./sigma)) + x(3)*exp(-x(2)./sigma) - phi ).^(-2);
+k=0.75;
+f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^k);
+fitfxn = @(x) x(1)*( phi0*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./eta ).^2);  
 
 constraintMatrix = zeros(3,3);
