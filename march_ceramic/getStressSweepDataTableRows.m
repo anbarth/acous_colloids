@@ -23,6 +23,7 @@ for ii = 1:size(stress_list)
        % (ie bc you already got it from an acous experiment)
         continue
    end
+   %%% TODO cut off the first 5-10s? of each stress
    indices = sigma == mySigma;
    myEta = mean(eta(indices));
    myDeltaEta = std(eta(indices));
