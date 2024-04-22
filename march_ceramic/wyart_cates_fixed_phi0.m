@@ -1,7 +1,8 @@
-my_data = march_data_table_04_04;
+my_data = march_data_table_04_22;
 
 % edit this list to change what's included in the fit
-phis = [44,48,52,56,59];
+%phis = [44,48,52,56,59];
+phis = unique(my_data(:,1));
 phi0 = 0.678;
 maxSigma = 0;
 
@@ -13,18 +14,12 @@ sigma = no_acoustics(:,2);
 eta = no_acoustics(:,4);
 delta_eta = no_acoustics(:,5);
 
-phi_low = [];
-sigma_low = [];
-eta_low = [];
 
-phi = [phi_low;phi];
-sigma = [sigma_low;sigma];
-eta = [eta_low;eta];
 
 % only include volume fractions listed at the top
 include_me = false(size(phi));
 for ii=1:length(phi)
-    if any(phis/100==phi(ii))
+    if any(phis==phi(ii))
         include_me(ii) = true;
     end
 end
@@ -74,7 +69,7 @@ cmap = colormap;
 minPhi = min(phi);
 maxPhi = max(phi);
 for ii=1:length(phis)
-    myPhi = phis(ii)/100;
+    myPhi = phis(ii);
     
     myStress=sigma(phi==myPhi);
     myEta=eta(phi==myPhi);

@@ -14,7 +14,9 @@ load("phi48_03_25.mat")
 load("phi52_03_18.mat")
 load("phi54_04_17.mat")
 load("phi56_03_28.mat")
+load("phi58_04_18.mat")
 load("phi59_03_20.mat")
+load("phi59p5_04_16.mat")
 
 
 load("equiv_states_04_04.mat")

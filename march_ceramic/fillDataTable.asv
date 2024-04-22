@@ -3,10 +3,12 @@
 
 % for 52%, we have to exclude the lower stresses bc i didnt do motor adjustment
 %phi52_rows = getAllDataTableRows(phi52_03_18,phi52_03_18.low_sweep_30min,0.5205,false);
-phi20_rows = getStressSweepDataTableRows(phi20_04_15.stress_sweep_30min,0.1997,[]);
+phi20_rows = getStressSweepDataTableRows(phi20_04_15.stress_sweep_init,0.1997,[]);
 phi30_rows = getStressSweepDataTableRows(phi30_04_15.stress_sweep_init,0.2993,[]);
 phi44_rows = getAllDataTableRows(phi44_03_19,phi44_03_19.low_sweep_init,0.4398,false);
+
 phi48_rows = getAllDataTableRows(phi48_03_25,phi48_03_25.low_sweep_init,0.4800,false);
+
 phi52_rows = getAcousDataTableRows(phi52_03_18, false);
 phi52_rows(:,1) = 0.5205*ones(size(phi52_rows(:,1)));
 phi56_rows = getAllDataTableRows(phi56_03_28,phi56_03_28.low_sweep_init_2,0.5597,false);
@@ -22,4 +24,4 @@ phi59_rows = phi59_rows(phi59_rows(:,2)~=200,:);
 
 
 clear dataTable
-dataTable = [phi20_rows; phi30_rows; phi44_rows; phi48_rows; phi52_rows; phi56_rows; phi59_rows];
+dataTable = [phi44_rows; phi48_rows; phi52_rows; phi56_rows; phi59_rows];

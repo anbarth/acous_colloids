@@ -1,5 +1,5 @@
 oldDataTable = ceramic_data_table_03_02;
-dataTable = march_data_table_04_22;
+dataTable = march_data_table_04_04;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
@@ -20,9 +20,9 @@ ax_eta_rescaled.YLabel.String = '\eta*(\phi_0-\phi)^2 (rheometer Pa s)';
 hold(ax_eta_rescaled,'on');
 
 %phi_high = [0.44,0.48,0.52,0.56,0.59];
-phi_high = unique(dataTable(:,1));
-minPhi = min(phi_high);
-maxPhi = max(phi_high);
+
+minPhi = .3;
+maxPhi = .6;
 phi0=0.66;
 %cmap = flipud(viridis(256)); 
 cmap = turbo;

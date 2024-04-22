@@ -1,16 +1,13 @@
-dataTable = march_data_table_04_03;
+dataTable = march_data_table_04_22;
 
-%phi = unique(dataTable(:,1));
-phi = [0.44, 0.48, 0.56, 0.59];
+phi = unique(dataTable(:,1));
+phi = phi(abs(phi-0.52)>0.001); % exclude 52% because of motor adjustment
+
 eta = [];
 delta_eta = [];
 for ii=1:length(phi)
-    
-    if phi(ii)==0.52
-        continue
-    end
 
-    myData = dataTable(dataTable(:,1)==phi(ii) & dataTable(:,3)==0, :);
+    myData = dataTable(abs(dataTable(:,1)-phi(ii))<0.001 & dataTable(:,3)==0, :);
     mySigma = myData(:,2);
     myEta = myData(:,4);
     myDeltaEta = myData(:,5);
