@@ -21,7 +21,7 @@ for ii = 1:length(allData)
             myVolt = myRow(3);
             myT = myRow(4);
     
-            if myPhi == phi && mySigma == sigma && myVolt == V
+            if abs(myPhi-phi)<0.001 && mySigma == sigma && myVolt == V
                 % found the entry you asked for!
                 eta = getAcousticViscosity(myRheoData,myT,true);
                 return;

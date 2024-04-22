@@ -20,7 +20,8 @@ ax_eta_rescaled.YLabel.String = '\eta*(\phi_0-\phi)^2 (rheometer Pa s)';
 hold(ax_eta_rescaled,'on');
 
 %phi_high = [0.44,0.48,0.52,0.56,0.59];
-phi_high = unique(dataTable(:,1));
+phi = unique(dataTable(:,1));
+phi_high = phi(3:end);
 minPhi = min(phi_high);
 maxPhi = max(phi_high);
 phi0=0.66;
@@ -69,4 +70,4 @@ caxis(ax_eta,[minPhi maxPhi]);
 % c_eta = colorbar(ax_eta_rescaled);
 % c_eta.Ticks = [phi_high];
 % caxis(ax_eta_rescaled,[minPhi maxPhi])
-
+close(fig_eta_rescaled)
