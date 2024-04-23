@@ -9,7 +9,7 @@ if myT == 0
         tAcous = 60;
     end
     
-    [eta,delta_eta] = getBaselineViscosity(rheoData,5,tAcous,showPlots);
+    [eta,delta_eta] = getBaselineViscosity(rheoData,tAcous-20,tAcous,showPlots);
     sloppy = false;
 
 else

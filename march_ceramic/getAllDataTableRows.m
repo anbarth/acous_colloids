@@ -11,4 +11,8 @@ low_rows = getStressSweepDataTableRows(mySweep,myPhi,acous_sigma,1);
 
 dataTable = [low_rows; acous_rows];
 
+% 4. fill in phi with myPhi (low_rows will already have this phi, but
+% acous_rows might have smth different)
+dataTable(:,1) = myPhi*ones(size(dataTable(:,1)));
+
 end
