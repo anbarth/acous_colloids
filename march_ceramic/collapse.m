@@ -1,8 +1,8 @@
-my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
+my_vol_frac_markers = ["o","diamond",">","square","<","hexagram","^","pentagram","v"];
 
-vol_frac_plotting_range = 1:5;
-volt_plotting_range = 1:8;
-colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
+vol_frac_plotting_range = 6;
+volt_plotting_range = [1 8];
+colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = true;
 showMeera = false;
 
@@ -10,10 +10,10 @@ showMeera = false;
 xc = 0;
 
 collapse_params;
-stressTable = march_data_table_04_22;
+stressTable = march_data_table_04_23;
 %phi_list = [44,48,52,56,59];
 phi_list = unique(stressTable(:,1));
-minPhi = 0.3;
+minPhi = 0.1997;
 maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80,100];
 
@@ -95,9 +95,11 @@ for ii = vol_frac_plotting_range
         end
         
 
-        xWC = C(ii)*A(P).*f(sigma) ./ (-1*phi+phi0);
+        %xWC = C(ii)*A(P).*f(sigma) ./ (-1*phi+phi0);
+        %xWC = C(ii)*G(jj).*f(sigma) ./ (-1*phi+phi0);
+        xWC = C(ii)*G(jj).*f(sigma,jj) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
-        H = eta.*(C(ii)*A(P).*f(sigma)).^2;
+        %H = eta.*(C(ii)*A(P).*f(sigma)).^2;
 
         myMarker = my_vol_frac_markers(ii);
         if showLines && colorBy < 3
@@ -151,7 +153,7 @@ if colorBy == 1
     c1.Ticks = [0,5,10,20,40,60,80,100];
 elseif colorBy == 2
     caxis(ax_collapse,[minPhi maxPhi]);
-    c1.Ticks = phi_list/100;
+    c1.Ticks = phi_list;
 elseif colorBy == 4
     % TODO what are these numbers? lol
     caxis(ax_collapse,[1.6988,6])

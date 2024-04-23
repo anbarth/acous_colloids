@@ -1,5 +1,6 @@
 oldDataTable = ceramic_data_table_03_02;
-dataTable = march_data_table_04_22;
+dataTable = march_data_table_04_23;
+
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
@@ -21,9 +22,13 @@ hold(ax_eta_rescaled,'on');
 
 %phi_high = [0.44,0.48,0.52,0.56,0.59];
 phi = unique(dataTable(:,1));
-phi_high = phi(3:end);
-minPhi = min(phi_high);
-maxPhi = max(phi_high);
+phi_high = phi(1:end);
+
+phi_old = unique(oldDataTable(:,1));
+phi_high_old = phi_old(1:end);
+
+minPhi = min([phi_high;phi_high_old]);
+maxPhi = max([phi_high;phi_high_old]);
 phi0=0.66;
 %cmap = flipud(viridis(256)); 
 cmap = turbo;
@@ -59,12 +64,32 @@ for ii=1:length(phi_high)
     %errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);
 end
 
-%close(fig_eta_rescaled)
-
 colormap(ax_eta,cmap);
 c_eta = colorbar(ax_eta);
-c_eta.Ticks = [phi_high];
-caxis(ax_eta,[minPhi maxPhi]);
+c_eta.Ticks = phi_high;
+clim(ax_eta,[minPhi maxPhi]);
+
+
+
+
+for ii=1:length(phi_high_old)
+    phi = phi_high_old(ii);
+    myOldData = oldDataTable(oldDataTable(:,1)==phi & oldDataTable(:,3)==0, :);
+    myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
+
+    sigmaOld = myOldData(:,2);
+    etaOld = myOldData(:,4);
+    
+    % sort in order of ascending sigma
+    [sigmaOld,sortIdx] = sort(sigmaOld,'ascend');
+    etaOld = etaOld(sortIdx);
+    
+
+    %plot(ax_eta,sigmaOld/19,etaOld/25, '--o','Color',myColor,'LineWidth',1);
+end
+
+%close(fig_eta_rescaled)
+
 
 % colormap(ax_eta_rescaled,cmap);
 % c_eta = colorbar(ax_eta_rescaled);

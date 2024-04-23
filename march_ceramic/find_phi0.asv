@@ -31,21 +31,16 @@ errorbar(phi,eta.^(-1/2),delta_eta_minushalf,'o')
 xlabel('\phi')
 ylabel('\eta^{-1/2} (Pa s)^{-1/2}');
 
-ft1 = fittype('m*(phi0-x)');
+ft1 = fittype('m*x+b');
 opts = fitoptions(ft1);
-opts.StartPoint = [16,0.67];
+opts.StartPoint = [-16,11];
 myFit1 = fit(phi,eta.^(-1/2),ft1,opts);
 m = myFit1.m;
-phi0 = myFit1.phi0;
-plot([.15,.68],m*(phi0-[.15,.68]));
-
-
+b = myFit1.b;
+plot([.15,.68],m*[.15,.68]+b);
+disp(-b/m);
 ci = confint(myFit1);
-phi0_err = (ci(2,2)-ci(1,2))/2;
-disp(phi0)
-disp(phi0_err)
-
-
+m_err = ci
 
 %p = polyfit(phi,eta.^(-1/2),1);
 %disp(-p(2)/p(1))

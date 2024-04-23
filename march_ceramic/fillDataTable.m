@@ -25,4 +25,4 @@ phi59_rows = phi59_rows(phi59_rows(:,2)~=200,:);
 
 
 clear dataTable
-dataTable = [phi20_rows; phi30_rows; phi44_rows; phi48_rows; phi52_rows; phi54_rows; phi56_rows; phi58_rows; phi59_rows; phi59p5_rows];
+dataTable = [phi20_rows; phi30_rows; phi44_rows; phi48_rows; phi52_rows; phi54_rows; phi56_rows; phi59_rows; phi59p5_rows];

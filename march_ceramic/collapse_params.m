@@ -1,8 +1,8 @@
 %phi0=.5923;
-phi0 = 0.678;
+phi0 = 0.6783;
 
-sigmastar = 0.275; %k=1
-%sigmastar = 0.1645; %k=0.5
+sigmastar = 0.2599; %k=1
+%sigmastar = 0.1647; %k=0.5
 %sigmastar = 0.2263; %k=0.75
 
 meeraMultiplier_X = 1/2*15.4/13.95;
@@ -15,7 +15,7 @@ meeraMultiplier_Y = 1/0.2*0.09; %=0.45. hm, not what i expected
 % best k=1 collapse
 %C = [0.7 1.3 1.15 0.95 0.8]; % by eye
 %C = [0.4 1.3 0.9 0.8 0.8]; % aligning elbows?
-C = [1.0902    1.5301    1.3011    1.0537    0.8429]; %calcC
+%C = [1.0902    1.5301    1.3011    1.0537    0.8429]; %calcC
 
 
 % k=0.5
@@ -28,13 +28,19 @@ C = [1.0902    1.5301    1.3011    1.0537    0.8429]; %calcC
 
 
 %C = ones(5,1);
+C = [0.1    0.3    1.0902    1.5301    1.3011    1.1000    1.0537    0.8429    0.7700];
+%C = ones(9,1);
 
+G = [1 1 1 1 0.7 0.65 0.65 0.5];
 
-
-%k=0.5;
-%k=0.75;
 k=1;
+%k=0.75;
+%k=0.5;
 f = @(sigma) exp(-(sigmastar ./ sigma).^k);
+
+% k(V)
+%k = [1 1 1 1 1 1 1 0.75];
+%f = @(sigma,jj) exp(-(sigmastar ./ sigma).^k(jj));
 
 % k=0.5 + redefined P based on Q factor
 c=0.0848;
@@ -48,6 +54,6 @@ d=0.3776;
 %c = 1.7798e-04;
 %d = 0.7842;
 
-A = @(P) exp(-(c*P).^d);
+%A = @(P) exp(-(c*P).^d);
 
-%A = @(P) 1;
+A = @(P) 1;
