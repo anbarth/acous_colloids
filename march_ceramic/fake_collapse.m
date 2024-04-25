@@ -1,12 +1,20 @@
+% assume the underlying data obey F ~ (xc-x)^beta,
+% with x = f/(phi0-phi)^alpha
+
+% if alpha~=1, but then we try to plot against f/(phi0-phi) anyway,
+% could we fix it with C(phi)?
+
+% 
+
 phi0 = 0.64;
-phi0_wrong = 0.63;
+phi0_wrong = 0.64;
 phimu = 0.6;
 sigmastar = 1;
 beta = -1.5;
-alpha = 3;
+alpha = 1;
 
-k=1;
-f = @(sigma) exp(-(sigmastar ./ sigma).^k);
+k_real=1;
+f = @(k,sigma) exp(-(sigmastar ./ sigma).^k);
 xc = 1/(phi0-phimu)^alpha;
 xc_plot = 1/(phi0-phimu);
 
@@ -20,7 +28,8 @@ sigma = [0.1,0.2,0.5,1,2,5,10,20,50,100,200,500,1000];
 
 % C = x_true/x_plot = (phi0-phi)/(phi0-phi)^alpha = (phi0-phi)^(1-alpha)
 %C = (phi0-phi).^(1-alpha);
-C = [300  300  350  440  500  594.8840];
+%C = [300  300  350  440  500  594.8840];
+C = [1 1 1 1 1 1];
 
 fig_collapse = figure;
 ax_collapse = axes('Parent', fig_collapse,'XScale','log','YScale','log');
@@ -41,8 +50,8 @@ cmap = viridis(256);
 for ii=1:length(phi)
     myPhi = phi(ii);
 
-    x_true = f(sigma)/(phi0-myPhi)^alpha;
-    x_plot = f(sigma)/(phi0_wrong-myPhi)*C(ii);
+    x_true = f(k_real,sigma)/(phi0-myPhi)^alpha;
+    x_plot = f(1,sigma)/(phi0_wrong-myPhi)*C(ii);
     F = (xc-x_true).^beta;
     F_plot = F / (phi0-myPhi)^2 * (phi0_wrong-myPhi)^2;
 

@@ -95,4 +95,4 @@ end
 % c_eta = colorbar(ax_eta_rescaled);
 % c_eta.Ticks = [phi_high];
 % caxis(ax_eta_rescaled,[minPhi maxPhi])
-close(fig_eta_rescaled)
+%close(fig_eta_rescaled)
