@@ -4,7 +4,7 @@
 % if alpha~=1, but then we try to plot against f/(phi0-phi) anyway,
 % could we fix it with C(phi)?
 
-% 
+% if i had phi0 a bit incorrect, what would that change?
 
 phi0 = 0.64;
 phi0_wrong = 0.64;
@@ -26,9 +26,15 @@ xc_plot = 1/(phi0-phimu);
 phi = [0.5, 0.54, 0.58, 0.59, 0.595, 0.599];
 sigma = [0.1,0.2,0.5,1,2,5,10,20,50,100,200,500,1000];
 
+% if you've got the exponent in the denominator wrong...
 % C = x_true/x_plot = (phi0-phi)/(phi0-phi)^alpha = (phi0-phi)^(1-alpha)
 %C = (phi0-phi).^(1-alpha);
-%C = [300  300  350  440  500  594.8840];
+
+% if you've got phi0 wrong... 
+% this succeeds in aligning the divergences, but they wont collapse
+% C = x_true/x_plot = (phi0_wrong-phi)/(phi0_true-phi)
+%C = (phi0_wrong-phi)./(phi0-phi);
+
 C = [1 1 1 1 1 1];
 
 fig_collapse = figure;
@@ -51,7 +57,7 @@ for ii=1:length(phi)
     myPhi = phi(ii);
 
     x_true = f(k_real,sigma)/(phi0-myPhi)^alpha;
-    x_plot = f(1,sigma)/(phi0_wrong-myPhi)*C(ii);
+    x_plot = f(0.5,sigma)/(phi0_wrong-myPhi)*C(ii);
     F = (xc-x_true).^beta;
     F_plot = F / (phi0-myPhi)^2 * (phi0_wrong-myPhi)^2;
 

@@ -4,11 +4,11 @@ if nargin < 3
     print = 0;
 end
 
-vol_frac_plotting_range = 1:5;
+vol_frac_plotting_range = 1:9;
 volt_plotting_range = 1;
 
 collapse_params;
-phi_list = [44,48,52,56,59];
+phi_list = unique(stressTable(:,1));
 volt_list = [0,5,10,20,40,60,80,100];
 
 
@@ -21,7 +21,7 @@ for ii = vol_frac_plotting_range
     for jj = volt_plotting_range
 
         voltage = volt_list(jj);
-        phi = phi_list(ii)/100;
+        phi = phi_list(ii);
         myData = stressTable( stressTable(:,1)==phi & stressTable(:,3)==voltage,:);
         sigma = myData(:,2);
         eta = myData(:,4);
