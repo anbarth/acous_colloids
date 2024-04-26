@@ -1,4 +1,4 @@
-dataTable = march_data_table_04_04;
+dataTable = march_data_table_04_23;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'YScale','log');
@@ -8,12 +8,15 @@ hold(ax_eta,'on');
 cmap = winter(256);
 colormap(ax_eta,cmap);
 
-phi = 0.44;
+phi_list = unique(dataTable(:,1));
+phi = phi_list(9);
+disp(phi)
+ax_eta.Title.String = num2str(phi);
 
 myData = dataTable(dataTable(:,1)==phi, :);
 sigma_list = unique(myData(:,2));
-%minLogSig = log(min(sigma_list));
-minLogSig = log(1);
+minLogSig = log(min(sigma_list));
+%minLogSig = log(1);
 maxLogSig = log(max(sigma_list));
 
 

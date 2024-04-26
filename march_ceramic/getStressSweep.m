@@ -9,7 +9,7 @@ sigma = myRows(:,2);
 eta = myRows(:,4);
 
 if showPlot
-    figure; hold on;
+   % figure; hold on;
     ax1 = gca;
     ax1.XScale = 'log';
     ax1.YScale = 'log';

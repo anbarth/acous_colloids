@@ -68,6 +68,30 @@ getStressSweep(phi52_03_18.stress_sweep_2hr,1,myColor(120,tmax));
 getStressSweep(phi52_03_18.stress_sweep_150min,1,myColor(150,tmax));
 getStressSweep(phi52_03_18.stress_sweep_3hr,1,myColor(180,tmax));
 
+
+% 54%
+figure; hold on;
+title('54%');
+ax54 = gca;
+ax54.XScale = 'log';
+ax54.YScale = 'log';
+colormap(ax54,cmap)
+
+tmax = 180;
+getStressSweep(phi54_04_17.low_sweep_init,1,myColor(0,tmax));
+getStressSweep(phi54_04_17.low_sweep_30min,1,myColor(30,tmax));
+getStressSweep(phi54_04_17.low_sweep_1hr,1,myColor(60,tmax));
+getStressSweep(phi54_04_17.low_sweep_2hr,1,myColor(120,tmax));
+getStressSweep(phi54_04_17.stress_sweep_init,1,myColor(0,tmax));
+getStressSweep(phi54_04_17.stress_sweep_30min,1,myColor(30,tmax));
+getStressSweep(phi54_04_17.stress_sweep_1hr,1,myColor(60,tmax));
+getStressSweep(phi54_04_17.stress_sweep_90min,1,myColor(90,tmax));
+getStressSweep(phi54_04_17.stress_sweep_2hr,1,myColor(120,tmax));
+getStressSweep(phi54_04_17.stress_sweep_150min,1,myColor(150,tmax));
+getStressSweep(phi54_04_17.stress_sweep_3hr,1,myColor(180,tmax));
+
+
+
 % 56%
 figure; hold on;
 title('56%');
@@ -95,6 +119,33 @@ getStressSweep(phi56_03_28.low_sweep_3hr,1,myColor(180,tmax));
 getStressSweep(phi56_03_28.low_sweep_4hr,1,myColor(240,tmax));
 getStressSweep(phi56_03_28.low_sweep_270min,1,myColor(270,tmax));
 
+% 58%
+figure; hold on;
+title('58%');
+ax58 = gca;
+ax58.XScale = 'log';
+ax58.YScale = 'log';
+colormap(ax58,cmap)
+
+tmax = 270;
+getStressSweep(phi58_04_18.stress_sweep_init,1,myColor(0,tmax));
+getStressSweep(phi58_04_18.stress_sweep_30min,1,myColor(30,tmax));
+getStressSweep(phi58_04_18.stress_sweep_1hr,1,myColor(60,tmax));
+getStressSweep(phi58_04_18.stress_sweep_90min,1,myColor(90,tmax));
+getStressSweep(phi58_04_18.stress_sweep_2hr,1,myColor(120,tmax));
+getStressSweep(phi58_04_18.stress_sweep_150min,1,myColor(150,tmax));
+getStressSweep(phi58_04_18.stress_sweep_3hr,1,myColor(180,tmax));
+getStressSweep(phi58_04_18.stress_sweep_210min,1,myColor(210,tmax));
+getStressSweep(phi58_04_18.stress_sweep_4hr,1,myColor(240,tmax));
+getStressSweep(phi58_04_18.stress_sweep_270min,1,myColor(270,tmax));
+getStressSweep(phi58_04_18.low_sweep_init,1,myColor(0,tmax));
+getStressSweep(phi58_04_18.low_sweep_30min,1,myColor(30,tmax));
+getStressSweep(phi58_04_18.low_sweep_1hr,1,myColor(60,tmax));
+getStressSweep(phi58_04_18.low_sweep_2hr,1,myColor(120,tmax));
+getStressSweep(phi58_04_18.low_sweep_3hr,1,myColor(180,tmax));
+getStressSweep(phi58_04_18.low_sweep_210min,1,myColor(210,tmax));
+getStressSweep(phi58_04_18.low_sweep_4hr,1,myColor(240,tmax));
+getStressSweep(phi58_04_18.low_sweep_270min,1,myColor(270,tmax));
 
 
 % 59%
@@ -121,3 +172,33 @@ getStressSweep(phi59_03_20.low_sweep_2hr,1,myColor(120,tmax));
 getStressSweep(phi59_03_20.low_sweep_3hr,1,myColor(180,tmax));
 getStressSweep(phi59_03_20.low_sweep_210min,1,myColor(210,tmax));
 getStressSweep(phi59_03_20.low_sweep_4hr,1,myColor(240,tmax));
+
+
+% 59.5%
+figure; hold on;
+title('59.5%');
+ax595 = gca;
+ax595.XScale = 'log';
+ax595.YScale = 'log';
+colormap(ax595,cmap)
+
+tmax=270;
+getStressSweep(phi59p5_04_16.low_sweep_init,1,myColor(0,tmax));
+getStressSweep(phi59p5_04_16.low_sweep_30min,1,myColor(30,tmax));
+getStressSweep(phi59p5_04_16.low_sweep_1hr,1,myColor(60,tmax));
+getStressSweep(phi59p5_04_16.low_sweep_2hr,1,myColor(120,tmax));
+getStressSweep(phi59p5_04_16.low_sweep_3hr,1,myColor(180,tmax));
+getStressSweep(phi59p5_04_16.low_sweep_4hr,1,myColor(240,tmax));
+getStressSweep(phi59p5_04_16.low_sweep_270min,1,myColor(270,tmax));
+
+getStressSweep(phi59p5_04_16.stress_sweep_init,1,myColor(0,tmax));
+getStressSweep(phi59p5_04_16.stress_sweep_30min,1,myColor(30,tmax));
+getStressSweep(phi59p5_04_16.stress_sweep_1hr,1,myColor(60,tmax));
+getStressSweep(phi59p5_04_16.stress_sweep_90min,1,myColor(90,tmax));
+getStressSweep(phi59p5_04_16.stress_sweep_2hr,1,myColor(120,tmax));
+getStressSweep(phi59p5_04_16.stress_sweep_150min,1,myColor(150,tmax));
+getStressSweep(phi59p5_04_16.stress_sweep_3hr,1,myColor(180,tmax));
+getStressSweep(phi59p5_04_16.stress_sweep_210min,1,myColor(210,tmax));
+getStressSweep(phi59p5_04_16.stress_sweep_4hr,1,myColor(240,tmax));
+getStressSweep(phi59p5_04_16.stress_sweep_270min,1,myColor(270,tmax));
+
