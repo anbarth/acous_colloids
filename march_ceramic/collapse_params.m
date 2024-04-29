@@ -34,14 +34,17 @@ C = [0.4   0.4097    1.2101    1.5301    1.2695    1.0454    1.0037    0.7653   
 %G = [1 1 1 1 0.7 0.65 0.65 0.5];
 G = [1 1 1 0.9 0.8 0.75 0.65 0.6];
 
-k=1;
+%k=1;
 %k=0.75;
 %k=0.5;
-f = @(sigma) exp(-(sigmastar ./ sigma).^k);
+%f = @(sigma) exp(-(sigmastar ./ sigma).^k);
 
 % k(V)
-%k = [1 1 1 1 1 1 1 1];
-%f = @(sigma,jj) exp(-(sigmastar ./ sigma).^k(jj));
+
+k = [1 1 1 1 1 1 1 1];
+%sigmastar = [0.2916 0.2916 0.2916 0.2916 0.2916 0.2916 1 0.2916];
+sigmastar = [linspace(0.2916,1,7),1];
+f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^k(jj));
 
 % k=0.5 + redefined P based on Q factor
 c=0.0848;

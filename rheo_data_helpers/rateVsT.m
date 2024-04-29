@@ -30,5 +30,6 @@ ylabel(strcat( 'Rate (',rheometerStr,'1/s',')' ));
 xlabel('Time, {\it t} (s)');
 title(myStruct.name);
 ax1 = gca;
+%ax1.YScale = 'linear';
 ax1.YScale = 'log';
 end
