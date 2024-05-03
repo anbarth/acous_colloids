@@ -1,4 +1,4 @@
-my_data = march_data_table_04_23;
+my_data = march_data_table_05_02;
 
 % edit this list to change what's included in the fit
 %phis = [44,48,52,56,59];

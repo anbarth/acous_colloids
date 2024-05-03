@@ -35,7 +35,7 @@ for ii = vol_frac_plotting_range
         end
 
 
-        xWC = myC(ii)*A(P).*f(sigma) ./ (-1*phi+phi0);
+        xWC = myC(ii)*A(P).*f(sigma,jj) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
 
         

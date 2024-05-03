@@ -20,7 +20,7 @@ eta = getViscosity(mySweep);
 t = getTime(mySweep);
 
 stress_list = unique(sigma);
-for ii = 1:size(stress_list)
+for ii = 1:length(stress_list)
    mySigma = stress_list(ii);
    if any(mySigma==excludeSigma)
        % skip over any sigmas you don't want to

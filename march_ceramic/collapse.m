@@ -10,7 +10,7 @@ xc=10;
 %xc = 0;
 
 collapse_params;
-stressTable = march_data_table_04_23;
+stressTable = march_data_table_05_02;
 %phi_list = [44,48,52,56,59];
 phi_list = unique(stressTable(:,1));
 minPhi = 0.1997;
@@ -97,10 +97,11 @@ for ii = vol_frac_plotting_range
 
         %xWC = C(ii)*A(P).*f(sigma) ./ (-1*phi+phi0);
         %xWC = C(ii)*G(jj).*f(sigma) ./ (-1*phi+phi0);
-        xWC = C(ii)*G(jj).*f(sigma,jj) ./ (-1*phi+phi0);
+        xWC = C(ii).*f(sigma,jj)*G(jj) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
+
         H = eta.*(C(ii).*f(sigma,jj)).^2;
-        %H = eta.*(C(ii)*A(P).*f(sigma)).^2;
+
 
         myMarker = my_vol_frac_markers(ii);
         if showLines && colorBy < 3

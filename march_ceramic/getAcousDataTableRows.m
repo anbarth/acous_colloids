@@ -5,14 +5,14 @@ dataTable = zeros(0,5);
 
 fn=fieldnames(myVolumeFractionStruct);
 %loop through the fields
-for i=1: numel(fn)
+for i=1:numel(fn)
     myRheoData = myVolumeFractionStruct.(fn{i});
+    % skip over non-acous test (eg stress sweeps)
+    if myRheoData.acous == 0
+        continue
+    end
+    
     for ii = 1:size(myRheoData.acous,1) 
-        % skip over non-acous test (eg stress sweeps)
-        if myRheoData.acous == 0
-            continue
-        end
-
         myRow = myRheoData.acous(ii,:);
         myPhi = myRow(1);
         mySigma = myRow(2);

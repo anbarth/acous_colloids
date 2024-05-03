@@ -1,5 +1,5 @@
 oldDataTable = ceramic_data_table_03_02;
-dataTable = march_data_table_04_23;
+dataTable = march_data_table_05_02;
 
 
 fig_eta = figure;
@@ -88,7 +88,7 @@ for ii=1:length(phi_high_old)
     %plot(ax_eta,sigmaOld/19,etaOld/25, '--o','Color',myColor,'LineWidth',1);
 end
 
-%close(fig_eta_rescaled)
+close(fig_eta_rescaled)
 
 
 % colormap(ax_eta_rescaled,cmap);
