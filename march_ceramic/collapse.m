@@ -1,16 +1,16 @@
 my_vol_frac_markers = ["o","diamond",">","square","<","hexagram","^","pentagram","v"];
 
 vol_frac_plotting_range = 6;
-volt_plotting_range = 1:7;
+volt_plotting_range = 1:8;
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = true;
 showMeera = false;
 
-%xc=10;
-xc = 0;
+xc=10;
+%xc = 0;
 
 collapse_params;
-stressTable = march_data_table_04_23;
+stressTable = march_data_table_05_02;
 %phi_list = [44,48,52,56,59];
 phi_list = unique(stressTable(:,1));
 minPhi = 0.1997;
@@ -97,9 +97,9 @@ for ii = vol_frac_plotting_range
 
         %xWC = C(ii)*A(P).*f(sigma) ./ (-1*phi+phi0);
         %xWC = C(ii)*G(jj).*f(sigma) ./ (-1*phi+phi0);
-        xWC = C(ii)*G(jj).*f(sigma,jj) ./ (-1*phi+phi0);
+        xWC = C(ii).*f(sigma,jj)*G(jj) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
-        %H = eta.*(C(ii)*A(P).*f(sigma)).^2;
+        H = eta.*(C(ii)*A(P).*f(sigma,jj)).^2;
 
         myMarker = my_vol_frac_markers(ii);
         if showLines && colorBy < 3
@@ -177,6 +177,6 @@ if xc ~= 0
 end
 
 
-%close(fig_cardy)
+close(fig_cardy)
 %close(fig_collapse)
 
