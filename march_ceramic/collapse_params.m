@@ -43,7 +43,7 @@ G = [1 1 1 0.9 0.8 0.75 0.65 0.6];
 
 k = [1 1 1 1 1 1 1 1];
 %sigmastar = [0.2916 0.2916 0.2916 0.2916 0.2916 0.2916 1 0.2916];
-sigmastar = [linspace(0.2916,1,7),1];
+sigmastar = [linspace(0.2916,1,7),1.2];
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^k(jj));
 
 % k=0.5 + redefined P based on Q factor

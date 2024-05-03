@@ -21,4 +21,4 @@ load("phi59p5_04_16.mat")
 
 load("equiv_states_04_04.mat")
 load('..\ceramic\data\03_02_datatable')
-load('datatable_04_23.mat')
+load('datatable_05_02.mat')

@@ -1,13 +1,13 @@
 my_vol_frac_markers = ["o","diamond",">","square","<","hexagram","^","pentagram","v"];
 
 vol_frac_plotting_range = 6;
-volt_plotting_range = 1:7;
+volt_plotting_range = 1:8;
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = true;
 showMeera = false;
 
-%xc=10;
-xc = 0;
+xc=10;
+%xc = 0;
 
 collapse_params;
 stressTable = march_data_table_04_23;
@@ -30,7 +30,7 @@ ax_collapse.YLabel.String = "F";
 if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
-ax_collapse.XLim = [10^-20, 30];
+ax_collapse.XLim = [10^-5, 30];
 %ax1.YLim = [10^(-1.5),100]; %TODO delete
 colormap(ax_collapse,cmap);
 if xc ~= 0
@@ -99,6 +99,7 @@ for ii = vol_frac_plotting_range
         %xWC = C(ii)*G(jj).*f(sigma) ./ (-1*phi+phi0);
         xWC = C(ii)*G(jj).*f(sigma,jj) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
+        H = eta.*(C(ii).*f(sigma,jj)).^2;
         %H = eta.*(C(ii)*A(P).*f(sigma)).^2;
 
         myMarker = my_vol_frac_markers(ii);
@@ -177,6 +178,6 @@ if xc ~= 0
 end
 
 
-%close(fig_cardy)
+close(fig_cardy)
 %close(fig_collapse)
 
