@@ -1,9 +1,9 @@
 my_vol_frac_markers = ["o","diamond",">","square","<","hexagram","^","pentagram","v"];
 
-vol_frac_plotting_range = 6;
+vol_frac_plotting_range = 1:9;
 volt_plotting_range = 1:8;
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
-showLines = true;
+showLines = false;
 showMeera = false;
 
 xc=10;
@@ -19,8 +19,11 @@ volt_list = [0,5,10,20,40,60,80,100];
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %cmap = turbo;
-cmap = viridis(256); 
-%cmap = plasma(256);
+if colorBy == 2 || colorBy == 4
+    cmap = viridis(256); 
+else
+    cmap = plasma(256);
+end
 
 fig_collapse = figure;
 ax_collapse = axes('Parent', fig_collapse,'XScale','log','YScale','log');
@@ -97,7 +100,7 @@ for ii = vol_frac_plotting_range
 
         %xWC = C(ii)*A(P).*f(sigma) ./ (-1*phi+phi0);
         %xWC = C(ii)*G(jj).*f(sigma) ./ (-1*phi+phi0);
-        xWC = C(ii).*f(sigma,jj)*G(jj) ./ (-1*phi+phi0);
+        xWC = C(ii).*f(sigma,jj)*G(ii,jj) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
 
         H = eta.*(C(ii).*f(sigma,jj)).^2;
@@ -178,7 +181,8 @@ if xc ~= 0
 
 end
 
-
-close(fig_cardy)
+if xc ~=0
+    close(fig_cardy)
+end
 %close(fig_collapse)
 

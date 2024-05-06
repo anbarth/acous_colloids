@@ -4,8 +4,10 @@ dataTable = march_data_table_05_02;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
-ax_eta.XLabel.String = '\sigma (rheometer Pa)';
-ax_eta.YLabel.String = '\eta (rheometer Pa s)';
+%ax_eta.XLabel.String = '\sigma (rheometer Pa)';
+%ax_eta.YLabel.String = '\eta (rheometer Pa s)';
+ax_eta.XLabel.String = '\sigma (Pa)';
+ax_eta.YLabel.String = '\eta (Pa s)';
 hold(ax_eta,'on');
 
 % fig_rate = figure;
@@ -53,7 +55,7 @@ for ii=1:length(phi_high)
     [sigmaOld,sortIdx] = sort(sigmaOld,'ascend');
     etaOld = etaOld(sortIdx);
     
-    plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',1);
+    plot(ax_eta,sigma*19,eta*25, '-d','Color',myColor,'LineWidth',1);
     %plot(ax_eta,sigma*19,eta*25, '-d','Color',myColor,'LineWidth',1);
     %plot(ax_eta,sigmaOld/19,etaOld/25, '--o','Color',myColor,'LineWidth',1);
     
