@@ -4,7 +4,7 @@ if nargin < 3
     print = 0;
 end
 if nargin < 4
-    xc = 10;
+    xc = 1;
 end
 
 % sort from lowest to highest x

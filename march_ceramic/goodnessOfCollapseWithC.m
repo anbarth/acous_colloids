@@ -1,11 +1,11 @@
-function goodness = goodnessOfCollapseWithC(stressTable,myC,print)
+function goodness = goodnessOfCollapseWithC(stressTable,myC,voltNum,print)
 
-if nargin < 3
+if nargin < 4
     print = 0;
 end
 
 vol_frac_plotting_range = 1:9;
-volt_plotting_range = 1;
+volt_plotting_range = voltNum;
 
 collapse_params;
 phi_list = unique(stressTable(:,1));
@@ -35,7 +35,7 @@ for ii = vol_frac_plotting_range
         end
 
 
-        xWC = myC(ii)*A(P).*f(sigma,jj) ./ (-1*phi+phi0);
+        xWC = myC(ii)*f(sigma,jj) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
 
         

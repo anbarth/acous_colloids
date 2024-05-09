@@ -2,16 +2,16 @@ my_vol_frac_markers = ["o","diamond",">","square","<","hexagram","^","pentagram"
 
 vol_frac_plotting_range = 1:9;
 volt_plotting_range = 1;
-colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
-showLines = true;
+colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
+showLines = false;
 showMeera = false;
 
-xc=10;
-%xc = 0;
+xc=1;
 
 collapse_params;
+%[eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,9);
+f = @(sigma,jj) exp(-sigmastar(jj)./sigma);
 stressTable = march_data_table_05_02;
-%phi_list = [44,48,52,56,59];
 phi_list = unique(stressTable(:,1));
 minPhi = 0.1997;
 maxPhi = 0.6;
@@ -19,8 +19,8 @@ volt_list = [0,5,10,20,40,60,80,100];
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %cmap = turbo;
-cmap = viridis(256); 
-%cmap = plasma(256);
+%cmap = viridis(256); 
+cmap = plasma(256);
 
 fig_collapse = figure;
 ax_collapse = axes('Parent', fig_collapse,'XScale','log','YScale','log');
@@ -30,7 +30,7 @@ ax_collapse.YLabel.String = "F";
 if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
-ax_collapse.XLim = [10^-2, 30];
+ax_collapse.XLim = [10^-3, 3];
 colormap(ax_collapse,cmap);
 if xc ~= 0
     xline(ax_collapse,xc);
@@ -81,7 +81,7 @@ for ii = vol_frac_plotting_range
         end
         
 
-        xWC = C(ii)*A(P).*f(sigma,jj) ./ (-1*phi+phi0);
+        xWC = C(ii,jj)*f(sigma,jj) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
 
 
@@ -116,12 +116,14 @@ trim_me = ~isnan(F_all);
 x_all = x_all(trim_me);
 F_all = F_all(trim_me);
 
+%disp(size(x_all))
+
 % try fitting F vs x to F = a (xc-x)^b
 fitfxn = @(s) s(1)*(xc-x_all).^s(2);
 costfxn = @(s) sum(( (fitfxn(s)-F_all)./F_all ).^2);
 
-opts = optimoptions('fmincon','Display','off');
-best_params = fmincon(costfxn, [0.1,-1.5],[],[],...
+opts = optimoptions('fmincon','Display','final');
+best_params = fmincon(costfxn, [0.001,-1],[],[],...
     [],[],[],[],[],opts);
 my_const = best_params(1);
 my_exp = best_params(2);

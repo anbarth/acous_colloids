@@ -1,10 +1,13 @@
 
-dataTable = march_data_table_04_23;
-collapse_params; % just to get f(sigma) and phi0
+dataTable = march_data_table_05_02;
 
-% from best_fit_power_law_0V
-myConst = 0.1028;
-myDelta = -1.3789;
+% collapse_params; % just to get f(sigma) and phi0
+% % from best_fit_power_law_0V (but including all the voltages lol)
+% myConst = 0.0042;
+% myDelta = -1.4663;
+
+f = @(sigma,jj) exp(-sigmastar(jj)./sigma);
+[myConst, phi0, myDelta, sigmastar, C] = unzipParams(y_optimal,9);
 
 
 fig_eta = figure;
@@ -46,7 +49,7 @@ for ii=1:length(phi_list)
     plot(ax_eta,sigma,eta, 'd','Color',myColor,'LineWidth',1);
 
     sigmaFake = logspace(log10(min(sigma)),log10(max(sigma)));
-    etaFit = myConst * (phi0-phi)^-2 * (10-f(sigmaFake)*C(ii)/(phi0-phi)).^myDelta;
+    etaFit = myConst * (phi0-phi)^-2 * (1-f(sigmaFake,jj)*C(ii,jj)/(phi0-phi)).^myDelta;
     plot(ax_eta,sigmaFake,etaFit,'Color',myColor);
    
     plot(ax_eta_rescaled,sigma,eta*(phi0-phi)^2, 'd','Color',myColor,'LineWidth',1);
@@ -58,3 +61,5 @@ colormap(ax_eta,cmap);
 c_eta = colorbar(ax_eta);
 c_eta.Ticks = phi_list;
 clim(ax_eta,[minPhi maxPhi]);
+
+close(fig_eta_rescaled)

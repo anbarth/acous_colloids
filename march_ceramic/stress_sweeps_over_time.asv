@@ -37,8 +37,9 @@ ylim([0.05 100])
 % [sigma44_i,eta44_i] = getStressSweep(phi44_03_19.stress_sweep_init,1,myColor(0,tmax_global));
 % [sigma44_f,eta44_f] = getStressSweep(phi44_03_19.stress_sweep_3hr,1,myColor(180,tmax_global));
 
+%mySigma = 10;
+%delta44 = eta44_f(sigma44_f(:,1)==mySigma)-eta44_i(sigma44_i(:,1)==mySigma);
 
-%return
 
 % 48%
 figure; hold on;
@@ -194,12 +195,6 @@ phi59_sweeps = {{phi59_03_20.stress_sweep_init_2,0},{phi59_03_20.stress_sweep_30
     {phi59_03_20.low_sweep_4hr,240}};
 tmax=240;
 
-sweepList = phi59_sweeps;
-for ii=1:length(sweepList)
-    mySweep = sweepList{ii}{1};
-    myT = sweepList{ii}{2};
-    getStressSweep(mySweep,1,myColor(myT,tmax_global));
-end
 ylim([0.05 100])
 % mySigma = 10;
 % delta59 = eta59_f(sigma59_f(:,1)==mySigma)-eta59_i(sigma59_i(:,1)==mySigma);
@@ -212,23 +207,26 @@ ax595.XScale = 'log';
 ax595.YScale = 'log';
 colormap(ax595,cmap)
 
-phi59p5_sweeps = {{phi59p5_04_16.low_sweep_init,0},{phi59p5_04_16.low_sweep_30min,30},...
-    {phi59p5_04_16.low_sweep_1hr,60},{phi59p5_04_16.low_sweep_2hr,120},...
-    {phi59p5_04_16.low_sweep_3hr,180},{phi59p5_04_16.low_sweep_4hr,240},...
-    {phi59p5_04_16.low_sweep_270min,270},{phi59p5_04_16.stress_sweep_init,0},...
-    {phi59p5_04_16.stress_sweep_30min,30},{phi59p5_04_16.stress_sweep_1hr,60},...
-    {phi59p5_04_16.stress_sweep_90min,90},{phi59p5_04_16.stress_sweep_2hr,120},...
-    {phi59p5_04_16.stress_sweep_150min,150},{phi59p5_04_16.stress_sweep_3hr,180},...
-    {phi59p5_04_16.stress_sweep_210min,210},{phi59p5_04_16.stress_sweep_4hr,240},...
-    {phi59p5_04_16.stress_sweep_270min,270}};
 tmax=270;
+getStressSweep(phi59p5_04_16.low_sweep_init,1,myColor(0,tmax_global));
+getStressSweep(phi59p5_04_16.low_sweep_30min,1,myColor(30,tmax_global));
+getStressSweep(phi59p5_04_16.low_sweep_1hr,1,myColor(60,tmax_global));
+getStressSweep(phi59p5_04_16.low_sweep_2hr,1,myColor(120,tmax_global));
+getStressSweep(phi59p5_04_16.low_sweep_3hr,1,myColor(180,tmax_global));
+getStressSweep(phi59p5_04_16.low_sweep_4hr,1,myColor(240,tmax_global));
+getStressSweep(phi59p5_04_16.low_sweep_270min,1,myColor(270,tmax_global));
 
-sweepList = phi59p5_sweeps;
-for ii=1:length(sweepList)
-    mySweep = sweepList{ii}{1};
-    myT = sweepList{ii}{2};
-    getStressSweep(mySweep,1,myColor(myT,tmax_global));
-end
+getStressSweep(phi59p5_04_16.stress_sweep_init,1,myColor(0,tmax_global));
+getStressSweep(phi59p5_04_16.stress_sweep_30min,1,myColor(30,tmax_global));
+getStressSweep(phi59p5_04_16.stress_sweep_1hr,1,myColor(60,tmax_global));
+getStressSweep(phi59p5_04_16.stress_sweep_90min,1,myColor(90,tmax_global));
+getStressSweep(phi59p5_04_16.stress_sweep_2hr,1,myColor(120,tmax_global));
+getStressSweep(phi59p5_04_16.stress_sweep_150min,1,myColor(150,tmax_global));
+getStressSweep(phi59p5_04_16.stress_sweep_3hr,1,myColor(180,tmax_global));
+getStressSweep(phi59p5_04_16.stress_sweep_210min,1,myColor(210,tmax_global));
+getStressSweep(phi59p5_04_16.stress_sweep_4hr,1,myColor(240,tmax_global));
+getStressSweep(phi59p5_04_16.stress_sweep_270min,1,myColor(270,tmax_global));
+ 
 ylim([0.05 100])
 % mySigma = 10;
 % delta59p5 = eta59p5_f(sigma59p5_f(:,1)==mySigma)-eta59p5_i(sigma59p5_i(:,1)==mySigma);
