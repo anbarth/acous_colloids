@@ -9,10 +9,10 @@ showMeera = false;
 xc=1;
 %xc = 0;
 
-%collapse_params;
+collapse_params;
 
-[eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,9);
-f = @(sigma,jj) exp(-sigmastar(jj)./sigma);
+%[eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,9);
+%f = @(sigma,jj) exp(-sigmastar(jj)./sigma);
 
 stressTable = march_data_table_05_02;
 phi_list = unique(stressTable(:,1));
@@ -103,11 +103,12 @@ for ii = vol_frac_plotting_range
 
         %xWC = C(ii)*A(P).*f(sigma) ./ (-1*phi+phi0);
         %xWC = C(ii)*G(jj).*f(sigma) ./ (-1*phi+phi0);
-        xWC = C(ii,jj)*f(sigma,jj) ./ (-1*phi+phi0);
+        %xWC = C(ii,jj)*f(sigma,jj) ./ (-1*phi+phi0);
+        xWC = C(phi,voltage)*f(sigma,jj) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
 
-        H = eta.*(C(ii).*f(sigma,jj)).^2;
-
+        %H = eta.*(C(ii).*f(sigma,jj)).^2;
+        H = 0;
 
         myMarker = my_vol_frac_markers(ii);
         if showLines && colorBy < 3
