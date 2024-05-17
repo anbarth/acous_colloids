@@ -185,7 +185,7 @@ if xc ~= 0
 end
 
 if xc ~=0
-    %close(fig_cardy)
+    close(fig_cardy)
 end
 %close(fig_collapse)
 

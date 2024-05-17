@@ -10,11 +10,11 @@ ax_eta.XLabel.String = '\sigma (Pa)';
 ax_eta.YLabel.String = '\eta (Pa s)';
 hold(ax_eta,'on');
 
-% fig_rate = figure;
-% ax_rate = axes('Parent', fig_rate,'XScale','log','YScale','log');
-% ax_rate.XLabel.String = '\sigma (Pa)';
-% ax_rate.YLabel.String = 'shear rate (1/s)';
-% hold(ax_rate,'on');
+fig_rate = figure;
+ax_rate = axes('Parent', fig_rate,'XScale','log','YScale','log');
+ax_rate.XLabel.String = '\sigma (Pa)';
+ax_rate.YLabel.String = 'shear rate (1/s)';
+hold(ax_rate,'on');
 % 
 fig_eta_rescaled = figure;
 ax_eta_rescaled = axes('Parent', fig_eta_rescaled,'XScale','log','YScale','log');
@@ -55,11 +55,11 @@ for ii=1:length(phi_high)
     [sigmaOld,sortIdx] = sort(sigmaOld,'ascend');
     etaOld = etaOld(sortIdx);
     
-    plot(ax_eta,sigma*19,eta*25, '-d','Color',myColor,'LineWidth',1);
+    plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',1);
     %plot(ax_eta,sigma*19,eta*25, '-d','Color',myColor,'LineWidth',1);
     %plot(ax_eta,sigmaOld/19,etaOld/25, '--o','Color',myColor,'LineWidth',1);
     
-    %plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',1);
+    plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',1);
     %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
 
     plot(ax_eta_rescaled,sigma,eta*(phi0-phi)^2, '-d','Color',myColor,'LineWidth',1);

@@ -22,32 +22,9 @@ for kk=1:size(stressTable,1)
     F_all(kk) = F;
 
 end
-% 
-% x_all = zeros(0,1);
-% F_all = zeros(0,1);
-% for ii=1:9
-%     for jj=1:8
-%         voltage = volt_list(jj);
-%         phi = phi_list(ii);
-%         myData = stressTable( stressTable(:,1)==phi & stressTable(:,3)==voltage,:);
-%         sigma = myData(:,2);
-%         eta = myData(:,4);
-%         x = C(ii,jj)*f(sigma,jj) ./ (-1*phi+phi0);
-%         F = eta*(phi0-phi)^2;
-% 
-%         x_all(end+1:end+length(x)) = x;
-%         F_all(end+1:end+length(F)) = F;
-% 
-%     end
-% end
-
-%disp(size(x_all))
 
 Fhat = eta0*(1-x_all).^delta;
 goodness = sum( ((Fhat-F_all)./F_all).^2 );
-
-% fitfxn = @(s) s(1)*(xc-x_all).^s(2);
-% costfxn = @(s) sum(( (fitfxn(s)-F_all)./F_all ).^2);
-
+%goodness = sum( abs((Fhat-F_all)./F_all) );
 
 end
