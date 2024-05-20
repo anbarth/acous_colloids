@@ -80,8 +80,8 @@ phi_list = [44,48,52,54,56,58,59,59.5];
 phi_list_stressTable = [0.4398,0.4800,0.5205,0.5404,0.5597,0.5809,0.5907,0.5956];
 
 % go thru the vol fracs
-for ii = 1:length(phi_list)
-%for ii=1
+%for ii = 1:length(phi_list)
+for ii=1
     phi = phi_list(ii);
     phi_stressTable = phi_list_stressTable(ii);
     % make fig
@@ -114,26 +114,26 @@ for ii = 1:length(phi_list)
             if length(my_eta_i)>1
                 my_eta_i = my_eta_i(1);
             end
-            myDeltaEta(kk)=my_eta_f-my_eta_i;
+            myDeltaEta(kk)=(my_eta_f-my_eta_i)/my_eta_i;
         end
     
         plot(mySigma,abs(myDeltaEta),'-o','Color',myColor(myT,tmax_global),'LineWidth',1)
     end
 
-    data_0V = stressTable(stressTable(:,3)==0 & stressTable(:,1)==phi_stressTable,:);
-    sigma_0V = data_0V(:,2);
-    eta_0V = data_0V(:,4);
-    data_100V = stressTable(stressTable(:,3)==100 & stressTable(:,1)==phi_stressTable,:);
-    sigma_100V = data_100V(:,2);
-    eta_100V = data_100V(:,4);
-    mySigma = intersect(sigma_0V, sigma_100V);
-    myDeltaEta = zeros(size(mySigma));
-    for kk=1:length(mySigma)
-        my_eta_100V = eta_100V(sigma_100V==mySigma(kk));
-        my_eta_0V = eta_0V(sigma_0V==mySigma(kk));
-        myDeltaEta(kk)=my_eta_0V-my_eta_100V;
-    end
-    plot(mySigma,myDeltaEta,'-ok','LineWidth',3)
+%     data_0V = stressTable(stressTable(:,3)==0 & stressTable(:,1)==phi_stressTable,:);
+%     sigma_0V = data_0V(:,2);
+%     eta_0V = data_0V(:,4);
+%     data_100V = stressTable(stressTable(:,3)==100 & stressTable(:,1)==phi_stressTable,:);
+%     sigma_100V = data_100V(:,2);
+%     eta_100V = data_100V(:,4);
+%     mySigma = intersect(sigma_0V, sigma_100V);
+%     myDeltaEta = zeros(size(mySigma));
+%     for kk=1:length(mySigma)
+%         my_eta_100V = eta_100V(sigma_100V==mySigma(kk));
+%         my_eta_0V = eta_0V(sigma_0V==mySigma(kk));
+%         myDeltaEta(kk)=my_eta_0V-my_eta_100V;
+%     end
+%     plot(mySigma,myDeltaEta,'-ok','LineWidth',3)
 end
 
 

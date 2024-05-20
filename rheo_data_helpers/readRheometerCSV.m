@@ -1,8 +1,8 @@
 clear a;
-myCells = readcell('59p5%_04_16.csv','Delimiter','\t');
+myCells = readcell('44%_ceramic_stability_05_17_2024.csv','Delimiter','\t');
 
 % optionally input struct field names in order ahead of time
-% structNames = {};
+structNames = {};
 
 % find all the tests
 testNameRows = find(strcmp(myCells,'Test:'));
@@ -28,8 +28,12 @@ for ii = 1:length(resultNameRows)
     resultName = myCells{myRow,2};
     testName = myCells{myTestNameRow,2};
     name = strcat(testName,", ",resultName);
-    myStructName = input(strcat(name,": "));
-    %myStructName = structNames{ii};
+    %myStructName = input(strcat(name,": "));
+    if ii <= length(structNames)
+        myStructName = structNames{ii};
+    else
+        myStructName = input(strcat(name,": "));
+    end
 
     % read headers and units
     headers = myCells(myRow+2,2:end);
@@ -56,6 +60,9 @@ for ii = 1:length(resultNameRows)
     % pick out just the data: excluding header rows
     % also excluding first column bc it's always just blank
     myData = myRows(myDataRows,2:end);
+    if size(myData,1)==0
+        continue
+    end
     
     % find missing values and replace them with 0
     myMissingCells = cellfun(@ismissing,myData);
@@ -63,21 +70,36 @@ for ii = 1:length(resultNameRows)
         %disp("missing value(s) replaced with 0");
         myData(myMissingCells) = {0};
     end
+
+    % SO niche but this column has non-numeric (datetime) entries
+    % and so it has to be dealt with separately smh
+    if find(strcmp(headers,'Time of Day'))
+        % extract the datetime column and store it in its own field
+        datetime_index = find(strcmp(headers,'Time of Day'));
+        datetime_cells = myData(:,datetime_index);
+        datetime_column = NaT(size(datetime_cells));
+        for jj=1:length(datetime_column)
+            datetime_column(jj) = datetime_cells{jj};
+        end
+        a.(myStructName).datetime = datetime_column;
+
+        % remove the offending column from other places
+        myData(:,datetime_index) = [];
+        headers(datetime_index) = [];
+        units(datetime_index) = [];
+    end
     
     %data = cell2mat(myCells(myRow+4:myEnd,2:end));
     %data = cell2mat(myRows(myDataRows,2:end));
     data = cell2mat(myData);
     
-    %a.(bigStructName).(myStructName).name = name;
-    %a.(bigStructName).(myStructName).headers = headers;
-    %a.(bigStructName).(myStructName).data = data;
     a.(myStructName).name = name;
     a.(myStructName).headers = headers;
     a.(myStructName).units = units;
     a.(myStructName).data = data;
 end
-%save('phi_v_50_cs_DPG.mat', '-struct', 'a');
-return
+
+
 
 % structNames = {'sample1_sweep'
 % 'sample1_0Vtrain_60Vprobe'
@@ -121,3 +143,109 @@ return
 % 'phi59_sig5p6_40V_rev'
 % 'phi59_stress_sweep_2hr'
 % 'phi59_sig5p6_0V_rev'};
+
+% structNames = {'batch1_sample4_sponges_2_low_1'
+% 'batch1_sample4_sponges_2_sweep_1'
+% 'batch1_sample4_sponges_2_long_1'
+% 'batch1_sample4_sponges_2_low_2'
+% 'batch1_sample4_sponges_2_sweep_2'
+% 'batch1_sample4_sponges_2_long_2'
+% 'batch1_sample4_sponges_2_low_3'
+% 'batch1_sample4_sponges_2_sweep_3'
+% 'batch1_sample4_sponges_2_long_3'
+% 'batch1_sample4_sponges_2_low_4'
+% 'batch1_sample4_sponges_2_sweep_4'
+% 'batch1_sample4_sponges_2_long_4'
+% 'batch1_sample4_sponges_2_low_5'
+% 'batch1_sample4_sponges_2_sweep_5'
+% 'batch1_sample4_sponges_2_long_5'
+% 'batch1_sample4_sponges_2_low_6'
+% 'batch1_sample4_sponges_2_sweep_6'
+% 'batch1_sample4_sponges_2_long_6'
+% 'batch1_sample4_sponges_2_low_7'
+% 'batch1_sample4_sponges_2_sweep_7'
+% 'batch1_sample4_sponges_2_long_7'
+% 'batch1_sample4_sponges_2_low_8'
+% 'batch1_sample4_sponges_2_sweep_8'
+% 'batch1_sample4_sponges_2_long_8'
+% 'batch1_sample4_sponges_2_low_9'
+% 'batch1_sample4_sponges_2_sweep_9'
+% 'batch1_sample4_sponges_2_long_9'
+% 'batch1_sample1_low_1'
+% 'batch1_sample1_sweep_1'
+% 'batch1_sample1_long_1'
+% 'batch1_sample1_low_2'
+% 'batch1_sample1_sweep_2'
+% 'batch1_sample1_long_2'
+% 'batch1_sample1_low_3'
+% 'batch1_sample1_sweep_3'
+% 'batch1_sample1_long_3'
+% 'batch1_sample1_low_4'
+% 'batch1_sample1_sweep_4'
+% 'batch1_sample1_long_4'
+% 'batch1_sample1_low_5'
+% 'batch1_sample1_sweep_5'
+% 'batch1_sample1_long_5'
+% 'batch1_sample1_low_6'
+% 'batch1_sample1_sweep_6'
+% 'batch1_sample1_long_6'
+% 'batch1_sample2_low_1'
+% 'batch1_sample2_sweep_1'
+% 'batch1_sample2_long_1'
+% 'batch1_sample2_low_2'
+% 'batch1_sample2_sweep_2'
+% 'batch1_sample2_long_2'
+% 'batch1_sample2_low_3'
+% 'batch1_sample2_sweep_3'
+% 'batch1_sample2_long_3'
+% 'batch1_sample2_low_4'
+% 'batch1_sample2_sweep_4'
+% 'batch1_sample2_long_4'
+% 'batch1_sample2_low_5'
+% 'batch1_sample2_sweep_5'
+% 'batch1_sample2_long_5'
+% 'batch1_sample3_low_1'
+% 'batch1_sample3_sweep_1'
+% 'batch1_sample3_long_1'
+% 'batch1_sample3_low_2'
+% 'batch1_sample3_sweep_2'
+% 'batch1_sample3_long_2'
+% 'batch1_sample3_low_3'
+% 'batch1_sample3_sweep_3'
+% 'batch1_sample3_long_3'
+% 'batch1_sample3_low_4'
+% 'batch1_sample3_sweep_4'
+% 'batch1_sample3_long_4'
+% 'batch1_sample3_low_5'
+% 'batch1_sample3_sweep_5'
+% 'batch1_sample3_long_5'
+% 'batch1_sample4_sponges_low_1'
+% 'batch1_sample4_sponges_sweep_1'
+% 'batch1_sample4_sponges_long_1'
+% 'batch1_sample4_sponges_low_2'
+% 'batch1_sample4_sponges_sweep_2'
+% 'batch1_sample4_sponges_long_2'
+% 'batch1_sample4_sponges_low_3'
+% 'batch1_sample4_sponges_sweep_3'
+% 'batch1_sample4_sponges_long_3'
+% 'batch1_sample4_sponges_low_4'
+% 'batch1_sample4_sponges_sweep_4'
+% 'batch1_sample4_sponges_long_4'
+% 'batch1_sample4_sponges_low_5'
+% 'batch1_sample4_sponges_sweep_5'
+% 'batch1_sample4_sponges_long_5'
+% 'batch1_sample5_low_1'
+% 'batch1_sample5_sweep_1'
+% 'batch1_sample5_long_1'
+% 'batch1_sample5_low_2'
+% 'batch1_sample5_sweep_2'
+% 'batch1_sample5_long_2'
+% 'batch1_sample5_low_3'
+% 'batch1_sample5_sweep_3'
+% 'batch1_sample5_long_3'
+% 'batch1_sample5_low_4'
+% 'batch1_sample5_sweep_4'
+% 'batch1_sample5_long_4'
+% 'batch1_sample5_low_5'
+% 'batch1_sample5_sweep_5'
+% 'batch1_sample5_long_5'};
