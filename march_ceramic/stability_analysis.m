@@ -1,5 +1,6 @@
 load('data/stability_05_16.mat')
 load('data/stability_05_17.mat')
+load('data/gly')
 
 cmap = viridis(256); 
 myColor = @(t,tmax) cmap(round(1+255*t/tmax),:);
