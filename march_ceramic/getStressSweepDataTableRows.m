@@ -39,8 +39,10 @@ for ii = 1:length(stress_list)
         t0_index = jumpPoints(jj);
         myT = [myT(1:t0_index-1);myT(t0_index:end)-myT(t0_index)];
    end
-   % now cut off the first 10s of the interval
-   myEta = myEta(myT>10);
+   % now cut off the first 10s of the interval and all but the last 30s
+   % TODO this no longer works if there are multiple intervals of sigma
+   %myEta = myEta(myT>10);
+    myEta = myEta(myT>10 & myT(end)-myT<30 );
 
    myEtaAvg = mean(myEta);
    myDeltaEta = std(myEta);

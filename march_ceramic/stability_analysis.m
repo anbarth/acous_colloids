@@ -1,6 +1,5 @@
 load('data/stability_05_16.mat')
 load('data/stability_05_17.mat')
-
 load('data/glycerol_stability_05_20.mat')
 
 
@@ -83,7 +82,9 @@ ax1.XScale = 'log';
 colormap(ax1,cmap)
 
 %%%%% show stress sweeps over time for several loads in a set
-mySet = {glycerol_sample2};
+%%%%% shows, for example, that the trend is p similar for all the stuff
+%%%%% from batch 1
+mySet = repeated_loads_1;
 n = 1;
 tmax = minutes(mySet{n}{end}.datetime(1)-mySet{n}{1}.datetime(1));
 tmax = 60*4;
@@ -119,6 +120,7 @@ end
 %close;
 
 %%%% show eta(sigma=1pa) over time for several samples
+%%%% nicely shows that glycerol is more stable than GW
 %return
 all_loads = {batch1_sample1,batch1_sample2,batch1_sample3,batch1_sample5_nextday,batch1_sample4_sponges,batch2_sample1_drierite,batch2_sample2,batch2_sample3_drierite,glycerol_sample1,glycerol_sample2};
 colors = ["#0072BD","#0072BD","#0072BD","#4DBEEE",	"#D95319","#EDB120","#7E2F8E","#EDB120","#77AC30","#77AC30"];

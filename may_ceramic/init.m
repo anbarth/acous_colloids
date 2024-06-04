@@ -1,0 +1,5 @@
+addpath(genpath('..\plot_helpers\'))
+addpath(genpath('..\rheo_data_helpers\'))
+addpath(genpath('..\may_ceramic\'))
+addpath(genpath('..\may_ceramic\data\'))
+addpath(genpath('..\march_ceramic\'))

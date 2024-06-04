@@ -1,15 +1,15 @@
 my_vol_frac_markers = ["o","diamond",">","square","<","hexagram","^","pentagram","v"];
 
 vol_frac_plotting_range = 1:9;
-volt_plotting_range = 1;
+volt_plotting_range = 1:8;
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 showMeera = false;
 
 xc=1;
 
-collapse_params;
-%[eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,9);
+%collapse_params;
+[eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,9);
 f = @(sigma,jj) exp(-sigmastar(jj)./sigma);
 stressTable = march_data_table_05_02;
 phi_list = unique(stressTable(:,1));

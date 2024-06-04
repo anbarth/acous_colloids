@@ -1,5 +1,5 @@
 clear a;
-myCells = readcell('ceramic_glycerol_sample2_05_21_2024.csv','Delimiter','\t');
+myCells = readcell('56%_05_31.csv','Delimiter','\t');
 
 % optionally input struct field names in order ahead of time
 structNames = {};
@@ -11,6 +11,11 @@ allNameRows = [testNameRows;resultNameRows];
 
 % cycle through tests
 for ii = 1:length(resultNameRows)
+
+    if ii > 4
+        break
+    end
+
     % find my "result" row
     myRow = resultNameRows(ii);
     

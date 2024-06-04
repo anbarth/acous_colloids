@@ -1,10 +1,10 @@
-dataTable = march_data_table_04_02;
-phi_list = [0.44,.48,0.52,0.56,0.59];
+dataTable = march_data_table_05_02;
+phi_list = unique(dataTable(:,1));
 maxPhi = 0.6;
 minPhi = 0.4;
 phi0 = 0.678;
 
-phi_range = 1;
+phi_range = 3;
 my_vol_frac_markers = ['>','s','o','d','h','pentagram'];
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 

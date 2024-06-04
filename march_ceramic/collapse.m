@@ -1,18 +1,20 @@
 my_vol_frac_markers = ["o","diamond",">","square","<","hexagram","^","pentagram","v"];
 
 vol_frac_plotting_range = 1:9;
-volt_plotting_range = 1:8;
-colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
-showLines = false;
+volt_plotting_range = 1;
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
+showLines = true;
 showMeera = false;
 
-xc=1;
-%xc = 0;
+%xc=1;
+xc = 0;
 
-collapse_params;
-
-%[eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,9);
-%f = @(sigma,jj) exp(-sigmastar(jj)./sigma);
+%collapse_params;
+%y_optimal = y_optimal_no_denom_06_04;
+load("y_optimal_05_10_constrained.mat");
+[eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,9);
+f = @(sigma,jj) exp(-sigmastar(jj)./sigma);
+C = ones(size(C));
 
 stressTable = march_data_table_05_02;
 phi_list = unique(stressTable(:,1));
@@ -104,11 +106,12 @@ for ii = vol_frac_plotting_range
         %xWC = C(ii)*A(P).*f(sigma) ./ (-1*phi+phi0);
         %xWC = C(ii)*G(jj).*f(sigma) ./ (-1*phi+phi0);
         %xWC = C(ii,jj)*f(sigma,jj) ./ (-1*phi+phi0);
-        xWC = C(phi,voltage)*f(sigma,jj) ./ (-1*phi+phi0);
+        xWC = C(ii,jj)*f(sigma,jj);
+        %xWC = C(phi,voltage)*f(sigma,jj) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
 
-        %H = eta.*(C(ii).*f(sigma,jj)).^2;
-        H = 0;
+        H = eta.*(C(ii,jj).*f(sigma,jj)).^2;
+        %H = 0;
 
         myMarker = my_vol_frac_markers(ii);
         if showLines && colorBy < 3
@@ -186,7 +189,6 @@ if xc ~= 0
 end
 
 if xc ~=0
-    close(fig_cardy)
+    %close(fig_cardy)
 end
 %close(fig_collapse)
-
