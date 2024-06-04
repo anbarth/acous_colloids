@@ -1,5 +1,5 @@
 clear a;
-myCells = readcell('56%_05_31.csv','Delimiter','\t');
+myCells = readcell('59%_05_30.csv','Delimiter','\t');
 
 % optionally input struct field names in order ahead of time
 structNames = {};
@@ -12,9 +12,9 @@ allNameRows = [testNameRows;resultNameRows];
 % cycle through tests
 for ii = 1:length(resultNameRows)
 
-    if ii > 4
-        break
-    end
+    %if ii > 4
+    %    break
+    %end
 
     % find my "result" row
     myRow = resultNameRows(ii);
@@ -31,6 +31,9 @@ for ii = 1:length(resultNameRows)
     % prompt user for struct field name
     %myStructName = strcat('unnamed',num2str(ii));
     resultName = myCells{myRow,2};
+    if isnumeric(resultName)
+        resultName = num2str(resultName);
+    end
     testName = myCells{myTestNameRow,2};
     name = strcat(testName,", ",resultName);
     %myStructName = input(strcat(name,": "));
