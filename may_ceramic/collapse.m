@@ -1,7 +1,7 @@
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v"];
 
 vol_frac_plotting_range = 11:-1:1;
-volt_plotting_range = 1;
+volt_plotting_range = 2;
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = true;
 showMeera = false;
@@ -12,7 +12,7 @@ xc=1;
 collapse_params;
 
 
-stressTable = may_table_06_05;
+stressTable = may_ceramic_06_05;
 phi_list = unique(stressTable(:,1));
 minPhi = 0.1997;
 maxPhi = 0.6;
@@ -180,5 +180,6 @@ end
 
 if xc ~=0
     close(fig_cardy)
+    close(fig_xc_x)
 end
 %close(fig_collapse)

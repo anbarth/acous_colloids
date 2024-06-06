@@ -9,7 +9,7 @@ volt_plotting_range = voltNum;
 
 collapse_params;
 phi_list = unique(stressTable(:,1));
-volt_list = [0,5,10,20,40,60,80,100];
+volt_list = [0,5,10,20,40,60,80];
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
