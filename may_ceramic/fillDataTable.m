@@ -4,11 +4,11 @@
 % for 52%, we have to exclude the lower stresses bc i didnt do motor adjustment
 %phi52_rows = getAllDataTableRows(phi52_03_18,phi52_03_18.low_sweep_30min,0.5205,false);
 %% TODO low phi values are placeholders, fill in properly...
-rows20 = getStressSweepDataTableRows(phi20_sample1_05_28.sweep2,0.1997,[]); 
-rows25 = getStressSweepDataTableRows(phi25_sample1_05_31.sweep1,0.25,[]);
-rows30 = getStressSweepDataTableRows(phi30_sample3_05_31.sweep1,0.2993,[]);
-rows35 = getStressSweepDataTableRows(phi35_sample1_05_31.sweep3,0.35,[]);
-rows40 = getStressSweepDataTableRows(phi40_sample3_05_31.sweep1,0.4,[]);
+rows20 = getStressSweepDataTableRows(phi20_sample1_05_28.sweep2,0.1999,[]); 
+rows25 = getStressSweepDataTableRows(phi25_sample1_05_31.sweep1,0.2503,[]);
+rows30 = getStressSweepDataTableRows(phi30_sample3_05_31.sweep1,0.2997,[]);
+rows35 = getStressSweepDataTableRows(phi35_sample1_05_31.sweep3,0.3500,[]);
+rows40 = getStressSweepDataTableRows(phi40_sample3_05_31.sweep1,0.4009,[]);
 
 %phi44_rows = getAllDataTableRows(phi44_03_19,phi44_03_19.low_sweep_init,0.4398,false);
 rows44 = getAcousDataTableRows(phi44_05_29,false);

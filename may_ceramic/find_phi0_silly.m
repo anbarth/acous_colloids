@@ -33,7 +33,7 @@ ylabel('\eta^{-1/2} (Pa s)^{-1/2}');
 ft1 = fittype('m*(phi0-x)');
 opts = fitoptions(ft1);
 opts.StartPoint = [16,0.67];
-myFit1 = fit(phi,eta.^(-1/2),ft1,opts);
+myFit1 = fit(phi(1:5),eta(1:5).^(-1/2),ft1,opts);
 m = myFit1.m;
 phi0 = myFit1.phi0;
 plot([.15,.68],m*(phi0-[.15,.68]));

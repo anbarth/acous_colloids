@@ -22,7 +22,7 @@ costfxn = @(s) sum(( (fitfxn(s)-F)./F ).^2);
 
 
 if any(x > xc)
-    disp("WARNING x>xc found")
+    %disp("WARNING x>xc found")
     goodness=Inf;
     return
     %F = F(x<xc);
@@ -30,8 +30,10 @@ if any(x > xc)
 end
 
 opts = optimoptions('fmincon','Display','off');
+lb = [0, -Inf];
+ub = [Inf, 0];
 best_params = fmincon(costfxn, [0.5,-2.5],[],[],...
-            [],[],[],[],[],opts);
+            [],[],lb,ub,[],opts);
 goodness = costfxn(best_params);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%        
