@@ -1,4 +1,4 @@
-function [sigma, delta_eta] = subtractStressSweeps(sweep2, sweep1)
+function [sigma, delta_eta] = subtractStressSweepsFractional(sweep2, sweep1)
 
 sigma1 = sweep1(:,1);
 eta1 = sweep1(:,2);

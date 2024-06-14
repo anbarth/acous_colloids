@@ -2,6 +2,11 @@ cmap = viridis(256);
 myColor = @(t,tmax) cmap(round(1+255*t/tmax),:);
 dataTable = may_ceramic_06_06;
 
+% stress sweeps of all volume fractions
+% requirements: (1) the first two sweeps are low_init and init
+% (2) of those two, the chronologically first one is listed first
+% (3) the last sweep is the chronologically last one
+% otherwise order doesn't matter
 sweeps44 = {phi44_05_29.low_sweep1,phi44_05_29.sweep1,...
     phi44_05_29.sweep2,phi44_05_29.sweep3,...
     phi44_05_29.sweep4,phi44_05_29.sweep5,...
@@ -42,54 +47,60 @@ sweeps59 = {phi59_05_30.sweep1,phi59_05_30.low_sweep1,...
     phi59_05_30.low_sweep5,phi59_05_30.low_sweep7,...
     phi59_05_30.low_sweep9,phi59_05_30.low_sweep11,...
     phi59_05_30.low_sweep12,phi59_05_30.sweep12};
-
-
 allSweeps = {sweeps44,sweeps48,sweeps52,sweeps54,sweeps56,sweeps59};
 
-%phi_list = [44,48,52,54,56,58,59,59.5];
+% pick out which vol frac you wanna look at
 phi_list_dataTable = [0.4396, 0.4811, 0.5193, 0.5398, 0.5607, 0.5898];
-
-phi_num = 6;
-mySweeps = allSweeps{phi_num};
-
-figure; hold on;
-ax1 = gca;
-ax1.XScale = 'log';
-%ax1.YScale = 'log';
-colormap(ax1,cmap)
-
-% set up initial stuff
-t_init = mySweeps{1}.datetime(1);
-[sigma_init1,eta_init1] = getStressSweep(mySweeps{1});
-[sigma_init2,eta_init2] = getStressSweep(mySweeps{2});
-initialSweep = [sigma_init1,eta_init1;sigma_init2,eta_init2];
+%phi_num = 3;
 
 
+for phi_num = 1:6
+    mySweeps = allSweeps{phi_num};
 
-tmax = minutes(mySweeps{end}.datetime(1)-t_init);
-if tmax<0
-    tmax = tmax+24*60;
-end
-
-for ii = 1:length(mySweeps)
-    mySweep = mySweeps{ii};
-    [mySigma,myEta] = getStressSweep(mySweep);
-    delta_t = minutes(mySweep.datetime(1)-t_init);
-    if delta_t<0
-        delta_t = delta_t+24*60;
+    % set up fig
+    figure; hold on;
+    ax1 = gca;
+    ax1.XScale = 'log';
+    %ax1.YScale = 'log';
+    colormap(ax1,cmap)
+    
+    % get data from initial sweeps
+    t_init = mySweeps{1}.datetime(1);
+    [sigma_init1,eta_init1] = getStressSweep(mySweeps{1});
+    [sigma_init2,eta_init2] = getStressSweep(mySweeps{2});
+    initialSweep = [sigma_init1,eta_init1;sigma_init2,eta_init2];
+    
+    % set tmax for colormap purposes
+    tmax = minutes(mySweeps{end}.datetime(1)-t_init);
+    if tmax<0
+        tmax = tmax+24*60;
     end
-    %plot(ax1,mySigma,myEta,'-o','LineWidth',1,'Color',myColor(delta_t,tmax));
-
-    [mySigma_intersect,delta_eta] = subtractStressSweeps([mySigma,myEta],initialSweep);
-    plot(ax1,mySigma_intersect,delta_eta,'-o','LineWidth',1,'Color',myColor(delta_t,tmax));
+    
+    % look at all the sweeps over time
+    for ii = 1:length(mySweeps)
+        mySweep = mySweeps{ii};
+        [mySigma,myEta] = getStressSweep(mySweep);
+        delta_t = minutes(mySweep.datetime(1)-t_init);
+        if delta_t<0
+            delta_t = delta_t+24*60;
+        end
+    
+        % plot sweeps over time
+        %plot(ax1,mySigma,myEta,'-o','LineWidth',1,'Color',myColor(delta_t,tmax));
+    
+        % plot fractional change in sweeps over time
+        [mySigma_intersect,delta_eta] = subtractStressSweepsFractional([mySigma,myEta],initialSweep);
+        plot(ax1,mySigma_intersect,delta_eta,'-o','LineWidth',1,'Color',myColor(delta_t,tmax));
+    end
+    ylim([-0.5 0.2])
+    title(num2str(phi_list_dataTable(phi_num)))
+    
+    % overlay the stress sweep from the data table
+    myData = dataTable(dataTable(:,1)==phi_list_dataTable(phi_num) & dataTable(:,3)==0, :);
+    sigma = myData(:,2);
+    eta = myData(:,4);
+    [sigma,sortIdx] = sort(sigma,'ascend');
+    eta = eta(sortIdx);
+    
+    %plot(ax1,sigma,eta, '-dk','LineWidth',3);
 end
-
-myData = dataTable(dataTable(:,1)==phi_list_dataTable(phi_num) & dataTable(:,3)==0, :);
-sigma = myData(:,2);
-eta = myData(:,4);
-
-% sort in order of ascending sigma
-[sigma,sortIdx] = sort(sigma,'ascend');
-eta = eta(sortIdx);
-
-%plot(ax1,sigma,eta, '-dk','LineWidth',3);

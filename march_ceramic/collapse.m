@@ -14,7 +14,7 @@ xc = 0;
 load("y_optimal_05_10_constrained.mat");
 [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,9);
 f = @(sigma,jj) exp(-sigmastar(jj)./sigma);
-C = ones(size(C));
+%C = ones(size(C));
 
 stressTable = march_data_table_05_02;
 phi_list = unique(stressTable(:,1));
@@ -105,8 +105,8 @@ for ii = vol_frac_plotting_range
 
         %xWC = C(ii)*A(P).*f(sigma) ./ (-1*phi+phi0);
         %xWC = C(ii)*G(jj).*f(sigma) ./ (-1*phi+phi0);
-        %xWC = C(ii,jj)*f(sigma,jj) ./ (-1*phi+phi0);
-        xWC = C(ii,jj)*f(sigma,jj);
+        xWC = C(ii,jj)*f(sigma,jj) ./ (-1*phi+phi0);
+        %xWC = C(ii,jj)*f(sigma,jj);
         %xWC = C(phi,voltage)*f(sigma,jj) ./ (-1*phi+phi0);
         FWC = eta*(phi0-phi)^2;
 
