@@ -1,5 +1,5 @@
 %phi0=.5923;
-phi0 = 0.69;
+phi0 = 0.6974;
 
 %sigmastar = 0.2784; %k=1
 %sigmastar = 0.1647; %k=0.5
@@ -40,3 +40,7 @@ C = 1.1*C;
 %sigmastar = [0.3600    0.6566    0.6435    0.7994    0.9990    1.3038    1.6757];
 sigmastar = [0.3600    0.4    0.5    0.7994    1.2    2   2.5];
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
+
+
+
+phi_fudge = zeros(11,1);

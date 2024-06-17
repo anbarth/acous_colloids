@@ -1,6 +1,7 @@
 dataTable = may_ceramic_06_06;
 
 
+
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
 %ax_eta.XLabel.String = '\sigma (rheometer Pa)';
@@ -22,21 +23,30 @@ ax_eta_rescaled.YLabel.String = '\eta*(\phi_0-\phi)^2 (rheometer Pa s)';
 hold(ax_eta_rescaled,'on');
 
 %phi_high = [0.44,0.48,0.52,0.56,0.59];
-phi = unique(dataTable(:,1));
-phi_high = phi(1:end);
+phi_list = unique(dataTable(:,1));
+%phi_list_plot = phi_list(1:end);
+plot_indices = 1:length(phi_list);
 
+load("y_optimal_fudge_06_17.mat")
+[eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,11);
+% phi_fudge = zeros(size(phi_list));
 
-
-minPhi = min(phi_high);
-maxPhi = max(phi_high);
-phi0=0.7;
+minPhi = 0.19;
+maxPhi = 0.6;
+%minPhi = min(phi_list_plot);
+%maxPhi = max(phi_list_plot);
+%phi0=0.7;
 %cmap = flipud(viridis(256)); 
 cmap = turbo;
 
-for ii=1:length(phi_high)
-    phi = phi_high(ii);
+for ii=1:length(phi_list)
+    if ~ismember(ii,plot_indices)
+        continue
+    end
+    phi = phi_list(ii);
+    phi_fudged = phi+phi_fudge(ii);
     myData = dataTable(dataTable(:,1)==phi & dataTable(:,3)==0, :);
-    myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
+    myColor = cmap(round(1+255*(phi_fudged-minPhi)/(maxPhi-minPhi)),:);
     sigma = myData(:,2);
     eta = myData(:,4);
     deltaEta = myData(:,5);
@@ -52,18 +62,18 @@ for ii=1:length(phi_high)
     plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',1);
     %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
 
-    plot(ax_eta_rescaled,sigma,eta*(phi0-phi)^2, '-d','Color',myColor,'LineWidth',1);
+    plot(ax_eta_rescaled,sigma,eta*(phi0-phi_fudged)^2, '-d','Color',myColor,'LineWidth',1);
     %errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);
 end
 
 colormap(ax_eta,cmap);
 c_eta = colorbar(ax_eta);
-c_eta.Ticks = phi_high;
+c_eta.Ticks = phi_list+phi_fudge';
 clim(ax_eta,[minPhi maxPhi]);
 
 
 close(fig_rate)
-close(fig_eta_rescaled)
+%close(fig_eta_rescaled)
 
 
 % colormap(ax_eta_rescaled,cmap);

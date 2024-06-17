@@ -10,13 +10,14 @@ xc=1;
 %xc = 0;
 
 %collapse_params;
-load("y_optimal_06_15.mat")
-[eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,11);
+load("y_optimal_fudge_06_17.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,11);
+%load("y_optimal_06_15.mat"); phi_fudge = zeros(11,1); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,11);
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
+
 
 stressTable = may_ceramic_06_06;
 phi_list = unique(stressTable(:,1));
-minPhi = 0.1997;
+minPhi = 0.19;
 maxPhi = 0.6;
 volt_list = [0,5,10,20,40,60,80];
 
@@ -76,6 +77,7 @@ for ii = vol_frac_plotting_range
 
         voltage = volt_list(jj);
         phi = phi_list(ii);
+        my_phi_fudge = phi_fudge(ii);
         myData = stressTable( stressTable(:,1)==phi & stressTable(:,3)==voltage,:);
         sigma = myData(:,2);
         eta = myData(:,4);
@@ -87,7 +89,8 @@ for ii = vol_frac_plotting_range
         if colorBy == 1
             myColor = cmap(round(1+255*voltage/80),:);
         elseif colorBy == 2
-            myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
+            %myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
+            myColor = cmap(round(1+255*(phi+my_phi_fudge-minPhi)/(maxPhi-minPhi)),:);
 
         elseif colorBy == 3
             myColor = log(P);
@@ -100,9 +103,9 @@ for ii = vol_frac_plotting_range
         xWC = C(ii,jj)*f(sigma,jj);
         %xWC = C(phi,voltage)*f(sigma,jj) ./ (-1*phi+phi0);
         
-        FWC = eta*(phi0-phi)^2;
+        FWC = eta*(phi0-(phi+my_phi_fudge))^2;
 
-        H = eta.*(C(ii,jj).*f(sigma,jj)).^2;
+        H = eta.*((phi0-(phi+my_phi_fudge))*C(ii,jj).*f(sigma,jj)).^2;
         %H = 0;
 
         myMarker = my_vol_frac_markers(ii);
@@ -157,7 +160,7 @@ if colorBy == 1
     c1.Ticks = [0,5,10,20,40,60,80];
 elseif colorBy == 2
     caxis(ax_collapse,[minPhi maxPhi]);
-    c1.Ticks = phi_list;
+    c1.Ticks = phi_list+phi_fudge;
 elseif colorBy == 4
     % TODO what are these numbers? lol
     caxis(ax_collapse,[1.6988,6])
@@ -172,7 +175,7 @@ if xc ~= 0
         c2.Ticks = [0,5,10,20,40,60,80];
     elseif colorBy == 2
         caxis(ax_xc_x,[minPhi maxPhi]);
-        c2.Ticks = phi_list;
+        c2.Ticks = phi_list+phi_fudge;
     elseif colorBy == 4
         % TODO what are these numbers? lol
         caxis(ax_xc_x,[1.6988,6])
@@ -181,8 +184,8 @@ if xc ~= 0
 end
 
 if xc ~=0
-    close(fig_cardy)
-    close(fig_xc_x)
+    %close(fig_cardy)
+    %close(fig_xc_x)
 end
 %close(fig_collapse)
 

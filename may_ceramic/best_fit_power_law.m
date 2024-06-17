@@ -1,4 +1,4 @@
-stressTable = may_ceramic_06_05;
+stressTable = may_ceramic_06_06;
 
 collapse_params;
 

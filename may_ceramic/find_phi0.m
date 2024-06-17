@@ -36,7 +36,8 @@ opts.StartPoint = [16,0.67];
 myFit1 = fit(phi,eta.^(-1/2),ft1,opts);
 m = myFit1.m;
 phi0 = myFit1.phi0;
-plot([.15,.68],m*(phi0-[.15,.68]));
+plot([.15,.72],m*(phi0-[.15,.72]));
+yline(0)
 
 
 ci = confint(myFit1);
