@@ -11,6 +11,7 @@ phi = [0 0.1 0.2 0.3 0.4 0.44 0.48 0.52 0.54 0.56 0.58 0.6];
 minSigma = 0.1;
 maxSigma = 100;
 sigma = logspace(log10(minSigma),log10(maxSigma),5);
+cmap = viridis(256); 
 myColor = @(sig) cmap(round(1+255*(log(sig)-log(minSigma))/(log(maxSigma)-log(minSigma))),:);
 
 % set up figure
@@ -26,8 +27,8 @@ for kk=1:length(sigma)
     mySigma = sigma(kk);
     myEta = eta0*(phi-phi0).^(-2).*( (phi_c(mySigma)-phi)./(phi0-phi) ).^-delta;
  
-    %myPhi_c = phi_c(mySigma);
-    myPhi_c = phi_c_plot(kk);
-    plot(ax_eta,myPhi_c-phi,myEta.*(myPhi_c-phi).^2,'--o','LineWidth',1,'Color',myColor(mySigma));
+    myPhi_c = phi_c(mySigma);
+   %myPhi_c = phi_c_plot(kk);
+    plot(ax_eta,myPhi_c-phi,myEta.*(myPhi_c-phi).^2,'-','LineWidth',2,'Color',myColor(mySigma));
 
 end

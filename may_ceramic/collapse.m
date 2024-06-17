@@ -10,10 +10,11 @@ xc=1;
 %xc = 0;
 
 %collapse_params;
+load("y_optimal_06_15.mat")
 [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,11);
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 
-stressTable = may_ceramic_06_05;
+stressTable = may_ceramic_06_06;
 phi_list = unique(stressTable(:,1));
 minPhi = 0.1997;
 maxPhi = 0.6;
@@ -35,7 +36,7 @@ ax_collapse.YLabel.String = "F";
 if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
-ax_collapse.XLim = [10^-4, 2];
+ax_collapse.XLim = [10^-2, 2];
 %ax1.YLim = [10^(-1.5),100]; %TODO delete
 colormap(ax_collapse,cmap);
 if xc ~= 0
@@ -84,7 +85,7 @@ for ii = vol_frac_plotting_range
 
 
         if colorBy == 1
-            myColor = cmap(round(1+255*voltage/100),:);
+            myColor = cmap(round(1+255*voltage/80),:);
         elseif colorBy == 2
             myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
 
@@ -152,8 +153,8 @@ F_all = F_all(trim_me);
 
 c1 = colorbar(ax_collapse);
 if colorBy == 1
-    caxis(ax_collapse,[0 100]);
-    c1.Ticks = [0,5,10,20,40,60,80,100];
+    caxis(ax_collapse,[0 80]);
+    c1.Ticks = [0,5,10,20,40,60,80];
 elseif colorBy == 2
     caxis(ax_collapse,[minPhi maxPhi]);
     c1.Ticks = phi_list;
@@ -167,11 +168,11 @@ if xc ~= 0
     colorbar(ax_cardy);
 
     if colorBy == 1
-        caxis(ax_xc_x,[0 100]);
-        c2.Ticks = [0,5,10,20,40,60,80,100];
+        caxis(ax_xc_x,[0 80]);
+        c2.Ticks = [0,5,10,20,40,60,80];
     elseif colorBy == 2
         caxis(ax_xc_x,[minPhi maxPhi]);
-        c2.Ticks = phi_list/100;
+        c2.Ticks = phi_list;
     elseif colorBy == 4
         % TODO what are these numbers? lol
         caxis(ax_xc_x,[1.6988,6])
@@ -181,6 +182,8 @@ end
 
 if xc ~=0
     close(fig_cardy)
-    %close(fig_xc_x)
+    close(fig_xc_x)
 end
 %close(fig_collapse)
+
+figure(gcf)

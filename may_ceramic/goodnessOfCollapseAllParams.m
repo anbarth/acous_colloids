@@ -15,8 +15,8 @@ for kk=1:size(stressTable,1)
     %ii = find(phi == phi_list);
     jj = find(voltage == volt_list);
 
-    x = C(phi == phi_list,voltage == volt_list)*f(sigma,jj) / (phi0-phi);
-    %x = C(phi == phi_list,voltage == volt_list)*f(sigma,jj);
+    %x = C(phi == phi_list,voltage == volt_list)*f(sigma,jj) / (phi0-phi);
+    x = C(phi == phi_list,voltage == volt_list)*f(sigma,jj);
     F = eta * (phi0-phi)^2;
 
     x_all(kk) = x;

@@ -18,19 +18,21 @@ myColor = @(sig) cmap(round(1+255*(log(sig)-log(minSigma))/(log(maxSigma)-log(mi
 
 
 %phi_c_options = [0.63 0.67 0.7 0.73];
-phi_c_options = [0.64 0.65 0.66 0.67 0.68 0.69];
-%phi_c_options = [0.6 0.61 0.62 0.63 0.64];
+%phi_c_options = [0.66 0.67 0.68 0.69];
+phi_c_options = [0.596 0.6 0.61 0.62 0.63];
 
 L={};
 % pick just one stress to look at
-for kk=2
+for kk=13
     mySigma = stress_list(kk);
+    disp(mySigma)
+    title(num2str(mySigma))
     myDataIndices = dataTable(:,2)==mySigma & dataTable(:,3)==0;
     myPhi = dataTable(myDataIndices,1);
     myEta = dataTable(myDataIndices,4);
     for ii=1:length(phi_c_options)
         myPhi_c = phi_c_options(ii);
-        plot(ax_eta,myPhi_c-myPhi,myEta.*(myPhi_c-myPhi).^2,'--o','LineWidth',1);
+        plot(ax_eta,myPhi_c-myPhi,myEta.*(myPhi_c-myPhi).^2,'-o','LineWidth',1);
         L{end+1}=num2str(myPhi_c);
     end
 end
