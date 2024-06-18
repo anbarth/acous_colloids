@@ -27,9 +27,9 @@ phi_list = unique(dataTable(:,1));
 %phi_list_plot = phi_list(1:end);
 plot_indices = 1:length(phi_list);
 
-%load("y_optimal_fudge_06_17.mat")
-%[eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,11);
-phi_fudge = zeros(1,length(phi_list)); phi0 = 0.718;
+load("y_optimal_fudge_06_17.mat")
+[eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,11);
+%phi_fudge = zeros(1,length(phi_list)); phi0 = 0.718;
 
 minPhi = 0.19;
 maxPhi = 0.6;
