@@ -1,4 +1,4 @@
-dataTable = may_ceramic_06_05;
+dataTable = may_ceramic_06_06;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'YScale','log');
@@ -9,7 +9,7 @@ cmap = winter(256);
 colormap(ax_eta,cmap);
 
 phi_list = unique(dataTable(:,1));
-phi = phi_list(11);
+phi = phi_list(8);
 disp(phi)
 ax_eta.Title.String = num2str(phi);
 
