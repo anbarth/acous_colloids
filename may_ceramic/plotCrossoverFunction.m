@@ -2,16 +2,16 @@ my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagra
 
 vol_frac_plotting_range = 11:-1:1;
 volt_plotting_range = 1:7;
-colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
+colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 showMeera = false;
 
 xc=1;
 %xc = 0;
 
-collapse_params;
+%collapse_params;
 %load("y_optimal_fudge_06_17.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,11);
-%load("y_optimal_06_15.mat"); phi_fudge = zeros(11,1); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,11);
+load("y_optimal_06_15.mat"); phi_fudge = zeros(11,1); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,11);
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 
 
@@ -188,24 +188,32 @@ if xc ~=0
 end
 close(fig_collapse)
 
+%return
+%eta0 = 0.03;
+delta = -0.65;
+A = 0.03;
+width = 0.5;
+%A = 25.26;
+%width=0.27;
 
-eta0 = 0.03;
-delta = 1;
-A = 0.02;
-width = 1e-10;
-%intersection = -3;
-
-
-x_fake = logspace(log10(min(x_all)),log10(max(x_all)));
-xi = 1./x_fake-1/xc;
-logxi = log(xi);
-intersection = (log(eta0)-log(A))/(-2+delta);
-crossover_mediator = 1/2*(1+tanh((logxi-intersection)/width));
+%x_fake = logspace(log10(min(x_all)),log10(max(x_all)),10000);
+%xi = 1./x_fake-1/xc;
+xi = logspace(-3,2,1000);
+%logxi = log(xi);
+logintersection = log(A/eta0)/(-delta-2);
+c = 1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0);
+%crossover_mediator = 1/2*(1+tanh((log(xi)-logintersection)*width));
 %Hhat = exp(-delta*logxi+log(A) + crossover_mediator.*((-2+delta)*logxi+log(eta0)-log(A)) );
-Hhat = 
-plot(ax_cardy,xi,xi.^(-delta)*A,'LineWidth',1)
+%Hhat = xi.^(-delta+crossover_mediator*(-2+delta)) * A .* (eta0/A).^crossover_mediator;
+
+mediator = cosh(width*(log(xi)-logintersection));
+%mediator = 1/1*cosh(1*(log(xi)-logintersection));
+Hhat = exp(c) * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));
+
+plot(ax_cardy,xi,xi.^(delta)*A,'LineWidth',1)
 plot(ax_cardy,xi,xi.^(-2)*eta0,'LineWidth',1)
 plot(ax_cardy,xi,Hhat,'r-','LineWidth',2);
-xline(exp(intersection))
-ylim([1e-15 10])
-xlim([0.1 1e6])
+%plot(ax_cardy,xi,mediator,'k-','LineWidth',1)
+xline(exp(logintersection))
+ylim([1e-7 10])
+xlim([1e-3 1e2])

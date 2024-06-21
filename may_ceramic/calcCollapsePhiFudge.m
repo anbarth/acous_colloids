@@ -47,8 +47,8 @@ C_upper(10,6:7) = 0;
 
 %lower_bounds = [];
 %upper_bounds = [];
-lower_bounds = zipParamsFudge(0,0,-Inf,zeros(1,numV),C_lower,-0.02*ones(1,numPhi));
-upper_bounds = zipParamsFudge(Inf,1,0,Inf*ones(1,numV),C_upper,0.02*ones(1,numPhi));
+lower_bounds = zipParamsFudge(0,0,-Inf,zeros(1,numV),C_lower,-0.005*ones(1,numPhi));
+upper_bounds = zipParamsFudge(Inf,1,0,Inf*ones(1,numV),C_upper,0.005*ones(1,numPhi));
 
 opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e4,'MaxIterations',1e4);
 y_optimal = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);

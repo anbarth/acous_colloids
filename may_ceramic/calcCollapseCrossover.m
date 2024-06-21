@@ -4,25 +4,15 @@ volt_list = unique(dataTable(:,3));
 numPhi = length(phi_list);
 numV = length(volt_list);
 
-eta0_init = 0.03;
-phi0_init = 0.69;
-delta_init = -1.5;
-sigmastar_init = [0.3600    0.4    0.5    0.7994    1.2    2   2.5];
-C1 = [ 0.01    0.025    0.1389    0.2379    0.3716    0.4516    0.7308    0.7433    0.8549    0.8376    0.8586];
-C2 = 1.7*[0         0         0         0         0    0.2954    0.45    0.45    0.5    0.5    0.5];
-C3 = 1.7*[0         0         0         0         0    0.2939    0.4    0.45    0.5    0.5    0.5];
-C4 = 1.7*[0         0         0         0         0    0.2801    0.45    0.45    0.5    0.5    0.5];
-C5 = 1.4*[0         0         0         0         0    0.2836    0.45    0.5280    0.6    0.6    0.6];
-C6 = 1*[0         0         0         0         0    0.3299    0.5288    0.65    0.8         0    0.8];
-C7 = 0.8*[0         0         0         0         0    0.2926    0.4862    0.7    0.9         0    1];
-C_init = [C1',C2',C3',C4',C5',C6',C7'];
-C_init(6,:) = 0.7*C_init(6,:);
-C_init = 1.1*C_init;
+load("y_optimal_06_15.mat")
+[eta0_init, phi0_init, delta_init, sigmastar_init, C_init] = unzipParams(y_optimal,11);
+A_init = eta0_init;
+width_init = 0.5;
 
-y_init = zipParams(eta0_init,phi0_init,delta_init,sigmastar_init,C_init);
+y_init = zipParamsCrossover(eta0_init, phi0_init, delta_init, A_init, width_init, sigmastar_init, C_init);
 
-% y = [eta0, phi0, delta, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
-costfxn = @(y) goodnessOfCollapseAllParams(dataTable,phi_list,volt_list,y);
+% y = [eta0, phi0, delta, A, width, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
+costfxn = @(y) goodnessOfCollapseCrossover(dataTable,phi_list,volt_list,y);
 
 % constraints
 % 0 < eta0 < Inf
@@ -41,13 +31,14 @@ C_upper(10,6:7) = 0;
 
 %lower_bounds = [];
 %upper_bounds = [];
-%lower_bounds = zipParams(0,0,-Inf,zeros(1,numV),C_lower);
-%upper_bounds = zipParams(Inf,1,0,Inf*ones(1,numV),C_upper);
+lower_bounds = zipParamsCrossover(0,0,-Inf,0,0,zeros(1,numV),C_lower);
+upper_bounds = zipParamsCrossover(Inf,1,0,Inf,Inf,Inf*ones(1,numV),C_upper);
 
-lower_bounds = zipParamsCrossover(eta0_init,phi0_init,delta_init,0,0,sigmastar_init,C_init);
-upper_bounds = zipParamsCrossover(eta0_init,phi0_init,delta_init,Inf,Inf,sigmastar_init,C_init);
+%lower_bounds = zipParamsCrossover(eta0_init,phi0_init,delta_init,0,0,sigmastar_init,C_init);
+%upper_bounds = zipParamsCrossover(eta0_init,phi0_init,delta_init,Inf,Inf,sigmastar_init,C_init);
 
 opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e4);
 y_optimal = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);
 
-[eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,numPhi);
+[eta0, phi0, delta, A, width, sigmastar, C] = unzipParamsCrossover(y_optimal,numPhi);
+goodnessOfCollapseCrossover(dataTable,phi_list,volt_list,y_optimal,true);
