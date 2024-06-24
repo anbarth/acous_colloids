@@ -10,13 +10,14 @@ rows30 = getStressSweepDataTableRows(phi30_sample3_05_31.sweep1,0.2997,[]);
 rows35 = getStressSweepDataTableRows(phi35_sample1_05_31.sweep3,0.3500,[]);
 rows40 = getStressSweepDataTableRows(phi40_sample3_05_31.sweep1,0.4009,[]);
 
-%phi44_rows = getAllDataTableRows(phi44_03_19,phi44_03_19.low_sweep_init,0.4398,false);
 rows44 = getAcousDataTableRows(phi44_05_29,false);
+%rows46 = getAcousDataTableRows(phi46_06_19,false);
 rows48 = getAcousDataTableRows(phi48_05_31,false);
 rows52 = getAcousDataTableRows(phi52_05_29,false);
 rows54 = getAcousDataTableRows(phi54_06_01,false);
 rows56 = getAcousDataTableRows(phi56_05_31,false);
 rows59 = getAcousDataTableRows(phi59_05_30,false);
+%rows61 = getAcousDataTableRows(phi61_06_20,false);
 
 % exclude higher stresses where stress sweep begins to bend down
 % phi44_rows = phi44_rows(phi44_rows(:,2)~=10 & phi44_rows(:,2)~=20,:);
