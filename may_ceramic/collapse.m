@@ -16,7 +16,7 @@ load("y_optimal_fudge_06_17.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] 
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 
 
-stressTable = may_ceramic_06_06;
+stressTable = may_ceramic_06_24;
 phi_list = unique(stressTable(:,1));
 minPhi = 0.19;
 maxPhi = 0.6;

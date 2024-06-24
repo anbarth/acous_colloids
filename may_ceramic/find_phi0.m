@@ -1,5 +1,7 @@
-dataTable = may_ceramic_06_06;
+dataTable = may_ceramic_06_25;
 phi = unique(dataTable(:,1));
+
+load("y_optimal_fudge_06_17.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,11);
 
 eta = [];
 delta_eta = [];
@@ -23,6 +25,9 @@ end
 % transpose eta
 eta = eta';
 delta_eta = delta_eta';
+
+% add fudge factor
+%phi = phi+phi_fudge';
 
 figure; hold on;
 delta_eta_minushalf = 1/2 * eta.^(-3/2) .* delta_eta;
