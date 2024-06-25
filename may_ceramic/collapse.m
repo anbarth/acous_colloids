@@ -6,16 +6,17 @@ colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 showMeera = false;
 
-xc=1;
-%xc = 0;
+%xc=1;
+xc = 0;
 
 %collapse_params;
 load("y_optimal_fudge_06_17.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,11);
 %load("y_optimal_06_15.mat"); phi_fudge = zeros(11,1); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,11);
+%[eta0, phi0, delta, A, width, sigmastar, C] = unzipParamsCrossover(y_optimal,numPhi);
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 
 
-stressTable = may_ceramic_06_06;
+stressTable = may_ceramic_06_24;
 phi_list = unique(stressTable(:,1));
 minPhi = 0.19;
 maxPhi = 0.6;
@@ -101,6 +102,7 @@ for ii = vol_frac_plotting_range
 
         %xWC = C(ii,jj)*f(sigma,jj) ./ (-1*phi+phi0);
         xWC = C(ii,jj)*f(sigma,jj);
+        %xWC = f(sigma,jj)./(phi0-(phi+my_phi_fudge));
         %xWC = C(phi,voltage)*f(sigma,jj) ./ (-1*phi+phi0);
         
         FWC = eta*(phi0-(phi+my_phi_fudge))^2;
@@ -160,7 +162,7 @@ if colorBy == 1
     c1.Ticks = [0,5,10,20,40,60,80];
 elseif colorBy == 2
     caxis(ax_collapse,[minPhi maxPhi]);
-    c1.Ticks = phi_list+phi_fudge;
+    c1.Ticks = phi_list+phi_fudge';
 elseif colorBy == 4
     % TODO what are these numbers? lol
     caxis(ax_collapse,[1.6988,6])
@@ -175,7 +177,7 @@ if xc ~= 0
         c2.Ticks = [0,5,10,20,40,60,80];
     elseif colorBy == 2
         caxis(ax_xc_x,[minPhi maxPhi]);
-        c2.Ticks = phi_list+phi_fudge;
+        c2.Ticks = phi_list+phi_fudge';
     elseif colorBy == 4
         % TODO what are these numbers? lol
         caxis(ax_xc_x,[1.6988,6])

@@ -6,10 +6,12 @@ addpath(genpath('..\may_ceramic\data\'))
 
 load("low_phi.mat")
 load("phi44_05_29.mat")
+load("phi46_06_19.mat")
 load("phi48_05_31.mat")
 load("phi52_05_29.mat")
 load("phi54_06_01.mat")
 load("phi56_05_31.mat")
 load("phi59_05_30.mat")
+load("phi61_06_20.mat")
 
 load("may_ceramic_06_06.mat")
