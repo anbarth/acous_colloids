@@ -45,7 +45,8 @@ phi0_err = (ci(2,2)-ci(1,2))/2;
 disp(phi0)
 disp(phi0_err)
 
-
+myEta = 2.5;
+scatter(0.61,myEta^(-1/2),'rdiamond')
 
 %p = polyfit(phi,eta.^(-1/2),1);
 %disp(-p(2)/p(1))
