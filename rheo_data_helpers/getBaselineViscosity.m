@@ -1,9 +1,19 @@
 % returns value in Pa s
 function [baselineEta,delta_eta] = getBaselineViscosity(rheoData,tStart,tEnd,showPlot)
 
+if nargin < 4
+    showPlot = false;
+end
+
+
 % get eta, t in specified window
 eta = getViscosity(rheoData,1,0);
 t = getTime(rheoData);
+
+if nargin < 3
+    tEnd = max(t);
+    tStart = tEnd-30;
+end
 
 startIndex = find(t>=tStart,1,'first');
 endIndex = find(t<=tEnd,1,'last');

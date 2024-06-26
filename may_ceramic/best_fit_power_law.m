@@ -1,8 +1,8 @@
-stressTable = may_ceramic_06_06;
+stressTable = may_ceramic_06_25;
 
 collapse_params;
 
-vol_frac_plotting_range = 1:11;
+vol_frac_plotting_range = 1:13;
 volt_plotting_range = 1:7;
 
 phi_list = unique(stressTable(:,1));

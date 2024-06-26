@@ -1,5 +1,5 @@
 clear a;
-myCells = readcell('61%_06_20.csv','Delimiter','\t');
+myCells = readcell('equiv_states_06_25.csv','Delimiter','\t');
 
 % optionally input struct field names in order ahead of time
 structNames = {};
@@ -11,10 +11,6 @@ allNameRows = [testNameRows;resultNameRows];
 
 % cycle through tests
 for ii = 1:length(resultNameRows)
-
-    %if ii > 4
-    %    break
-    %end
 
     % find my "result" row
     myRow = resultNameRows(ii);
@@ -72,12 +68,15 @@ for ii = 1:length(resultNameRows)
         continue
     end
     
+    % find 'invalid' points and remove them (this is listed in the
+    % first column, which i assume to be point no.)
+    myInvalidRows = ~cellfun(@isnumeric,myData(:,1));
+    myData(myInvalidRows,:)=[];
+    
     % find missing values and replace them with 0
     myMissingCells = cellfun(@ismissing,myData);
-    if any(myMissingCells,'all')
-        %disp("missing value(s) replaced with 0");
-        myData(myMissingCells) = {0};
-    end
+    myData(myMissingCells) = {0};
+
 
     % SO niche but this column has non-numeric (datetime) entries
     % and so it has to be dealt with separately smh
@@ -257,3 +256,59 @@ end
 % 'batch1_sample5_low_5'
 % 'batch1_sample5_sweep_5'
 % 'batch1_sample5_long_5'};
+
+
+% {'phi44_sweep1'
+% 'phi44_sig002'
+% 'phi44_sig002_rev'
+% 'phi44_sig002_stress_cess'
+% 'phi44_sig002_rate_cess'
+% 'phi44_sweep2'
+% 'phi44_sig10'
+% 'phi44_sig001'
+% 'phi44_sig10_rev'
+% 'phi44_sig10_stress_cess'
+% 'phi44_sig10_rate_cess'
+% 'phi44_sweep3'
+% 'phi44_sig05'
+% 'phi44_sig05_rev'
+% 'phi44_sig05_stress_cess'
+% 'phi44_sig05_rate_cess'
+% 'phi61_low_sweep1'
+% 'phi61_sweep1'
+% 'phi61_sig001'
+% 'phi61_sig002'
+% 'phi61_sig002_rev'
+% 'phi61_sig002_stress_cess'
+% 'phi61_sig002_rate_cess'
+% 'phi61_sweep2'
+% 'phi61_sig015'
+% 'phi61_sig015_rev'
+% 'phi61_sig015_stress_cess'
+% 'phi61_sig015_rate_cess'
+% 'phi61_sweep3'
+% 'phi61_sig009'
+% 'phi61_sig009_rev'
+% 'phi61_sig009_stress_cess'
+% 'phi61_sig009_rate_cess'
+% 'phi61_sweep4'
+% 'phi61_sig01_60V'
+% 'phi61_sig01_60V_rev'
+% 'phi61_sig01_60V_stress_cess'
+% 'phi61_sig01_60V_rate_cess'
+% 'phi61_sweep5'
+% 'phi61_sig05_60V'
+% 'phi61_sig05_60V_rev'
+% 'phi61_sig05_60V_stress_cessation_bad_timing'
+% 'phi61_sig05_60V_stress_cessation'
+% 'phi61_sig05_60V_rate_cessation'
+% 'phi61_sweep6'
+% 'phi61_sig07_60V'
+% 'phi61_sig07_60V_rev_bad'
+% 'phi61_sig07_60V_stress_cess'
+% 'phi61_sig07_60V_rev'
+% 'phi61_sig07_60V_rate_cess'
+% 'phi61_sweep7'
+% 'phi61_sig50_60V_stress_cessation'
+% 'phi61_sig5'
+% 'phi61_sig5_stress_cessation'};

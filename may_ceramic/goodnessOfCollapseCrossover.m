@@ -36,6 +36,11 @@ logintersection = log(A/eta0)/(-delta-2);
 mediator = cosh(width*(log(xi)-logintersection));
 Hconst = exp(1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0));
 Hhat = Hconst * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));
+
+if delta==-2
+    Hhat = sqrt(A*eta0) * xi.^((delta-2)/2);
+end
+
 Fhat = 1./x_all.^2 .* Hhat;
 
 

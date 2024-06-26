@@ -1,6 +1,6 @@
-my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v"];
+my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 
-vol_frac_plotting_range = 11:-1:1;
+vol_frac_plotting_range = 13:-1:1;
 volt_plotting_range = 1:7;
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
@@ -9,16 +9,17 @@ showMeera = false;
 xc=1;
 %xc = 0;
 
-%collapse_params;
-%load("y_optimal_fudge_06_17.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,11);
-load("y_optimal_06_15.mat"); phi_fudge = zeros(11,1); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,11);
+collapse_params; phi_fudge = zeros(1,13);
+%load("y_optimal_06_26.mat"); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,13); phi_fudge = zeros(13,1); 
+%load("y_optimal_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13);
+%load("y_optimal_post_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13);
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 
 
-stressTable = may_ceramic_06_06;
+stressTable = may_ceramic_06_25;
 phi_list = unique(stressTable(:,1));
-minPhi = 0.19;
-maxPhi = 0.6;
+minPhi = 0.18;
+maxPhi = 0.62;
 volt_list = [0,5,10,20,40,60,80];
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -159,7 +160,7 @@ if colorBy == 1
     c1.Ticks = [0,5,10,20,40,60,80];
 elseif colorBy == 2
     caxis(ax_collapse,[minPhi maxPhi]);
-    c1.Ticks = phi_list+phi_fudge;
+    c1.Ticks = phi_list+phi_fudge';
 elseif colorBy == 4
     % TODO what are these numbers? lol
     caxis(ax_collapse,[1.6988,6])
@@ -174,7 +175,7 @@ if xc ~= 0
         c2.Ticks = [0,5,10,20,40,60,80];
     elseif colorBy == 2
         caxis(ax_xc_x,[minPhi maxPhi]);
-        c2.Ticks = phi_list+phi_fudge;
+        c2.Ticks = phi_list+phi_fudge';
     elseif colorBy == 4
         % TODO what are these numbers? lol
         caxis(ax_xc_x,[1.6988,6])
@@ -190,7 +191,7 @@ close(fig_collapse)
 
 %return
 %eta0 = 0.03;
-delta = -0.65;
+delta = -2;
 A = 0.03;
 width = 0.5;
 %A = 25.26;
@@ -209,6 +210,9 @@ c = 1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0);
 mediator = cosh(width*(log(xi)-logintersection));
 %mediator = 1/1*cosh(1*(log(xi)-logintersection));
 Hhat = exp(c) * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));
+if delta==-2
+    Hhat = sqrt(A*eta0) * xi.^((delta-2)/2);
+end
 
 plot(ax_cardy,xi,xi.^(delta)*A,'LineWidth',1)
 plot(ax_cardy,xi,xi.^(-2)*eta0,'LineWidth',1)
