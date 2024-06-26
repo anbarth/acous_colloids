@@ -1,4 +1,4 @@
-my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v"];
+my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 
 vol_frac_plotting_range = 11:-1:1;
 volt_plotting_range = 1:7;
@@ -6,10 +6,10 @@ colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 showMeera = false;
 
-%xc=1;
-xc = 0;
+xc=1;
+%xc = 0;
 
-%collapse_params;
+%collapse_params; phi_fudge = zeros(1,13);
 load("y_optimal_fudge_06_17.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,11);
 %load("y_optimal_06_15.mat"); phi_fudge = zeros(11,1); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,11);
 %[eta0, phi0, delta, A, width, sigmastar, C] = unzipParamsCrossover(y_optimal,numPhi);
@@ -19,7 +19,7 @@ f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 stressTable = may_ceramic_06_24;
 phi_list = unique(stressTable(:,1));
 minPhi = 0.19;
-maxPhi = 0.6;
+maxPhi = 0.62;
 volt_list = [0,5,10,20,40,60,80];
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -38,7 +38,7 @@ ax_collapse.YLabel.String = "F";
 if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
-ax_collapse.XLim = [10^-2, 2];
+ax_collapse.XLim = [10^-10, 2];
 %ax1.YLim = [10^(-1.5),100]; %TODO delete
 colormap(ax_collapse,cmap);
 if xc ~= 0

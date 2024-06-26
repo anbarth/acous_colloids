@@ -1,4 +1,4 @@
-dataTable = may_ceramic_06_05;
+dataTable = may_ceramic_06_25;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
@@ -9,7 +9,7 @@ cmap = plasma(256);
 colormap(ax_eta,cmap);
 
 phi_list = unique(dataTable(:,1));
-phi = phi_list(11);
+phi = phi_list(13);
 disp(phi)
 ax_eta.Title.String = num2str(phi);
 
@@ -26,7 +26,7 @@ for ii=1:length(volt_list)
     [sigma,sortIdx] = sort(sigma,'ascend');
     eta = eta(sortIdx);
     
-    plot(ax_eta,sigma,eta, '-d','Color',myColor);
+    plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',1);
 
 end
 

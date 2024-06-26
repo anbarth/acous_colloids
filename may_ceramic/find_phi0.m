@@ -50,9 +50,19 @@ phi0_err = (ci(2,2)-ci(1,2))/2;
 disp(phi0)
 disp(phi0_err)
 
-myEta = 2.5;
-scatter(0.61,myEta^(-1/2),'rdiamond')
+%myEta = 2.5;
+%scatter(0.61,myEta^(-1/2),'rdiamond')
 
 %p = polyfit(phi,eta.^(-1/2),1);
 %disp(-p(2)/p(1))
 %plot([.15,.65],p(1)*[.15,.65]+p(2));
+
+% eta12 = m*(phi0-phi)
+phi_corrected = phi0-eta.^(-1/2)/m;
+%scatter(phi_corrected, eta.^(-1/2),'rd');
+
+myEta = 2.3;
+myPhiCorrected = phi0-myEta^(-1/2)/m;
+disp(myPhiCorrected);
+scatter(myPhiCorrected,myEta^(-1/2),'rd');
+

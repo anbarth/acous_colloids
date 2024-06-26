@@ -1,4 +1,4 @@
-dataTable = may_ceramic_06_06;
+dataTable = may_ceramic_06_25;
 
 
 
@@ -32,7 +32,7 @@ load("y_optimal_fudge_06_17.mat")
 phi_fudge = zeros(1,length(phi_list)); phi0 = 0.718;
 
 minPhi = 0.19;
-maxPhi = 0.6;
+maxPhi = 0.62;
 %minPhi = min(phi_list_plot);
 %maxPhi = max(phi_list_plot);
 %phi0=0.7;
