@@ -1,10 +1,12 @@
 file_list = ["y_by_hand_06_26.mat", "y_optimal_06_26.mat", ...
     "y_optimal_simultaneous_fudge_06_26.mat",  ...
-    "y_optimal_crossover_06_26.mat", "y_optimal_crossover_simultaneous_fudge_06_26.mat"];
+    "y_optimal_crossover_06_26.mat", "y_optimal_crossover_simultaneous_fudge_06_26.mat",...
+    "y_optimal_crossover_delta2_06_26"];
 % 1 = unzip, 2 = unzip fudge, 3 = unzip crossover, 4 = unzip crossover fudge
-unzip_key = [1 1 2 3 4 4];
-names = {"by hand", "power law", "power law + fudge", "power law, then fudge",...
-    "crossover fxn", "crossover fxn + fudge"};
+unzip_key = [1 1 2 3 4 3];
+names = {"by hand", "power law", "power law + fudge",...
+    "crossover fxn", "crossover fxn + fudge",  "fixed delta=2"};
+
 
 dataTable = may_ceramic_06_25;
 phi_list = unique(dataTable(:,1));
