@@ -1,7 +1,7 @@
 dataTable = pranav_data_table;
 
 
-phi = [0.44, 0.46, 0.48, 0.5, 0.52];
+phi = [0.44, 0.46, 0.48, 0.5, 0.52, 0.53];
 %phi = unique(dataTable(:,1));
 eta = zeros(size(phi));
 delta_eta = zeros(size(phi));
@@ -15,7 +15,7 @@ for ii=1:length(phi)
     %[~,lowStressIndex] = min(sigma); 
     
     % actually just grab the value at 0.1pa to avoid low stress weirdness?
-    lowStressIndex = find(0.2==mySigma);
+    lowStressIndex = find(0.1==mySigma);
     eta(ii) = myEta(lowStressIndex);
     delta_eta(ii) = myDeltaEta(lowStressIndex);
 end

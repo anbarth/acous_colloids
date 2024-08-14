@@ -41,11 +41,15 @@ C_upper(11,6:7) = 0;
 
 %lower_bounds = [];
 %upper_bounds = [];
-lower_bounds = zipParams(0,0,-Inf,zeros(1,numV),C_lower);
-upper_bounds = zipParams(Inf,1,0,Inf*ones(1,numV),C_upper);
+%lower_bounds = zipParams(0,0,-Inf,zeros(1,numV),C_lower);
+%upper_bounds = zipParams(Inf,1,0,Inf*ones(1,numV),C_upper);
 
+% fix delta=-2
+y_init = zipParams(eta0_init,phi0_init,-2,sigmastar_init,C_init);
+lower_bounds = zipParams(0,0,-2,zeros(1,numV),C_lower);
+upper_bounds = zipParams(Inf,1,-2,10*ones(1,numV),C_upper);
 
-opts = optimoptions('fmincon','Display','iter','MaxFunctionEvaluations',3e5);
+opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
 y_optimal = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);
 
 [eta0, phi0, delta, sigmastar, C_init] = unzipParams(y_optimal,numPhi);

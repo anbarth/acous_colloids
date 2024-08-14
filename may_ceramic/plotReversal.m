@@ -1,4 +1,4 @@
-function plotReversal(exp,tStart,rescaling)
+function plotReversal(exp,tStart,rescaling,myColor)
 
 if nargin < 2
     tStart=30;
@@ -15,7 +15,11 @@ ylabel('\eta(\phi_0-\phi)^2 (Pa s)')
 
 eta = getViscosity(exp);
 t = getTime(exp);
-plot(t-tStart,eta*rescaling,'LineWidth',1);
+if nargin < 4
+    plot(t-tStart,eta*rescaling,'LineWidth',1);
+else
+    plot(t-tStart,eta*rescaling,'LineWidth',1,'Color',myColor);
+end
 xlim([-10 30])
 
 end

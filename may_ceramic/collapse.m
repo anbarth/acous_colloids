@@ -1,24 +1,27 @@
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 
 vol_frac_plotting_range = 13:-1:1;
-volt_plotting_range = 1;
-colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
-showLines = true;
+volt_plotting_range = 1:7;
+colorBy = 4; % 1 for V, 2 for phi, 3 for P, 4 for stress
+showLines = false;
 showMeera = false;
+showInterpolatingFunction = false;
 
 xc=1;
 %xc = 0;
 
 %collapse_params; phi_fudge = zeros(1,13);
-%load("y_optimal_06_26.mat"); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,13); phi_fudge = zeros(1,13); 
-%load("y_optimal_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13);
-%load("y_optimal_post_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13);
-load("y_optimal_crossover_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C] = unzipParamsCrossover(y_optimal,13); phi_fudge = zeros(1,13); 
-%load("y_optimal_crossover_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13);
-%load("y_optimal_crossover_post_fudge_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13);
-%load("y_optimal_crossover_delta2_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C] = unzipParamsCrossover(y_optimal,13); phi_fudge = zeros(1,13); 
-%load("y_optimal_crossover_delta2_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13);
-%load("y_optimal_crossover_delta2_post_fudge_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13);
+%load("y_optimal_06_26.mat"); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,13); phi_fudge = zeros(1,13); fxnType = 1;
+%load("y_optimal_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
+%load("y_optimal_post_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
+%load("y_optimal_crossover_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C] = unzipParamsCrossover(y_optimal,13); phi_fudge = zeros(1,13); fxnType = 2;
+%load("y_optimal_crossover_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
+%load("y_optimal_crossover_post_fudge_2percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
+load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
+%load("y_optimal_delta2_06_27.mat"); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,13); phi_fudge = zeros(1,13);  fxnType = 1;
+%load("y_optimal_delta2_post_fudge_06_27.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
+%load("y_optimal_delta2_simultaneous_fudge_06_27.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
+%load("y_optimal_crossover_simultaneous_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
 
 
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
@@ -32,8 +35,10 @@ volt_list = [0,5,10,20,40,60,80];
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %cmap = turbo;
-if colorBy == 2 || colorBy == 4
+if colorBy == 2
     cmap = viridis(256); 
+elseif colorBy == 4
+    cmap = winter(256);
 else
     cmap = plasma(256);
 end
@@ -46,11 +51,10 @@ ax_collapse.YLabel.String = "F";
 if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
-ax_collapse.XLim = [10^-2, 2];
-%ax1.YLim = [10^(-1.5),100]; %TODO delete
+ax_collapse.XLim = [10^-3, 2];
 colormap(ax_collapse,cmap);
 if xc ~= 0
-    xline(ax_collapse,xc);
+    xline(ax_collapse,xc,Layer="bottom");
 end
 
 
@@ -74,6 +78,9 @@ if xc ~= 0
     if showMeera
         scatter(ax_cardy,meeraHX,meeraHY*0.2,[],[0.7 0.7 0.7]);
     end
+    
+    %ax_cardy.XLim = [1e-3 1e4];
+    %ax_cardy.YLim = [1e-9 1e2];
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -100,7 +107,6 @@ for ii = vol_frac_plotting_range
         elseif colorBy == 2
             %myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
             myColor = cmap(round(1+255*(phi+my_phi_fudge-minPhi)/(maxPhi-minPhi)),:);
-
         elseif colorBy == 3
             myColor = log(P);
         elseif colorBy == 4
@@ -110,12 +116,12 @@ for ii = vol_frac_plotting_range
 
         %xWC = C(ii,jj)*f(sigma,jj) ./ (-1*phi+phi0);
         xWC = C(ii,jj)*f(sigma,jj);
-        %xWC = f(sigma,jj)./(phi0-(phi+my_phi_fudge));
+        %xWC = 0.08*f(sigma,jj)./(phi0-(phi+my_phi_fudge));
         %xWC = C(phi,voltage)*f(sigma,jj) ./ (-1*phi+phi0);
         
         FWC = eta*(phi0-(phi+my_phi_fudge))^2;
 
-        H = eta.*((phi0-(phi+my_phi_fudge))*C(ii,jj).*f(sigma,jj)).^2;
+        H = FWC .* xWC.^2;
         %H = 0;
 
         myMarker = my_vol_frac_markers(ii);
@@ -123,6 +129,7 @@ for ii = vol_frac_plotting_range
             % sort in order of ascending x
             [xWC,sortIdx] = sort(xWC,'ascend');
             FWC = FWC(sortIdx);
+            H = H(sortIdx);
             %disp('y axis is not really F right now')
             %plot(ax_collapse,xWC,log(log(100*FWC)),strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
             
@@ -149,8 +156,7 @@ for ii = vol_frac_plotting_range
         %scatter(meeraAx,xWC,FWC,[],myColor,'filled',myMarker);
         
         if xc ~= 0
-            
-            scatter(ax_cardy, abs(1/xc-1./xWC),H,[],myColor,'filled',myMarker);
+            scatter(ax_cardy, 1./xWC-1/xc,H,[],myColor,'filled',myMarker);
         end
 
         
@@ -159,10 +165,33 @@ for ii = vol_frac_plotting_range
     end
 end
 
+
 % trim out nan values
 trim_me = ~isnan(F_all);
 x_all = x_all(trim_me);
 F_all = F_all(trim_me);
+
+if showInterpolatingFunction
+    % min value of X=1-x: 1-max(x)
+    % max value of X=1-x: 1-min(x)
+    % x=1-X
+    x_fake = 1-logspace(log10(min(1-x_all)),log10(max(1-x_all)),1000);
+    if fxnType == 1
+        Fhat = eta0*(1-x_fake).^delta;
+        Hhat = Fhat.*x_fake.^2;
+    elseif fxnType == 2
+        xi = 1./x_fake-1;
+        logintersection = log(A/eta0)/(-delta-2);
+        mediator = cosh(width*(log(xi)-logintersection));
+        Hconst = exp(1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0));
+        Hhat = Hconst * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));
+        Fhat = 1./x_fake.^2 .* Hhat;
+    end
+
+    plot(ax_collapse,x_fake,Fhat,'-k','LineWidth',1)
+    plot(ax_xc_x,1-x_fake,Fhat,'-k','LineWidth',1)
+    plot(ax_cardy,1./x_fake-1,Hhat,'-k','LineWidth',1)
+end
 
 c1 = colorbar(ax_collapse);
 if colorBy == 1
@@ -178,7 +207,7 @@ end
 
 if xc ~= 0
     c2 = colorbar(ax_xc_x);
-    colorbar(ax_cardy);
+    %c3 = colorbar(ax_cardy);
 
     if colorBy == 1
         caxis(ax_xc_x,[0 80]);

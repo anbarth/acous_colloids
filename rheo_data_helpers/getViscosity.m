@@ -12,7 +12,7 @@ if nargin < 2
 end
 
 CSS = 19;
-CSV = 50;
+CSV = 25;
 CSR = CSS/CSV;
 
 etaColumn = find(strcmp(rheoData.headers,'Viscosity'));
@@ -34,5 +34,6 @@ if rheoUnits == 2
 end
 
 eta = rheoData.data(:,etaColumn)*unitFactor;
+disp(unitFactor)
 
 end

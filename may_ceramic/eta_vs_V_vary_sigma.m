@@ -1,4 +1,4 @@
-dataTable = may_ceramic_06_06;
+dataTable = may_ceramic_06_25;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'YScale','log');
@@ -9,7 +9,7 @@ cmap = winter(256);
 colormap(ax_eta,cmap);
 
 phi_list = unique(dataTable(:,1));
-phi = phi_list(8);
+phi = phi_list(12);
 disp(phi)
 ax_eta.Title.String = num2str(phi);
 
@@ -22,7 +22,7 @@ maxLogSig = log(max(sigma_list));
 L = {};
 for ii=1:length(sigma_list)
     sigma = sigma_list(ii);
-    if sigma < 0.05
+    if sigma < 0.1
         continue
     end
     L{end+1}=num2str(sigma);
@@ -35,7 +35,7 @@ for ii=1:length(sigma_list)
     [V,sortIdx] = sort(V,'ascend');
     eta = eta(sortIdx);
     
-    plot(ax_eta,V,eta, '-o','Color',myColor,'LineWidth',1);
+    plot(ax_eta,V,eta*25, '-o','Color',myColor,'LineWidth',1);
 
 end
 

@@ -1,4 +1,6 @@
 dataTable = may_ceramic_06_25;
+my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
+
 
 
 
@@ -28,8 +30,9 @@ phi_list = unique(dataTable(:,1));
 plot_indices = 1:length(phi_list);
 
 %load("y_optimal_simultaneous_fudge_06_26.mat");
-load("y_optimal_post_fudge_06_26.mat");
-[eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13);
+%load("y_optimal_post_fudge_06_26.mat");
+%[eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13);
+load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); 
 %phi_fudge = zeros(1,length(phi_list)); phi0 = 0.718;
 
 minPhi = 0.18;
@@ -38,7 +41,8 @@ maxPhi = 0.62;
 %maxPhi = max(phi_list_plot);
 %phi0=0.7;
 %cmap = flipud(viridis(256)); 
-cmap = turbo;
+%cmap = turbo;
+cmap = viridis(256);
 
 for ii=1:length(phi_list)
     if ~ismember(ii,plot_indices)
@@ -57,8 +61,9 @@ for ii=1:length(phi_list)
     eta = eta(sortIdx);
     deltaEta = deltaEta(sortIdx);
     
-    plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',1);
-    %plot(ax_eta,sigma*19,eta*25, '-d','Color',myColor,'LineWidth',1);
+    %plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',2);
+    myMarker = my_vol_frac_markers(ii);
+    plot(ax_eta,sigma*19,eta*25, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
     
     plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',1);
     %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
@@ -74,7 +79,7 @@ clim(ax_eta,[minPhi maxPhi]);
 
 
 close(fig_rate)
-%close(fig_eta_rescaled)
+close(fig_eta_rescaled)
 
 
 % colormap(ax_eta_rescaled,cmap);

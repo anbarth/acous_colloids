@@ -10,12 +10,18 @@ phi_list = unique(dataTable(:,1));
 plot_indices = 1:length(phi_list);
 
 %collapse_params; phi_fudge = zeros(1,13);
-%load("y_optimal_06_26.mat"); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,13); phi_fudge = zeros(13,1); 
-%load("y_optimal_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13);
-%load("y_optimal_post_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13);
-%load("y_optimal_crossover_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C] = unzipParamsCrossover(y_optimal,13);
-%load("y_optimal_crossover_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13);
-load("y_optimal_crossover_post_fudge_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13);
+%load("y_optimal_06_26.mat"); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,13); phi_fudge = zeros(1,13); fxnType = 1;
+%load("y_optimal_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
+%load("y_optimal_post_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
+%load("y_optimal_crossover_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C] = unzipParamsCrossover(y_optimal,13); phi_fudge = zeros(1,13); fxnType = 2;
+load("y_optimal_crossover_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
+%load("y_optimal_crossover_post_fudge_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
+%load("y_optimal_delta2_06_27.mat"); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,13); phi_fudge = zeros(1,13); fxnType = 1;
+%load("y_optimal_delta2_post_fudge_06_27.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
+%load("y_optimal_delta2_simultaneous_fudge_06_27.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
+
+
+f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 
 minPhi = 0.18;
 maxPhi = 0.62;
@@ -38,9 +44,23 @@ for ii=1:length(phi_list)
     eta = eta(sortIdx);
     deltaEta = deltaEta(sortIdx);
     
-    plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',1);
+    plot(ax_eta,sigma,eta, 'd','Color',myColor,'LineWidth',1);
     %plot(ax_eta,sigma*19,eta*25, '-d','Color',myColor,'LineWidth',1);
     
+    x = f(sigma,1)*C(ii,1);
+    if fxnType == 1
+        Fhat = eta0*(1-x).^delta;
+    elseif fxnType ==2
+        xi = 1./x-1;
+        logintersection = log(A/eta0)/(-delta-2);
+        mediator = cosh(width*(log(xi)-logintersection));
+        Hconst = exp(1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0));
+        Hhat = Hconst * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));
+        Fhat = 1./x.^2 .* Hhat;
+    end
+
+    etaHat = Fhat / (phi0-phi_fudged)^2;
+    plot(ax_eta,sigma,etaHat,'-','Color',myColor,'LineWidth',1);
 
 end
 

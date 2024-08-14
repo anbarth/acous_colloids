@@ -1,11 +1,11 @@
 file_list = ["y_by_hand_06_26.mat", "y_optimal_06_26.mat", ...
     "y_optimal_simultaneous_fudge_06_26.mat",  ...
     "y_optimal_crossover_06_26.mat", "y_optimal_crossover_simultaneous_fudge_06_26.mat",...
-    "y_optimal_crossover_delta2_06_26"];
+    "y_optimal_delta2_06_27", "y_optimal_delta2_simultaneous_fudge_06_27"];
 % 1 = unzip, 2 = unzip fudge, 3 = unzip crossover, 4 = unzip crossover fudge
-unzip_key = [1 1 2 3 4 3];
+unzip_key = [1 1 2 3 4 1 1];
 names = {"by hand", "power law", "power law + fudge",...
-    "crossover fxn", "crossover fxn + fudge",  "fixed delta=2"};
+    "crossover fxn", "crossover fxn + fudge",  "fixed delta=2" ,  "fixed delta=2+fudge"};
 
 
 dataTable = may_ceramic_06_25;
@@ -23,13 +23,13 @@ hold(ax_sigmastar,'on');
 fig_C = figure;
 ax_C = axes('Parent', fig_C);
 ax_C.XLabel.String = '\phi';
-ax_C.YLabel.String = 'C';
+ax_C.YLabel.String = 'C(V=0)';
 hold(ax_C,'on');
 
 fig_C80 = figure;
 ax_C80 = axes('Parent', fig_C80);
 ax_C80.XLabel.String = '\phi';
-ax_C80.YLabel.String = 'C';
+ax_C80.YLabel.String = 'C(V=80)';
 hold(ax_C80,'on');
 
 phi0_list = zeros(size(file_list));
@@ -53,8 +53,8 @@ for kk=1:length(file_list)
 
     mod_phi_list = phi_list+phi_fudge';
     plot(ax_sigmastar,volt_list,sigmastar, 'o-', 'LineWidth',1);
-    plot(ax_C,mod_phi_list,C(:,1), 'o-', 'LineWidth',1);
-    plot(ax_C80,mod_phi_list(C(:,7)~=0),C(C(:,7)~=0,7), 'o-', 'LineWidth',1);
+    plot(ax_C,mod_phi_list,C(:,1).*(phi0-mod_phi_list), 'o-', 'LineWidth',1);
+    plot(ax_C80,mod_phi_list(C(:,7)~=0),C(C(:,7)~=0,7).*(phi0-mod_phi_list(C(:,7)~=0)), 'o-', 'LineWidth',1);
 
     phi0_list(kk) = phi0;
     eta0_list(kk) = eta0;
