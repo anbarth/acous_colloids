@@ -1,5 +1,5 @@
 %collapse_params;
-%load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
+load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
 
 stressTable = may_ceramic_06_25;
 phi_list = unique(stressTable(:,1));
@@ -15,7 +15,7 @@ cbar = colorbar;
 clim([0 80]);
 cbar.Ticks = [0,5,10,20,40,60,80];
 %ylim([0 0.2])
-xlim([phi_list(1) 0.6])
+xlim([0.15 0.75])
 xline(phi0)
 ylabel('C')
 xlabel('\phi')
@@ -24,6 +24,9 @@ for jj=1:size(C,2)
     myC = C(:,jj);
     myPhi = phi_list+phi_fudge';
     voltage = volt_list(jj);
+    %if voltage ~= 0
+    %    continue
+    %end
 
     myPhi = myPhi(myC ~= 0);
     myC = myC(myC~=0);
@@ -48,7 +51,7 @@ end
 %     plot(myPhi,myC,'--o','Color',myColor,'LineWidth',1);
 % end
 
-return
+%return
 figure;
 hold on;
 

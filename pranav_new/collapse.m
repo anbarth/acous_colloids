@@ -11,8 +11,8 @@ showInterpolatingFunction = false;
 xc = 0;
 
 %collapse_params;
-%load("y_optimal_08_13.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,8);
-load("y_optimal_08_13_fudge.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,8);
+load("y_optimal_08_13.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,8);
+%load("y_optimal_08_13_fudge.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,8);
 %load("y_optimal_08_13_3_percent_fudge.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,8);
 
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);

@@ -1,4 +1,4 @@
-dataTable = ceramic_data_table_02_24;
+dataTable = pranav_data_table;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');

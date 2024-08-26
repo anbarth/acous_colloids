@@ -14,3 +14,5 @@ plot(volt_list,sigmastar*19,'ok','LineWidth',2);
 
 xlabel('V')
 ylabel('\sigma^* (Pa)')
+
+sigmastarFit = (p(1)*volt_list.^2+p(2)*volt_list+p(3))/19;

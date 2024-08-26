@@ -3,7 +3,7 @@ volt_plotting_range = 1;
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = true;
 
-showInterpolatingFunction = false; fxnType = 2;
+showInterpolatingFunction = true; fxnType = 2;
 
 xc = 1;
 
@@ -35,7 +35,7 @@ hold(ax_collapse,'on');
 ax_collapse.XLabel.String = "x";
 ax_collapse.YLabel.String = "F";
 
-ax_collapse.XLim = [10^-5, 20];
+ax_collapse.XLim = [10^-5, 5];
 colormap(ax_collapse,cmap);
 if xc ~= 0
     xline(ax_collapse,xc);

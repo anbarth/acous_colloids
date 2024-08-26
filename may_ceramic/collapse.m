@@ -2,7 +2,7 @@ my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagra
 
 vol_frac_plotting_range = 13:-1:1;
 volt_plotting_range = 1:7;
-colorBy = 4; % 1 for V, 2 for phi, 3 for P, 4 for stress
+colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 showMeera = false;
 showInterpolatingFunction = false;
@@ -18,6 +18,7 @@ xc=1;
 %load("y_optimal_crossover_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
 %load("y_optimal_crossover_post_fudge_2percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
 load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
+%load("y_optimal_crossover_post_fudge_1percent_smooth_fxns_08_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
 %load("y_optimal_delta2_06_27.mat"); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,13); phi_fudge = zeros(1,13);  fxnType = 1;
 %load("y_optimal_delta2_post_fudge_06_27.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
 %load("y_optimal_delta2_simultaneous_fudge_06_27.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
