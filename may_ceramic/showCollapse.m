@@ -1,3 +1,5 @@
+function showCollapse(stressTable,y_optimal)
+
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 
 vol_frac_plotting_range = 13:-1:1;
@@ -5,33 +7,17 @@ volt_plotting_range = 1:7;
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 showMeera = false;
-showInterpolatingFunction = false;
+showInterpolatingFunction = true;
 
-xc=1;
-%xc = 0;
+xc=0;
 
-%collapse_params; phi_fudge = zeros(1,13);
-%load("y_optimal_06_26.mat"); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,13); phi_fudge = zeros(1,13); fxnType = 1;
-%load("y_optimal_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
-%load("y_optimal_post_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
-%load("y_optimal_crossover_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C] = unzipParamsCrossover(y_optimal,13); phi_fudge = zeros(1,13); fxnType = 2;
-%load("y_optimal_crossover_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
-%load("y_optimal_crossover_post_fudge_2percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
-%load("y_optimal_delta2_06_27.mat"); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,13); phi_fudge = zeros(1,13);  fxnType = 1;
-%load("y_optimal_delta2_post_fudge_06_27.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
-%load("y_optimal_delta2_simultaneous_fudge_06_27.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13); fxnType = 1;
-%load("y_optimal_crossover_simultaneous_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
+[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
 
-load("y_optimal_lsqnonlin_08_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
-%load("y_optimal_lsqnonlin_post_fudge_08_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
-%load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
-%load("y_optimal_crossover_post_fudge_1percent_smooth_fxns_08_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
 
 
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 
 
-stressTable = may_ceramic_06_25;
 phi_list = unique(stressTable(:,1));
 minPhi = 0.17;
 maxPhi = 0.62;
@@ -118,15 +104,10 @@ for ii = vol_frac_plotting_range
         end
         
 
-        %xWC = C(ii,jj)*f(sigma,jj) ./ (-1*phi+phi0);
-        xWC = C(ii,jj)*f(sigma,jj);
-        %xWC = 0.08*f(sigma,jj)./(phi0-(phi+my_phi_fudge));
-        %xWC = C(phi,voltage)*f(sigma,jj) ./ (-1*phi+phi0);
-        
+        xWC = C(ii,jj)*f(sigma,jj);        
         FWC = eta*(phi0-(phi+my_phi_fudge))^2;
-
         H = FWC .* xWC.^2;
-        %H = 0;
+
 
         myMarker = my_vol_frac_markers(ii);
         if showLines && colorBy < 3
@@ -134,9 +115,6 @@ for ii = vol_frac_plotting_range
             [xWC,sortIdx] = sort(xWC,'ascend');
             FWC = FWC(sortIdx);
             H = H(sortIdx);
-            %disp('y axis is not really F right now')
-            %plot(ax_collapse,xWC,log(log(100*FWC)),strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
-            
             plot(ax_collapse,xWC,FWC,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
 
             if xc ~= 0
@@ -145,19 +123,12 @@ for ii = vol_frac_plotting_range
 
         else
             scatter(ax_collapse,xWC,FWC,[],myColor,'filled',myMarker);
-            %disp('y axis is not really F right now')
-            %scatter(ax_collapse,xWC,log(log(100*FWC)),[],myColor,'filled',myMarker);
-            %scatter(ax_collapse,xWC/meeraMultiplier_X,FWC/meeraMultiplier_Y,[],myColor,'filled','o','MarkerEdgeColor','w');
 
             if xc ~= 0
                 scatter(ax_xc_x,xc-xWC,FWC,[],myColor,'filled',myMarker);
             end
 
         end
-        %errorbar(ax_collapse,xWC,FWC,delta_eta*(phi0-phi)^2,'.','Color',myColor);
-
-        %hold(meeraAx,'on');
-        %scatter(meeraAx,xWC,FWC,[],myColor,'filled',myMarker);
         
         if xc ~= 0
             scatter(ax_cardy, 1./xWC-1/xc,H,[],myColor,'filled',myMarker);
@@ -192,9 +163,11 @@ if showInterpolatingFunction
         Fhat = 1./x_fake.^2 .* Hhat;
     end
 
-    plot(ax_collapse,x_fake,Fhat,'-k','LineWidth',1)
-    plot(ax_xc_x,1-x_fake,Fhat,'-k','LineWidth',1)
-    plot(ax_cardy,1./x_fake-1,Hhat,'-k','LineWidth',1)
+    plot(ax_collapse,x_fake,Fhat,'-r','LineWidth',2)
+    if xc ~= 0
+        plot(ax_xc_x,1-x_fake,Fhat,'-r','LineWidth',2)
+        plot(ax_cardy,1./x_fake-1,Hhat,'-r','LineWidth',2)
+    end
 end
 
 c1 = colorbar(ax_collapse);

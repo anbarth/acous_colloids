@@ -11,12 +11,14 @@ f = @(sigma,jj) exp(-sigmastar(jj)./sigma);
 x_all = zeros(size(stressTable,1),1);
 F_all = zeros(size(stressTable,1),1);
 H_all = zeros(size(stressTable,1),1);
+F_uncert_all = zeros(size(stressTable,1),1);
 
 for kk=1:size(stressTable,1)
     phi = stressTable(kk,1);
     sigma = stressTable(kk,2);
     voltage = stressTable(kk,3);
     eta = stressTable(kk,4);
+    eta_uncert = stressTable(kk,5);
     %ii = find(phi == phi_list);
     jj = find(voltage == volt_list);
     my_phi_fudge = phi_fudge(phi==phi_list);
@@ -52,12 +54,20 @@ if showPlot
     figure; hold on;
     ax1=gca; ax1.XScale = 'log'; ax1.YScale = 'log';
     
-    [xi,sortIdx] = sort(xi,'ascend');
-    H_all = H_all(sortIdx);
-    Hhat = Hhat(sortIdx);
+%     [xi,sortIdx] = sort(xi,'ascend');
+%     H_all = H_all(sortIdx);
+%     Hhat = Hhat(sortIdx);
+%     scatter(xi,H_all);
+%     plot(xi,Hhat,'k-','LineWidth',1);
+%     xlim([10^-3, 10^4])
 
-    scatter(xi,H_all);
-    plot(xi,Hhat,'k-','LineWidth',1);
+    [x_all,sortIdx] = sort(x_all,'ascend');
+    F_all = F_all(sortIdx);
+    Fhat = Fhat(sortIdx);
+    scatter(x_all,F_all);
+    plot(x_all,Fhat,'k-','LineWidth',1);
+    xlim([10^-5, 2])
+
 
 end
 

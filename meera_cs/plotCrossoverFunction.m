@@ -10,14 +10,14 @@ xc=1;
 %xc = 0;
 
 %collapse_params; phi_fudge = zeros(1,13);
-load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13);
+%load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13);
 %load("y_optimal_06_26.mat"); [eta0, phi0, delta, sigmastar, C] = unzipParams(y_optimal,13); phi_fudge = zeros(13,1); 
 %load("y_optimal_simultaneous_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13);
 %load("y_optimal_post_fudge_06_26.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13);
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 
 
-stressTable = may_ceramic_06_25;
+stressTable = meera_cs_table;
 phi_list = unique(stressTable(:,1));
 minPhi = 0.18;
 maxPhi = 0.62;
@@ -209,6 +209,7 @@ xi = logspace(-3,3,1000);
 %mediator = cosh(width*(log(xi)-logintersection));
 %Hhat = exp(c) * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));
 
+width = 10;
 xi0 = (A/eta0)^(1/(-2-delta));
 mediator = 2*cosh(width*log(xi/xi0));
 Hhat = sqrt(A*eta0) * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));

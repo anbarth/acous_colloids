@@ -26,11 +26,13 @@ for kk=1:size(stressTable,1)
     %x = C(phi == phi_list,voltage == volt_list)*f(sigma,jj) / (phi0-phi);
     x = C(phi == phi_list,voltage == volt_list)*f(sigma,jj);
     F = eta * (phi0-(phi+my_phi_fudge))^2;
-    F_uncert_all = eta_uncert * (phi0-(phi+my_phi_fudge))^2;
+    %F_uncert_all = eta_uncert * (phi0-(phi+my_phi_fudge))^2; % error i had before
+    F_uncert = eta_uncert * (phi0-(phi+my_phi_fudge))^2;
     %H = F*x^2;
 
     x_all(kk) = x;
     F_all(kk) = F;
+    F_uncert_all(kk) = F_uncert;
     %H_all(kk) = H;
 
 
@@ -48,7 +50,7 @@ end
 
 Fhat = 1./x_all.^2 .* Hhat;
 
-residuals = (Fhat - F_all) / (F_uncert_all);
+residuals = (Fhat - F_all) ./ (F_uncert_all);
 
 %goodness = sum( ((Fhat-F_all)./F_all).^2 );
 %goodness = sum( ((Hhat-H_all)./H_all).^2 );
