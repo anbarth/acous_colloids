@@ -104,12 +104,9 @@ for ii = vol_frac_plotting_range
         delta_eta = myData(:,5);
 
 
-
-
         if colorBy == 1
             myColor = cmap(round(1+255*voltage/80),:);
         elseif colorBy == 2
-            %myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
             myColor = cmap(round(1+255*(phi+my_phi_fudge-minPhi)/(maxPhi-minPhi)),:);
         elseif colorBy == 3
             myColor = log(P);
@@ -118,54 +115,40 @@ for ii = vol_frac_plotting_range
         end
         
 
-        %xWC = C(ii,jj)*f(sigma,jj) ./ (-1*phi+phi0);
-        xWC = C(ii,jj)*f(sigma,jj);
-        %xWC = 0.08*f(sigma,jj)./(phi0-(phi+my_phi_fudge));
-        %xWC = C(phi,voltage)*f(sigma,jj) ./ (-1*phi+phi0);
-        
-        FWC = eta*(phi0-(phi+my_phi_fudge))^2;
+        x = C(ii,jj)*f(sigma,jj);
+        F = eta*(phi0-(phi+my_phi_fudge))^2;
+        H = F .* x.^2;
 
-        H = FWC .* xWC.^2;
-        %H = 0;
 
         myMarker = my_vol_frac_markers(ii);
         if showLines && colorBy < 3
             % sort in order of ascending x
-            [xWC,sortIdx] = sort(xWC,'ascend');
-            FWC = FWC(sortIdx);
+            [x,sortIdx] = sort(x,'ascend');
+            F = F(sortIdx);
             H = H(sortIdx);
-            %disp('y axis is not really F right now')
-            %plot(ax_collapse,xWC,log(log(100*FWC)),strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
             
-            plot(ax_collapse,xWC,FWC,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
+            plot(ax_collapse,x,F,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
 
             if xc ~= 0
-                plot(ax_xc_x,xc-xWC,FWC,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
+                plot(ax_xc_x,xc-x,F,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
             end
 
         else
-            scatter(ax_collapse,xWC,FWC,[],myColor,'filled',myMarker);
-            %disp('y axis is not really F right now')
-            %scatter(ax_collapse,xWC,log(log(100*FWC)),[],myColor,'filled',myMarker);
-            %scatter(ax_collapse,xWC/meeraMultiplier_X,FWC/meeraMultiplier_Y,[],myColor,'filled','o','MarkerEdgeColor','w');
+            scatter(ax_collapse,x,F,[],myColor,'filled',myMarker);
 
             if xc ~= 0
-                scatter(ax_xc_x,xc-xWC,FWC,[],myColor,'filled',myMarker);
+                scatter(ax_xc_x,xc-x,F,[],myColor,'filled',myMarker);
             end
 
         end
-        %errorbar(ax_collapse,xWC,FWC,delta_eta*(phi0-phi)^2,'.','Color',myColor);
-
-        %hold(meeraAx,'on');
-        %scatter(meeraAx,xWC,FWC,[],myColor,'filled',myMarker);
-        
+       
         if xc ~= 0
-            scatter(ax_cardy, 1./xWC-1/xc,H,[],myColor,'filled',myMarker);
+            scatter(ax_cardy, 1./x-1/xc,H,[],myColor,'filled',myMarker);
         end
 
         
-        x_all(end+1:end+length(xWC)) = xWC;
-        F_all(end+1:end+length(FWC)) = FWC;
+        x_all(end+1:end+length(x)) = x;
+        F_all(end+1:end+length(F)) = F;
     end
 end
 

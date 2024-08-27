@@ -54,4 +54,12 @@ f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 
 
 
-phi_fudge = zeros(13,1);
+phi_fudge = zeros(1,13);
+
+
+eta0_init = 0.03;
+A_init = eta0_init;
+delta_init = -1.2;
+width_init = 0.5;
+
+handpickedParams = zipParams(eta0_init,phi0,delta_init,A_init,width_init,sigmastar,C,phi_fudge);

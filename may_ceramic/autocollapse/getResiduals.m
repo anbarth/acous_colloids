@@ -1,10 +1,12 @@
-function residuals = residualsCrossoverFudge(stressTable, phi_list, volt_list, paramsVector)
+function residuals = getResiduals(stressTable, paramsVector)
 
 % if nargin < 5
 %     showPlot = false;
 % end
+phi_list = unique(stressTable(:,1));
+volt_list = unique(stressTable(:,3));
 
-[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(paramsVector,length(phi_list));
+[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,length(phi_list));
 
 f = @(sigma,jj) exp(-sigmastar(jj)./sigma);
 
@@ -23,7 +25,7 @@ for kk=1:size(stressTable,1)
     jj = find(voltage == volt_list);
     my_phi_fudge = phi_fudge(phi==phi_list);
 
-    %x = C(phi == phi_list,voltage == volt_list)*f(sigma,jj) / (phi0-phi);
+
     x = C(phi == phi_list,voltage == volt_list)*f(sigma,jj);
     F = eta * (phi0-(phi+my_phi_fudge))^2;
     %F_uncert_all = eta_uncert * (phi0-(phi+my_phi_fudge))^2; % error i had before
@@ -51,22 +53,6 @@ end
 Fhat = 1./x_all.^2 .* Hhat;
 
 residuals = (Fhat - F_all) ./ (F_uncert_all);
-
-%goodness = sum( ((Fhat-F_all)./F_all).^2 );
-%goodness = sum( ((Hhat-H_all)./H_all).^2 );
-
-% if showPlot
-%     figure; hold on;
-%     ax1=gca; ax1.XScale = 'log'; ax1.YScale = 'log';
-% 
-%     [xi,sortIdx] = sort(xi,'ascend');
-%     H_all = H_all(sortIdx);
-%     Hhat = Hhat(sortIdx);
-% 
-%     scatter(xi,H_all);
-%     plot(xi,Hhat,'k-','LineWidth',1);
-% 
-% end
 
 
 end

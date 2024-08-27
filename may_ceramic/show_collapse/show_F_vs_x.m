@@ -1,4 +1,4 @@
-function showCollapse(stressTable,y_optimal)
+function show_F_vs_x(stressTable,paramsVector,varargin)
 
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 
@@ -7,16 +7,30 @@ volt_plotting_range = 1:7;
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 showMeera = false;
-showInterpolatingFunction = true;
+showInterpolatingFunction = false;
 
-xc=0;
+for ii=1:2:length(varargin)
+    if isa(varargin{ii},'char')
+        fieldName = varargin{ii};
+        if strcmp(fieldName,'PhiRange')
+            vol_frac_plotting_range = varargin{ii+1};
+        elseif strcmp(fieldName,'VoltRange')
+            volt_plotting_range = varargin{ii+1};
+        elseif strcmp(fieldName,'ColorBy')
+            colorBy = varargin{ii+1};
+        elseif strcmp(fieldName,'ShowLines')
+            showLines = varargin{ii+1};
+        elseif strcmp(fieldName,'ShowInterpolatingFunction')
+            showInterpolatingFunction = varargin{ii+1};
+        end
+    end
+end
 
-[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
 
 
+[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,13); fxnType = 2;
 
 f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
-
 
 phi_list = unique(stressTable(:,1));
 minPhi = 0.17;
@@ -24,7 +38,7 @@ maxPhi = 0.62;
 volt_list = [0,5,10,20,40,60,80];
 
 %%%%%%%%%%%%%%%%%% make all the figures %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%cmap = turbo;
+
 if colorBy == 2
     cmap = viridis(256); 
 elseif colorBy == 4
@@ -43,37 +57,9 @@ if showMeera
 end
 ax_collapse.XLim = [10^-3, 2];
 colormap(ax_collapse,cmap);
-%if xc ~= 0
-%    xline(ax_collapse,xc,Layer="bottom");
-%end
-
-
-if xc ~= 0
-    fig_xc_x = figure;
-    ax_xc_x = axes('Parent', fig_xc_x,'XScale','log','YScale','log');
-    hold(ax_xc_x,'on');
-    ax_xc_x.XLabel.String = "x_c-x";
-    ax_xc_x.YLabel.String = "F";
-    colormap(ax_xc_x,cmap);
-    
-
-    fig_cardy = figure;
-    ax_cardy = axes('Parent', fig_cardy,'XScale','log','YScale','log');
-    hold(ax_cardy,'on');
-    ax_cardy.XLabel.String = "1/x-1/x_c";
-    ax_cardy.YLabel.String = "H";
-    ax_cardy.Title.String = strcat("x_c = ",num2str(xc));
-    ax_xc_x.Title.String = strcat("x_c = ",num2str(xc));
-    colormap(ax_cardy,cmap);
-    if showMeera
-        scatter(ax_cardy,meeraHX,meeraHY*0.2,[],[0.7 0.7 0.7]);
-    end
-    
-    %ax_cardy.XLim = [1e-3 1e4];
-    %ax_cardy.YLim = [1e-9 1e2];
-end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 x_all = zeros(0,1);
 F_all = zeros(0,1);
 
@@ -89,54 +75,32 @@ for ii = vol_frac_plotting_range
         eta = myData(:,4);
         delta_eta = myData(:,5);
 
-
-
-
         if colorBy == 1
             myColor = cmap(round(1+255*voltage/80),:);
         elseif colorBy == 2
-            %myColor = cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
             myColor = cmap(round(1+255*(phi+my_phi_fudge-minPhi)/(maxPhi-minPhi)),:);
         elseif colorBy == 3
             myColor = log(P);
         elseif colorBy == 4
             myColor = log(sigma);
-        end
-        
+        end        
 
-        xWC = C(ii,jj)*f(sigma,jj);        
-        FWC = eta*(phi0-(phi+my_phi_fudge))^2;
-        H = FWC .* xWC.^2;
-
+        x = C(ii,jj)*f(sigma,jj);
+        F = eta*(phi0-(phi+my_phi_fudge))^2;
 
         myMarker = my_vol_frac_markers(ii);
         if showLines && colorBy < 3
             % sort in order of ascending x
-            [xWC,sortIdx] = sort(xWC,'ascend');
-            FWC = FWC(sortIdx);
-            H = H(sortIdx);
-            plot(ax_collapse,xWC,FWC,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
-
-            if xc ~= 0
-                plot(ax_xc_x,xc-xWC,FWC,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
-            end
-
+            [x,sortIdx] = sort(x,'ascend');
+            F = F(sortIdx);
+         
+            plot(ax_collapse,x,F,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
         else
-            scatter(ax_collapse,xWC,FWC,[],myColor,'filled',myMarker);
-
-            if xc ~= 0
-                scatter(ax_xc_x,xc-xWC,FWC,[],myColor,'filled',myMarker);
-            end
-
-        end
-        
-        if xc ~= 0
-            scatter(ax_cardy, 1./xWC-1/xc,H,[],myColor,'filled',myMarker);
+            scatter(ax_collapse,x,F,[],myColor,'filled',myMarker);
         end
 
-        
-        x_all(end+1:end+length(xWC)) = xWC;
-        F_all(end+1:end+length(FWC)) = FWC;
+        x_all(end+1:end+length(x)) = x;
+        F_all(end+1:end+length(F)) = F;
     end
 end
 
@@ -164,45 +128,19 @@ if showInterpolatingFunction
     end
 
     plot(ax_collapse,x_fake,Fhat,'-r','LineWidth',2)
-    if xc ~= 0
-        plot(ax_xc_x,1-x_fake,Fhat,'-r','LineWidth',2)
-        plot(ax_cardy,1./x_fake-1,Hhat,'-r','LineWidth',2)
-    end
+
 end
 
 c1 = colorbar(ax_collapse);
 if colorBy == 1
-    caxis(ax_collapse,[0 80]);
+    clim(ax_collapse,[0 80]);
     c1.Ticks = [0,5,10,20,40,60,80];
 elseif colorBy == 2
-    caxis(ax_collapse,[minPhi maxPhi]);
+    clim(ax_collapse,[minPhi maxPhi]);
     c1.Ticks = phi_list+phi_fudge';
-elseif colorBy == 4
-    % TODO what are these numbers? lol
-    caxis(ax_collapse,[1.6988,6])
+%elseif colorBy == 4
+    %clim(ax_collapse,[1.6988,6]) % ????
 end
 
-if xc ~= 0
-    c2 = colorbar(ax_xc_x);
-    %c3 = colorbar(ax_cardy);
-
-    if colorBy == 1
-        caxis(ax_xc_x,[0 80]);
-        c2.Ticks = [0,5,10,20,40,60,80];
-    elseif colorBy == 2
-        caxis(ax_xc_x,[minPhi maxPhi]);
-        c2.Ticks = phi_list+phi_fudge';
-    elseif colorBy == 4
-        % TODO what are these numbers? lol
-        caxis(ax_xc_x,[1.6988,6])
-    end
 
 end
-
-if xc ~=0
-    %close(fig_cardy)
-    %close(fig_xc_x)
-end
-%close(fig_collapse)
-
-figure(gcf)
