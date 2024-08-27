@@ -1,6 +1,6 @@
-function goodness = goodnessOfCollapseAllParamsPhiFudge(stressTable, phi_list, volt_list, paramsVector)
+function goodness = goodnessOfCollapsePowerLawFudgeless(stressTable, phi_list, volt_list, paramsVector)
 
-[eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(paramsVector,length(phi_list));
+[eta0, phi0, delta, sigmastar, C] = unzipParams(paramsVector,length(phi_list));
 
 f = @(sigma,jj) exp(-sigmastar(jj)./sigma);
 
@@ -13,12 +13,11 @@ for kk=1:size(stressTable,1)
     voltage = stressTable(kk,3);
     eta = stressTable(kk,4);
     %ii = find(phi == phi_list);
-    my_phi_fudge = phi_fudge(phi == phi_list);
     jj = find(voltage == volt_list);
 
     %x = C(phi == phi_list,voltage == volt_list)*f(sigma,jj) / (phi0-phi);
     x = C(phi == phi_list,voltage == volt_list)*f(sigma,jj);
-    F = eta * (phi0-(phi+my_phi_fudge))^2;
+    F = eta * (phi0-phi)^2;
 
     x_all(kk) = x;
     F_all(kk) = F;

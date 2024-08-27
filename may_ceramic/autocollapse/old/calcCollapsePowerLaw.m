@@ -5,7 +5,7 @@ numPhi = length(phi_list);
 numV = length(volt_list);
 
 % y = [eta0, phi0, delta, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
-costfxn = @(y) goodnessOfCollapseAllParamsPhiFudge(dataTable,phi_list,volt_list,y);
+costfxn = @(y) goodnessOfCollapsePowerLaw(dataTable,phi_list,volt_list,y);
 
 % constraints
 % 0 < eta0 < Inf
@@ -26,9 +26,9 @@ C_upper(11,6:7) = 0;
 
 %load("y_optimal_06_26.mat");
 load("y_optimal_delta2_06_27.mat")
-[eta0_init, phi0_init, delta_init, sigmastar_init, C_init] = unzipParams(y_optimal,13);
+[eta0_init, phi0_init, delta_init, sigmastar_init, C_init] = unzipParamsPowerLawFudgeless(y_optimal,13);
 phi_fudge_init = zeros(1,numPhi);
-y_init = zipParamsFudge(eta0_init,phi0_init,delta_init,sigmastar_init,C_init,phi_fudge_init);
+y_init = zipParamsPowerLaw(eta0_init,phi0_init,delta_init,sigmastar_init,C_init,phi_fudge_init);
 
 % no constraints
 %lower_bounds = [];
@@ -45,9 +45,9 @@ y_init = zipParamsFudge(eta0_init,phi0_init,delta_init,sigmastar_init,C_init,phi
 % fix delta = -2
 lower_bounds = zipParamsFudge(0,0,-2,zeros(1,numV),C_lower,-0.02*ones(1,numPhi));
 upper_bounds = zipParamsFudge(Inf,1,-2,10*ones(1,numV),C_upper,0.02*ones(1,numPhi));
-y_init = zipParamsFudge(eta0_init,phi0_init,-2,sigmastar_init,C_init,phi_fudge_init);
+y_init = zipParamsPowerLaw(eta0_init,phi0_init,-2,sigmastar_init,C_init,phi_fudge_init);
 
 opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e4,'MaxIterations',1e4);
 y_optimal = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);
 
-[eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,numPhi);
+[eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsPowerLaw(y_optimal,numPhi);

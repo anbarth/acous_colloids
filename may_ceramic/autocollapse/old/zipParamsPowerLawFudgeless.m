@@ -1,4 +1,4 @@
-function y = zipParams(eta0, phi0, delta, sigmastar, C)
+function y = zipParamsPowerLawFudgeless(eta0, phi0, delta, sigmastar, C)
 
 % y = [eta0, phi0, delta, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
 

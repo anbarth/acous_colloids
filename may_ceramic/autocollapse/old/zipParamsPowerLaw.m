@@ -1,4 +1,4 @@
-function y = zipParamsFudge(eta0, phi0, delta, sigmastar, C, phi_fudge)
+function y = zipParamsPowerLaw(eta0, phi0, delta, sigmastar, C, phi_fudge)
 
 % y = [eta0, phi0, delta, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ..., phi_fudge]
 

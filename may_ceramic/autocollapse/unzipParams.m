@@ -1,4 +1,4 @@
-function [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y,numPhi)
+function [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y,numPhi)
 
 % y = [eta0, phi0, delta, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
 

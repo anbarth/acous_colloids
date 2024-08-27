@@ -22,7 +22,7 @@ C_init = 1.1*C_init;
 y_init = zipParams(eta0_init,phi0_init,delta_init,sigmastar_init,C_init);
 
 % y = [eta0, phi0, delta, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
-costfxn = @(y) goodnessOfCollapseAllParams(dataTable,phi_list,volt_list,y);
+costfxn = @(y) goodnessOfCollapsePowerLawFudgeless(dataTable,phi_list,volt_list,y);
 
 % constraints
 % 0 < eta0 < Inf
@@ -45,11 +45,11 @@ C_upper(11,6:7) = 0;
 %upper_bounds = zipParams(Inf,1,0,Inf*ones(1,numV),C_upper);
 
 % fix delta=-2
-y_init = zipParams(eta0_init,phi0_init,-2,sigmastar_init,C_init);
-lower_bounds = zipParams(0,0,-2,zeros(1,numV),C_lower);
-upper_bounds = zipParams(Inf,1,-2,10*ones(1,numV),C_upper);
+y_init = zipParamsPowerLawFudgeless(eta0_init,phi0_init,-2,sigmastar_init,C_init);
+lower_bounds = zipParamsPowerLawFudgeless(0,0,-2,zeros(1,numV),C_lower);
+upper_bounds = zipParamsPowerLawFudgeless(Inf,1,-2,10*ones(1,numV),C_upper);
 
 opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
 y_optimal = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);
 
-[eta0, phi0, delta, sigmastar, C_init] = unzipParams(y_optimal,numPhi);
+[eta0, phi0, delta, sigmastar, C_init] = unzipParamsPowerLawFudgeless(y_optimal,numPhi);
