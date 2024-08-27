@@ -7,6 +7,8 @@ numV = length(volt_list);
 
 % y = [eta0, phi0, delta, A, width, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
 load("y_optimal_lsqnonlin_08_26.mat")
+%load("y_optimal_crossover_06_26.mat")
+%phi_fudge_init = zeros(size(phi_list'));
 [eta0_init, phi0_init, delta_init, A_init, width_init, sigmastar_init, C_init, phi_fudge_init] = unzipParamsCrossoverFudge(y_optimal,13);
 
 
@@ -31,21 +33,23 @@ C_lower(11,6:7) = 0;
 C_upper(11,6:7) = 0;
 
 
-opts = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
+opts = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt','StepTolerance',1e-12);
 
 % fit for all parameters except phi0=phi0_init
-myDelta = delta_init;
-y_init = zipParamsCrossoverFudge(eta0_init, phi0_init, myDelta, A_init, width_init, sigmastar_init, C_init, phi_fudge_init);
-lower_bounds = zipParamsCrossoverFudge(0,0,myDelta,0,0,zeros(1,numV),C_lower,phi_fudge_init);
-upper_bounds = zipParamsCrossoverFudge(Inf,1,myDelta,Inf,Inf,Inf*ones(1,numV),C_upper,phi_fudge_init);
+%delta_center = delta_init;
+%myDelta = delta_center;
+y_init = zipParamsCrossoverFudge(eta0_init, phi0_init, delta_init, A_init, width_init, sigmastar_init, C_init, phi_fudge_init);
+lower_bounds = zipParamsCrossoverFudge(0,0,-Inf,0,0,zeros(1,numV),C_lower,phi_fudge_init);
+upper_bounds = zipParamsCrossoverFudge(Inf,1,0,Inf,Inf,Inf*ones(1,numV),C_upper,phi_fudge_init);
 [y_optimal,resnorm_init,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init,lower_bounds,upper_bounds,opts);
 [eta0_orig, phi0_orig, delta_orig, A_orig, width_orig, sigmastar_orig, C_orig, phi_fudge_orig] = unzipParamsCrossoverFudge(y_optimal,numPhi);
 showCollapse(dataTable,y_optimal);
 title('original')
+delta_center = delta_orig;
 
 % now try to fix phi0=phi0+epsilon
-epsilon = 0.2;
-myDelta = delta_init+epsilon;
+epsilon = 0.01;
+myDelta = delta_center+epsilon;
 y_init = zipParamsCrossoverFudge(eta0_init, phi0_init, myDelta, A_init, width_init, sigmastar_init, C_init, phi_fudge_init);
 lower_bounds = zipParamsCrossoverFudge(0,0,myDelta,0,0,zeros(1,numV),C_lower,phi_fudge_init);
 upper_bounds = zipParamsCrossoverFudge(Inf,1,myDelta,Inf,Inf,Inf*ones(1,numV),C_upper,phi_fudge_init);
@@ -55,7 +59,7 @@ showCollapse(dataTable,y_optimal);
 title('+epsilon')
 
 % now try to fix phi0=phi0+epsilon
-myDelta = delta_init-epsilon;
+myDelta = delta_center-epsilon;
 y_init = zipParamsCrossoverFudge(eta0_init, phi0_init, myDelta, A_init, width_init, sigmastar_init, C_init, phi_fudge_init);
 lower_bounds = zipParamsCrossoverFudge(0,0,myDelta,0,0,zeros(1,numV),C_lower,phi_fudge_init);
 upper_bounds = zipParamsCrossoverFudge(Inf,1,myDelta,Inf,Inf,Inf*ones(1,numV),C_upper,phi_fudge_init);

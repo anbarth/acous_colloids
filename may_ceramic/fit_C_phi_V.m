@@ -12,7 +12,13 @@ opts = fitoptions(ft1);
 opts.StartPoint = [2.5,-10];
 phiFake = linspace(0.15,0.75);
 
-figure;
+Cfit = zeros(size(C));
+aFit = zeros(7,1);
+bFit = zeros(7,1);
+
+for jj=1:size(C,2)
+
+    figure;
 hold on;
 
 cmap = plasma(256);
@@ -26,11 +32,6 @@ xline(phi0)
 ylabel('C')
 xlabel('\phi')
 
-Cfit = zeros(size(C));
-aFit = zeros(7,1);
-bFit = zeros(7,1);
-
-for jj=1:size(C,2)
 
     myC = C(:,jj);
     myPhi = phi_list+phi_fudge';

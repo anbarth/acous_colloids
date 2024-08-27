@@ -9,6 +9,7 @@ numV = length(volt_list);
 
 load("y_optimal_crossover_06_26.mat")
 [eta0_init, phi0_init, delta_init, A_init, width_init, sigmastar_init, C_init] = unzipParamsCrossover(y_optimal,13);
+phi_fudge_init = zeros(size(phi_list'));
 
 % collapse_params;
 % phi0_init = phi0;
