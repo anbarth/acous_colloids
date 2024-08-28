@@ -55,7 +55,7 @@ ax_collapse.YLabel.String = "F";
 if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
-ax_collapse.XLim = [10^-3, 2];
+%ax_collapse.XLim = [10^-3, 2];
 colormap(ax_collapse,cmap);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

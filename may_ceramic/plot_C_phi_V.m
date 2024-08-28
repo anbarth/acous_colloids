@@ -1,6 +1,7 @@
 %collapse_params;
 %load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
-load("y_optimal_lsqnonlin_08_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
+%load("y_optimal_lsqnonlin_08_26.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
+y_optimal = y_optimal_fmin_1; [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); fxnType = 2;
 
 stressTable = may_ceramic_06_25;
 phi_list = unique(stressTable(:,1));
@@ -52,7 +53,7 @@ end
 %     plot(myPhi,myC,'--o','Color',myColor,'LineWidth',1);
 % end
 
-%return
+return
 figure;
 hold on;
 
