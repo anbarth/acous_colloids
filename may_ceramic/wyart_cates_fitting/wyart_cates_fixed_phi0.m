@@ -1,9 +1,9 @@
-my_data = may_table_06_05;
+my_data = may_ceramic_06_25;
 
 % edit this list to change what's included in the fit
 %phis = [44,48,52,56,59];
 phis = unique(my_data(:,1));
-phi0 = 0.6947;
+phi0 = 0.7011;
 maxSigma = 0;
 
 
@@ -49,11 +49,11 @@ costfxn = @(x) sum(( (fitfxn(x)-eta)./eta ).^2);
 constraintMatrix = zeros(3,3);
 constraintVector = [0,0,0];
 upper_bounds = [Inf,Inf,phi0];
-lower_bounds = [0,0,0.59];
+lower_bounds = [0,0,0.6101];
 
 opts = optimoptions('fmincon','Display','final','StepTolerance',1e-12);
 %opts = optimoptions('fmincon','Display','off');
-s = fmincon(costfxn, [0.1, 5, 0.595],constraintMatrix,constraintVector,...
+s = fmincon(costfxn, [0.1, 0.5, 0.65],constraintMatrix,constraintVector,...
             [],[],lower_bounds,upper_bounds,[],opts);
         
 disp(s);

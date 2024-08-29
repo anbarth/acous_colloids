@@ -1,10 +1,11 @@
-function residuals = getResiduals(stressTable, paramsVector)
+function residuals = getResiduals(stressTable, paramsVector, phi_list, volt_list)
 
-% if nargin < 5
-%     showPlot = false;
-% end
-phi_list = unique(stressTable(:,1));
-volt_list = unique(stressTable(:,3));
+if nargin < 3
+    phi_list = unique(stressTable(:,1));
+end
+if nargin < 4
+    volt_list = unique(stressTable(:,3));
+end
 
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,length(phi_list));
 

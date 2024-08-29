@@ -55,7 +55,7 @@ ax_collapse.YLabel.String = "F";
 if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
-%ax_collapse.XLim = [10^-3, 2];
+ax_collapse.XLim = [10^-3, 2];
 colormap(ax_collapse,cmap);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -114,7 +114,10 @@ if showInterpolatingFunction
     % min value of X=1-x: 1-max(x)
     % max value of X=1-x: 1-min(x)
     % x=1-X
-    x_fake = 1-logspace(log10(min(1-x_all)),log10(max(1-x_all)),1000);
+    x_fake_higher = 1-logspace(log10(min(1-x_all)),log10(max(1-x_all)),1000);
+    x_fake_lower = logspace(log10(min(x_all)),log10(max(x_all)));
+    x_fake = [x_fake_lower,x_fake_higher];
+    x_fake = sort(x_fake);
     if fxnType == 1
         Fhat = eta0*(1-x_fake).^delta;
         Hhat = Fhat.*x_fake.^2;

@@ -14,8 +14,8 @@ hold(ax_eta,'on');
 
 fig_rate = figure;
 ax_rate = axes('Parent', fig_rate,'XScale','log','YScale','log');
-ax_rate.XLabel.String = '\sigma (Pa)';
-ax_rate.YLabel.String = 'shear rate (1/s)';
+ax_rate.YLabel.String = '\eta (Pa s)';
+ax_rate.XLabel.String = 'shear rate (1/s)';
 hold(ax_rate,'on');
 % 
 fig_eta_rescaled = figure;
@@ -32,8 +32,8 @@ plot_indices = 1:length(phi_list);
 %load("y_optimal_simultaneous_fudge_06_26.mat");
 %load("y_optimal_post_fudge_06_26.mat");
 %[eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,13);
-load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); 
-%phi_fudge = zeros(1,length(phi_list)); phi0 = 0.718;
+%load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); 
+phi_fudge = zeros(1,length(phi_list)); phi0 = 0.718;
 
 minPhi = 0.18;
 maxPhi = 0.62;
@@ -63,12 +63,13 @@ for ii=1:length(phi_list)
     
     %plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',2);
     myMarker = my_vol_frac_markers(ii);
-    plot(ax_eta,sigma*19,eta*25, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
+    %plot(ax_eta,sigma*19,eta*25, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
+    plot(ax_eta,sigma,eta, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
     
-    plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',1);
+    plot(ax_rate,sigma./eta,eta, '-d','Color',myColor,'LineWidth',1);
     %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
 
-    plot(ax_eta_rescaled,sigma,eta*(phi0-phi_fudged)^2, '-d','Color',myColor,'LineWidth',1);
+    %plot(ax_eta_rescaled,sigma,eta*(phi0-phi_fudged)^2, '-d','Color',myColor,'LineWidth',1);
     %errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);
 end
 
@@ -78,7 +79,7 @@ c_eta.Ticks = phi_list+phi_fudge';
 clim(ax_eta,[minPhi maxPhi]);
 
 
-close(fig_rate)
+%close(fig_rate)
 close(fig_eta_rescaled)
 
 
