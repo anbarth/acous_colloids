@@ -49,7 +49,7 @@ upper_bounds = zipParams(Inf, phi0, 0,    Inf, Inf, sigmastar, C_upper, 0*ones(1
 
 opts = optimoptions('fmincon','Display','off','MaxFunctionEvaluations',3e5);
 
-for my_phi_index = 10:13
+for my_phi_index = 6:13
     myPhi = phi_list(my_phi_index);
     subsetDataTable = dataTable(dataTable(:,1)==myPhi & dataTable(:,3)==0,:);
     costfxn = @(y) sum(getResiduals(subsetDataTable,y,phi_list,volt_list).^2);
