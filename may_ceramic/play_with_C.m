@@ -15,8 +15,9 @@ eta0_guess = 0.03; delta_guess = -0.8; A_guess = 0.05; width_guess = 0.8;
 
 % guess C
 C = ones(numPhi,numV);
+%C(:,1) = [0.01 0.025 0.05 0.1 0.25 0.5 0.75 0.8 0.85 0.925 0.95 0.975 1];
 C(:,1) = [0.01 0.025 0.05 0.1 0.25 0.5 0.75 0.8 0.85 0.925 0.95 0.975 1];
 
 y_init = zipParams(eta0_guess, phi0, delta_guess, A_guess, width_guess, sigmastar, C, phi_fudge);
 
-show_F_vs_x(dataTable,y_init,'PhiRange',13:-1:1,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false)
+show_F_vs_x(dataTable,y_init,'PhiRange',13:-1:10,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false)
