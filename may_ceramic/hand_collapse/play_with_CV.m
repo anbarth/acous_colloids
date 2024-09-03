@@ -6,7 +6,7 @@ numV = length(volt_list);
 
 % previously determined
 phi0 = 0.7011; phi_fudge = zeros(size(phi_list))'; xc = 1.0162; sigmastar0V = 0.3011;
-C = ones(numPhi,numV);
+C = zeros(numPhi,numV);
 C(:,1) = 1/xc*[0.01 0.025 0.05 0.1 0.25 0.5 0.75 0.8 0.85 0.925 0.95 0.975 1];
 
 
@@ -49,9 +49,10 @@ sigmastar = sigmastar_list(my_phi_num-5,:);
 
 y_init = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
 
-%show_F_vs_x(dataTable,y_init,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',false)
 show_F_vs_x(dataTable,y_init,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',1:7,'ColorBy',1,'ShowInterpolatingFunction',false)
-
 return
 
-figure; hold on;
+
+
+
+

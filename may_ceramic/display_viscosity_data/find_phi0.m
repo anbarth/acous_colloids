@@ -1,7 +1,8 @@
 dataTable = may_ceramic_06_25;
 phi = unique(dataTable(:,1));
 
-%load("y_optimal_fudge_06_17.mat"); [eta0, phi0, delta, sigmastar, C, phi_fudge] = unzipParamsFudge(y_optimal,11);
+load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 
+%phi_fudge = zeros(1,length(phi));
 
 eta = [];
 delta_eta = [];
@@ -27,11 +28,12 @@ eta = eta';
 delta_eta = delta_eta';
 
 % add fudge factor
-%phi = phi+phi_fudge';
+phi_fudged = phi+phi_fudge';
 
 figure; hold on;
 delta_eta_minushalf = 1/2 * eta.^(-3/2) .* delta_eta;
-errorbar(phi,eta.^(-1/2),delta_eta_minushalf,'o')
+errorbar(phi,eta.^(-1/2),delta_eta_minushalf,'ok')
+errorbar(phi_fudged,eta.^(-1/2),delta_eta_minushalf,'or')
 xlabel('\phi')
 ylabel('\eta^{-1/2} (Pa s)^{-1/2}');
 
@@ -58,11 +60,11 @@ disp(phi0_err)
 %plot([.15,.65],p(1)*[.15,.65]+p(2));
 
 % eta12 = m*(phi0-phi)
-phi_corrected = phi0-eta.^(-1/2)/m;
+%phi_corrected = phi0-eta.^(-1/2)/m;
 %scatter(phi_corrected, eta.^(-1/2),'rd');
 
-myEta = 2.3;
-myPhiCorrected = phi0-myEta^(-1/2)/m;
-disp(myPhiCorrected);
-scatter(myPhiCorrected,myEta^(-1/2),'rd');
+%myEta = 2.3;
+%myPhiCorrected = phi0-myEta^(-1/2)/m;
+%disp(myPhiCorrected);
+%scatter(myPhiCorrected,myEta^(-1/2),'rd');
 

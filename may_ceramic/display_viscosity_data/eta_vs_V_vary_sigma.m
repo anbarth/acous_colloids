@@ -1,16 +1,19 @@
 dataTable = may_ceramic_06_25;
+my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'YScale','log');
 ax_eta.XLabel.String = 'Acoustic voltage (V)';
-ax_eta.YLabel.String = '\eta (Pa s)';
+ax_eta.YLabel.String = 'Viscosity \eta (Pa s)';
 hold(ax_eta,'on');
 cmap = winter(256);
 colormap(ax_eta,cmap);
 
 phi_list = unique(dataTable(:,1));
-phi = phi_list(12);
+phiNum = 9;
+phi = phi_list(phiNum);
 disp(phi)
+markerCode = strcat('-',my_vol_frac_markers(phiNum));
 ax_eta.Title.String = num2str(phi);
 
 myData = dataTable(dataTable(:,1)==phi, :);
@@ -35,7 +38,7 @@ for ii=1:length(sigma_list)
     [V,sortIdx] = sort(V,'ascend');
     eta = eta(sortIdx);
     
-    plot(ax_eta,V,eta*25, '-o','Color',myColor,'LineWidth',1);
+    plot(ax_eta,V,eta*25, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
 
 end
 
