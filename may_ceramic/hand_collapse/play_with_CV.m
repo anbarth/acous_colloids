@@ -15,7 +15,7 @@ eta0 = 0.0270; delta = -1.1995; A = 0.0227; width = 1.0955;
 
 
 % pick a volume fraction to work on
-my_phi_num = 12;
+my_phi_num = 7;
 
     CV_13 = [C(13,1) 0.98 0.98 0.98 0.95 0.95 0.94];
     sigmastar_13 = [sigmastar0V 0.3011 0.3011 0.6 0.8 1.2 2];
@@ -48,9 +48,7 @@ sigmastar_list = [sigmastar_6;sigmastar_7;sigmastar_8;sigmastar_9;sigmastar_10;s
 sigmastar = sigmastar_list(my_phi_num-5,:);
 
 y_init = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
-
-show_F_vs_x(dataTable,y_init,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',1:7,'ColorBy',1,'ShowInterpolatingFunction',false)
-return
+%show_F_vs_x(dataTable,y_init,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',1:7,'ColorBy',1,'ShowInterpolatingFunction',true)
 
 
 

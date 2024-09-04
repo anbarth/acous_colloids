@@ -1,4 +1,5 @@
 % pls pls pls run play_with_CV AND fit_sigmastar before this to populate y!!!
+fit_sigmastar; % which already calls play with CV
 
 ft1 = fittype('1/(1+(x/a)^b)');
 opts1 = fitoptions(ft1);
@@ -80,8 +81,7 @@ end
 
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y,numPhi);
 y2 = zipParams(eta0, phi0, delta, A, width, sigmastar, C_final, phi_fudge);
-
-show_cardy(dataTable,y2,'PhiRange',13:-1:1,'ShowLines',false,'VoltRange',1:7,'ColorBy',2,'ShowInterpolatingFunction',true);
+%show_cardy(dataTable,y2,'PhiRange',13:-1:1,'ShowLines',false,'VoltRange',1:7,'ColorBy',2,'ShowInterpolatingFunction',true);
 
 
 

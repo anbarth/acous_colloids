@@ -1,8 +1,9 @@
 dataTable = may_ceramic_06_25;
 phi = unique(dataTable(:,1));
 
-load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 
+%load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 
 %phi_fudge = zeros(1,length(phi));
+load("y_09_04.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_handpicked_fudge_xcShifted_09_04,13); 
 
 eta = [];
 delta_eta = [];

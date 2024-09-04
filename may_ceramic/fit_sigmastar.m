@@ -1,4 +1,5 @@
 % pls pls pls run play_with_CV before this to populate y!!!
+play_with_CV;
 
 % plot sigmastar(V) for all volume fractions
 figure; hold on;
@@ -15,11 +16,11 @@ V_data = V_data(sigmastar_data~=0);
 sigmastar_data = sigmastar_data(sigmastar_data~=0);
 p = polyfit(V_data,sigmastar_data,2);
 V = linspace(0,80);
-plot(V,p(1)*V.^2+p(2)*V+p(3),'-r','LineWidth',1);
+%plot(V,p(1)*V.^2+p(2)*V+p(3),'-r','LineWidth',1);
 
 sigmastarFit = (p(1)*volt_list.^2+p(2)*volt_list+p(3))';
 y = zipParams(eta0, phi0, delta, A, width, sigmastarFit, C, phi_fudge);
-show_F_vs_x(dataTable,y,'PhiRange',13:-1:1,'ShowLines',false,'VoltRange',1:7,'ColorBy',2,'ShowInterpolatingFunction',false)
+%show_F_vs_x(dataTable,y,'PhiRange',13:-1:1,'ShowLines',false,'VoltRange',1:7,'ColorBy',2,'ShowInterpolatingFunction',false)
 
 
 

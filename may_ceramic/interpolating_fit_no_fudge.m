@@ -29,8 +29,8 @@ xc_guess = 1;
 % sigmastar is fixed
 % C is fixed
 
-lower_bounds = zipParams(0,   phi0, -Inf, 0,   0,   sigmastar, C, -0.01*ones(1,numPhi));
-upper_bounds = zipParams(Inf, phi0, 0,    Inf, Inf, sigmastar, C, 0.01*ones(1,numPhi));
+lower_bounds = zipParams(0,   phi0, -Inf, 0,   0,   sigmastar, C, 0*ones(1,numPhi));
+upper_bounds = zipParams(Inf, phi0, 0,    Inf, Inf, sigmastar, C, 0*ones(1,numPhi));
 lower_bounds = [1, lower_bounds];
 upper_bounds = [1, upper_bounds];
 y_init = [xc_guess y_init];
