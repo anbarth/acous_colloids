@@ -8,6 +8,7 @@ colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 showMeera = false;
 showInterpolatingFunction = false;
+showErrorBars = false;
 
 for ii=1:2:length(varargin)
     if isa(varargin{ii},'char')
@@ -22,6 +23,8 @@ for ii=1:2:length(varargin)
             showLines = varargin{ii+1};
         elseif strcmp(fieldName,'ShowInterpolatingFunction')
             showInterpolatingFunction = varargin{ii+1};
+        elseif strcmp(fieldName,'ShowErrorBars')
+            showErrorBars = varargin{ii+1};
         end
     end
 end
@@ -75,6 +78,12 @@ for ii = vol_frac_plotting_range
         sigma = myData(:,2);
         eta = myData(:,4);
         delta_eta = myData(:,5);
+        delta_phi = 0.01;
+
+        x = C(ii,jj)*f(sigma,jj);
+        F = eta*(phi0-(phi+my_phi_fudge))^2;
+
+        delta_F = F .* (eta.^(-2).*delta_eta.^2 + 4/(phi0-(phi+my_phi_fudge))^2*delta_phi^2 ).^(1/2);
 
         if colorBy == 1
             myColor = cmap(round(1+255*voltage/80),:);
@@ -86,18 +95,18 @@ for ii = vol_frac_plotting_range
             myColor = log(sigma);
         end        
 
-        x = C(ii,jj)*f(sigma,jj);
-        F = eta*(phi0-(phi+my_phi_fudge))^2;
-
+        % sort in order of ascending x
+        [x,sortIdx] = sort(x,'ascend');
+        F = F(sortIdx);
         myMarker = my_vol_frac_markers(ii);
         if showLines && colorBy < 3
-            % sort in order of ascending x
-            [x,sortIdx] = sort(x,'ascend');
-            F = F(sortIdx);
-         
-            plot(ax_collapse,x,F,strcat(myMarker,'-'),'Color',myColor,'MarkerFaceColor',myColor);
+           myMarker = strcat(myMarker,'-');
+        end
+            
+        if showErrorBars
+            errorbar(ax_collapse,x,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
         else
-            scatter(ax_collapse,x,F,[],myColor,'filled',myMarker);
+            plot(ax_collapse,x,F,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
         end
 
         x_all(end+1:end+length(x)) = x;

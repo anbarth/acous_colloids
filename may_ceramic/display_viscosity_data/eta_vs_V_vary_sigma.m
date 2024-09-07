@@ -10,7 +10,7 @@ cmap = winter(256);
 colormap(ax_eta,cmap);
 
 phi_list = unique(dataTable(:,1));
-phiNum = 9;
+phiNum = 11;
 phi = phi_list(phiNum);
 disp(phi)
 markerCode = strcat('-',my_vol_frac_markers(phiNum));
@@ -38,7 +38,7 @@ for ii=1:length(sigma_list)
     [V,sortIdx] = sort(V,'ascend');
     eta = eta(sortIdx);
     
-    plot(ax_eta,V,eta*25, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+    plot(ax_eta,V,eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
 
 end
 
