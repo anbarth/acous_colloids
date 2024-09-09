@@ -27,7 +27,6 @@ xc=1;
 
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,13); fxnType = 2;
 
-f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 
 phi_list = unique(stressTable(:,1));
 minPhi = 0.17;
@@ -55,9 +54,13 @@ if showMeera
 end
 ax_cardy.XLim = [10^-2, 10^4];
 
-x_all = zeros(0,1);
-F_all = zeros(0,1);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+[x_all,F_all,delta_F_all] = calc_x_F(stressTable,paramsVector);
+P_all = getP(stressTable);
+minP = min(P_all(P_all~=0));
+%maxP = max(P_all);
+maxP = 10^5;
 
 for ii = vol_frac_plotting_range
     for jj = volt_plotting_range
@@ -65,10 +68,13 @@ for ii = vol_frac_plotting_range
         voltage = volt_list(jj);
         phi = phi_list(ii);
         my_phi_fudge = phi_fudge(ii);
-        myData = stressTable( stressTable(:,1)==phi & stressTable(:,3)==voltage,:);
-        sigma = myData(:,2);
-        eta = myData(:,4);
-        delta_eta = myData(:,5);
+
+        myData = stressTable(:,1)==phi & stressTable(:,3)==voltage;
+        x = x_all(myData);
+        F = F_all(myData);
+        delta_F = delta_F_all(myData);
+        H = F .* x.^2;
+        P = P_all(myData);
 
 
         if colorBy == 1
@@ -76,31 +82,24 @@ for ii = vol_frac_plotting_range
         elseif colorBy == 2
             myColor = cmap(round(1+255*(phi+my_phi_fudge-minPhi)/(maxPhi-minPhi)),:);
         elseif colorBy == 3
-            myColor = log(P);
+            P_color = P;
+            P_color(P_color==0) = minP;
+            P_color(P_color>maxP) = maxP;
+            myColor = cmap(round(1+255*(log(P_color)-log(minP))/(log(maxP)-log(minP))),:);
         elseif colorBy == 4
             myColor = log(sigma);
         end
         
 
-        x = C(ii,jj)*f(sigma,jj);
-        F = eta*(phi0-(phi+my_phi_fudge))^2;
-        H = F .* x.^2;
-
-
         myMarker = my_vol_frac_markers(ii);
-
         scatter(ax_cardy, 1./x-1/xc,H,[],myColor,'filled',myMarker);
         
-        x_all(end+1:end+length(x)) = x;
-        F_all(end+1:end+length(F)) = F;
+
     end
 end
 
 
-% trim out nan values
-trim_me = ~isnan(F_all);
-x_all = x_all(trim_me);
-F_all = F_all(trim_me);
+
 
 if showInterpolatingFunction
     % min value of X=1-x: 1-max(x)
