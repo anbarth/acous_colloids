@@ -1,4 +1,4 @@
-dataTable = may_ceramic_06_25;
+dataTable = may_ceramic_09_14;
 phi_list = unique(dataTable(:,1));
 volt_list = unique(dataTable(:,3));
 numPhi = length(phi_list);
@@ -63,32 +63,32 @@ C_upper(11,6:7) = 0;
 residualsfxn = @(y) getResiduals(dataTable,y);
 opts = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
 
-[y_optimal_lsq_1,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init_1,lower_bounds,upper_bounds,opts);
-[y_optimal_lsq_2,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init_2,lower_bounds,upper_bounds,opts);
+%[y_optimal_lsq_1,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init_1,lower_bounds,upper_bounds,opts);
+%[y_optimal_lsq_2,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init_2,lower_bounds,upper_bounds,opts);
 
 costfxn = @(y) sum(getResiduals(dataTable,y).^2);
 opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
 y_optimal_fmin_1 = fmincon(costfxn,y_init_1,[],[],[],[],lower_bounds,upper_bounds,[],opts);
-y_optimal_fmin_2 = fmincon(costfxn,y_init_1,[],[],[],[],lower_bounds,upper_bounds,[],opts);
+%y_optimal_fmin_2 = fmincon(costfxn,y_init_1,[],[],[],[],lower_bounds,upper_bounds,[],opts);
 
 
-show_cardy(dataTable,y_optimal_lsq_1,'ShowInterpolatingFunction',true); title('lsq 1')
-show_cardy(dataTable,y_optimal_lsq_2,'ShowInterpolatingFunction',true); title('lsq 2')
+%show_cardy(dataTable,y_optimal_lsq_1,'ShowInterpolatingFunction',true); title('lsq 1')
+%show_cardy(dataTable,y_optimal_lsq_2,'ShowInterpolatingFunction',true); title('lsq 2')
 show_cardy(dataTable,y_optimal_fmin_1,'ShowInterpolatingFunction',true); title('fmin 1')
-show_cardy(dataTable,y_optimal_fmin_2,'ShowInterpolatingFunction',true); title('fmin 2')
+%show_cardy(dataTable,y_optimal_fmin_2,'ShowInterpolatingFunction',true); title('fmin 2')
 
 
 %[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,numPhi);
-[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal_lsq_1,numPhi);
-disp(delta)
-[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal_lsq_2,numPhi);
-disp(delta)
-[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal_fmin_1,numPhi);
-disp(delta)
-[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal_fmin_2,numPhi);
-disp(delta)
-
-disp(costfxn(y_optimal_lsq_1))
-disp(costfxn(y_optimal_lsq_2))
-disp(costfxn(y_optimal_fmin_1))
-disp(costfxn(y_optimal_fmin_2))
+% [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal_lsq_1,numPhi);
+% disp(delta)
+% [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal_lsq_2,numPhi);
+% disp(delta)
+% [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal_fmin_1,numPhi);
+% disp(delta)
+% [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal_fmin_2,numPhi);
+% disp(delta)
+% 
+% disp(costfxn(y_optimal_lsq_1))
+% disp(costfxn(y_optimal_lsq_2))
+% disp(costfxn(y_optimal_fmin_1))
+% disp(costfxn(y_optimal_fmin_2))
