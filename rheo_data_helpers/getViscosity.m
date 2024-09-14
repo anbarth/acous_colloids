@@ -34,6 +34,6 @@ if rheoUnits == 2
 end
 
 eta = rheoData.data(:,etaColumn)*unitFactor;
-disp(unitFactor)
+%disp(unitFactor)
 
 end

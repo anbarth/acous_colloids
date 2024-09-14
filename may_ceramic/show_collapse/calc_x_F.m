@@ -8,7 +8,7 @@ f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 phi_list = unique(stressTable(:,1));
 volt_list = [0,5,10,20,40,60,80];
 
-C = C.*repmat(linspace(1,0.9,7),13,1);
+%C = C.*repmat(linspace(1,0.9,7),13,1);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -45,11 +45,11 @@ for kk = 1:N
     end
 
     %mySigmaStar = 0.2812+P*1+P^2*1e-9;
-    myF = exp(-mySigmaStar./sigma);
-    x(kk) = C(ii,jj)*myF;
+    %myF = exp(-mySigmaStar./sigma);
+    %x(kk) = C(ii,jj)*myF;
 
     my_phi_fudge = phi_fudge(ii);
-    %x(kk) = C(ii,jj)*f(sigma,jj);
+    x(kk) = C(ii,jj)*f(sigma,jj);
     F(kk) = eta*(phi0-(phi+my_phi_fudge))^2;
     delta_F(kk) = F(kk) .* (eta.^(-2).*delta_eta.^2 + 4/(phi0-(phi+my_phi_fudge))^2*delta_phi^2 ).^(1/2);
 end

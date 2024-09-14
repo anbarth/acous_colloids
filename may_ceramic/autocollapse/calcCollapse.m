@@ -6,9 +6,10 @@ numV = length(volt_list);
 
 
 % y = [eta0, phi0, delta, A, width, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
-collapse_params;
-y_init_1 = handpickedParams;
-
+%collapse_params;
+%y_init_1 = handpickedParams;
+load("y_09_04.mat")
+y_init_1 = y_handpicked_xcShifted_09_04;
 
 load("y_optimal_crossover_06_26.mat")
 [eta0_init, phi0_init, delta_init, A_init, width_init, sigmastar_init, C_init] = unzipParams(y_optimal,13);
@@ -54,16 +55,6 @@ C_upper(11,6:7) = 0;
 %lower_bounds = zipParams(eta0_init,phi0_init,delta_init,A_init,width_init,sigmastar_init,C_init,-0.01*ones(1,numPhi));
 %upper_bounds = zipParams(eta0_init,phi0_init,delta_init,A_init,width_init,sigmastar_init,C_init,0.01*ones(1,numPhi));
 
-% fix delta=-2
-%load("y_optimal_crossover_delta2_06_26.mat"); [eta0_init, phi0_init, delta_init, A_init, width_init, sigmastar_init, C_init] = unzipParamsCrossover(y_optimal,13); phi_fudge_init = zeros(1,13); 
-%y_init = zipParams(eta0_init, phi0_init, -2, A_init, width_init, sigmastar_init, C_init, phi_fudge_init);
-% let all the parameters float
-%lower_bounds = zipParams(0,0,-2,0,width_init,zeros(1,numV),C_lower,-0.02*ones(1,numPhi));
-%upper_bounds = zipParams(Inf,1,-2,Inf,width_init,Inf*ones(1,numV),C_upper,0.02*ones(1,numPhi));
-% only play with the fudge factors, fix delta=-2
-%lower_bounds = zipParams(eta0_init,phi0_init,delta_init,A_init,width_init,sigmastar_init,C_init,-0.02*ones(1,numPhi));
-%upper_bounds = zipParams(eta0_init,phi0_init,delta_init,A_init,width_init,sigmastar_init,C_init,0.02*ones(1,numPhi));
-
 
 %opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e4);
 %y_optimal = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);
@@ -81,10 +72,10 @@ y_optimal_fmin_1 = fmincon(costfxn,y_init_1,[],[],[],[],lower_bounds,upper_bound
 y_optimal_fmin_2 = fmincon(costfxn,y_init_1,[],[],[],[],lower_bounds,upper_bounds,[],opts);
 
 
-show_F_vs_x(dataTable,y_optimal_lsq_1,'ShowInterpolatingFunction',true); title('lsq 1')
-show_F_vs_x(dataTable,y_optimal_lsq_2,'ShowInterpolatingFunction',true); title('lsq 2')
-show_F_vs_x(dataTable,y_optimal_fmin_1,'ShowInterpolatingFunction',true); title('fmin 1')
-show_F_vs_x(dataTable,y_optimal_fmin_2,'ShowInterpolatingFunction',true); title('fmin 2')
+show_cardy(dataTable,y_optimal_lsq_1,'ShowInterpolatingFunction',true); title('lsq 1')
+show_cardy(dataTable,y_optimal_lsq_2,'ShowInterpolatingFunction',true); title('lsq 2')
+show_cardy(dataTable,y_optimal_fmin_1,'ShowInterpolatingFunction',true); title('fmin 1')
+show_cardy(dataTable,y_optimal_fmin_2,'ShowInterpolatingFunction',true); title('fmin 2')
 
 
 %[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,numPhi);

@@ -1,5 +1,5 @@
 dataTable = may_ceramic_06_25;
-myVoltNum = 7;
+myVoltNum = 1;
 volt_list = [0 5 10 20 40 60 80];
 voltage = volt_list(myVoltNum);
 
@@ -19,6 +19,7 @@ plot_indices = 1:length(phi_list);
 
 %load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 
 load("y_09_04.mat"); y_optimal = y_handpicked_xcShifted_09_04; [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
+%load("y_fmin_09_12.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 
 
 [x,F,delta_F] = calc_x_F(dataTable,y_optimal);
 
@@ -60,7 +61,8 @@ for ii=1:length(phi_list)
     deltaEta = deltaEta(sortIdx);
     
     myMarker = my_vol_frac_markers(ii);
-    plot(ax_eta,sigma,eta, strcat(myMarker,'--'),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+    %plot(ax_eta,sigma,eta, strcat(myMarker,'--'),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+    errorbar(ax_eta,sigma,eta, deltaEta, strcat(myMarker,'--'),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
     plot(ax_eta,sigma,myEtaHat,'-','Color',myColor,'LineWidth',1.5);
  
 end

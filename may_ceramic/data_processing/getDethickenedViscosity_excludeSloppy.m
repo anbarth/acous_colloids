@@ -1,5 +1,5 @@
 % returns value in Pa s
-function [dethickenedEta,delta_eta,sloppy] = getDethickenedViscosity_excludeSloppy(rheoData,tStart,tEnd,showPlot)
+function [dethickenedEta,delta_eta,baseline_eta,sloppy] = getDethickenedViscosity_excludeSloppy(rheoData,tStart,tEnd,showPlot)
 
 sloppy = false;
 
@@ -32,6 +32,7 @@ if length(acousticWindowIndexes) == 2
     etaChangeFromSlope = abs(myLinearFit(1)*5); % change in eta due to slope over 5 sec
     referenceIndex = max(1,acousStartIndex-5);
     etaChangeFromAcous = myEta(referenceIndex) - dethickenedEta;
+    baseline_eta =  myEta(referenceIndex);
     %disp([etaChangeFromAcous etaChangeFromSlope])
     if etaChangeFromSlope > 0.2*etaChangeFromAcous
     %if etaChangeFromAcous > 0.1*dethickenedEta
@@ -53,7 +54,11 @@ else
         tAcous = 60;
     end
     
-    [dethickenedEta,delta_eta] = getBaselineViscosity(rheoData,5,tAcous,false);
+    %[dethickenedEta,delta_eta] = getBaselineViscosity(rheoData,5,tAcous,false);
+    %baseline_eta = dethickenedEta;
+    dethickenedEta = -1;
+    delta_eta = -1;
+    baseline_eta = -1;
 end
 
 
@@ -72,7 +77,7 @@ if showPlot
         scatter(myT([acousStartIndex,acousEndIndex]),myEta([acousStartIndex,acousEndIndex]),30,'r');
         
         % show dethickened viscosity
-        yline(myEta(referenceIndex))
+        yline(baseline_eta)
         yline(dethickenedEta);
     
         % show linear fit
