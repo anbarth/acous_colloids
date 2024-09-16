@@ -32,7 +32,7 @@ end
 colorbar;
 clim([log(minx) log(maxx)])
 
-x_show = [1];
+x_show = [x_crossover];
 
 Csmooth = @(p,a,b) 1./(1+((phi0-p)/a).^b);
 myA = 0.32;
