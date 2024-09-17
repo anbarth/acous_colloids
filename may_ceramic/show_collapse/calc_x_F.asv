@@ -4,7 +4,7 @@ function [x,F,delta_F] = calc_x_F(stressTable, paramsVector)
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,13); 
 
 
-f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
+%f = @(sigma,jj) exp(-(sigmastar(jj) ./ sigma).^1);
 %f = @(sigma,jj) sigma./(sigmastar(jj)+sigma);
 %f = @(sigma,jj) tanh(sigma/sigmastar(jj));
 %f = @(sigma,jj) sigma.^2;

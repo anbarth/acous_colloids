@@ -104,9 +104,9 @@ for ii = vol_frac_plotting_range
                myMarker = strcat(myMarker,'-');
            end
            if showErrorBars
-               errorbar(ax_collapse,x,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
+               errorbar(ax_collapse,x,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',2);
            else
-                plot(ax_collapse,x,F,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
+                plot(ax_collapse,x,F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',2);
            end
         else
             scatter(ax_collapse,x,F,[],myColor,'filled',myMarker);
