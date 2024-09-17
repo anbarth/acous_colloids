@@ -51,10 +51,26 @@ for ii=size(dataTable,1):-1:1
     myCorrectBaseline = dataTable(dataTable(:,2)==mySigma & dataTable(:,3)==0,4);
     if abs(myBaseline-myCorrectBaseline) > 0.25*myDethickenedEta
         %disp([dataTable(ii,:) myCorrectBaseline])
+        %lookupDethickenedViscosity(dataTable(ii,1),mySigma,dataTable(ii,3),{myVolumeFractionStruct});
         dataTable(ii,:) = [];
+        
     end
 end
 
 dataTable = dataTable(:,1:5);
+
+sigmaList = unique(dataTable(:,2));
+myPhi = dataTable(1,1);
+voltages = [5;10;20;40;60;80];
+for kk=1:length(sigmaList)
+    sigma = sigmaList(kk);
+    if sigma > 0.03
+        continue
+    end
+    eta = dataTable(dataTable(:,2)==sigma & dataTable(:,3)==0,4);
+    delta_eta = dataTable(dataTable(:,2)==sigma & dataTable(:,3)==0,5);
+    extraData = [myPhi*ones(size(voltages)), sigma*ones(size(voltages)), voltages, eta*ones(size(voltages)), delta_eta*ones(size(voltages))];
+    dataTable = [dataTable; extraData];
+end
 
 end

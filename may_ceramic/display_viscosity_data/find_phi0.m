@@ -1,4 +1,4 @@
-dataTable = may_ceramic_09_14;
+dataTable = may_ceramic_09_17;
 phi = unique(dataTable(:,1));
 
 %load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 

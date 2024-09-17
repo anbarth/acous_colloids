@@ -30,9 +30,12 @@ if length(acousticWindowIndexes) == 2
     
     myLinearFit = polyfit(acousT,acousEta,1);
     etaChangeFromSlope = abs(myLinearFit(1)*5); % change in eta due to slope over 5 sec
-    referenceIndex = max(1,acousStartIndex-5);
-    etaChangeFromAcous = myEta(referenceIndex) - dethickenedEta;
-    baseline_eta =  myEta(referenceIndex);
+
+    referenceEndIndex = acousStartIndex-5 + startIndex-1;
+    referenceStartIndex = acousStartIndex-55 + startIndex-1;
+    baseline_eta =  mean(eta(referenceStartIndex:referenceEndIndex));
+    etaChangeFromAcous = baseline_eta - dethickenedEta;
+    
     %disp([etaChangeFromAcous etaChangeFromSlope])
     if etaChangeFromSlope > 0.2*etaChangeFromAcous
     %if etaChangeFromAcous > 0.1*dethickenedEta
@@ -75,6 +78,7 @@ if showPlot
     if length(acousticWindowIndexes) == 2
         % show change points
         scatter(myT([acousStartIndex,acousEndIndex]),myEta([acousStartIndex,acousEndIndex]),30,'r');
+        scatter(t([referenceStartIndex,referenceEndIndex]),eta([referenceStartIndex,referenceEndIndex]),30,'b');
         
         % show dethickened viscosity
         yline(baseline_eta)
