@@ -32,23 +32,32 @@ upper_bounds = zipParams(Inf,1,0,Inf,Inf,Inf*ones(1,numV),C_upper,0*ones(1,numPh
 
 
 costfxn = @(y) sum(getResiduals(dataTable,y).^2);
-
-SSR_0 = costfxn(y_optimal);
-epsilon = 0.05;
-
 opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
-y_init_plus = setParams(y_optimal,13,'delta',delta_init+epsilon);
-lb_plus = setParams(lower_bounds,13,'delta',delta_init+epsilon);
-ub_plus = setParams(upper_bounds,13,'delta',delta_init+epsilon);
-y_plus = fmincon(costfxn,y_init_plus,[],[],[],[],lb_plus,ub_plus,[],opts);
-SSR_plus = costfxn(y_plus);
 
-y_init_minus = setParams(y_optimal,13,'delta',delta_init-epsilon);
-lb_minus = setParams(lower_bounds,13,'delta',delta_init-epsilon);
-ub_minus = setParams(upper_bounds,13,'delta',delta_init-epsilon);
-y_minus = fmincon(costfxn,y_init_minus,[],[],[],[],lb_minus,ub_minus,[],opts);
-SSR_minus = costfxn(y_minus);
 
-disp([SSR_0 SSR_minus SSR_plus])
+
+deltaDelta = 0.05;
+deltaRange = linspace(delta_init-deltaDelta,delta_init+deltaDelta,3);
+SSR_0 = costfxn(y_optimal);
+SSR = zeros(size(deltaRange));
+epsilon = zeros(size(deltaRange));
+for ii = 1:length(deltaRange)
+    myDelta = deltaRange(ii);
+    my_y_init = setParams(y_optimal,13,'delta',myDelta);
+    my_lb = setParams(lower_bounds,13,'delta',myDelta);
+    my_ub = setParams(upper_bounds,13,'delta',myDelta);  
+
+    my_y_optimal = fmincon(costfxn,my_y_init,[],[],[],[],my_lb,my_ub,[],opts);
+    mySSR = costfxn(my_y_optimal);
+
+    epsilon(ii) = myDelta-delta_init;
+    SSR(ii) = mySSR-SSR_0;
+end
+
+figure;
+hold on;
+plot(epsilon,resnorm,'-o','LineWidth',1)
+% why isnt there 0,0?? issue
+% also save all the y_optimals
 
 

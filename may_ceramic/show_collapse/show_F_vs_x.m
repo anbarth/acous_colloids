@@ -54,7 +54,7 @@ ax_collapse.YLabel.String = "F";
 if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
-ax_collapse.XLim = [10^-3, 2];
+ax_collapse.XLim = [10^-2, 2];
 %ax_collapse.XLim = [10^-7, 2];
 colormap(ax_collapse,cmap);
 
@@ -104,9 +104,9 @@ for ii = vol_frac_plotting_range
                myMarker = strcat(myMarker,'-');
            end
            if showErrorBars
-               errorbar(ax_collapse,x,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',2);
+               errorbar(ax_collapse,x,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',0.5);
            else
-                plot(ax_collapse,x,F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',2);
+                plot(ax_collapse,x,F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',0.5);
            end
         else
             scatter(ax_collapse,x,F,[],myColor,'filled',myMarker);

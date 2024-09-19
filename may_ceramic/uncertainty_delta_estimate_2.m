@@ -14,6 +14,7 @@ function uncertainty_delta_estimate_2(dataTable,y_optimal)
 
 deltaDelta = 0.05;
 deltaRange = linspace(delta-deltaDelta,delta+deltaDelta,20);
+resnorm0 = sum(getResiduals(dataTable, y_optimal).^2); 
 resnorm = zeros(size(deltaRange));
 epsilon = zeros(size(deltaRange));
 for ii = 1:length(deltaRange)
@@ -22,7 +23,7 @@ for ii = 1:length(deltaRange)
     myResnorm = sum(getResiduals(dataTable, y).^2);                                                                                                                                                                                                                                            
 
     epsilon(ii) = myDelta-delta;
-    resnorm(ii) = myResnorm;
+    resnorm(ii) = myResnorm-resnorm0;
 end
 
 figure;

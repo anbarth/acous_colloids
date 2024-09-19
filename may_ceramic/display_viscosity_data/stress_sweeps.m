@@ -1,11 +1,12 @@
-dataTable = may_ceramic_09_14;
+dataTable = may_ceramic_09_17;
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 
 
 
 
 fig_eta = figure;
-ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
+%ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
+ax_eta = axes('Parent', fig_eta,'YScale','log');
 %ax_eta.XLabel.String = '\sigma (rheometer Pa)';
 %ax_eta.YLabel.String = '\eta (rheometer Pa s)';
 ax_eta.XLabel.String = '\sigma (Pa)';

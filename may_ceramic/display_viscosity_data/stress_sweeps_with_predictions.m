@@ -1,5 +1,5 @@
 dataTable = may_ceramic_09_17;
-myVoltNum = 1;
+myVoltNum = 7;
 volt_list = [0 5 10 20 40 60 80];
 voltage = volt_list(myVoltNum);
 
@@ -17,17 +17,22 @@ phi_list = unique(dataTable(:,1));
 plot_indices = 1:length(phi_list);
 
 
+load("y_09_17_not_smooth.mat");
 %load("y_09_04.mat"); y_optimal = y_handpicked_xcShifted_09_04; [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
-y_optimal = y_tanh;
+%y_optimal = y_tanh;
+[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
 
-[eta0, phi0, delta, A, width, sigmastar_exp, C, phi_fudge] = unzipParams(y_optimal,13);
+% remove voltage dependence from C
+%C(:,2:end) = repmat(C(:,1),1,6);
+y_optimal = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
+
 [x,F,delta_F] = calc_x_F(dataTable,y_optimal);
 
 minPhi = 0.18;
 maxPhi = 0.62;
 cmap = viridis(256);
 
-
+%for ii=13
 for ii=1:length(phi_list)
     if ~ismember(ii,plot_indices)
         continue
@@ -52,8 +57,11 @@ for ii=1:length(phi_list)
     myColor = cmap(round(1+255*(phi_fudged-minPhi)/(maxPhi-minPhi)),:);
     sigma = myData(:,2);
     eta = myData(:,4);
-    deltaEta = myData(:,5);
-
+    deltaEta_rheometer = myData(:,5);
+    deltaPhi = 0.01;
+    deltaEta_volumefraction = eta*2*(phi0-phi_fudged)^(-1)*deltaPhi;
+    deltaEta = sqrt(deltaEta_rheometer.^2+deltaEta_volumefraction.^2);
+    
     
     % sort in order of ascending sigma
     [sigma,sortIdx] = sort(sigma,'ascend');
