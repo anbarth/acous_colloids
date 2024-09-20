@@ -1,28 +1,26 @@
 dataTable = may_ceramic_09_17;
 %dataTable = temp_data_table;
 
-vol_frac_plotting_range = 13:-1:1;
+vol_frac_plotting_range = 8;
+%volt_plotting_range = 6;
 volt_plotting_range = 1:7;
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
-showLines = false;
+showLines = true;
 showInterpolatingFunction = false;
 showErrorBars = true;
 
-%load("y_ratio_09_18.mat");
-%load("different_f_sigma.mat"); y_optimal = y_ratio;
-%y_optimal = y_optimal_fmin_1;
-load("y_09_17_not_smooth.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
+y_optimal = y_Cv;
 
 %  load("y_09_04.mat"); y_optimal = y_handpicked_xcShifted_09_04;
 
 % remove voltage dependence
-%[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
+[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
 %sigmastar(2:end) = sigmastar(1);
 %C(:,2:end) = repmat(C(:,1),1,6);
-%y_optimal = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
+y_optimal = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
 
 
 
 show_F_vs_x(dataTable,y_optimal,'PhiRange',vol_frac_plotting_range,'VoltRange',volt_plotting_range,'ColorBy',colorBy,'ShowLines',showLines,'ShowInterpolatingFunction',showInterpolatingFunction,'ShowErrorBars',showErrorBars);
 show_F_vs_xc_x(dataTable,y_optimal,'PhiRange',vol_frac_plotting_range,'VoltRange',volt_plotting_range,'ColorBy',colorBy,'ShowLines',showLines,'ShowInterpolatingFunction',showInterpolatingFunction,'ShowErrorBars',showErrorBars);
-%show_cardy(dataTable,y_optimal,'PhiRange',vol_frac_plotting_range,'VoltRange',volt_plotting_range,'ColorBy',colorBy,'ShowLines',showLines,'ShowInterpolatingFunction',showInterpolatingFunction);
+%show_cardy(dataTable,y_optimal,'PhiRange',vol_frac_plotting_range,'VoltRange',volt_plotting_range,'ColorBy',colorBy,'ShowLines',showLines,'ShowInterpolatingFunction',showInterpolatingFunction,'ShowErrorBars',showErrorBars);

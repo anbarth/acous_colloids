@@ -1,5 +1,4 @@
 dataTable = may_ceramic_09_17;
-%dataTable = temp_data_table;
 phi_list = unique(dataTable(:,1));
 volt_list = unique(dataTable(:,3));
 numPhi = length(phi_list);
@@ -26,32 +25,26 @@ y_init = y_handpicked_xcShifted_09_04;
 % 0 < width < Inf
 % 0 < sigmastar < Inf
 % 0 < C < Inf
-% C = 0 for phi=20%...40%; V > 0 (no data)
-% C = 0 for phi=56%, V>=60 (no data)
-% 0 < phi_fudge < 0
+% C = 0 for V > 0 (no data)
 C_lower = zeros(numPhi,numV);
 C_upper = Inf*ones(numPhi,numV);
-C_lower(1:5,2:end) = 0;
-C_upper(1:5,2:end) = 0;
-C_lower(11,6:7) = 0;
-C_upper(11,6:7) = 0;
+C_lower(:,2:end) = 0;
+C_upper(:,2:end) = 0;
 
 
 lower_bounds = zipParams(0,0,-Inf,0,0,zeros(1,numV),C_lower,0*ones(1,numPhi));
 upper_bounds = zipParams(Inf,1,0,Inf,Inf,Inf*ones(1,numV),C_upper,0*ones(1,numPhi));
 
 
-%residualsfxn = @(y) getResiduals(dataTable,y);
-%opts = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
-%[y_optimal_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init,lower_bounds,upper_bounds,opts);
-
 costfxn = @(y) sum(getResiduals(dataTable,y).^2);
 opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
-y_optimal_fmin = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);
+y_optimal = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);
 
-%show_F_vs_x(dataTable,y_optimal_lsq,'ShowInterpolatingFunction',true); title('lsq 1')
-%show_F_vs_x(dataTable,y_optimal_fmin,'ShowInterpolatingFunction',true); title('fmin 1')
+[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
+C(:,2:end) = repmat(C(:,1),1,6);
+y_optimal = setParams(y_optimal,13,'C',C);
 
-% disp(costfxn(y_optimal_lsq))
-% disp(costfxn(y_optimal_fmin))
+
+show_F_vs_x(dataTable,y_optimal,'ShowInterpolatingFunction',true);
+
 

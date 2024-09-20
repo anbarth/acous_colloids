@@ -1,6 +1,7 @@
 function [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y,numPhi)
 
 % y = [eta0, phi0, delta, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
+y = reshape(y,[1 12+8*numPhi]);
 
 eta0 = y(1);
 phi0 = y(2);

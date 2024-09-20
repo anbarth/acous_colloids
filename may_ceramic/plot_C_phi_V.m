@@ -19,8 +19,8 @@ colormap(cmap);
 cbar = colorbar;
 clim([0 80]);
 cbar.Ticks = [0,5,10,20,40,60,80];
-xlim([0.15 0.75])
-xline(phi0)
+xlim([0.15 0.7])
+%xline(phi0)
 ylabel('C')
 xlabel('\phi')
 

@@ -95,6 +95,7 @@ for ii = vol_frac_plotting_range
         % sort in order of ascending x
         [x,sortIdx] = sort(x,'ascend');
         F = F(sortIdx);
+        delta_F = delta_F(sortIdx);
         myMarker = my_vol_frac_markers(ii);
         if colorBy < 3
            if showLines

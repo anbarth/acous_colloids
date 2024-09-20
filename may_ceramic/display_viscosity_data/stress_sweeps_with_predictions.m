@@ -1,9 +1,10 @@
 dataTable = may_ceramic_09_17;
-myVoltNum = 7;
+myVoltNum = 1;
 volt_list = [0 5 10 20 40 60 80];
 voltage = volt_list(myVoltNum);
 
 fig_eta = figure;
+%ax_eta = axes('Parent', fig_eta,'YScale','log');
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
 %ax_eta.XLabel.String = '\sigma (rheometer Pa)';
 %ax_eta.YLabel.String = '\eta (rheometer Pa s)';
@@ -17,14 +18,15 @@ phi_list = unique(dataTable(:,1));
 plot_indices = 1:length(phi_list);
 
 
-load("y_09_17_not_smooth.mat");
+%load("y_09_17_not_smooth.mat");
 %load("y_09_04.mat"); y_optimal = y_handpicked_xcShifted_09_04; [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
-%y_optimal = y_tanh;
-[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
+%y_optimal = y_ratio;
+%[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
 
 % remove voltage dependence from C
 %C(:,2:end) = repmat(C(:,1),1,6);
-y_optimal = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
+%y_optimal = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
+y_optimal = y_Cv;
 
 [x,F,delta_F] = calc_x_F(dataTable,y_optimal);
 
@@ -67,11 +69,16 @@ for ii=1:length(phi_list)
     [sigma,sortIdx] = sort(sigma,'ascend');
     eta = eta(sortIdx);
     deltaEta = deltaEta(sortIdx);
+    myEtaHat = myEtaHat(sortIdx);
     
     myMarker = my_vol_frac_markers(ii);
     %plot(ax_eta,sigma,eta, strcat(myMarker,'--'),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-    errorbar(ax_eta,sigma,eta, deltaEta, strcat(myMarker,'--'),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+    
+    errorbar(ax_eta,sigma,eta, deltaEta, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
     plot(ax_eta,sigma,myEtaHat,'-','Color',myColor,'LineWidth',1.5);
+
+    %errorbar(ax_eta,sigma*19,eta*25, deltaEta*25, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+    %plot(ax_eta,sigma*19,myEtaHat*25,'-','Color',myColor,'LineWidth',1.5);
  
 end
 title(ax_eta,strcat('V=',num2str(voltage)))

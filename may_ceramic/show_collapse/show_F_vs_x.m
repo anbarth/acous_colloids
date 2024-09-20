@@ -54,7 +54,7 @@ ax_collapse.YLabel.String = "F";
 if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
-ax_collapse.XLim = [10^-2, 2];
+ax_collapse.XLim = [10^-3, 1.5];
 %ax_collapse.XLim = [10^-7, 2];
 colormap(ax_collapse,cmap);
 
@@ -98,6 +98,7 @@ for ii = vol_frac_plotting_range
         % sort in order of ascending x
         [x,sortIdx] = sort(x,'ascend');
         F = F(sortIdx);
+        delta_F = delta_F(sortIdx);
         myMarker = my_vol_frac_markers(ii);
         if colorBy < 3
            if showLines

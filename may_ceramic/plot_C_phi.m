@@ -4,7 +4,7 @@ function plot_C_phi(stressTable, paramsVector)
 phi_list = unique(stressTable(:,1));
 volt_list = [0,5,10,20,40,60,80];
 
-%figure;
+figure;
 hold on;
 
 

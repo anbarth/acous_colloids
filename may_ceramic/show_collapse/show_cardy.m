@@ -7,6 +7,7 @@ volt_plotting_range = 1:7;
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showMeera = false;
 showInterpolatingFunction = false;
+showErrorBars = false;
 
 for ii=1:2:length(varargin)
     if isa(varargin{ii},'char')
@@ -19,6 +20,8 @@ for ii=1:2:length(varargin)
             colorBy = varargin{ii+1};
         elseif strcmp(fieldName,'ShowInterpolatingFunction')
             showInterpolatingFunction = varargin{ii+1};
+        elseif strcmp(fieldName,'ShowErrorBars')
+            showErrorBars = varargin{ii+1};
         end
     end
 end
@@ -74,6 +77,7 @@ for ii = vol_frac_plotting_range
         F = F_all(myData);
         delta_F = delta_F_all(myData);
         H = F .* x.^2;
+        delta_H = delta_F .* x.^2;
         P = P_all(myData);
 
 
@@ -92,7 +96,12 @@ for ii = vol_frac_plotting_range
         
 
         myMarker = my_vol_frac_markers(ii);
-        scatter(ax_cardy, 1./x-1/xc,H,[],myColor,'filled',myMarker);
+
+        if showErrorBars
+            errorbar(ax_cardy,1./x-1/xc,H,delta_H,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
+        else
+            scatter(ax_cardy, 1./x-1/xc,H,[],myColor,'filled',myMarker);
+        end
         
 
     end

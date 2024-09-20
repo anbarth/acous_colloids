@@ -9,6 +9,8 @@ end
 
 % get x, F
 [x_all,F_all,F_uncert_all] = calc_x_F(stressTable, paramsVector);
+H_all = F_all .* x_all.^2;
+H_uncert_all = F_uncert_all.*x_all.^2;
 
 % calculate Fhat from x
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,length(phi_list));
@@ -26,7 +28,6 @@ Fhat = 1./x_all.^2 .* Hhat;
 
 % calculate residuals
 residuals = (Fhat - F_all) ./ (F_uncert_all);
-%residuals = (Fhat - F_all) ./ (F_all);
-
+%residuals = (Hhat - H_all) ./ (H_uncert_all);
 
 end

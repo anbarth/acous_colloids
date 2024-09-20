@@ -6,10 +6,8 @@ numV = length(volt_list);
 
 
 % y = [eta0, phi0, delta, A, width, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
-%load("y_09_19_not_smooth.mat")
-y_optimal = y_Cv;
+load("y_09_19_not_smooth.mat")
 [eta0_init, phi0_init, delta_init, A_init, width_init, sigmastar_init, C_init, phi_fudge_init] = unzipParams(y_optimal,13);
-
 
 % constraints
 % 0 < eta0 < Inf
@@ -39,22 +37,22 @@ opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
 
 
 
-deltaDelta = 0.3;
-deltaRange = linspace(delta_init-deltaDelta,delta_init+deltaDelta,3);
+deltaSigmastar = 0.05;
+sigmastarRange = linspace(sigmastar_init(1)-deltaSigmastar,sigmastar_init(1)+deltaSigmastar,10);
 SSR_0 = costfxn(y_optimal);
-SSR = zeros(size(deltaRange));
-epsilon = zeros(size(deltaRange));
-y_list = zeros(length(deltaRange),length(y_optimal));
-for ii = 1:length(deltaRange)
-    myDelta = deltaRange(ii);
-    my_y_init = setParams(y_optimal,13,'delta',myDelta);
-    my_lb = setParams(lower_bounds,13,'delta',myDelta);
-    my_ub = setParams(upper_bounds,13,'delta',myDelta);  
+SSR = zeros(size(sigmastarRange));
+epsilon = zeros(size(sigmastarRange));
+y_list = zeros(length(sigmastarRange),length(y_optimal));
+for ii = 1:length(sigmastarRange)
+    mySigmastar = sigmastarRange(ii);
+    my_y_init = setParams(y_optimal,13,'sigmastar0V',mySigmastar);
+    my_lb = setParams(lower_bounds,13,'sigmastar0V',mySigmastar);
+    my_ub = setParams(upper_bounds,13,'sigmastar0V',mySigmastar);  
 
     my_y_optimal = fmincon(costfxn,my_y_init,[],[],[],[],my_lb,my_ub,[],opts);
     mySSR = costfxn(my_y_optimal);
 
-    epsilon(ii) = myDelta-delta_init;
+    epsilon(ii) = mySigmastar-sigmastar_init(1);
     SSR(ii) = mySSR-SSR_0;
     y_list(ii,:) = my_y_optimal;
 end
