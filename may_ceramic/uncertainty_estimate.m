@@ -8,11 +8,6 @@ paramNums = 13:25; %C(0V)
 
 cutoffSD=2.5;
 
-
-
-
-
-
 for kk=1:length(paramNums)
     figure;
     hold on;

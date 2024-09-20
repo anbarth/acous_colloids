@@ -39,32 +39,38 @@ param_init = y_optimal(paramNum);
 
 paramRange = linspace(param_init-rangeMinus,param_init+rangePlus,numPts);
 
-SSR_0 = costfxn(y_optimal);
+%SSR_0 = costfxn(y_optimal);
 SSR = zeros(size(paramRange));
 epsilon = zeros(size(paramRange));
 y_list = zeros(length(paramRange),length(y_optimal));
 for ii = 1:length(paramRange)
     myParam = paramRange(ii);
+    disp(myParam)
     my_y_init = setParams(y_optimal,13,paramNum,myParam);
     my_lb = setParams(lower_bounds,13,paramNum,myParam);
     my_ub = setParams(upper_bounds,13,paramNum,myParam);  
 
     if ~isreal(costfxn(my_y_init))
+        %disp('skip')
         continue
     end
 
     my_y_optimal = fmincon(costfxn,my_y_init,[],[],[],[],my_lb,my_ub,[],opts);
     mySSR = costfxn(my_y_optimal);
+    disp(mySSR)
 
     epsilon(ii) = myParam-param_init;
-    SSR(ii) = mySSR-SSR_0;
+    SSR(ii) = mySSR;
     y_list(ii,:) = my_y_optimal;
 end
 
+figure;
+hold on;
+plot(epsilon,SSR,'o','LineWidth',1)
+
 end
-% figure;
-% hold on;
-% plot(epsilon,SSR,'o','LineWidth',1)
+
+%end
 % p = polyfit(epsilon,SSR,2);
 % plot(epsilon,p(1)*epsilon.^2+p(2)*epsilon+p(3),'-r','LineWidth',1);
 % disp([p(1) p(2) p(3)])
