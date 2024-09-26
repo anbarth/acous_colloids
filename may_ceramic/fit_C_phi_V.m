@@ -1,8 +1,10 @@
 %collapse_params;
 %load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsCrossoverFudge(y_optimal,13); fxnType = 2;
-load("y_fmin_09_12.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 
+%load("y_fmin_09_12.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 
+load("y_09_04.mat"); y_optimal = y_handpicked_xcShifted_09_04;
+[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
 
-stressTable = may_ceramic_09_14;
+stressTable = may_ceramic_09_17;
 phi_list = unique(stressTable(:,1));
 volt_list = [0,5,10,20,40,60,80];
 

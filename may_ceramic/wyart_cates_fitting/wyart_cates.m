@@ -1,4 +1,8 @@
-my_data = may_ceramic_09_17;
+function [eta0,sigmastar,phimu,phi0] = wyart_cates(my_data,showPlot)
+%my_data = may_ceramic_09_17;
+if nargin < 2
+    showPlot = false;
+end
 
 % edit this list to change what's included in the fit
 %phis = [44,48,52,56,59];
@@ -45,8 +49,8 @@ eta = eta(include_me);
 % x(3) = phi_mu
 % x(4) = phi_0
 k=1;
-f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^k);
-%f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
+%f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^k);
+f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
 fitfxn = @(x) x(1)*( x(4)*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
 
@@ -59,45 +63,54 @@ opts = optimoptions('fmincon','Display','final','StepTolerance',1e-12);
 %opts = optimoptions('fmincon','Display','off');
 s = fmincon(costfxn, [0.1, 0.5, 0.65, 0.70],constraintMatrix,constraintVector,...
             [],[],lower_bounds,upper_bounds,[],opts);
-        
-disp(s);
+ 
+eta0 = s(1);
+sigmastar = s(2);
+phimu = s(3);
+phi0 = s(4);
+%disp(s);
 etaFit = fitfxn(s);
 
-my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
-figure;
-hold on;
-ax1 = gca;
-ax1.XScale = 'log';
-ax1.YScale = 'log';
-cmap = viridis(256);
-colormap(cmap);
-minPhi = 0.18;
-maxPhi = 0.62;
-for ii=1:length(phis)
-    myPhi = phis(ii);
-    
-    myStress=sigma(phi==myPhi);
-    myEta=eta(phi==myPhi);
-    myDeltaEta=delta_eta(phi==myPhi);
-    myEtaFit=etaFit(phi==myPhi);
-    
-    % sort in order of ascending sigma
-    [myStress,sortIdx] = sort(myStress,'ascend');
-    myEta = myEta(sortIdx);
-    myDeltaEta = myDeltaEta(sortIdx);
-    myEtaFit = myEtaFit(sortIdx);
-    
-    myMarker = my_vol_frac_markers(ii);
-    myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
-   % plot(myStress,myEta,'o','Color',myColor,'LineWidth',1);
-    errorbar(myStress,myEta,myDeltaEta,strcat(myMarker,'--'),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-    plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
-end
-%title('stress sweeps');
-xlabel('\sigma (Pa)');
-ylabel('\eta (Pa s)');
 
-colormap(cmap);
-c = colorbar;
-c.Ticks = phis;
-clim([minPhi maxPhi])
+if showPlot
+    my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
+    figure;
+    hold on;
+    ax1 = gca;
+    ax1.XScale = 'log';
+    ax1.YScale = 'log';
+    cmap = viridis(256);
+    colormap(cmap);
+    minPhi = 0.18;
+    maxPhi = 0.62;
+    for ii=1:length(phis)
+        myPhi = phis(ii);
+        
+        myStress=sigma(phi==myPhi);
+        myEta=eta(phi==myPhi);
+        myDeltaEta=delta_eta(phi==myPhi);
+        myEtaFit=etaFit(phi==myPhi);
+        
+        % sort in order of ascending sigma
+        [myStress,sortIdx] = sort(myStress,'ascend');
+        myEta = myEta(sortIdx);
+        myDeltaEta = myDeltaEta(sortIdx);
+        myEtaFit = myEtaFit(sortIdx);
+        
+        myMarker = my_vol_frac_markers(ii);
+        myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
+       % plot(myStress,myEta,'o','Color',myColor,'LineWidth',1);
+        errorbar(myStress,myEta,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+        plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
+    end
+    %title('stress sweeps');
+    xlabel('\sigma (Pa)');
+    ylabel('\eta (Pa s)');
+    
+    colormap(cmap);
+    c = colorbar;
+    c.Ticks = phis;
+    clim([minPhi maxPhi])
+end
+
+end

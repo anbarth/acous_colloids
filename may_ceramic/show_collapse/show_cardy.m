@@ -1,5 +1,7 @@
 function show_cardy(stressTable, paramsVector, varargin)
 
+alpha = 1;
+
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 
 vol_frac_plotting_range = 13:-1:1;
@@ -76,8 +78,9 @@ for ii = vol_frac_plotting_range
         x = x_all(myData);
         F = F_all(myData);
         delta_F = delta_F_all(myData);
-        H = F .* x.^2;
-        delta_H = delta_F .* x.^2;
+        H = F .* x.^(2/alpha);
+        delta_H = delta_F .* x.^(2/alpha);
+        x_axis_variable = x.^(-1/alpha)-xc^(-1/alpha);
         P = P_all(myData);
 
 
@@ -98,9 +101,9 @@ for ii = vol_frac_plotting_range
         myMarker = my_vol_frac_markers(ii);
 
         if showErrorBars
-            errorbar(ax_cardy,1./x-1/xc,H,delta_H,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
+            errorbar(ax_cardy,x_axis_variable,H,delta_H,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
         else
-            scatter(ax_cardy, 1./x-1/xc,H,[],myColor,'filled',myMarker);
+            scatter(ax_cardy, x_axis_variable,H,[],myColor,'filled',myMarker);
         end
         
 

@@ -6,22 +6,29 @@ load("y_09_04.mat"); y_optimal = y_handpicked_xcShifted_09_04;
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
 
 volt_list = [0,5,10,20,40,60,80];
+V = linspace(0,80);
 
 figure; hold on;
 
 
-p = polyfit(volt_list,sigmastar*19,2);
-V = linspace(0,80);
-plot(V,p(1)*V.^2+p(2)*V+p(3),'-','LineWidth',1);
+plot(volt_list,sigmastar,'ok','LineWidth',2);
 
-plot(volt_list,sigmastar*19,'ok','LineWidth',2);
+%ft1 = fittype('a*x^2+b');
+%opts = fitoptions(ft1);
+%opts.StartPoint = [0.0001,0.3];
+%myFit1 = fit(volt_list',sigmastar',ft1,opts);
+%disp([myFit1.a myFit1.b])
+%plot(V,myFit1.a*V.^2+myFit1.b,'-','LineWidth',1);
+
+p = polyfit(volt_list,sigmastar,2);
+plot(V,p(1)*V.^2+p(2)*V+p(3),'-','LineWidth',1);
+disp(p);
 
 xlabel('V')
 ylabel('\sigma^* (Pa)')
 
-sigmastarFit = (p(1)*volt_list.^2+p(2)*volt_list+p(3))/19;
 
-%return
+return
 figure; hold on;
 ax1=gca;
 ax1.XScale='log';
