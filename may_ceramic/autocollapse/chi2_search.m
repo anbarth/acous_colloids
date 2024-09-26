@@ -35,6 +35,6 @@ constrainedValue_guess = -1.6;
 
 %myCriticalConstrainedValue = fminbnd(chi2_cost_fxn,paramRangeLow,paramRangeHigh,options);
 
-options = optimset('Display','iter','TolX',abs(y_optimal(paramNum)*0.001));
+options = optimset('Display','iter','TolX',abs(y_optimal(paramNum)*0.0001));
 chi2_fxn = @(constrainedValue) chi2_constrained(dataTable,y_optimal,paramNum,constrainedValue)-chi2_cutoff;
 [myCriticalConstrainedValue,fval,exitflag,output]  = fzero(chi2_fxn,constrainedValue_guess,options);
