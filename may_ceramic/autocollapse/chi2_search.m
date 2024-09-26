@@ -18,7 +18,7 @@ chi2_optimal = chi2(y_optimal);
 chi2_cutoff = chi2inv(0.95,dof);
 
 paramNum = 3;
-constrainedValue_guess = -1.6;
+constrainedValue_guess = -0.4;
 
 %paramNum = 3;
 %paramRangeLow = y_optimal(paramNum);

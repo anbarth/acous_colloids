@@ -16,7 +16,7 @@ V_data = V_data(sigmastar_data~=0);
 sigmastar_data = sigmastar_data(sigmastar_data~=0);
 p = polyfit(V_data,sigmastar_data,2);
 V = linspace(0,80);
-%plot(V,p(1)*V.^2+p(2)*V+p(3),'-r','LineWidth',1);
+plot(V,p(1)*V.^2+p(2)*V+p(3),'-r','LineWidth',1);
 
 sigmastarFit = (p(1)*volt_list.^2+p(2)*volt_list+p(3))';
 y = zipParams(eta0, phi0, delta, A, width, sigmastarFit, C, phi_fudge);

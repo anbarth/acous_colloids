@@ -1,4 +1,5 @@
-dataTable = may_ceramic_06_25;
+%dataTable = may_ceramic_06_25;
+dataTable = may_ceramic_09_17;
 phi_list = unique(dataTable(:,1));
 volt_list = unique(dataTable(:,3));
 numPhi = length(phi_list);

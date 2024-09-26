@@ -24,7 +24,7 @@ chi2_cutoff = chi2inv(0.95,dof);
 
 %paramNums = 6:12; %sigmastar
 %paramNums = 13:25; %C(0V)
-paramNums = 4;
+paramNums = 2;
 
 for kk=1:length(paramNums)
     figure;

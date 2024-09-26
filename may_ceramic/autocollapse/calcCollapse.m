@@ -47,7 +47,7 @@ upper_bounds = zipParams(Inf,1,0,Inf,Inf,Inf*ones(1,numV),C_upper,0*ones(1,numPh
 
 costfxn = @(y) sum(getResiduals(dataTable,y).^2);
 opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
-y_optimal_fmin = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);
+[y_optimal_fmin,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);
 
 %show_F_vs_x(dataTable,y_optimal_lsq,'ShowInterpolatingFunction',true); title('lsq 1')
 %show_F_vs_x(dataTable,y_optimal_fmin,'ShowInterpolatingFunction',true); title('fmin 1')

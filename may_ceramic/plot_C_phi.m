@@ -20,7 +20,7 @@ myPhi = phi_list+phi_fudge';
 myPhi = myPhi(myC ~= 0);
 myC = myC(myC~=0);
 
-%myC = myC .* (phi0-myPhi).^1;
+myC = myC .* (phi0-myPhi).^1;
 
 plot(myPhi,myC,'-o','LineWidth',1.5);
 
