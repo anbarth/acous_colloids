@@ -33,7 +33,7 @@ for jj=1:size(C,2)
     myPhi = myPhi(myC ~= 0);
     myC = myC(myC~=0);
 
-    %myC = myC .* (phi0-myPhi).^1;
+    myC = myC .* (phi0-myPhi).^1;
 
     myColor = cmap(round(1+255*voltage/80),:);
     plot(myPhi,myC,'-o','Color',myColor,'LineWidth',1.5);

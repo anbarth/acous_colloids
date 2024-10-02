@@ -52,6 +52,6 @@ opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
 %show_F_vs_x(dataTable,y_optimal_lsq,'ShowInterpolatingFunction',true); title('lsq 1')
 %show_F_vs_x(dataTable,y_optimal_fmin,'ShowInterpolatingFunction',true); title('fmin 1')
 
-% disp(costfxn(y_optimal_lsq))
+%disp(costfxn(y_optimal_lsq))
 % disp(costfxn(y_optimal_fmin))
 

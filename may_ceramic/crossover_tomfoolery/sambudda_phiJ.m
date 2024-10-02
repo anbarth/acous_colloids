@@ -1,5 +1,5 @@
 dataTable = may_ceramic_09_17;
-%[eta0,sigmastar,phimu,phi0] = wyart_cates(may_ceramic_09_17);
+[eta0,sigmastar,phimu,phi0] = wyart_cates(may_ceramic_09_17);
 
 f = @(sigma) sigma ./ (sigma+sigmastar);
 phiJ = @(sigma) (1-f(sigma))*phi0 + f(sigma)*phimu;
@@ -22,6 +22,12 @@ ax_phi0 = axes('Parent', fig_phi0,'YScale','log','XScale','log');
 ax_phi0.XLabel.String = '\phi_0-\phi';
 ax_phi0.YLabel.String = '\eta (Pa s)';
 hold(ax_phi0,'on');
+
+fig_phiJval = figure;
+ax_phiJval = axes('Parent', fig_phiJval);
+ax_phiJval.XLabel.String = '\phi_J-\phi';
+ax_phiJval.YLabel.String = '\phi_0-\phi_J';
+hold(ax_phiJval,'on');
 
 
 cmap = winter(256);
@@ -55,10 +61,13 @@ for kk = 1:length(stress_list)
   
     plot(ax_phiJ,phiJ(sigma)-my_phi,my_eta,'-o','Color',myColor)
     plot(ax_phi0,phi0-my_phi,my_eta,'-o','Color',myColor)
+    plot(ax_phiJval,phiJ(sigma)-my_phi,phi0-phiJ(sigma),'-o','Color',myColor)
 
     eta = [eta, my_eta];
     phiJ_phi = [phiJ_phi, phiJ(sigma)-my_phi];
 end
 legend(ax_phiJ,L);
 legend(ax_phi0,L);
-
+legend(ax_phiJval,L);
+%yline(ax_phiJval,phi0);
+%yline(ax_phiJval,phimu);

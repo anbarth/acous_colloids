@@ -1,10 +1,10 @@
-%dataTable = may_ceramic_09_17;
+dataTable = may_ceramic_09_17;
 %[eta0,sigmastar,phimu,phi0] = wyart_cates(may_ceramic_09_17);
 load("y_09_19_ratio_with_and_without_Cv.mat");
 y_optimal = y_Cv;
 
 f = @(sigma) sigma ./ (sigma+sigmastar);
-phiJ = @(sigma) phi0-(phi0-phimu)*f(sigma);
+phiJ = @(sigma) phi0-(phi0-phimu)*f(sigma).^(1/3);
 phi_list = unique(dataTable(:,1));
 stress_list = unique(dataTable(:,2));
 minLogSig = log(min(stress_list)*0.99);
@@ -57,8 +57,8 @@ for kk = 1:length(stress_list)
         end
     end
   
-   % plot(ax_phiJ,phiJ(sigma)-my_phi,my_eta,'--o','Color',myColor,'LineWidth',0.5)
-    plot(ax_phiJ,phiJ(sigma)-my_phi(my_x>x_crossover),my_eta(my_x>x_crossover),'--o','Color',myColor,'LineWidth',2)
+    plot(ax_phiJ,phiJ(sigma)-my_phi,my_eta,'--o','Color',myColor,'LineWidth',0.5)
+   % plot(ax_phiJ,phiJ(sigma)-my_phi(my_x>x_crossover),my_eta(my_x>x_crossover),'--o','Color',myColor,'LineWidth',2)
     %plot(ax_phiJ,phiJ(sigma)-my_phi,a*f(sigma).^-(delta-2).*(phiJ(sigma)-my_phi).^-delta,'-','Color',myColor);
 
     eta = [eta, my_eta];

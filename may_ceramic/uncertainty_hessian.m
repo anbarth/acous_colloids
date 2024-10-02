@@ -12,6 +12,7 @@ SSR = sum(getResiduals(dataTable,y_optimal).^2);
 covariance_matrix = inv(hessian);
 y_uncert_restricted = sqrt(diag(covariance_matrix))*tinv(0.975,dof);
 y_uncert = mergeParamsAndConstraints(y_uncert_restricted,constraints);
+%y_uncert = sqrt(diag(covariance_matrix))*tinv(0.975,dof);
 
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
 [eta0_err, phi0_err, delta_err, A_err, width_err, sigmastar_err, C_err, phi_fudge_err] = unzipParams(y_uncert,13);

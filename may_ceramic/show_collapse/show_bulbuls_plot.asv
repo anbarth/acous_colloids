@@ -1,8 +1,9 @@
-function show_cardy(stressTable, paramsVector, varargin)
+function show_bulbuls_plot(stressTable, paramsVector, varargin)
 
-alpha = 0.5;
-
+alpha = 1; xc=10;
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
+[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,13); fxnType = 2;
+f = @(sigma,jj) sigma ./ (sigma+sigmastar(jj));
 
 vol_frac_plotting_range = 13:-1:1;
 volt_plotting_range = 1:7;
@@ -28,9 +29,6 @@ for ii=1:2:length(varargin)
     end
 end
 
-xc=1;
-
-[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,13); fxnType = 2;
 
 
 phi_list = unique(stressTable(:,1));
@@ -51,21 +49,15 @@ end
 fig_cardy = figure;
 ax_cardy = axes('Parent', fig_cardy,'XScale','log','YScale','log');
 hold(ax_cardy,'on');
-ax_cardy.XLabel.String = "1/x-1/x_c";
-ax_cardy.YLabel.String = "H";
+ax_cardy.XLabel.String = "f/(\phi_0-\phi)^\alpha";
+ax_cardy.YLabel.String = "\eta f^{2/\alpha}";
 colormap(ax_cardy,cmap);
 if showMeera
     scatter(ax_cardy,meeraHX,meeraHY*0.2,[],[0.7 0.7 0.7]);
 end
-ax_cardy.XLim = [10^-2, 10^4];
+%ax_cardy.XLim = [10^-2, 10^4];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-[x_all,F_all,delta_F_all] = calc_x_F(stressTable,paramsVector);
-P_all = getP(stressTable);
-minP = min(P_all(P_all~=0));
-%maxP = max(P_all);
-maxP = 10^5;
 
 for ii = vol_frac_plotting_range
     for jj = volt_plotting_range
@@ -75,14 +67,13 @@ for ii = vol_frac_plotting_range
         my_phi_fudge = phi_fudge(ii);
 
         myData = stressTable(:,1)==phi & stressTable(:,3)==voltage;
-        x = x_all(myData);
-        F = F_all(myData);
-        delta_F = delta_F_all(myData);
-        H = F .* x.^(2/alpha);
-        delta_H = delta_F .* x.^(2/alpha);
-        x_axis_variable = x.^(-1/alpha)-xc^(-1/alpha);
-        P = P_all(myData);
+        sigma = stressTable(myData,2);
+        eta = stressTable(myData,4);
 
+        x_axis_variable = f(sigma,jj)/(phi0-phi)^alpha;
+        y_axis_variable = eta .* f(sigma,jj).^(2/alpha);
+        x_axis_variable = (f(sigma,jj)/(phi0-phi)^alpha).^(-1/alpha) - 1;
+        
 
         if colorBy == 1
             myColor = cmap(round(1+255*voltage/80),:);
@@ -100,38 +91,13 @@ for ii = vol_frac_plotting_range
 
         myMarker = my_vol_frac_markers(ii);
 
-        if showErrorBars
-            errorbar(ax_cardy,x_axis_variable,H,delta_H,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
-        else
-            scatter(ax_cardy, x_axis_variable,H,[],myColor,'filled',myMarker);
-        end
+
+        scatter(ax_cardy, x_axis_variable,y_axis_variable,[],myColor,'filled',myMarker);
+
         
 
     end
 end
-
-
-
-
-if showInterpolatingFunction
-    % min value of X=1-x: 1-max(x)
-    % max value of X=1-x: 1-min(x)
-    % x=1-X
-    x_fake = 1-logspace(log10(min(1-x_all)),log10(max(1-x_all)),1000);
-    if fxnType == 1
-        Fhat = eta0*(1-x_fake).^delta;
-        Hhat = Fhat.*x_fake.^2;
-    elseif fxnType == 2
-        xi = 1./x_fake-1;
-        logintersection = log(A/eta0)/(-delta-2);
-        mediator = cosh(width*(log(xi)-logintersection));
-        Hconst = exp(1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0));
-        Hhat = Hconst * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));
-    end
-
-    plot(ax_cardy,1./x_fake-1,Hhat,'-r','LineWidth',2)
-end
-
 
 
 end

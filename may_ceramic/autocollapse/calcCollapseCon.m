@@ -7,10 +7,11 @@ numV = length(volt_list);
 
 
 % y = [eta0, phi0, delta, A, width, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
-%load("y_09_04.mat")
+load("y_09_04.mat")
 %y_init = y_handpicked_xcShifted_09_04;
+y_init = y_handpicked_not_smooth_09_04;
 
-y_init = y_Cv;
+%load("y_09_19_ratio_with_and_without_Cv.mat"); y_init = y_Cv;
 
 % check that initial guess looks ok before continuing
 %show_F_vs_xc_x(dataTable,y_init);
@@ -33,8 +34,20 @@ y_init_restricted = removeConstraintsFromParamVec(y_init,constraints);
 
 
 costfxncon = @(y) sum(getResidualsCon(dataTable,y,constraints).^2);
-opts = optimoptions('fminunc','Display','final','MaxFunctionEvaluations',3e5,'StepTolerance',1e-12);
+
+%opts = optimoptions('fminunc','Display','final','MaxFunctionEvaluations',3e5,...
+%    'StepTolerance',1e-6,'HessianApproximation',"lbfgs",'FiniteDifferenceStepSize',10000*sqrt(eps));
+opts = optimoptions('fminunc','Display','final','MaxFunctionEvaluations',3e5,...
+    'StepTolerance',1e-12,'OptimalityTolerance',1e-12);
 [y_optimal_restricted,fval,exitflag,output,grad,hessian] = fminunc(costfxncon,y_init_restricted,opts);
+
+%opts = optimset('MaxIter',1e6,'MaxFunEvals',1e6);
+%y_optimal_restricted = fminsearch(costfxncon,y_init_restricted,opts);
+
+%opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
+%[y_optimal_restricted,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxncon,y_init_restricted,[],[],[],[],[],[],[],opts);
+
+
 y_optimal = mergeParamsAndConstraints(y_optimal_restricted,constraints);
 disp(sum(getResiduals(dataTable,y_optimal).^2));
 
