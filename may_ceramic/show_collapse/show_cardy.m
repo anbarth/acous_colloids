@@ -1,6 +1,7 @@
 function show_cardy(stressTable, paramsVector, varargin)
 
-alpha = 0.5;
+alpha = 2;
+alpha_interpolate = alpha;
 
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 
@@ -119,17 +120,18 @@ if showInterpolatingFunction
     % x=1-X
     x_fake = 1-logspace(log10(min(1-x_all)),log10(max(1-x_all)),1000);
     if fxnType == 1
+        % deprecated bad naughty code
         Fhat = eta0*(1-x_fake).^delta;
         Hhat = Fhat.*x_fake.^2;
     elseif fxnType == 2
-        xi = 1./x_fake-1;
+        xi = x_fake.^(-1/alpha_interpolate)-1;
         logintersection = log(A/eta0)/(-delta-2);
         mediator = cosh(width*(log(xi)-logintersection));
         Hconst = exp(1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0));
         Hhat = Hconst * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));
     end
 
-    plot(ax_cardy,1./x_fake-1,Hhat,'-r','LineWidth',2)
+    plot(ax_cardy,x_fake.^(-1/alpha_interpolate)-1,Hhat,'-r','LineWidth',2)
 end
 
 

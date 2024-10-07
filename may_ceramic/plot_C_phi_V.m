@@ -9,6 +9,7 @@ function plot_C_phi_V(stressTable, paramsVector)
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,13);
 phi_list = unique(stressTable(:,1));
 volt_list = [0,5,10,20,40,60,80];
+alpha = 0.25;
 
 figure;
 hold on;
@@ -19,8 +20,8 @@ colormap(cmap);
 cbar = colorbar;
 clim([0 80]);
 cbar.Ticks = [0,5,10,20,40,60,80];
-xlim([0.15 0.7])
-%xline(phi0)
+xlim([0.15 0.75])
+xline(phi0)
 ylabel('C')
 xlabel('\phi')
 
@@ -33,7 +34,7 @@ for jj=1:size(C,2)
     myPhi = myPhi(myC ~= 0);
     myC = myC(myC~=0);
 
-    myC = myC .* (phi0-myPhi).^1;
+    myC = myC .* (phi0-myPhi).^alpha;
 
     myColor = cmap(round(1+255*voltage/80),:);
     plot(myPhi,myC,'-o','Color',myColor,'LineWidth',1.5);

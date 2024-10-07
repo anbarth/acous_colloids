@@ -1,5 +1,7 @@
 function residuals = getResiduals(stressTable, paramsVector, phi_list, volt_list)
 
+alpha=2;
+
 if nargin < 3
     phi_list = unique(stressTable(:,1));
 end
@@ -9,13 +11,12 @@ end
 
 % get x, F
 [x_all,F_all,F_uncert_all] = calc_x_F(stressTable, paramsVector);
-H_all = F_all .* x_all.^2;
-H_uncert_all = F_uncert_all.*x_all.^2;
+H_all = F_all .* x_all.^(2/alpha);
+H_uncert_all = F_uncert_all.*x_all.^(2/alpha);
 
 % calculate Fhat from x
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,length(phi_list));
-xi = 1./x_all-1;
-%xi = 1./x_all.^(1/3)-1;
+xi = x_all.^(-1/alpha)-1;
 logintersection = log(A/eta0)/(-delta-2);
 mediator = cosh(width*(log(xi)-logintersection));
 Hconst = exp(1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0));
@@ -25,7 +26,7 @@ if delta==-2
     Hhat = sqrt(A*eta0) * xi.^((delta-2)/2);
 end
 
-Fhat = 1./x_all.^2 .* Hhat;
+Fhat = 1./x_all.^(2/alpha) .* Hhat;
 %Fhat = 1./x_all.^(2/3) .* Hhat;
 
 % calculate residuals

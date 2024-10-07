@@ -1,8 +1,8 @@
 function show_bulbuls_plot(stressTable, paramsVector, varargin)
-alpha = 3; xc=1100;
-%alpha = 1; xc=10;
-%alpha = 0.5; xc=3.5;
-%alpha = 0.25; xc=1.9;
+%alpha = 3; xc=950;
+alpha = 1; xc=11.5;
+%alpha = 0.5; xc=3.15;
+%alpha = 0.25; xc=1.77;
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,13); fxnType = 2;
 f = @(sigma,jj) sigma ./ (sigma+sigmastar(jj));
@@ -74,10 +74,10 @@ for ii = vol_frac_plotting_range
         sigma = stressTable(myData,2);
         eta = stressTable(myData,4);
 
-        x_axis_variable = f(sigma,jj)/(phi0-phi)^alpha;
-        y_axis_variable = eta * (phi0-phi).^2;
-        %y_axis_variable = eta .* f(sigma,jj).^(2/alpha);
-        %x_axis_variable = (f(sigma,jj)/(phi0-phi)^alpha).^(-1/alpha) - xc^(-1/alpha);
+        %x_axis_variable = f(sigma,jj)/(phi0-phi)^alpha;
+        %y_axis_variable = eta * (phi0-phi).^2;
+        y_axis_variable = eta .* f(sigma,jj).^(2/alpha);
+        x_axis_variable = (f(sigma,jj)/(phi0-phi)^alpha).^(-1/alpha) - xc^(-1/alpha);
         
 
         if colorBy == 1
