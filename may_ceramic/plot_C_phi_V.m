@@ -9,7 +9,7 @@ function plot_C_phi_V(stressTable, paramsVector)
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,13);
 phi_list = unique(stressTable(:,1));
 volt_list = [0,5,10,20,40,60,80];
-alpha = 0.25;
+alpha = 0;
 
 figure;
 hold on;
