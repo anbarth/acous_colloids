@@ -1,6 +1,6 @@
 function residuals = getResiduals(stressTable, paramsVector, phi_list, volt_list)
 
-alpha=2;
+alpha=0.2;
 
 if nargin < 3
     phi_list = unique(stressTable(:,1));

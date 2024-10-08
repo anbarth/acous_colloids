@@ -6,16 +6,19 @@ numPhi = length(phi_list);
 numV = length(volt_list);
 
 
-% y = [eta0, phi0, delta, A, width, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
+
+alpha = 0.2; % you MUST also set this manually in getResiduals
+
 load("y_09_04.mat")
 y_init = y_handpicked_xcShifted_09_04;
+
 % update best guesses for (eta0, delta, A, width) for alpha != 1
 y_init = fitToInterpolatingFxn(may_ceramic_09_17,y_init);
 
-
 % check that initial guess looks ok before continuing
 %show_F_vs_xc_x(dataTable,y_init);
-%return
+show_cardy(dataTable,y_init,'ShowInterpolatingFunction',true,'alpha',alpha)
+return
 
 
 

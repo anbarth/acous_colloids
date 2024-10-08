@@ -1,9 +1,9 @@
-my_data = may_ceramic_06_25;
+my_data = may_ceramic_09_17;
 
 % edit this list to change what's included in the fit
 %phis = [44,48,52,56,59];
 phis = unique(my_data(:,1));
-phi0 = 0.7011;
+phi0 = 0.7013;
 maxSigma = 0;
 
 
@@ -41,8 +41,8 @@ eta = eta(include_me);
 % x(1) = A
 % x(2) = sigma*
 % x(3) = phi_mu
-k=1;
-f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^k);
+
+f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
 fitfxn = @(x) x(1)*( phi0*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./eta ).^2);  
 
@@ -58,6 +58,7 @@ s = fmincon(costfxn, [0.1, 0.5, 0.65],constraintMatrix,constraintVector,...
         
 disp(s);
 etaFit = fitfxn(s);
+%etaFit=fitfxn([0.02, 0.5, 0.63]);
 
 figure;
 hold on;

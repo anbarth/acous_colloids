@@ -1,7 +1,6 @@
 function show_cardy(stressTable, paramsVector, varargin)
 
-alpha = 2;
-alpha_interpolate = alpha;
+
 
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 
@@ -11,6 +10,8 @@ colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showMeera = false;
 showInterpolatingFunction = false;
 showErrorBars = false;
+alpha = 1;
+
 
 for ii=1:2:length(varargin)
     if isa(varargin{ii},'char')
@@ -25,11 +26,15 @@ for ii=1:2:length(varargin)
             showInterpolatingFunction = varargin{ii+1};
         elseif strcmp(fieldName,'ShowErrorBars')
             showErrorBars = varargin{ii+1};
+        elseif strcmp(fieldName,'alpha')
+            alpha = varargin{ii+1};
         end
     end
 end
 
 xc=1;
+alpha_interpolate = alpha;
+%alpha_interpolate = 1;
 
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,13); fxnType = 2;
 
