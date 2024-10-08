@@ -1,6 +1,6 @@
 function plot_C_phi(stressTable, paramsVector)
 
-alpha = 0.2;
+alpha = 0;
 
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,13);
 phi_list = unique(stressTable(:,1));
@@ -11,7 +11,7 @@ hold on;
 
 
 xlim([0.15 0.75])
-ylabel('C')
+ylabel('D')
 xlabel('\phi')
 %xline(phi0)
 

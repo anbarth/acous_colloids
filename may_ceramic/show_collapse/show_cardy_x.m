@@ -1,4 +1,4 @@
-function show_cardy(stressTable, paramsVector, varargin)
+function show_cardy_x(stressTable, paramsVector, varargin)
 
 
 
@@ -60,13 +60,13 @@ end
 fig_cardy = figure;
 ax_cardy = axes('Parent', fig_cardy,'XScale','log','YScale','log');
 hold(ax_cardy,'on');
-ax_cardy.XLabel.String = "1/x-1/x_c";
+ax_cardy.XLabel.String = "x";
 ax_cardy.YLabel.String = "H";
 colormap(ax_cardy,cmap);
 if showMeera
     scatter(ax_cardy,meeraHX,meeraHY*0.2,[],[0.7 0.7 0.7]);
 end
-ax_cardy.XLim = [10^-2, 10^4];
+%ax_cardy.XLim = [10^-2, 10^4];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -89,8 +89,8 @@ for ii = vol_frac_plotting_range
         delta_F = delta_F_all(myData);
         H = F .* x.^(2/alpha);
         delta_H = delta_F .* x.^(2/alpha);
-        %x_axis_variable = x;
-        x_axis_variable = x.^(-1/alpha)-xc^(-1/alpha);
+        x_axis_variable = x;
+        %x_axis_variable = x.^(-1/alpha)-xc^(-1/alpha);
         P = P_all(myData);
 
 
