@@ -93,6 +93,11 @@ for ii = vol_frac_plotting_range
         %x_axis_variable = x.^(-1/alpha)-xc^(-1/alpha);
         P = P_all(myData);
 
+        % sort in order of ascending x
+        [x_axis_variable,sortIdx] = sort(x_axis_variable,'ascend');
+        H = H(sortIdx);
+        delta_H = delta_H(sortIdx);
+        myMarker = my_vol_frac_markers(ii);
 
         if colorBy == 1
             myColor = cmap(round(1+255*voltage/80),:);
@@ -104,17 +109,18 @@ for ii = vol_frac_plotting_range
             P_color(P_color>maxP) = maxP;
             myColor = cmap(round(1+255*(log(P_color)-log(minP))/(log(maxP)-log(minP))),:);
         elseif colorBy == 4
-            myColor = log(sigma);
+            sigma = stressTable(myData,2);
+            f = sigma ./ (sigma+sigmastar(jj));
+            %myColor = log(f);
+            myColor = max(log(f)+0.1,0);
+            %myColor = log(sigma);
+            myColor = myColor(sortIdx);
         end
         
 
         myMarker = my_vol_frac_markers(ii);
 
-        % sort in order of ascending x
-        [x_axis_variable,sortIdx] = sort(x_axis_variable,'ascend');
-        H = H(sortIdx);
-        delta_H = delta_H(sortIdx);
-        myMarker = my_vol_frac_markers(ii);
+
         if colorBy < 3
            if showLines
                myMarker = strcat(myMarker,'-');
@@ -126,6 +132,9 @@ for ii = vol_frac_plotting_range
            end
         else
             scatter(ax_cardy,x_axis_variable,H,[],myColor,'filled',myMarker);
+            if showLines
+                plot(ax_cardy,x_axis_variable,H,'-','Color','#dbdbdb','LineWidth',0.5);
+            end
         end
         
 
