@@ -9,7 +9,7 @@ function plot_C_phi_V(stressTable, paramsVector)
 [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,13);
 phi_list = unique(stressTable(:,1));
 volt_list = [0,5,10,20,40,60,80];
-alpha = 0;
+alpha = 1;
 
 figure;
 hold on;
@@ -20,8 +20,8 @@ colormap(cmap);
 cbar = colorbar;
 clim([0 80]);
 cbar.Ticks = [0,5,10,20,40,60,80];
-xlim([0.15 0.75])
-xline(phi0)
+xlim([0.15 0.65])
+%xline(phi0)
 ylabel('C')
 xlabel('\phi')
 

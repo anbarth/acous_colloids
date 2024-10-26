@@ -51,11 +51,16 @@ ax_collapse = axes('Parent', fig_collapse,'XScale','log','YScale','log');
 hold(ax_collapse,'on');
 ax_collapse.XLabel.String = "x";
 ax_collapse.YLabel.String = "F";
+
 if showMeera
+    meeraMultiplier_X = 1/13.8;
+    meeraMultiplier_Y = 3;
+    [meeraX,meeraY]=stealMeerasData();
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
 %ax_collapse.XLim = [10^-3, 1.5];
-%ax_collapse.XLim = [10^-7, 2];
+%ax_collapse.XLim = [10^-5, 2];
+%ax_collapse.YLim = [0.4,110];
 colormap(ax_collapse,cmap);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -105,9 +110,9 @@ for ii = vol_frac_plotting_range
                myMarker = strcat(myMarker,'-');
            end
            if showErrorBars
-               errorbar(ax_collapse,x,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',0.5);
+               errorbar(ax_collapse,x,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
            else
-                plot(ax_collapse,x,F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',0.5);
+                plot(ax_collapse,x,F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
            end
         else
             scatter(ax_collapse,x,F,[],myColor,'filled',myMarker);
