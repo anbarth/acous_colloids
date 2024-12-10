@@ -25,12 +25,12 @@ phi59_rows = phi59_rows(phi59_rows(:,2)~=200,:);
 
 % exclude lower stresses where there's big shear thinning
 % (i used some discretion here)
-phi30_rows = phi30_rows(phi30_rows(:,2)>=0.01,:);
-phi48_rows = phi48_rows(phi48_rows(:,2)>=0.01,:);
-phi54_rows = phi54_rows(phi54_rows(:,2)>=0.03,:);
-phi56_rows = phi56_rows(phi56_rows(:,2)>=0.003,:);
-phi59_rows = phi59_rows(phi59_rows(:,2)>=0.01,:);
-phi59p5_rows = phi59p5_rows(phi59p5_rows(:,2)>=0.01,:);
+%phi30_rows = phi30_rows(phi30_rows(:,2)>=0.01,:);
+%phi48_rows = phi48_rows(phi48_rows(:,2)>=0.01,:);
+%phi54_rows = phi54_rows(phi54_rows(:,2)>=0.03,:);
+%phi56_rows = phi56_rows(phi56_rows(:,2)>=0.003,:);
+%phi59_rows = phi59_rows(phi59_rows(:,2)>=0.01,:);
+%phi59p5_rows = phi59p5_rows(phi59p5_rows(:,2)>=0.01,:);
 
 
 clear dataTable

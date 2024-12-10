@@ -2,14 +2,14 @@ dataTable = may_ceramic_09_17;
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 
 %phiNum = 11;
-for phiNum = 11
+for phiNum = 6:13
 
 
 fig_eta = figure;
 %ax_eta = axes('Parent', fig_eta,'YScale','log');
 ax_eta = axes('Parent', fig_eta);
 ax_eta.XLabel.String = 'Acoustic voltage (V)';
-ax_eta.YLabel.String = 'Viscosity \eta (Pa s)';
+ax_eta.YLabel.String = 'Average strain rate (1/s)';
 hold(ax_eta,'on');
 cmap = winter(256);
 colormap(ax_eta,cmap);
@@ -37,15 +37,16 @@ for ii=1:length(sigma_list)
     myColor = cmap(round(1+255*(log(sigma)-minLogSig)/(maxLogSig-minLogSig)),:);
     V = myData(:,3);
     eta = myData(:,4);
+    eta0V = eta(V==0);
     
     % sort in order of ascending V
     [V,sortIdx] = sort(V,'ascend');
     eta = eta(sortIdx);
 
-    percent_eta = eta ./ eta(1);
+    gammadot_max = sigma/2 * (1./eta - 1/eta0V);
     
     %plot(ax_eta,V,percent_eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
-    plot(ax_eta,V,eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+    plot(ax_eta,V,gammadot_max, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
 
 end
 

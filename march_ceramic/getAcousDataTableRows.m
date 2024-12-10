@@ -19,7 +19,7 @@ for i=1:numel(fn)
         myVolt = myRow(3);
         myT = myRow(4);
 
-        [eta,delta_eta,sloppy] = getAcousticViscosity(myRheoData,myT,showPlots);
+        [eta,delta_eta,baselineEta,sloppy] = getAcousticViscosity(myRheoData,myT,showPlots);
         if sloppy
             continue
         end

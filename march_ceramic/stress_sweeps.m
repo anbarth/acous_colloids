@@ -1,5 +1,5 @@
 oldDataTable = ceramic_data_table_03_02;
-dataTable = march_data_table_05_02;
+%dataTable = march_data_table_05_02;
 
 
 fig_eta = figure;
@@ -29,11 +29,13 @@ phi_high = phi(1:end);
 phi_old = unique(oldDataTable(:,1));
 phi_high_old = phi_old(1:end);
 
-minPhi = min([phi_high;phi_high_old]);
-maxPhi = max([phi_high;phi_high_old]);
+minPhi = 0.18;
+maxPhi = 0.62;
+%minPhi = min([phi_high;phi_high_old]);
+%maxPhi = max([phi_high;phi_high_old]);
 phi0=0.66;
-%cmap = flipud(viridis(256)); 
-cmap = turbo;
+cmap = viridis(256); 
+%cmap = turbo;
 
 for ii=1:length(phi_high)
     phi = phi_high(ii);
