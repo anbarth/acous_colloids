@@ -67,6 +67,10 @@ if showMeera
     scatter(ax_cardy,meeraHX,meeraHY*0.2,[],[0.7 0.7 0.7]);
 end
 %ax_cardy.XLim = [10^-2, 10^4];
+%ax_cardy.XLim = [4, 13];
+%ax_cardy.XLim = [0.0229, 0.0231];
+%ax_cardy.XLim = [0.05, 3];
+xline(1)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

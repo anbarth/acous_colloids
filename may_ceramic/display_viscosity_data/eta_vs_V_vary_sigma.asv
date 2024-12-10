@@ -6,10 +6,8 @@ my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagra
 phi_list = unique(dataTable(:,1));
 %phiNum = 7;
 for phiNum=6:13
-    
-phi = phi_list(phiNum);
 
-
+>>>>>>> 8ac91df2c0f7b9ac3779933bbb95b1fe2ecb4f91
 fig_eta = figure;
 %ax_eta = axes('Parent', fig_eta,'YScale','log');
 ax_eta = axes('Parent', fig_eta);
@@ -18,8 +16,12 @@ ax_eta.YLabel.String = 'Viscosity \eta (Pa s)';
 hold(ax_eta,'on');
 cmap = winter(256);
 colormap(ax_eta,cmap);
+<<<<<<< HEAD
 
-
+phi_list = unique(dataTable(:,1));
+=======
+>>>>>>> 8ac91df2c0f7b9ac3779933bbb95b1fe2ecb4f91
+phi = phi_list(phiNum);
 %disp(phi)
 markerCode = strcat('-',my_vol_frac_markers(phiNum));
 ax_eta.Title.String = strcat("\phi=",num2str(phi));

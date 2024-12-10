@@ -48,8 +48,7 @@ eta = eta(include_me);
 % x(2) = sigma*
 % x(3) = phi_mu
 % x(4) = phi_0
-k=1;
-%f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^k);
+
 f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
 fitfxn = @(x) x(1)*( x(4)*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
@@ -71,7 +70,7 @@ phi0 = s(4);
 %disp(s);
 etaFit = fitfxn(s);
 
-
+phis = [0.2 0.3 0.4 0.45 0.5 0.55 0.58 0.6];
 if showPlot
     my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
     figure;
@@ -86,34 +85,20 @@ if showPlot
     for ii=1:length(phis)
         myPhi = phis(ii);
         
-        myStress=sigma(phi==myPhi);
-        myEta=eta(phi==myPhi);
-        myDeltaEta=delta_eta(phi==myPhi);
-        myEtaFit=etaFit(phi==myPhi);
+        myStress=logspace(log10(0.005),log10(300));
+        myEtaFit=s(1)*( s(4)*(1-f(myStress,s(2))) + s(3)*f(myStress,s(2)) - myPhi ).^(-2);
         
-        % sort in order of ascending sigma
-        [myStress,sortIdx] = sort(myStress,'ascend');
-        myEta = myEta(sortIdx);
-        myDeltaEta = myDeltaEta(sortIdx);
-        myEtaFit = myEtaFit(sortIdx);
-        
-        myMarker = my_vol_frac_markers(ii);
         myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
-       % plot(myStress,myEta,'o','Color',myColor,'LineWidth',1);
-        %errorbar(myStress,myEta,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-        %plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
-
-         errorbar(19*myStress,25*myEta,25*myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-        plot(19*myStress,25*myEtaFit,'Color',myColor,'LineWidth',1.5);
+       plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1.5);
     end
     %title('stress sweeps');
-    xlabel('\sigma (Pa)');
-    ylabel('\eta (Pa s)');
+    xlabel('Shear stress \sigma (Pa)');
+    ylabel('Viscosity \eta (Pa s)');
     
     colormap(cmap);
     c = colorbar;
     c.Ticks = phis;
     clim([minPhi maxPhi])
 end
-
+prettyPlot;
 end

@@ -26,7 +26,8 @@ plot_indices = 1:length(phi_list);
 % remove voltage dependence from C
 %C(:,2:end) = repmat(C(:,1),1,6);
 %y_optimal = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
-y_optimal = y_Cv;
+%y_optimal = y_Cv;
+y_optimal = y_init;
 
 [x,F,delta_F] = calc_x_F(dataTable,y_optimal);
 
@@ -74,11 +75,11 @@ for ii=1:length(phi_list)
     myMarker = my_vol_frac_markers(ii);
     %plot(ax_eta,sigma,eta, strcat(myMarker,'--'),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
     
-    errorbar(ax_eta,sigma,eta, deltaEta, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-    plot(ax_eta,sigma,myEtaHat,'-','Color',myColor,'LineWidth',1.5);
+    %errorbar(ax_eta,sigma,eta, deltaEta, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+    %plot(ax_eta,sigma,myEtaHat,'-','Color',myColor,'LineWidth',1.5);
 
-    %errorbar(ax_eta,sigma*19,eta*25, deltaEta*25, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-    %plot(ax_eta,sigma*19,myEtaHat*25,'-','Color',myColor,'LineWidth',1.5);
+    errorbar(ax_eta,sigma*19,eta*25, deltaEta*25, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+    plot(ax_eta,sigma*19,myEtaHat*25,'-','Color',myColor,'LineWidth',1.5);
  
 end
 title(ax_eta,strcat('V=',num2str(voltage)))
