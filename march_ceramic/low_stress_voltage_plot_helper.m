@@ -1,4 +1,4 @@
-rheoStruct = phi59p5_04_16.sig003_100V_40V;
+rheoStruct = phi44_03_19.sig003;
 gap = getGap(rheoStruct);
 t = getTime(rheoStruct);
 changePts = findchangepts(gap,'MaxNumChanges',2);

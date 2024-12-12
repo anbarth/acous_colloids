@@ -1,5 +1,5 @@
 
-dataTable = march_data_table_04_23;
+dataTable = march_data_table_05_09;
 
 phi = unique(dataTable(:,1));
 phi = phi(abs(phi-0.52)>0.001); % exclude 52% because of motor adjustment
