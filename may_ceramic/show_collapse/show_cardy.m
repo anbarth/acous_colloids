@@ -60,7 +60,7 @@ end
 fig_cardy = figure;
 ax_cardy = axes('Parent', fig_cardy,'XScale','log','YScale','log');
 hold(ax_cardy,'on');
-ax_cardy.XLabel.String = "1/x-1/x_c";
+ax_cardy.XLabel.String = "x^{-1/\alpha}-x_c^{-1/\alpha}";
 ax_cardy.YLabel.String = "H";
 colormap(ax_cardy,cmap);
 if showMeera

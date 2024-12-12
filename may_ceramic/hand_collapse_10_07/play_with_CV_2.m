@@ -15,10 +15,10 @@ fit_sigmastar;
     CV_8 = C(8,:).*[1 1.01 1.005 1 1.01 0.9 0.9];
     CV_7 = C(7,:).*[1 1 1.01 1.01 1.07 1.01 1.03];
     CV_6 = C(6,:).*[1 1.03 1.01 1.04 1.08 1.03 1.1];
-    my_phi_num = 12;
+    my_phi_num = 13;
     showFxn = false;
     voltRange = 1:7;
-    whichPlot = 0;
+    whichPlot = 1;
 
 
 
@@ -33,8 +33,8 @@ elseif whichPlot == 2
     show_F_vs_xc_x(dataTable,y_handpicked_10_07,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
 end
 
-show_F_vs_x(dataTable,y_handpicked_10_07,'ColorBy',1,'ShowInterpolatingFunction',showFxn);%,'VoltRange',1,'ShowLines',true)
-show_F_vs_xc_x(dataTable,y_handpicked_10_07,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
+%show_F_vs_x(dataTable,y_handpicked_10_07,'ColorBy',1,'ShowInterpolatingFunction',showFxn);%,'VoltRange',1,'ShowLines',true)
+%show_F_vs_xc_x(dataTable,y_handpicked_10_07,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
 
 
 

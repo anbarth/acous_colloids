@@ -58,6 +58,8 @@ constraintMatrix = zeros(4,4);
 constraintVector = [0,0,0,0];
 upper_bounds = [Inf,Inf,1,1];
 lower_bounds = [0,0,0.61,0.61];
+%upper_bounds = [Inf,0.06,1,1];
+%lower_bounds = [0,0.06,0.61,0.61];
 
 opts = optimoptions('fmincon','Display','final','StepTolerance',1e-12);
 %opts = optimoptions('fmincon','Display','off');
@@ -99,12 +101,12 @@ if showPlot
         
         myMarker = my_vol_frac_markers(ii);
         myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
-       % plot(myStress,myEta,'o','Color',myColor,'LineWidth',1);
-        %errorbar(myStress,myEta,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-        %plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
 
-         errorbar(19*myStress,25*myEta,25*myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-        plot(19*myStress,25*myEtaFit,'Color',myColor,'LineWidth',1.5);
+        errorbar(myStress,myEta,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+        plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
+
+       %  errorbar(19*myStress,25*myEta,25*myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+       % plot(19*myStress,25*myEtaFit,'Color',myColor,'LineWidth',1.5);
     end
     %title('stress sweeps');
     xlabel('\sigma (Pa)');

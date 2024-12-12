@@ -16,6 +16,7 @@ chi2_optimal = chi2(y_optimal);
 % if you're getting this chi2, then the answer to "how often would i expect
 % to see a chi2 value higher than this one?" is only 5% of the time
 chi2_cutoff = chi2inv(0.95,dof);
+% 1-chi2cdf(chi2_cutoff,dof) % returns 5%
 
 paramNum = 3;
 constrainedValue_guess = -0.4;

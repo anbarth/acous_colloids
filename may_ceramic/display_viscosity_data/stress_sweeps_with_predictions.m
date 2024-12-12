@@ -27,9 +27,9 @@ plot_indices = 1:length(phi_list);
 %C(:,2:end) = repmat(C(:,1),1,6);
 %y_optimal = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
 %y_optimal = y_Cv;
-y_optimal = y_init;
+y_optimal = y_handpicked_10_28;
 
-[x,F,delta_F] = calc_x_F(dataTable,y_optimal);
+[eta_hat, eta, delta_eta] = get_eta_hat(dataTable, y_optimal);
 
 minPhi = 0.18;
 maxPhi = 0.62;
@@ -43,27 +43,12 @@ for ii=1:length(phi_list)
     phi = phi_list(ii);
     phi_fudged = phi+phi_fudge(ii);
     myData = dataTable(dataTable(:,1)==phi & dataTable(:,3)==voltage, :);
-    myX = x(dataTable(:,1)==phi & dataTable(:,3)==voltage);
-
-    % sort by stress
-    [myData,sortIdx] = sortrows(myData,2); 
-    myX = myX(sortIdx);
-
-    xi = 1./myX-1;
-    logintersection = log(A/eta0)/(-delta-2);
-    mediator = cosh(width*(log(xi)-logintersection));
-    Hconst = exp(1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0));
-    Hhat = Hconst * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));
-    Fhat = 1./myX.^2 .* Hhat;
-    myEtaHat = Fhat / (phi0-phi_fudged)^2;
+    myEtaHat = eta_hat(dataTable(:,1)==phi & dataTable(:,3)==voltage);
+    deltaEta = delta_eta(dataTable(:,1)==phi & dataTable(:,3)==voltage);
 
     myColor = cmap(round(1+255*(phi_fudged-minPhi)/(maxPhi-minPhi)),:);
     sigma = myData(:,2);
     eta = myData(:,4);
-    deltaEta_rheometer = myData(:,5);
-    deltaPhi = 0.01;
-    deltaEta_volumefraction = eta*2*(phi0-phi_fudged)^(-1)*deltaPhi;
-    deltaEta = sqrt(deltaEta_rheometer.^2+deltaEta_volumefraction.^2);
     
     
     % sort in order of ascending sigma

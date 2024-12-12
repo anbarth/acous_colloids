@@ -1,6 +1,6 @@
 function y = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge)
 
-% y = [eta0, phi0, delta, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
+% y = [eta0, phi0, delta, A, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
 
 C0 = C(:,1)';
 C5 = C(:,2)';

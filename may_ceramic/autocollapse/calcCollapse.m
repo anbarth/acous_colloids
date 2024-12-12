@@ -9,9 +9,10 @@ numV = length(volt_list);
 
 alpha = 1; % you MUST also set this manually in getResiduals
 
-load("y_09_04.mat")
+%load("y_09_04.mat")
 %y_init = y_handpicked_xcShifted_09_04;
-y_init = y_handpicked_10_07;
+%y_init = y_handpicked_10_07;
+y_init = y_handpicked_10_28;
 
 % update best guesses for (eta0, delta, A, width) for alpha != 1
 y_init = fitToInterpolatingFxn(may_ceramic_09_17,y_init);
@@ -19,7 +20,7 @@ y_init = fitToInterpolatingFxn(may_ceramic_09_17,y_init);
 % check that initial guess looks ok before continuing
 %show_F_vs_xc_x(dataTable,y_init);
 %show_cardy(dataTable,y_init,'ShowInterpolatingFunction',true,'alpha',alpha)
-return
+%return
 
 
 
@@ -47,16 +48,17 @@ lower_bounds = zipParams(0,0,-Inf,0,0,zeros(1,numV),C_lower,0*ones(1,numPhi));
 upper_bounds = zipParams(Inf,1,0,Inf,Inf,Inf*ones(1,numV),C_upper,0*ones(1,numPhi));
 
 
-%residualsfxn = @(y) getResiduals(dataTable,y);
-%opts = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
-%[y_optimal_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init,lower_bounds,upper_bounds,opts);
+residualsfxn = @(y) getResiduals(dataTable,y);
+opts = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
+[y_optimal_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init,lower_bounds,upper_bounds,opts);
 
-costfxn = @(y) sum(getResiduals(dataTable,y).^2);
-opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
-[y_optimal_fmin,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);
+%costfxn = @(y) sum(getResiduals(dataTable,y).^2);
+%opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
+%[y_optimal_eta,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);
 
 %show_F_vs_x(dataTable,y_optimal_lsq,'ShowInterpolatingFunction',true); title('lsq 1')
-%show_F_vs_x(dataTable,y_optimal_fmin,'ShowInterpolatingFunction',true); title('fmin 1')
+%show_F_vs_x(dataTable,y_optimal_fmin,'ShowInterpolatingFunction',true); title('residual F')
+%show_F_vs_xc_x(dataTable,y_optimal_fmin,'ShowInterpolatingFunction',true); title('residual F')
 
 %disp(costfxn(y_optimal_lsq))
 % disp(costfxn(y_optimal_fmin))

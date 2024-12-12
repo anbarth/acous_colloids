@@ -31,7 +31,7 @@ hold(ax_phiJval,'on');
 
 
 cmap = winter(256);
-%colormap(cmap);
+
 L={};
 %for kk=1
 for kk = 1:length(stress_list)
@@ -69,5 +69,9 @@ end
 legend(ax_phiJ,L);
 legend(ax_phi0,L);
 legend(ax_phiJval,L);
+
+colormap(ax_phiJ,cmap);
+
+
 %yline(ax_phiJval,phi0);
 %yline(ax_phiJval,phimu);

@@ -59,12 +59,11 @@ if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
 %ax_collapse.XLim = [10^-3, 1.5];
-%ax_collapse.XLim = [10^-5, 2];
+ax_collapse.XLim = [10^-4, 1.5];
 %ax_collapse.YLim = [0.4,110];
 colormap(ax_collapse,cmap);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 [x_all,F_all,delta_F_all] = calc_x_F(stressTable,paramsVector);
 P_all = getP(stressTable);
@@ -110,7 +109,7 @@ for ii = vol_frac_plotting_range
                myMarker = strcat(myMarker,'-');
            end
            if showErrorBars
-               errorbar(ax_collapse,x,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+               errorbar(ax_collapse,x,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
            else
                 plot(ax_collapse,x,F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
            end

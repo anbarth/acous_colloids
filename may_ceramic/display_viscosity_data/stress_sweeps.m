@@ -32,8 +32,8 @@ plot_indices = 1:length(phi_list);
 
 
 %load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 
-%phi_fudge = zeros(1,length(phi_list)); phi0 = 0.718;
-[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_handpicked_10_07,13); 
+phi_fudge = zeros(1,length(phi_list)); phi0 = 0.718;
+%[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_handpicked_10_28,13); 
 
 
 minPhi = 0.18;
@@ -64,8 +64,8 @@ for ii=1:length(phi_list)
     
     %plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',2);
     myMarker = my_vol_frac_markers(ii);
-    plot(ax_eta,sigma*19,eta*25, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
-    %plot(ax_eta,sigma,eta, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
+    %plot(ax_eta,sigma*19,eta*25, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
+    plot(ax_eta,sigma,eta, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
     
     plot(ax_rate,sigma./eta,eta, '-d','Color',myColor,'LineWidth',1);
     %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
