@@ -6,20 +6,15 @@ numPhi = length(phi_list);
 numV = length(volt_list);
 
 
+%y_init = y_handpicked_10_28;
+%myModelHandle = @modelHandpickedAll;
 
-alpha = 1; % you MUST also set this manually in getResiduals
-
-%load("y_09_04.mat")
-%y_init = y_handpicked_xcShifted_09_04;
-%y_init = y_handpicked_10_07;
-y_init = y_handpicked_10_28;
-
-% update best guesses for (eta0, delta, A, width) for alpha != 1
-y_init = fitToInterpolatingFxn(may_ceramic_09_17,y_init);
+y_init = y_red_handpicked;
+myModelHandle = @modelSmoothFunctions;
 
 % check that initial guess looks ok before continuing
-%show_F_vs_xc_x(dataTable,y_init);
-%show_cardy(dataTable,y_init,'ShowInterpolatingFunction',true,'alpha',alpha)
+show_F_vs_xc_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',true);
+
 %return
 
 
@@ -35,7 +30,7 @@ y_init = fitToInterpolatingFxn(may_ceramic_09_17,y_init);
 % 0 < C < Inf
 % C = 0 for phi=20%...40%; V > 0 (no data)
 % C = 0 for phi=56%, V>=60 (no data)
-% 0 < phi_fudge < 0
+% phi_fudge = 0
 C_lower = zeros(numPhi,numV);
 C_upper = Inf*ones(numPhi,numV);
 C_lower(1:5,2:end) = 0;
@@ -44,21 +39,26 @@ C_lower(11,6:7) = 0;
 C_upper(11,6:7) = 0;
 
 
-lower_bounds = zipParams(0,0,-Inf,0,0,zeros(1,numV),C_lower,0*ones(1,numPhi));
-upper_bounds = zipParams(Inf,1,0,Inf,Inf,Inf*ones(1,numV),C_upper,0*ones(1,numPhi));
+%lower_bounds = zipParamsHandpickedAll(0,0,-Inf,0,0,zeros(1,numV),C_lower,0*ones(1,numPhi));
+%upper_bounds = zipParamsHandpickedAll(Inf,1,0,Inf,Inf,Inf*ones(1,numV),C_upper,0*ones(1,numPhi));
+lower_bounds = -Inf*ones(size(y_init));
+upper_bounds = Inf*ones(size(y_init));
+
+residualsfxn = @(y) get_residuals(dataTable,y,myModelHandle);
+optsLsq = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
+[y_optimal_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init,lower_bounds,upper_bounds,optsLsq);
+
+costfxn = @(y) sum(get_residuals(dataTable,y,myModelHandle).^2);
+%optsFmin = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
+%[y_optimal_fmin,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],optsFmin);
+
+%[y_optimal_fmin_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_optimal_fmin,lower_bounds,upper_bounds,optsLsq);
+
+show_F_vs_x(dataTable,y_optimal_lsq,myModelHandle,'ShowInterpolatingFunction',true); title('lsq')
+%show_F_vs_xc_x(dataTable,y_optimal_fmin,myModelHandle,'ShowInterpolatingFunction',true); title('fmin')
+%show_F_vs_xc_x(dataTable,y_optimal_fmin_lsq,myModelHandle,'ShowInterpolatingFunction',true); title('fmin -> lsq')
 
 
-residualsfxn = @(y) getResiduals(dataTable,y);
-opts = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
-[y_optimal_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init,lower_bounds,upper_bounds,opts);
-
-%costfxn = @(y) sum(getResiduals(dataTable,y).^2);
-%opts = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
-%[y_optimal_eta,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],opts);
-
-%show_F_vs_x(dataTable,y_optimal_lsq,'ShowInterpolatingFunction',true); title('lsq 1')
-%show_F_vs_x(dataTable,y_optimal_fmin,'ShowInterpolatingFunction',true); title('residual F')
-%show_F_vs_xc_x(dataTable,y_optimal_fmin,'ShowInterpolatingFunction',true); title('residual F')
-
-%disp(costfxn(y_optimal_lsq))
-% disp(costfxn(y_optimal_fmin))
+disp(costfxn(y_optimal_lsq))
+%disp(costfxn(y_optimal_fmin))
+%disp(costfxn(y_optimal_fmin_lsq))

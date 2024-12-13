@@ -1,9 +1,5 @@
 function [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelSmoothFunctions(stressTable, yReduced)
 
-if nargin == 1
-    phi_list = [0.1999 0.2503 0.2997 0.3500 0.4009  0.4396 0.4604 0.4811 0.5193 0.5398 0.5607 0.5898 0.6101]';
-end
-
 % y = [eta0, phi0, delta, A, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
 [eta0, phi0, delta, A, width, sigmastarParams, alpha, beta, q0params, q1params] = unzipReducedParams(yReduced);
 

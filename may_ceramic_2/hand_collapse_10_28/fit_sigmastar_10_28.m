@@ -32,7 +32,7 @@ if makePlot
 end
 
 sigmastar = (pSigmastar(1)*volt_list.^2+pSigmastar(2)*volt_list+pSigmastar(3))';
-y = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
+y = zipParamsHandpickedAll(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
 %show_F_vs_x(dataTable,y,'PhiRange',13:-1:1,'ShowLines',false,'VoltRange',1:7,'ColorBy',2,'ShowInterpolatingFunction',false)
 
 

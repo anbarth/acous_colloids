@@ -48,7 +48,7 @@ C(6:13,:) = [CV_6;CV_7;CV_8;CV_9;CV_10;CV_11;CV_12;CV_13];
 sigmastar_list = [sigmastar_6;sigmastar_7;sigmastar_8;sigmastar_9;sigmastar_10;sigmastar_11;sigmastar_12;sigmastar_13];
 sigmastar = sigmastar_list(my_phi_num-5,:);
 
-y_init = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
+y_init = zipParamsHandpickedAll(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
 %show_F_vs_x(dataTable,y_init,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',1:7,'ColorBy',1,'ShowInterpolatingFunction',true)
 
 

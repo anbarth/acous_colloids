@@ -4,7 +4,7 @@
 %load("y_09_04.mat"); y_optimal = y_handpicked_xcShifted_09_04;
 
 play_with_CV_2_10_28; y_handpicked = y_handpicked_10_28;
-[eta0, phi0, delta, A, width, sigmastar, D, phi_fudge] = unzipParams(y_handpicked,13);
+[eta0, phi0, delta, A, width, sigmastar, D] = unzipParamsHandpickedAll(y_handpicked,13);
 
 stressTable = may_ceramic_09_17;
 phi_list = unique(stressTable(:,1));
@@ -103,4 +103,4 @@ q1FitFit = pq1(1)*volt_list+pq1(2);
 plot(volt_list,q1FitFit,'-r','LineWidth',1)
 
 y_red_handpicked = zipReducedParams(0.03,0.7,-1.2,0.03,1,pSigmastar,myFit1.alpha,myFit1.beta,pq0,pq1);
-y_red_handpicked = fitToInterpolatingFxnReduced(stressTable,y_red_handpicked);
+%y_red_handpicked = fitToInterpolatingFxnReduced(stressTable,y_red_handpicked);

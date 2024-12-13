@@ -25,7 +25,7 @@ fit_sigmastar_10_28;
 
 C(6:13,:) = [CV_6;CV_7;CV_8;CV_9;CV_10;CV_11;CV_12;CV_13];
 
-y_handpicked_10_28 = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
+y_handpicked_10_28 = zipParamsHandpickedAll(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
 
 if whichPlot==1
     show_F_vs_x(dataTable,y_handpicked_10_28,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)

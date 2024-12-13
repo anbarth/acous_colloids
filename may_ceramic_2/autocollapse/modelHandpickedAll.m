@@ -11,7 +11,6 @@ x = zeros(N,1);
 F = zeros(N,1);
 delta_F = zeros(N,1);
 eta = zeros(N,1);
-eta_hat = zeros(N,1);
 delta_eta = zeros(N,1);
 
 for kk = 1:N
@@ -45,6 +44,12 @@ if delta==-2
 end
 
 F_hat = 1./x.^(2/alpha) .* H_hat;
+
+eta_hat = zeros(N,1);
+for kk = 1:N
+    phi = stressTable(kk,1);
+    eta_hat(kk) = F_hat(kk)*(phi0-phi)^-2;
+end 
 
 
 
