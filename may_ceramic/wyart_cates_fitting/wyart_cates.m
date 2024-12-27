@@ -50,7 +50,7 @@ eta = eta(include_me);
 % x(4) = phi_0
 k=1;
 %f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^k);
-f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
+f = @(sigma,sigmastar) sigma./(sigmastar^2+sigma.^2).^(1/2);
 fitfxn = @(x) x(1)*( x(4)*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
 
@@ -62,10 +62,11 @@ lower_bounds = [0,0,0.61,0.61];
 %lower_bounds = [0,0.06,0.61,0.61];
 
 opts = optimoptions('fmincon','Display','final','StepTolerance',1e-12);
-%opts = optimoptions('fmincon','Display','off');
 s = fmincon(costfxn, [0.1, 0.5, 0.65, 0.70],constraintMatrix,constraintVector,...
             [],[],lower_bounds,upper_bounds,[],opts);
  
+%s = fminsearch(costfxn,[0.1, 0.5, 0.65, 0.70]);
+
 eta0 = s(1);
 sigmastar = s(2);
 phimu = s(3);

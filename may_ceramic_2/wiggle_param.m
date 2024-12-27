@@ -1,20 +1,19 @@
-function wiggle_param_reduced(dataTable,yReduced_optimal,paramNum)
+function wiggle_param(dataTable,paramsVector, modelHandle, paramNum)
 
 %[eta0, phi0, delta, A, width, sigmastarParams,  b, phistarParams, Cphi0params];
 
-myParamOptimal = yReduced_optimal(paramNum);
-phi_list = unique(dataTable(:,1));
+myParamOptimal = paramsVector(paramNum);
 
-deltaParam = 0.0001;
+deltaParam = myParamOptimal*0.0001;
 paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+deltaParam,20);
 
-SSR = @(yReduced) sum(getResiduals(dataTable, reducedParamsToFullParams(yReduced,phi_list)).^2); 
-resnorm0 = SSR(yReduced_optimal);
+SSR = @(yReduced) sum(get_residuals(dataTable, yReduced, modelHandle).^2); 
+resnorm0 = SSR(paramsVector);
 resnorm = zeros(size(paramRange));
 epsilon = zeros(size(paramRange));
 for ii = 1:length(paramRange)
     myParam = paramRange(ii);
-    y = yReduced_optimal;
+    y = paramsVector;
     y(paramNum) = myParam;
     myResnorm = SSR(y);                                                                                                                                                                                                                                        
 

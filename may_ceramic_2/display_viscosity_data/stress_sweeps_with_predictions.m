@@ -18,18 +18,10 @@ phi_list = unique(dataTable(:,1));
 plot_indices = 1:length(phi_list);
 
 
-%load("y_09_17_not_smooth.mat");
-%load("y_09_04.mat"); y_optimal = y_handpicked_xcShifted_09_04; [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
-%y_optimal = y_ratio;
-%[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
 
-% remove voltage dependence from C
-%C(:,2:end) = repmat(C(:,1),1,6);
-%y_optimal = zipParams(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
-%y_optimal = y_Cv;
-y_optimal = y_handpicked_10_28;
-
-[eta_hat, eta, delta_eta] = get_eta_hat(dataTable, y_optimal);
+y_optimal = y_red_handpicked;
+modelHandle = @modelSmoothFunctions;
+[~,~,~,~,~,delta_eta,eta_hat] = modelHandle(dataTable, y_optimal);
 
 minPhi = 0.18;
 maxPhi = 0.62;
@@ -60,11 +52,11 @@ for ii=1:length(phi_list)
     myMarker = my_vol_frac_markers(ii);
     %plot(ax_eta,sigma,eta, strcat(myMarker,'--'),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
     
-    %errorbar(ax_eta,sigma,eta, deltaEta, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-    %plot(ax_eta,sigma,myEtaHat,'-','Color',myColor,'LineWidth',1.5);
+    errorbar(ax_eta,sigma,eta, deltaEta, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+    plot(ax_eta,sigma,myEtaHat,'-','Color',myColor,'LineWidth',1.5);
 
-    errorbar(ax_eta,sigma*19,eta*25, deltaEta*25, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-    plot(ax_eta,sigma*19,myEtaHat*25,'-','Color',myColor,'LineWidth',1.5);
+    %errorbar(ax_eta,sigma*19,eta*25, deltaEta*25, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+    %plot(ax_eta,sigma*19,myEtaHat*25,'-','Color',myColor,'LineWidth',1.5);
  
 end
 title(ax_eta,strcat('V=',num2str(voltage)))

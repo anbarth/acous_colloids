@@ -58,7 +58,7 @@ if showMeera
     scatter(ax_collapse,meeraX*meeraMultiplier_X,meeraY*meeraMultiplier_Y,[],[0.5 0.5 0.5]);
 end
 %ax_collapse.XLim = [10^-3, 1.5];
-ax_collapse.XLim = [10^-4, 1.5];
+%ax_collapse.XLim = [10^-4, 1.5];
 %ax_collapse.YLim = [0.4,110];
 colormap(ax_collapse,cmap);
 

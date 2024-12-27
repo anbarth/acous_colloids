@@ -1,10 +1,21 @@
-function [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelSmoothFunctions(stressTable, yReduced)
+function [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelJimMinimal(stressTable, paramsVector)
 
-% y = [eta0, phi0, delta, A, [sigmastar(V)], [C(V=0)], [C(V=5)], [C(V=10)], ...]
-[eta0, phi0, delta, A, width, sigmastarParams, alpha, beta, q0params, q1params] = unzipReducedParams(yReduced);
+phi0 = paramsVector(1);
+alpha = paramsVector(2);
+A = paramsVector(3);
+B = paramsVector(4); 
+C = paramsVector(5); 
+D = paramsVector(6); 
+E = paramsVector(7); 
+A0 = paramsVector(8); 
+eta0 = paramsVector(9); 
+width = paramsVector(10); 
+delta = paramsVector(11); 
 
-f = @(sigma,star) sigma./(star+sigma);
 
+
+phi_list = unique(stressTable(:,1));
+volt_list = [0,5,10,20,40,60,80];
 
 N = size(stressTable,1);
 x = zeros(N,1);
@@ -15,35 +26,33 @@ delta_eta = zeros(N,1);
 
 for kk = 1:N
     phi = stressTable(kk,1);
-    dphi = phi0-phi;
     sigma = stressTable(kk,2);
-    V = stressTable(kk,3);
+    voltage = stressTable(kk,3);
     eta(kk) = stressTable(kk,4);        
     delta_eta_rheo = max(stressTable(kk,5),eta(kk)*0.05);
     delta_phi = 0.01;
     delta_eta_volumefraction = eta(kk)*2*(phi0-phi)^(-1)*delta_phi;
     delta_eta(kk) = sqrt(delta_eta_rheo.^2+delta_eta_volumefraction.^2);
 
-    sigmastar = sigmastarParams(1)*V^2 + sigmastarParams(2)*V + sigmastarParams(3);
-    q0 = q0params(1)*V + q0params(2);
-    q1 = q1params(1)*V + q1params(2);
-    D = 1/( (q0*dphi)^alpha + (q1*dphi)^(alpha+beta) );
+    u_phi = phi0-phi-E*phi*sigma^2;
+    u_sigma = A*phi*sigma*(1+B*phi+C*sigma^2+D*phi*sigma^2);
 
-    x(kk) = D*f(sigma,sigmastar);
-    F(kk) = eta(kk)*(phi0-phi)^2;
+    x(kk) = u_sigma/u_phi^alpha;
+    F(kk) = eta(kk)*u_phi^2;
     delta_F(kk) = F(kk) .* (eta(kk).^(-2).*delta_eta_rheo.^2 + 4/(phi0-phi)^2*delta_phi^2 ).^(1/2);
 end
 
+
 % calculate F_hat from x
-alpha=1;
-xi = x.^(-1/alpha)-1;
-logintersection = log(A/eta0)/(-delta-2);
+alpha_interpolate=1;
+xi = x.^(-1/alpha_interpolate)-1;
+logintersection = log(A0/eta0)/(-delta-2);
 mediator = cosh(width*(log(xi)-logintersection));
-Hconst = exp(1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0));
+Hconst = exp(1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A0*eta0));
 H_hat = Hconst * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));
 
 if delta==-2
-    H_hat = sqrt(A*eta0) * xi.^((delta-2)/2);
+    H_hat = sqrt(A0*eta0) * xi.^((delta-2)/2);
 end
 
 F_hat = 1./x.^(2/alpha) .* H_hat;
@@ -53,5 +62,8 @@ for kk = 1:N
     phi = stressTable(kk,1);
     eta_hat(kk) = F_hat(kk)*(phi0-phi)^-2;
 end 
+
+
+
 
 end
