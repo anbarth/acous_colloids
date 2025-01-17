@@ -7,7 +7,7 @@ residuals = (eta_hat - eta) ./ delta_eta;
 %residuals = (F_hat - F) ./ delta_F;
 
 % infinite penalty for imaginary residuals
-residuals(imag(residuals)~=0)=Inf;
-residuals(imag(x)~=0)=Inf;
+%residuals(imag(residuals)~=0)=Inf;
+%residuals(imag(x)~=0)=Inf;
 
 end

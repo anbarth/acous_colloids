@@ -1,5 +1,6 @@
 dataTable = may_ceramic_09_17;
 
+%play_with_CV_2_10_28; fit_D_phi_2_power_laws;
 y_init = y_red_handpicked;
 myModelHandle = @modelSmoothFunctions;
 

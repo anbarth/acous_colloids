@@ -1,4 +1,4 @@
-function [eta0,sigmastar,phimu,phi0] = wyart_cates(my_data,showPlot)
+function [eta0,sigmastar,phimu,phi0] = ness_wyart_cates(my_data,showPlot)
 %my_data = may_ceramic_09_17;
 if nargin < 2
     showPlot = false;
@@ -15,12 +15,9 @@ no_acoustics = my_data(my_data(:,3)==0, :);
 phi = no_acoustics(:,1);
 sigma = no_acoustics(:,2);
 eta = no_acoustics(:,4);
-delta_eta_rheometer = no_acoustics(:,5);
-deltaPhi = 0.01;
-delta_eta_volumefraction = 2*eta.*(0.7-phi).^(-1)*deltaPhi;
-delta_eta = sqrt(delta_eta_rheometer.^2+delta_eta_volumefraction.^2);
 
-
+%delta_eta = ones(size(eta));
+delta_eta = eta*0.01;
 
 % only include volume fractions listed at the top
 include_me = false(size(phi));
@@ -48,24 +45,33 @@ eta = eta(include_me);
 % x(2) = sigma*
 % x(3) = phi_mu
 % x(4) = phi_0
-%f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^0.7);
+k=1;
+%f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^k);
 f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
 fitfxn = @(x) x(1)*( x(4)*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
+%costfxn = @(x) sum(( (fitfxn(x)-eta)).^2); 
+%costfxn = @(x) sum( log(abs(fitfxn(x)-eta)).^2);  
 
+constraintMatrix = zeros(4,4);
+constraintVector = [0,0,0,0];
+upper_bounds = [Inf,Inf,1,1];
+lower_bounds = [0,0,0,0];
+%upper_bounds = [0.2760,Inf,1,0.6561];
+%lower_bounds = [0.2760,0,0,0.6561];
 
-opts = optimset('Display','off');
-s = fminsearch(costfxn,[0.1, 0.5, 0.65, 0.70],opts);
-
-
+opts = optimoptions('fmincon','Display','none','StepTolerance',1e-12);
+%opts = optimoptions('fmincon','Display','off');
+s = fmincon(costfxn, [0.3, 0.1, 0.6, 0.65],constraintMatrix,constraintVector,...
+            [],[],lower_bounds,upper_bounds,[],opts);
+ 
+%s = [0.2760, 0.0958, 0.587, 0.6561];
 eta0 = s(1);
 sigmastar = s(2);
 phimu = s(3);
 phi0 = s(4);
-disp(s);
-disp(costfxn(s))
+%disp(s);
 etaFit = fitfxn(s);
-
 
 if showPlot
     my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">",">"];
@@ -76,8 +82,8 @@ if showPlot
     ax1.YScale = 'log';
     cmap = viridis(256);
     colormap(cmap);
-    minPhi = 0.18;
-    maxPhi = 0.62;
+    minPhi = min(phis);
+    maxPhi = max(phis);
     for ii=1:length(phis)
         myPhi = phis(ii);
         
@@ -95,15 +101,16 @@ if showPlot
         myMarker = my_vol_frac_markers(ii);
         myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
 
+        %errorbar(myStress,myEta*(phi0-myPhi)^2,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+        %plot(myStress,myEtaFit*(phi0-myPhi)^2,'Color',myColor,'LineWidth',1);
         errorbar(myStress,myEta,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
         plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
 
-       %  errorbar(19*myStress,25*myEta,25*myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-       % plot(19*myStress,25*myEtaFit,'Color',myColor,'LineWidth',1.5);
+    
     end
     %title('stress sweeps');
-    xlabel('\sigma (Pa)');
-    ylabel('\eta (Pa s)');
+    xlabel('\sigma ');
+    ylabel('\eta ');
     
     colormap(cmap);
     c = colorbar;

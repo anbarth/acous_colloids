@@ -1,8 +1,9 @@
 function show_F_vs_xc_x(stressTable, paramsVector, modelHandle, varargin)
 
-my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
+my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">"];
 
-vol_frac_plotting_range = 13:-1:1;
+phi_list = unique(stressTable(:,1));
+vol_frac_plotting_range = length(phi_list):-1:1;
 volt_plotting_range = 1:7;
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
@@ -31,9 +32,8 @@ end
 
 xc=1;
 
-phi_list = unique(stressTable(:,1));
-minPhi = 0.17;
-maxPhi = 0.62;
+minPhi = min(phi_list);
+maxPhi = max(phi_list);
 volt_list = [0,5,10,20,40,60,80];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

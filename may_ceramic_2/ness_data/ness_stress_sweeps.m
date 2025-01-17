@@ -1,5 +1,5 @@
-dataTable = may_ceramic_09_17;
-%dataTable = ness_data_table;
+%dataTable = may_ceramic_09_17;
+dataTable = ness_data_table;
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">",">"];
 
 
@@ -10,21 +10,21 @@ ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
 %ax_eta = axes('Parent', fig_eta,'YScale','log');
 %ax_eta.XLabel.String = '\sigma (rheometer Pa)';
 %ax_eta.YLabel.String = '\eta (rheometer Pa s)';
-ax_eta.XLabel.String = '\sigma (Pa)';
-ax_eta.YLabel.String = '\eta (Pa s)';
+ax_eta.XLabel.String = 'Stress \sigma a^2/fstar';
+ax_eta.YLabel.String = 'Viscosity \sigma/\eta\cdot rate';
 hold(ax_eta,'on');
 
-fig_rate = figure;
-ax_rate = axes('Parent', fig_rate,'XScale','log','YScale','log');
-ax_rate.YLabel.String = '\eta (Pa s)';
-ax_rate.XLabel.String = 'shear rate (1/s)';
-hold(ax_rate,'on');
+% fig_rate = figure;
+% ax_rate = axes('Parent', fig_rate,'XScale','log','YScale','log');
+% ax_rate.YLabel.String = '\eta (Pa s)';
+% ax_rate.XLabel.String = 'shear rate (1/s)';
+% hold(ax_rate,'on');
 % 
-fig_eta_rescaled = figure;
-ax_eta_rescaled = axes('Parent', fig_eta_rescaled,'XScale','log','YScale','log');
-ax_eta_rescaled.XLabel.String = '\sigma (rheometer Pa)';
-ax_eta_rescaled.YLabel.String = '\eta*(\phi_0-\phi)^2 (rheometer Pa s)';
-hold(ax_eta_rescaled,'on');
+% fig_eta_rescaled = figure;
+% ax_eta_rescaled = axes('Parent', fig_eta_rescaled,'XScale','log','YScale','log');
+% ax_eta_rescaled.XLabel.String = '\sigma (rheometer Pa)';
+% ax_eta_rescaled.YLabel.String = '\eta*(\phi_0-\phi)^2 (rheometer Pa s)';
+% hold(ax_eta_rescaled,'on');
 
 %phi_high = [0.44,0.48,0.52,0.56,0.59];
 phi_list = unique(dataTable(:,1));
@@ -72,7 +72,7 @@ for ii=1:length(phi_list)
     %plot(ax_eta,sigma*19,eta*25, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
     plot(ax_eta,sigma,eta, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
     
-    plot(ax_rate,sigma./eta,eta, '-d','Color',myColor,'LineWidth',1);
+    %plot(ax_rate,sigma./eta,eta, '-d','Color',myColor,'LineWidth',1);
     %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
 
     %plot(ax_eta_rescaled,sigma,eta*(phi0-phi_fudged)^2, '-d','Color',myColor,'LineWidth',1);
@@ -85,8 +85,7 @@ c_eta.Ticks = round((phi_list+phi_fudge')*100)/100;
 clim(ax_eta,[minPhi maxPhi]);
 
 
-%close(fig_rate)
-close(fig_eta_rescaled)
+
 
 
 % colormap(ax_eta_rescaled,cmap);

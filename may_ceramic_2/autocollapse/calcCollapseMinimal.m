@@ -1,5 +1,4 @@
 dataTable = may_ceramic_09_17;
-%dataTable = temp_data_table;
 phi_list = unique(dataTable(:,1));
 volt_list = unique(dataTable(:,3));
 numPhi = length(phi_list);
@@ -14,9 +13,8 @@ y_init = [0.7 1 0.00000001 1 1 1 0 0.02 0.02 10 -1];
 myModelHandle = @modelJimMinimal;
 
 % check that initial guess looks ok before continuing
-%show_F_vs_xc_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',true);
-
-%return
+show_F_vs_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',true,'VoltRange',1,'ColorBy',2);
+return
 
 
 
@@ -27,11 +25,11 @@ upper_bounds = Inf*ones(size(y_init));
 
 residualsfxn = @(y) get_residuals(dataTable,y,myModelHandle);
 optsLsq = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
-[y_optimal_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init,lower_bounds,upper_bounds,optsLsq);
+%[y_optimal_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init,lower_bounds,upper_bounds,optsLsq);
 
 costfxn = @(y) sum(get_residuals(dataTable,y,myModelHandle).^2);
-%optsFmin = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
-%[y_optimal_fmin,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],optsFmin);
+optsFmin = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
+[y_optimal_fmin,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],optsFmin);
 
 %[y_optimal_fmin_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_optimal_fmin,lower_bounds,upper_bounds,optsLsq);
 
