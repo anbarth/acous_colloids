@@ -27,6 +27,8 @@ for ii = 1:length(paramRange)
 
     epsilon(ii) = myParam-myParamOptimal;
     resnorm(ii) = myResnorm-resnorm0;
+    
+
 end
 
 figure;
