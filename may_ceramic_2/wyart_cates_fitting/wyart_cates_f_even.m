@@ -1,4 +1,4 @@
-function [eta0,sigmastar,phimu,phi0] = wyart_cates(my_data,showPlot)
+function [eta0,sigmastar,k,phimu,phi0] = wyart_cates_f_even(my_data,showPlot)
 %my_data = may_ceramic_09_17;
 if nargin < 2
     showPlot = false;
@@ -48,21 +48,21 @@ eta = eta(include_me);
 % x(2) = sigma*
 % x(3) = phi_mu
 % x(4) = phi_0
-%f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^0.7);
-%f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
-f = @(sigma,sigmastar) sigma./(sigmastar^2+sigma.^2).^(1/2);
-fitfxn = @(x) x(1)*( x(4)*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
+% x(5) = k
+f = @(sigma,sigmastar,k) sigma./(sigmastar^k+sigma.^k).^(1/k);
+fitfxn = @(x) x(1)*( x(4)*(1-f(sigma,x(2),x(5))) + x(3)*f(sigma,x(2),x(5)) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
 
 
 opts = optimset('Display','off');
-s = fminsearch(costfxn,[0.1, 0.5, 0.65, 0.70],opts);
+s = fminsearch(costfxn,[0.1, 0.5, 0.65, 0.70,2],opts);
 
 
 eta0 = s(1);
 sigmastar = s(2);
 phimu = s(3);
 phi0 = s(4);
+k = s(5);
 %disp(s);
 %disp(costfxn(s))
 etaFit = fitfxn(s);

@@ -77,9 +77,9 @@ for ii = vol_frac_plotting_range
         F = F_all(myData);
         delta_F = delta_F_all(myData);
 
-        myDataHighlight = stressTable(:,1)==phi & stressTable(:,3)==voltage & stressTable(:,2)==0.003;
-        xHighlight = x_all(myDataHighlight);
-        FHighlight = F_all(myDataHighlight);
+        %myDataHighlight = stressTable(:,1)==phi & stressTable(:,3)==voltage & stressTable(:,2)==0.003;
+        %xHighlight = x_all(myDataHighlight);
+        %FHighlight = F_all(myDataHighlight);
 
 
 
@@ -108,7 +108,7 @@ for ii = vol_frac_plotting_range
         else
             scatter(ax_collapse,x,F,[],myColor,'filled',myMarker);
         end
-        scatter(ax_collapse,xHighlight,FHighlight,'red','filled',myMarker);
+        %scatter(ax_collapse,xHighlight,FHighlight,'red','filled',myMarker);
 
     end
 end
