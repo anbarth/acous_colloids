@@ -7,8 +7,6 @@ end
 % edit this list to change what's included in the fit
 %phis = [44,48,52,56,59];
 phis = unique(my_data(:,1));
-maxSigma = 0;
-
 
 
 no_acoustics = my_data(my_data(:,3)==0, :);
@@ -26,12 +24,10 @@ for ii=1:length(phi)
         include_me(ii) = true;
     end
 end
-% only include stresses below maxSigma
-if maxSigma ~= 0
-    for ii=1:length(sigma)
-        if sigma(ii) > maxSigma
-            include_me(ii) = false;
-        end
+% only include eta < 1e5
+for ii=1:length(eta)
+    if eta(ii)>1e5
+        include_me(ii) = false;
     end
 end
 
@@ -39,6 +35,7 @@ end
 phi = phi(include_me);
 sigma = sigma(include_me);
 eta = eta(include_me);
+delta_eta = delta_eta(include_me);
 
 % eta = A*(phi_0 (1-f) + phi_mu f - phi)^-2
 % x(1) = A

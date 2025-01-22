@@ -1,11 +1,10 @@
 dataTable = ness_data_table;
-%dataTable = temp_data_table;
 phi_list = unique(dataTable(:,1));
 volt_list = unique(dataTable(:,3));
 numPhi = length(phi_list);
 numV = length(volt_list);
 
-[eta0,sigmastar,phimu,phi0] = ness_wyart_cates(ness_data_table,true);
+[eta0,sigmastar,phimu,phi0] = ness_wyart_cates(ness_data_table,false);
 
 
 % by hand

@@ -5,7 +5,7 @@ stress_list = unique(dataTable(:,2));
 phi0=0.705;
 phic=0.65;
 
-sigma = stress_list(15);
+sigma = stress_list(3);
 disp(sigma)
 eta = [];
 delta_eta = [];

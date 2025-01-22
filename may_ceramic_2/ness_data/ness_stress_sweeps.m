@@ -1,5 +1,6 @@
 %dataTable = may_ceramic_09_17;
-dataTable = ness_data_table;
+%dataTable = ness_data_table;
+dataTable = ness_data_table_exclude_low_phi;
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">",">"];
 
 

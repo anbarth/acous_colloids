@@ -62,8 +62,8 @@ eta0 = s(1);
 sigmastar = s(2);
 phimu = s(3);
 phi0 = s(4);
-disp(s);
-disp(costfxn(s))
+%disp(s);
+%disp(costfxn(s))
 etaFit = fitfxn(s);
 
 

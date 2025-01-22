@@ -1,13 +1,12 @@
-function [eta0,phimu,phi0,f_params] = flexible_wyart_cates(my_data,showPlot)
+function [eta0,sigmastar,phimu] = ness_wyart_cates_fix_phi0(my_data,phi0,showPlot)
 %my_data = may_ceramic_09_17;
-if nargin < 2
+if nargin < 3
     showPlot = false;
 end
 
 % edit this list to change what's included in the fit
 %phis = [44,48,52,56,59];
 phis = unique(my_data(:,1));
-maxSigma = 0;
 
 
 
@@ -15,11 +14,9 @@ no_acoustics = my_data(my_data(:,3)==0, :);
 phi = no_acoustics(:,1);
 sigma = no_acoustics(:,2);
 eta = no_acoustics(:,4);
-delta_eta_rheometer = no_acoustics(:,5);
-deltaPhi = 0.01;
-delta_eta_volumefraction = 2*eta.*(0.7-phi).^(-1)*deltaPhi;
-delta_eta = sqrt(delta_eta_rheometer.^2+delta_eta_volumefraction.^2);
 
+%delta_eta = ones(size(eta));
+delta_eta = eta*0.01;
 
 % only include volume fractions listed at the top
 include_me = false(size(phi));
@@ -28,12 +25,10 @@ for ii=1:length(phi)
         include_me(ii) = true;
     end
 end
-% only include stresses below maxSigma
-if maxSigma ~= 0
-    for ii=1:length(sigma)
-        if sigma(ii) > maxSigma
-            include_me(ii) = false;
-        end
+% only include eta < 1e5
+for ii=1:length(eta)
+    if eta(ii)>1e5
+        include_me(ii) = false;
     end
 end
 
@@ -41,50 +36,36 @@ end
 phi = phi(include_me);
 sigma = sigma(include_me);
 eta = eta(include_me);
+delta_eta = delta_eta(include_me);
 
 % eta = A*(phi_0 (1-f) + phi_mu f - phi)^-2
 % x(1) = A
-% x(2) = phi_mu
-% x(3) = phi_0
-% x(4:end) = f(sigma) parameters
-
-%f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^0.5);
-fitfxn = @(x) x(1)*( x(3)*(1-flexible_f(sigma,x(4:end))) + x(2)*flexible_f(sigma,x(4:end)) - phi ).^(-2);
-%fitfxn = @(x) x(1)*( x(3)*(1-f(sigma,x(4))) + x(2)*f(sigma,x(4)) - phi ).^(-2);
+% x(2) = sigma*
+% x(3) = phi_mu
+k=1;
+%f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^k);
+f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
+fitfxn = @(x) x(1)*( phi0*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
 %costfxn = @(x) sum(( (fitfxn(x)-eta)).^2); 
+%costfxn = @(x) sum( log(abs(fitfxn(x)-eta)).^2);  
 
+constraintMatrix = zeros(3,3);
+constraintVector = [0,0,0];
+upper_bounds = [Inf,Inf,1];
+lower_bounds = [0,0,0];
 
-
-opts = optimset('Display','off');
-%x0 =[0.02, 0.61, 0.70, 1, 1];
-%x0 =[0.02, 0.61, 0.70, 0.22, 0.7, 1, 1];
-%x0 =[0.02, 0.61, 0.70, 0.09, 1.2, 0.7, 0.94, 1, 1];
-%x0 =[0.02, 0.61, 0.70, 10, 10, 10, 10, 10, 10];
-%x0 =[0.02, 0.61, 0.70, 10, 1, 10, 1, 10, 1];
-%x0 =[0.02, 0.61, 0.70, 1, 1, 1, 1, 1, 1];
-%x0 =[0.02, 0.61, 0.70, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-%x0 = [0.02, 0.61, 0.70, 0.01, 1, 0.1, 1, 1, 1, 10, 1];
-sigmastars = logspace(-2,1,10);
-ks = ones(size(sigmastars));
-x0 = zeros(1,3+2*length(sigmastars));
-x0(1:3) = [0.02, 0.61, 0.70];
-x0(4:2:end) = sigmastars;
-x0(5:2:end) = ks;
-
-s = fminsearch(costfxn, x0, opts);
+opts = optimoptions('fmincon','Display','none','StepTolerance',1e-12);
+%opts = optimoptions('fmincon','Display','off');
+s = fmincon(costfxn, [0.3, 0.1, 0.6],constraintMatrix,constraintVector,...
+            [],[],lower_bounds,upper_bounds,[],opts);
  
+%s = [0.2760, 0.0958, 0.587, 0.6561];
 eta0 = s(1);
-phimu = s(2);
-phi0 = s(3);
-f_params = s(4:end);
-%sigmastar = s(4);
-%k = s(5);
-disp([eta0 phimu phi0]);
-disp(s(4:2:end));
-disp(s(5:2:end));
-disp(costfxn(s));
+sigmastar = s(2);
+phimu = s(3);
 
+%disp(s);
 etaFit = fitfxn(s);
 
 if showPlot
@@ -115,6 +96,8 @@ if showPlot
         myMarker = my_vol_frac_markers(ii);
         myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
 
+        %errorbar(myStress,myEta*(phi0-myPhi)^2,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+        %plot(myStress,myEtaFit*(phi0-myPhi)^2,'Color',myColor,'LineWidth',1);
         errorbar(myStress,myEta,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
         plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
 

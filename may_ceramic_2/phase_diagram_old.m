@@ -1,4 +1,4 @@
-dataTable = may_ceramic_09_14;
+dataTable = may_ceramic_09_17;
 
 figure; hold on;
 ax1 = gca;
@@ -6,12 +6,14 @@ ax1.YScale = 'log';
 ax1.XLabel.String = '\phi';
 ax1.YLabel.String = '\sigma';
 
-load("y_fmin_09_12.mat"); paramsVector = y_optimal;
-[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(paramsVector,13);
-x_crossover = ( (A/eta0)^(1/(-2-delta)) + 1 )^-1;
-disp(log(x_crossover));
 
-[x_all,F,delta_F] = calc_x_F(dataTable, paramsVector);
+
+dataTable = may_ceramic_09_17;
+load("01_12_optimal_params.mat")
+myModelHandle = @modelHandpickedAll; paramsVector = y_full_fmin_lsq;
+[x_all,F,delta_F,F_hat,eta,delta_eta,eta_hat] = myModelHandle(dataTable, paramsVector);
+
+
 minx = min(x_all);
 maxx = 1;
 cmap = viridis(256); 
