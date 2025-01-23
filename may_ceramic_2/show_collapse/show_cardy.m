@@ -129,7 +129,13 @@ if showInterpolatingFunction
     [x_all,sortIdx] = sort(x_all,'ascend');
     F_hat_all = F_hat_all(sortIdx);
 
-    plot(ax_cardy,x_all.^(-1/alpha_interpolate)-1,F_hat_all.*x_all.^(2/alpha_interpolate),'-r','LineWidth',2)
+    xi_all = x_all.^(-1/alpha_interpolate)-1;
+    plot(ax_cardy,xi_all,F_hat_all.*x_all.^(2/alpha_interpolate),'-r','LineWidth',2)
+    eta0 = paramsVector(1);
+    delta = paramsVector(3);
+    A = paramsVector(4);
+    plot(ax_cardy,xi_all,A*xi_all.^delta,'-k','LineWidth',1);
+    plot(ax_cardy,xi_all,eta0*xi_all.^-2,'-k','LineWidth',1);
 end
 
 
