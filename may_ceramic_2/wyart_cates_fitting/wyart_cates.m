@@ -51,6 +51,7 @@ eta = eta(include_me);
 %f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^0.7);
 %f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
 f = @(sigma,sigmastar) sigma./(sigmastar^2+sigma.^2).^(1/2);
+%f = @(sigma,sigmastar) sigma.^2./(sigmastar^2+sigma.^2);
 fitfxn = @(x) x(1)*( x(4)*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
 

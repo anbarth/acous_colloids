@@ -9,6 +9,7 @@ sigmastar = y(6);
 D = y(7:end);
 
 f = @(sigma) sigma./(sigmastar^2+sigma.^2).^(1/2);
+%f = @(sigma) sigma.^2./(sigmastar^2+sigma.^2);
 phi_list = unique(stressTable(:,1));
 volt_list = [0,5,10,20,40,60,80];
 
@@ -43,7 +44,8 @@ for kk = 1:N
 end
 
 % calculate F_hat from x
-alpha=1/2;
+%alpha=1/2;
+alpha=1;
 xi = x.^(-1/alpha)-1^(-1/alpha);
 %xi = x.^-2 - xc^-2;
 logintersection = log(A/eta0)/(-delta-2);

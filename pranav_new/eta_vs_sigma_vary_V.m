@@ -8,7 +8,8 @@ hold(ax_eta,'on');
 cmap = plasma(256);
 colormap(ax_eta,cmap);
 
-phi = 0.44;
+phi_list = unique(dataTable(:,1));
+phi = phi_list(8);
 volt_list = [0,5,10,20,40,60,80,100];
 
 for ii=1:length(volt_list)

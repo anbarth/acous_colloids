@@ -28,13 +28,13 @@ C(6:13,:) = [CV_6;CV_7;CV_8;CV_9;CV_10;CV_11;CV_12;CV_13];
 y_handpicked_10_28 = zipParamsHandpickedAll(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
 
 if whichPlot==1
-    show_F_vs_x(dataTable,y_handpicked_10_28,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
+    show_F_vs_x(dataTable,y_handpicked_10_28,@modelHandpickedAll,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
 elseif whichPlot == 2
-    show_F_vs_xc_x(dataTable,y_handpicked_10_28,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
+    show_F_vs_xc_x(dataTable,y_handpicked_10_28,@modelHandpickedAll,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
 end
 
-%show_F_vs_x(dataTable,y_handpicked_10_28,'ColorBy',1,'ShowInterpolatingFunction',showFxn);%,'VoltRange',1,'ShowLines',true)
-%show_F_vs_xc_x(dataTable,y_handpicked_10_28,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
+show_F_vs_x(dataTable,y_handpicked_10_28,@modelHandpickedAll,'ColorBy',1,'ShowInterpolatingFunction',showFxn);%,'VoltRange',1,'ShowLines',true)
+show_F_vs_xc_x(dataTable,y_handpicked_10_28,@modelHandpickedAll,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
 
 
 

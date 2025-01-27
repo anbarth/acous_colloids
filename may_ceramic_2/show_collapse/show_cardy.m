@@ -84,7 +84,7 @@ for ii = vol_frac_plotting_range
         H = F .* x.^(2/alpha);
         delta_H = delta_F .* x.^(2/alpha);
         x_axis_variable = x.^(-1/alpha)-xc^(-1/alpha);
-
+        %x_axis_variable = x;
 
         if colorBy == 1
             myColor = cmap(round(1+255*voltage/80),:);

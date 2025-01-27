@@ -1,8 +1,11 @@
-function [phi, sigma] = smoothFunctionsConstantX(x,paramsVector)
+function [phi, sigma] = smoothFunctionsConstantX(x,voltNum,paramsVector)
 
 [eta0, phi0, delta, A, width, sigmastarParams, alpha, beta, q0params, q1params] = unzipReducedParams(paramsVector);
 
-V = 0;
+%V = 0;
+volt_list = [0 5 10 20 40 60 80];
+V = volt_list(voltNum);
+
 sigmastar = sigmastarParams(1)*V^2 + sigmastarParams(2)*V + sigmastarParams(3);
 q0 = q0params(1)*V + q0params(2);
 q1 = q1params(1)*V + q1params(2);
