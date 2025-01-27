@@ -6,7 +6,7 @@ my_vol_frac_markers = ['>','s','o','d','h'];
 %bookmarkRange = 35:44; % 50%
 %bookmarkRange = 50:60; % 54% -- cutting off 160 Pa due to slip
 
-show_vol_fracs = [.50];
+show_vol_fracs = [.54];
 show_stress_min = 0.3;
 show_stress_max = 160;
 
