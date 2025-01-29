@@ -13,9 +13,11 @@ for ii=2:size(myTable,1)
             continue
         end
         if myEta < 0 || myEta > 1e5 
-            etaPreviousStress = myTable(ii,jj-2);
+            etaPreviousStress = myTable(ii,jj-1);
             if myEta>0 && etaPreviousStress > 0 && etaPreviousStress < 1e5
                 ness_data_table_exclude_low_phi(end+1,:) = [myPhi myStress 0 myEta 0];
+                %disp([myPhi myStress])
+                %disp(etaPreviousStress)
             end
             continue
         end

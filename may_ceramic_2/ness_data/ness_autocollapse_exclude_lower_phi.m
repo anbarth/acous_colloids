@@ -26,6 +26,11 @@ D = D.*C;
 y_init = [eta0,phi0,-2,eta0,0.5,sigmastar,D];
 myModelHandle = @modelNess;
 
+% check that initial guess looks ok before continuing
+%show_F_vs_xc_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',false,'ColorBy',2,'ShowLines',true,'PhiRange',10:-1:1);
+show_F_vs_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',false,'ColorBy',2,'ShowLines',true,'PhiRange',10:-1:1);
+%return
+
 
 figure; hold on; ax1=gca; ax1.XScale='log'; ax1.YScale='log';
 % Q vs phi0-phi
@@ -37,10 +42,6 @@ p = polyfit(log(dphi), log(Q),1);
 %plot(dphi,exp(polyval(p,log(dphi))),'-r');
 %plot(dphi,exp(polyval(p,log(dphi))),'-r');
 
-
-% check that initial guess looks ok before continuing
-%show_F_vs_xc_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',false,'ColorBy',2,'ShowLines',true,'PhiRange',10:-1:1);
-show_F_vs_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',false,'ColorBy',2,'ShowLines',true,'PhiRange',10:-1:1);
 return
 
 
