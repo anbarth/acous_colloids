@@ -13,6 +13,7 @@ lower_bounds = -Inf*ones(size(log_y_init));
 upper_bounds = Inf*ones(size(log_y_init));
 
 costfxn = @(y)  sum(get_residuals(acoustics_free_data,logParamsToParams(y,3),myModelHandle).^2);
+
 optsFmin = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
 [log_y_optimal_fmin,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,log_y_init,[],[],[],[],lower_bounds,upper_bounds,[],optsFmin);
 y_optimal_fmin = logParamsToParams(log_y_optimal_fmin,3);
