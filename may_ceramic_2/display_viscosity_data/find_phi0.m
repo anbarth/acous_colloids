@@ -2,8 +2,8 @@ dataTable = may_ceramic_09_17;
 phi = unique(dataTable(:,1));
 
 %load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 
-%phi_fudge = zeros(1,length(phi));
-load("y_09_04.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_handpicked_fudge_xcShifted_09_04,13); 
+phi_fudge = zeros(1,length(phi));
+%load("y_09_04.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_handpicked_fudge_xcShifted_09_04,13); 
 
 eta = [];
 delta_eta = [];
@@ -21,7 +21,12 @@ for ii=1:length(phi)
     %lowStressIndex = find(0.02==mySigma | 0.03==mySigma);
     lowStressIndex = find(0.01==mySigma);
     eta(end+1) = myEta(lowStressIndex);
-    delta_eta(end+1) = myDeltaEta(lowStressIndex);
+    %delta_eta(end+1) = myDeltaEta(lowStressIndex);
+    delta_eta_rheo = myDeltaEta(lowStressIndex);
+    
+    delta_phi=0.01;
+    delta_eta_volumefraction = myEta(lowStressIndex)*2*(0.7-phi(ii))^(-1)*delta_phi;
+    delta_eta(end+1) = sqrt(delta_eta_rheo^2+delta_eta_volumefraction^2);
 end
 
 % transpose eta
@@ -34,7 +39,7 @@ phi_fudged = phi+phi_fudge';
 figure; hold on;
 delta_eta_minushalf = 1/2 * eta.^(-3/2) .* delta_eta;
 errorbar(phi,eta.^(-1/2),delta_eta_minushalf,'ok')
-errorbar(phi_fudged,eta.^(-1/2),delta_eta_minushalf,'or')
+%errorbar(phi_fudged,eta.^(-1/2),delta_eta_minushalf,'or')
 xlabel('\phi')
 ylabel('\eta^{-1/2} (Pa s)^{-1/2}');
 

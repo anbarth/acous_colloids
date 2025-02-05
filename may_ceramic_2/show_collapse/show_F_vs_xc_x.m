@@ -5,6 +5,7 @@ my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagra
 phi_list = unique(stressTable(:,1));
 vol_frac_plotting_range = length(phi_list):-1:1;
 volt_plotting_range = 1:7;
+highlight_stress = 0;
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 showMeera = false;
@@ -26,6 +27,8 @@ for ii=1:2:length(varargin)
             showInterpolatingFunction = varargin{ii+1};
         elseif strcmp(fieldName,'ShowErrorBars')
             showErrorBars = varargin{ii+1};
+        elseif strcmp(fieldName,'HighlightStress')
+            highlight_stress = varargin{ii+1};
         end
     end
 end
@@ -104,6 +107,25 @@ for ii = vol_frac_plotting_range
     end
 end
 
+
+if highlight_stress
+    for ii = vol_frac_plotting_range
+        for jj = volt_plotting_range
+    
+            voltage = volt_list(jj);
+            phi = phi_list(ii);
+    
+            myDataHighlight = stressTable(:,1)==phi & stressTable(:,3)==voltage & stressTable(:,2)==highlight_stress;
+            xHighlight = x_all(myDataHighlight);
+            FHighlight = F_all(myDataHighlight);
+    
+            myMarker = my_vol_frac_markers(ii);
+            
+            scatter(ax_xc_x,xc-xHighlight,FHighlight,'red','filled',myMarker);
+            
+        end
+    end
+end
 
 
 if showInterpolatingFunction

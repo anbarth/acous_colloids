@@ -25,12 +25,18 @@ for ii=1:length(phi)
     end
 end
 % only include eta < 1e5
+for ii=1:length(sigma)
+    if phi(ii)==0.64 && sigma(ii)>0.01
+        include_me(ii) = false;
+    end
+end
+
+% cut out new data... for now
 for ii=1:length(eta)
     if eta(ii)>1e5
         include_me(ii) = false;
     end
 end
-
 
 phi = phi(include_me);
 sigma = sigma(include_me);
@@ -45,6 +51,7 @@ delta_eta = delta_eta(include_me);
 k=1;
 %f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^k);
 f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
+%f = @(sigma,sigmastar) sigma./sqrt(sigmastar^2+sigma.^2);
 fitfxn = @(x) x(1)*( x(4)*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
 %costfxn = @(x) sum(( (fitfxn(x)-eta)).^2); 
@@ -71,7 +78,7 @@ phi0 = s(4);
 etaFit = fitfxn(s);
 
 if showPlot
-    my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">",">"];
+    %my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">",">"];
     figure;
     hold on;
     ax1 = gca;
@@ -95,7 +102,7 @@ if showPlot
         myDeltaEta = myDeltaEta(sortIdx);
         myEtaFit = myEtaFit(sortIdx);
         
-        myMarker = my_vol_frac_markers(ii);
+        myMarker = 'o';
         myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
 
         %errorbar(myStress,myEta*(phi0-myPhi)^2,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);

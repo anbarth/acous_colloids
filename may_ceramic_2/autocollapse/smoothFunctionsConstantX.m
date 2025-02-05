@@ -11,7 +11,7 @@ q0 = q0params(1)*V + q0params(2);
 q1 = q1params(1)*V + q1params(2);
 
 
-phi = [linspace(0,phi0-0.011,1000) phi0-logspace(-2,-4)];
+phi = [linspace(0,phi0-0.011,10000) phi0-logspace(-2,-4,100)];
 dphi = phi0-phi;
 D = 1./( (q0*dphi).^alpha + (q1*dphi).^(alpha+beta) );
 %D = 1./dphi;

@@ -27,7 +27,8 @@ delta_eta = delta_eta';
 
 figure; hold on;
 delta_eta_minushalf = 1/2 * eta.^(-3/2) .* delta_eta;
-errorbar(phi,eta.^(-1/2),delta_eta_minushalf,'ok')
+%errorbar(phi,eta.^(-1/2),delta_eta_minushalf,'ok')
+plot(phi,eta.^(-1/2),'ok')
 xlabel('\phi')
 ylabel('\eta^{-1/2}');
 

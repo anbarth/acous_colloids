@@ -75,8 +75,8 @@ for ii=1:length(phi_list)
     plot(ax_rate,sigma./eta,eta, '-d','Color',myColor,'LineWidth',1);
     %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
 
-    %plot(ax_eta_rescaled,sigma,eta*(phi0-phi_fudged)^2, '-d','Color',myColor,'LineWidth',1);
-    %errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);
+    plot(ax_eta_rescaled,sigma,eta*(phi0-phi_fudged)^2, '-d','Color',myColor,'LineWidth',1);
+    errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);
 end
 
 colormap(ax_eta,cmap);
@@ -86,7 +86,7 @@ clim(ax_eta,[minPhi maxPhi]);
 
 
 %close(fig_rate)
-close(fig_eta_rescaled)
+%close(fig_eta_rescaled)
 
 
 % colormap(ax_eta_rescaled,cmap);

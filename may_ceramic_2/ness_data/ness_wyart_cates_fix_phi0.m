@@ -44,7 +44,8 @@ delta_eta = delta_eta(include_me);
 % x(3) = phi_mu
 k=1;
 %f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^k);
-f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
+%f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
+f = @(sigma,sigmastar) sigma./sqrt(sigmastar^2+sigma.^2);
 fitfxn = @(x) x(1)*( phi0*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
 %costfxn = @(x) sum(( (fitfxn(x)-eta)).^2); 
@@ -93,7 +94,7 @@ if showPlot
         myDeltaEta = myDeltaEta(sortIdx);
         myEtaFit = myEtaFit(sortIdx);
         
-        myMarker = my_vol_frac_markers(ii);
+        myMarker = 'o';
         myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
 
         %errorbar(myStress,myEta*(phi0-myPhi)^2,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);

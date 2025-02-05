@@ -1,7 +1,6 @@
-%dataTable = may_ceramic_09_17;
 %dataTable = ness_data_table;
 dataTable = ness_data_table_exclude_low_phi;
-my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">",">"];
+%my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">",">"];
 
 
 
@@ -69,7 +68,8 @@ for ii=1:length(phi_list)
     deltaEta = deltaEta(sortIdx);
     
     %plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',2);
-    myMarker = my_vol_frac_markers(ii);
+    %myMarker = my_vol_frac_markers(ii);
+    myMarker = "o";
     %plot(ax_eta,sigma*19,eta*25, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
     plot(ax_eta,sigma,eta, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
     
@@ -86,7 +86,7 @@ c_eta.Ticks = round((phi_list+phi_fudge')*100)/100;
 clim(ax_eta,[minPhi maxPhi]);
 
 
-
+ylim([10 10^5])
 
 
 % colormap(ax_eta_rescaled,cmap);

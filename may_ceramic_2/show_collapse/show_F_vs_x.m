@@ -5,6 +5,7 @@ my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagra
 phi_list = unique(stressTable(:,1));
 vol_frac_plotting_range = length(phi_list):-1:1;
 volt_plotting_range = 1:7;
+highlight_stress = 0;
 colorBy = 1; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = false;
 showMeera = false;
@@ -26,6 +27,8 @@ for ii=1:2:length(varargin)
             showInterpolatingFunction = varargin{ii+1};
         elseif strcmp(fieldName,'ShowErrorBars')
             showErrorBars = varargin{ii+1};
+        elseif strcmp(fieldName,'HighlightStress')
+            highlight_stress = varargin{ii+1};
         end
     end
 end
@@ -71,16 +74,10 @@ for ii = vol_frac_plotting_range
         voltage = volt_list(jj);
         phi = phi_list(ii);
 
-
         myData = stressTable(:,1)==phi & stressTable(:,3)==voltage;
         x = x_all(myData);
         F = F_all(myData);
         delta_F = delta_F_all(myData);
-
-        %myDataHighlight = stressTable(:,1)==phi & stressTable(:,3)==voltage & stressTable(:,2)==0.003;
-        %xHighlight = x_all(myDataHighlight);
-        %FHighlight = F_all(myDataHighlight);
-
 
 
         if colorBy == 1
@@ -108,8 +105,35 @@ for ii = vol_frac_plotting_range
         else
             scatter(ax_collapse,x,F,[],myColor,'filled',myMarker);
         end
-        %scatter(ax_collapse,xHighlight,FHighlight,'red','filled',myMarker);
 
+        if highlight_stress
+            myDataHighlight = stressTable(:,1)==phi & stressTable(:,3)==voltage & stressTable(:,2)==highlight_stress;
+            xHighlight = x_all(myDataHighlight);
+            FHighlight = F_all(myDataHighlight);
+            s=scatter(ax_collapse,xHighlight,FHighlight,'red','filled',myMarker);
+            uistack(s,'bottom')
+        end
+
+    end
+end
+
+if highlight_stress
+    for ii = vol_frac_plotting_range
+        for jj = volt_plotting_range
+    
+            voltage = volt_list(jj);
+            phi = phi_list(ii);
+            
+    
+            myDataHighlight = stressTable(:,1)==phi & stressTable(:,3)==voltage & stressTable(:,2)==highlight_stress;
+            xHighlight = x_all(myDataHighlight);
+            FHighlight = F_all(myDataHighlight);
+    
+            myMarker = my_vol_frac_markers(ii);
+            
+            scatter(ax_collapse,xHighlight,FHighlight,'red','filled',myMarker);
+            
+        end
     end
 end
 

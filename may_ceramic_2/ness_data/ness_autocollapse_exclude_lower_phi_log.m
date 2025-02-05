@@ -8,7 +8,7 @@ numV = length(volt_list);
 
 phi0 = 0.6492; % from ness_find_phi0_exclude_lower_phi
 %[eta0,sigmastar,phimu] = ness_wyart_cates_fix_phi0(dataTable,phi0,false);
-%[eta0,sigmastar,phimu,phi0WC] = ness_wyart_cates(dataTable,true);
+[eta0,sigmastar,phimu,phi0WC] = ness_wyart_cates(dataTable,false);
 
 %return
 
@@ -19,49 +19,40 @@ phi0 = 0.6492; % from ness_find_phi0_exclude_lower_phi
 %C = [1 0.9 0.85 0.8 0.7 0.6 0.55 0.5 0.5 0.4 0.35 0.35 0.35 0.3 0.3];
 %C = C(6:end);
 %C = [1.0000    1.0000    1.0000    1.0000    1.0000    1.0000    1.7500    2.5000    4.5000    2.5000];
-%C = ones(size(phi_list'));
-
-sigmastar = 0.03;
-C = 0.5*[6.0000    5.6000    5.1000    4.6000    4.1000    3.6000    3.30    2.6000    2.6    1.05];
-%C(10)=1.2
-
+C = 0.9*ones(size(phi_list'));
 D = (phi0-phimu)./(phi0-phi_list)';
 D = D.*C;
-%D = ones(size(phi_list'));
 
 %[eta0, phi0, delta, A, width, sigmastar, D]
 y_init = [eta0,phi0,-2,eta0,0.5,sigmastar,D];
+log_y_init = log(abs(y_init));
 myModelHandle = @modelNess;
 
 % check that initial guess looks ok before continuing
-show_F_vs_xc_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',false,'ColorBy',2,'ShowLines',true,'PhiRange',1:10);
-ylim([1e-1 1e3])
-show_F_vs_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',false,'ColorBy',2,'ShowLines',true,'PhiRange',1:10);
-ylim([1e-2 1e3])
-return
+%show_F_vs_xc_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',false,'ColorBy',2,'ShowLines',true,'PhiRange',10:-1:1);
+show_F_vs_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true,'PhiRange',10:-1:1);
+%return
 
 
-figure; hold on; ax1=gca; ax1.XScale='log'; ax1.YScale='log';
-dphi = phi0-phi_list;
-plot(dphi, D,'-o');
-p = polyfit(log(dphi), log(D),1);
-plot(dphi,exp(polyval(p,log(dphi))),'r-')
-%plot(dphi, 0.3*dphi, 'r-')
-return
+% figure; hold on; ax1=gca; ax1.XScale='log'; ax1.YScale='log';
+% dphi = phi0-phi_list;
+% Q =  1./D;
+% plot(dphi, Q,'-o');
+% p = polyfit(log(dphi), log(Q),1);
 
 
-lower_bounds = -Inf*ones(size(y_init));
-upper_bounds = Inf*ones(size(y_init));
 
-residualsfxn = @(y) get_residuals(dataTable,y,myModelHandle);
+lower_bounds = -Inf*ones(size(log_y_init));
+upper_bounds = Inf*ones(size(log_y_init));
+
+residualsfxn = @(y) get_residuals(dataTable,logParamsToParams(y,3),myModelHandle);
 optsLsq = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
-%[y_optimal_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_init,lower_bounds,upper_bounds,optsLsq);
 
-costfxn = @(y) sum(get_residuals(dataTable,y,myModelHandle).^2);
+costfxn = @(y) sum(get_residuals(dataTable,logParamsToParams(y,3),myModelHandle).^2);
 optsFmin = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
-[y_optimal_fmin,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],optsFmin);
+[log_y_optimal_fmin,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,log_y_init,[],[],[],[],lower_bounds,upper_bounds,[],optsFmin);
 
-%[y_optimal_fmin_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,y_optimal_fmin,lower_bounds,upper_bounds,optsLsq);
+y_optimal_fmin = logParamsToParams(log_y_optimal_fmin,3);
 
 %show_F_vs_xc_x(dataTable,y_optimal_fmin,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); title('fmin')
 show_F_vs_x(dataTable,y_optimal_fmin,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); title('fmin')

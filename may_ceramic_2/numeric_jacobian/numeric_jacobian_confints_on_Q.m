@@ -45,9 +45,15 @@ myD = myD(myD~=0);
 myQ = 1./myD;
 myQ_err = myD_err ./ myD.^2;
 
-%ax1=gca; ax1.XScale='log'; ax1.YScale='log';
-errorbar(myPhi,myD,myD_err,'o')
+ax1=gca; ax1.XScale='log'; ax1.YScale='log';
+dphi = phi0-myPhi;
+errorbar(dphi,myD,myD_err,'o','LineWidth',1)
+
 %ylim([0 50])
 %errorbar(myPhi,myQ,myQ_err,'o')
 %plot(myPhi,myQ,'o');
 
+l1=10:13;
+linearfit = fittype('poly1');
+myft1 = fit(log(dphi(l1)),log(D(l1))',linearfit);
+plot(dphi(l1),exp(myft1.p2)*dphi(l1).^myft1.p1,'k')

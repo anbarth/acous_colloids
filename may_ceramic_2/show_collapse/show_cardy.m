@@ -111,6 +111,7 @@ for ii = vol_frac_plotting_range
            end
            if showErrorBars
                errorbar(ax_cardy,x_axis_variable,H,delta_H,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',0.5);
+               % disp(x_axis_variable)
            else
                 plot(ax_cardy,x_axis_variable,H,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',0.5);
            end

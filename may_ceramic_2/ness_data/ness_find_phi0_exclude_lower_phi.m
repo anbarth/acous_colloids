@@ -29,8 +29,8 @@ delta_eta = delta_eta';
 
 figure; hold on;
 delta_eta_minushalf = 1/2 * eta.^(-3/2) .* delta_eta;
-errorbar(phi(1:cutoffIndex-1),eta(1:cutoffIndex-1).^(-1/2),delta_eta_minushalf(1:cutoffIndex-1),'o','Color',[0.75 0.75 0.75])
-errorbar(phi(cutoffIndex:end),eta(cutoffIndex:end).^(-1/2),delta_eta_minushalf(cutoffIndex:end),'ok')
+plot(phi(1:cutoffIndex-1),eta(1:cutoffIndex-1).^(-1/2),'o','Color',[0.75 0.75 0.75])
+plot(phi(cutoffIndex:end),eta(cutoffIndex:end).^(-1/2),'ok')
 xlabel('\phi')
 ylabel('\eta^{-1/2}');
 
@@ -44,7 +44,7 @@ opts.StartPoint = [16,0.67];
 myFit1 = fit(phi,eta.^(-1/2),ft1,opts);
 m = myFit1.m;
 phi0 = myFit1.phi0;
-plot([.48,.66],m*(phi0-[.48,.66]));
+plot([.48,.66],m*(phi0-[.48,.66]),'r');
 yline(0)
 
 

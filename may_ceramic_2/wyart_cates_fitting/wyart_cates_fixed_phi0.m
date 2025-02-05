@@ -1,9 +1,12 @@
-my_data = may_ceramic_09_17;
+function [eta0,sigmastar,phimu] = wyart_cates_fixed_phi0(my_data,phi0,showPlot)
+%my_data = may_ceramic_09_17;
+if nargin < 2
+    showPlot = false;
+end
 
 % edit this list to change what's included in the fit
 %phis = [44,48,52,56,59];
 phis = unique(my_data(:,1));
-phi0 = 0.7013;
 maxSigma = 0;
 
 
@@ -12,7 +15,10 @@ no_acoustics = my_data(my_data(:,3)==0, :);
 phi = no_acoustics(:,1);
 sigma = no_acoustics(:,2);
 eta = no_acoustics(:,4);
-delta_eta = no_acoustics(:,5);
+delta_eta_rheometer = no_acoustics(:,5);
+deltaPhi = 0.01;
+delta_eta_volumefraction = 2*eta.*(0.7-phi).^(-1)*deltaPhi;
+delta_eta = sqrt(delta_eta_rheometer.^2+delta_eta_volumefraction.^2);
 
 
 
@@ -41,58 +47,69 @@ eta = eta(include_me);
 % x(1) = A
 % x(2) = sigma*
 % x(3) = phi_mu
-
-f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
+% x(4) = phi_0
+%f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^0.7);
+%f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
+f = @(sigma,sigmastar) sigma./(sigmastar^2+sigma.^2).^(1/2);
+%f = @(sigma,sigmastar) sigma.^2./(sigmastar^2+sigma.^2);
 fitfxn = @(x) x(1)*( phi0*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
-costfxn = @(x) sum(( (fitfxn(x)-eta)./eta ).^2);  
+costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
 
-constraintMatrix = zeros(3,3);
-constraintVector = [0,0,0];
-upper_bounds = [Inf,Inf,phi0];
-lower_bounds = [0,0,0.6101];
 
-opts = optimoptions('fmincon','Display','final','StepTolerance',1e-12);
-%opts = optimoptions('fmincon','Display','off');
-s = fmincon(costfxn, [0.1, 0.5, 0.65],constraintMatrix,constraintVector,...
-            [],[],lower_bounds,upper_bounds,[],opts);
-        
-disp(s);
+opts = optimset('Display','off');
+s = fminsearch(costfxn,[0.1, 0.5, 0.65],opts);
+
+
+eta0 = s(1);
+sigmastar = s(2);
+phimu = s(3);
+%disp(s);
+%disp(costfxn(s))
 etaFit = fitfxn(s);
-%etaFit=fitfxn([0.02, 0.5, 0.63]);
 
-figure;
-hold on;
-ax1 = gca;
-ax1.XScale = 'log';
-ax1.YScale = 'log';
-colormap turbo;
-cmap = colormap;
-minPhi = min(phi);
-maxPhi = max(phi);
-for ii=1:length(phis)
-    myPhi = phis(ii);
+
+if showPlot
+    my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">",">"];
+    figure;
+    hold on;
+    ax1 = gca;
+    ax1.XScale = 'log';
+    ax1.YScale = 'log';
+    cmap = viridis(256);
+    colormap(cmap);
+    minPhi = 0.18;
+    maxPhi = 0.62;
+    for ii=1:length(phis)
+        myPhi = phis(ii);
+        
+        myStress=sigma(phi==myPhi);
+        myEta=eta(phi==myPhi);
+        myDeltaEta=delta_eta(phi==myPhi);
+        myEtaFit=etaFit(phi==myPhi);
+        
+        % sort in order of ascending sigma
+        [myStress,sortIdx] = sort(myStress,'ascend');
+        myEta = myEta(sortIdx);
+        myDeltaEta = myDeltaEta(sortIdx);
+        myEtaFit = myEtaFit(sortIdx);
+        
+        myMarker = my_vol_frac_markers(ii);
+        myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
+
+        errorbar(myStress,myEta,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+        plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
+
+       %  errorbar(19*myStress,25*myEta,25*myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+       % plot(19*myStress,25*myEtaFit,'Color',myColor,'LineWidth',1.5);
+    end
+    %title('stress sweeps');
+    xlabel('\sigma (Pa)');
+    ylabel('\eta (Pa s)');
     
-    myStress=sigma(phi==myPhi);
-    myEta=eta(phi==myPhi);
-    myDeltaEta=delta_eta(phi==myPhi);
-    myEtaFit=etaFit(phi==myPhi);
-    
-    % sort in order of ascending sigma
-    [myStress,sortIdx] = sort(myStress,'ascend');
-    myEta = myEta(sortIdx);
-    myDeltaEta = myDeltaEta(sortIdx);
-    myEtaFit = myEtaFit(sortIdx);
-    
-    myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
-    plot(myStress,myEta,'o','Color',myColor,'LineWidth',1);
-    errorbar(myStress,myEta,myDeltaEta,'.','Color',myColor,'LineWidth',1);
-    plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
+    colormap(cmap);
+    c = colorbar;
+    c.Ticks = phis;
+    clim([minPhi maxPhi])
 end
-%title('stress sweeps');
-xlabel('\sigma (Pa)');
-ylabel('\eta (Pa s)');
 
-colormap(cmap);
-c = colorbar;
-c.Ticks = phis;
-clim([minPhi maxPhi])
+end
