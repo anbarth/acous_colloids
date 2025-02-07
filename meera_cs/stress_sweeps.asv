@@ -54,7 +54,7 @@ for ii=1:length(phi_list)
     myMarker = 'o';
     plot(ax_eta,sigma*19,eta*25, strcat(myMarker,'-'),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
     
-    plot(ax_rate,sigma./eta,eta, '-d','Color',myColor,'LineWidth',0.5);
+    %plot(ax_rate,sigma./eta,eta, '-d','Color',myColor,'LineWidth',0.5);
     %plot(ax_rate,sigma,sigma./eta, '-d','Color',myColor,'LineWidth',0.5);
     %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
 

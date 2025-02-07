@@ -11,16 +11,13 @@ myModelHandle = @modelSmoothFunctions; paramsVector = y_smooth_fmin_lsq;
 phi0=paramsVector(2);
 
 
-
-
-
 lowVoltNum=1;
 highVoltNum=7;
 V_low = volt_list(lowVoltNum);
 V_high = volt_list(highVoltNum);
 
-phiRange = linspace(0.2,0.64,100);
-sigmaRange = logspace(-3,3,100);
+phiRange = linspace(0.2,0.64,200);
+sigmaRange = logspace(-3,3,200);
 
 myXfunLow = @(p) smoothFunctionX(p(1),p(2),V_low,paramsVector);
 myXfunHigh = @(p) smoothFunctionX(p(1),p(2),V_high,paramsVector);
@@ -34,11 +31,16 @@ dotProduct_L = zeros(N,1);
 c=1;
 for ii=1:length(phiRange)
     for jj=1:length(sigmaRange)
+        
         phi = phiRange(ii);
         sigma = sigmaRange(jj);
         gradXlow = myGradient(myXfunLow,[phi,sigma]);
         gradXhigh = myGradient(myXfunHigh,[phi,sigma]);
         
+        %if ii==149 && (jj==119 || jj==120)
+        %    disp([gradXlow gradXhigh])
+        %end
+
         % take the gradient wrt log(sigma) instead
         gradXlow(2) = sigma*gradXlow(2);
         gradXhigh(2) = sigma*gradXhigh(2);
@@ -64,14 +66,20 @@ ax1=gca;
 ax1.YScale='log';
 xlabel('\phi')
 ylabel('\sigma')
-scatter(phi_L,sigma_L,50,dotProduct_L,'filled','s')
+scatter(phi_L,sigma_L,10,dotProduct_L,'filled','s')
 colorbar;
 
-
-for x = 10.^(-1:0.1:0) 
-   [myPhi,mySigma] = smoothFunctionsConstantX(x,1,paramsVector);
-   plot(myPhi,mySigma,'k-','LineWidth',1.5)
+for x =  [10.^(-4:-1) 0.2 0.4 0.6 0.8 1 1-[0.046 0.1 0.15 0.22 0.32 0.46]]
+%for x = 10.^(-1:0.1:0) 
+   [myPhi1,mySigma1] = smoothFunctionsConstantX(x,lowVoltNum,paramsVector);
+   plot(myPhi1,mySigma1,'k-','LineWidth',1.5)
+   [myPhi2,mySigma2] = smoothFunctionsConstantX(x,highVoltNum,paramsVector);
+   plot(myPhi2,mySigma2,'r-','LineWidth',1.5)
 end
 
-xlim([min(phiRange) max(phiRange)])
-ylim([min(sigmaRange) max(sigmaRange)])
+%xlim([min(phiRange) max(phiRange)])
+%ylim([min(sigmaRange) max(sigmaRange)])
+xlim([0.4 0.65])
+ylim([1e-2 10^(2.5)])
+%xlim([0.4 0.65])
+%ylim([10^(1) 10^(1.25)])
