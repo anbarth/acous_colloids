@@ -4,8 +4,9 @@ volt_list = unique(dataTable(:,3));
 numPhi = length(phi_list);
 numV = length(volt_list);
 
-% make sure wyart_cates is set to use f = @(sigma,sigmastar) sigma./(sigmastar^2+sigma.^2).^(1/2);
-[eta0,sigmastar,phimu,phi0] = wyart_cates(may_ceramic_09_17,false);
+
+f = @(sigma,sigmastar) sigma./(sigmastar^2+sigma.^2).^(1/2);
+[eta0,sigmastar,phimu,phi0] = wyart_cates(may_ceramic_09_17,f,false);
 %sigmastar = 2;
 %return
 

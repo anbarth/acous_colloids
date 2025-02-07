@@ -3,7 +3,7 @@ volt_plotting_range = 1;
 colorBy = 2; % 1 for V, 2 for phi, 3 for P, 4 for stress
 showLines = true;
 
-showInterpolatingFunction = true; fxnType = 2;
+showInterpolatingFunction = false; fxnType = 2;
 
 xc = 1;
 
