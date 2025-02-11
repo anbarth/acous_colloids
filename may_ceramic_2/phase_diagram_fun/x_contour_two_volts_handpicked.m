@@ -8,8 +8,8 @@ ylabel('\sigma')
 
 
 load("01_12_optimal_params.mat")
-%myModelHandle = @modelHandpickedAll; paramsVector = y_full_fmin_lsq;
-myModelHandle = @modelSmoothFunctions; paramsVector = y_smooth_fmin_lsq;
+myModelHandle = @modelHandpickedAll; paramsVector = y_full_fmin_lsq;
+%myModelHandle = @modelSmoothFunctions; paramsVector = y_smooth_fmin_lsq;
 
 
 %play_with_CV_2_10_28;
@@ -54,12 +54,13 @@ for kk=1:size(data_table,1)
 end
 
 
+for x =  [10.^(-4:-1) 0.2 0.4 0.6 0.8 1 1-[0.046 0.1 0.15 0.22 0.32 0.46]]
 %for x = 1-[0.022 0.046 0.1 0.22 0.46 1]
-for x =  [10.^(-4:0) 1-[0.046 0.1 0.15 0.22 0.32 0.46]]
-   [myPhi1,mySigma1] = smoothFunctionsConstantX(x,lowVoltNum,paramsVector);
-   [myPhi2,mySigma2] = smoothFunctionsConstantX(x,highVoltNum,paramsVector);
-   plot(myPhi1,mySigma1,'k-','LineWidth',1.5)
-   plot(myPhi2,mySigma2,'r-','LineWidth',1.5)
+%for x =  [10.^(-4:0) 1-[0.046 0.1 0.15 0.22 0.32 0.46]]
+   [myPhi1,mySigma1] = handpickedAllConstantX(data_table,x,lowVoltNum,paramsVector);
+   [myPhi2,mySigma2] = handpickedAllConstantX(data_table,x,highVoltNum,paramsVector);
+   plot(myPhi1,mySigma1,'k-s','LineWidth',1.5)
+   plot(myPhi2,mySigma2,'r-s','LineWidth',1.5)
 end
 colorbar;
 
