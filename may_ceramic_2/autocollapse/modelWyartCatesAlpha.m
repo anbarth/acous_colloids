@@ -40,8 +40,8 @@ for kk = 1:N
         F(kk) = eta(kk)*(phi0-phi)^2;
         delta_F(kk) = F(kk) .* (eta(kk).^(-2).*delta_eta_rheo.^2 + 4/(phi0-phi)^2*delta_phi^2 ).^(1/2);
         
-        eta_hat(kk) = eta0 * (1-x(kk))^(-delta);
-        F_hat(kk) = eta_hat(kk)*(phi0-phi)^2;
+        F_hat(kk) = eta0 * (1-x(kk))^(-delta);
+        eta_hat(kk) = F_hat(kk)*(phi0-phi)^-2;
     else
         continue
     end
