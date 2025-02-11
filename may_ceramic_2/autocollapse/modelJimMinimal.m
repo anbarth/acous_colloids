@@ -30,7 +30,7 @@ for kk = 1:N
     voltage = stressTable(kk,3);
     eta(kk) = stressTable(kk,4);        
     delta_eta_rheo = max(stressTable(kk,5),eta(kk)*0.05);
-    delta_phi = 0.01;
+    delta_phi = 0.02;
     delta_eta_volumefraction = eta(kk)*2*(phi0-phi)^(-1)*delta_phi;
     delta_eta(kk) = sqrt(delta_eta_rheo.^2+delta_eta_volumefraction.^2);
 

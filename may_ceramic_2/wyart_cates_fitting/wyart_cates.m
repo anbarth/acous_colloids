@@ -16,7 +16,7 @@ phi = no_acoustics(:,1);
 sigma = no_acoustics(:,2);
 eta = no_acoustics(:,4);
 delta_eta_rheometer = no_acoustics(:,5);
-deltaPhi = 0.01;
+deltaPhi = 0.02;
 delta_eta_volumefraction = 2*eta.*(0.7-phi).^(-1)*deltaPhi;
 delta_eta = sqrt(delta_eta_rheometer.^2+delta_eta_volumefraction.^2);
 
