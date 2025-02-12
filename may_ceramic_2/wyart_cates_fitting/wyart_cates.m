@@ -112,6 +112,8 @@ if showPlot
     c = colorbar;
     c.Ticks = phis;
     clim([minPhi maxPhi])
+    annotation('textbox', [0.2, 0.65, 0.1, 0.1], 'String', strcat('\sigma^* = ',num2str(sigmastar),'Pa'))
+    xline(sigmastar)
 end
 
 end

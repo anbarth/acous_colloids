@@ -1,4 +1,4 @@
-%calcCollapse_acous_free_01_22;
+calcCollapse_acous_free_01_22;
 paramsVector = y_optimal;
 
 dataTable = may_ceramic_09_17;
