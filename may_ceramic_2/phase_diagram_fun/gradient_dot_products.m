@@ -10,7 +10,7 @@ myModelHandle = @modelSmoothFunctions; paramsVector = y_smooth_fmin_lsq;
 [x_all,F_all,delta_F,F_hat,eta,delta_eta,eta_hat] = myModelHandle(data_table, paramsVector);
 phi0=paramsVector(2);
 
-
+volt_list = [0 5 10 20 40 60 80];
 lowVoltNum=1;
 highVoltNum=7;
 V_low = volt_list(lowVoltNum);
