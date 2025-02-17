@@ -1,5 +1,5 @@
 %optimize_C_jardy_02_11
-paramsVector = y_optimal;
+paramsVector = y_lsq_0V;
 
 jacobian = numeric_jacobian(acoustics_free_data,paramsVector,myModelHandle);
 hessian = transpose(jacobian)*jacobian;

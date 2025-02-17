@@ -15,5 +15,6 @@ D = [y(13:12+numPhi);...
     y(13+5*numPhi:12+6*numPhi);y(13+6*numPhi:12+7*numPhi)]';
 
 phi_fudge = y(13+7*numPhi:end);
+phi_fudge(isnan(phi_fudge))=0;
 
 end

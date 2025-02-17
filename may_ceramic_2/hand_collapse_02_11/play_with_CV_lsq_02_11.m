@@ -2,7 +2,7 @@
 % parameters
 
 %optimize_C_jardy_02_11;
-y = y_lsq_alt;
+y = y_lsq_0V_alt;
 eta0 = y(1);
 phi0 = y(2);
 delta = y(3);

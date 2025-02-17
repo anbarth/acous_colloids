@@ -20,12 +20,12 @@ costfxn = @(log_y)  sum(get_residuals(acoustics_free_data,logParamsToParams(log_
 %optsFmin = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
 %[y_optimal_fmin,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],optsFmin);
 optsFminsearch = optimset('MaxFunEvals',3e6,'MaxIter',3e6);
-log_y_fminsearch = fminsearch(costfxn,log_y_init,optsFminsearch);
-y_fminsearch = logParamsToParams(log_y_fminsearch,3);
+log_y_fminsearch_0V = fminsearch(costfxn,log_y_init,optsFminsearch);
+y_fminsearch_0V = logParamsToParams(log_y_fminsearch_0V,3);
 
 optsLsq = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
-[log_y_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,log_y_init,lower_bounds,upper_bounds,optsLsq);
-y_lsq = logParamsToParams(log_y_lsq,3);
+[log_y_lsq_0V,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,log_y_init,lower_bounds,upper_bounds,optsLsq);
+y_lsq_0V = logParamsToParams(log_y_lsq_0V,3);
 
 % if you don't take logs of parameters,
 % lsq does perform as well
@@ -37,11 +37,11 @@ y_lsq = logParamsToParams(log_y_lsq,3);
 % for some reason fminsearch sends D(1) all the way out to nearly 0, which
 % makes numerics tricky (eta-hat starts returning 0 bc x is too small)
 % so i manually clip it out here.
-y_fminsearch_alt = y_fminsearch;
-y_fminsearch_alt(7) = y_init(7);
+y_fminsearch_0V_alt = y_fminsearch_0V;
+y_fminsearch_0V_alt(7) = y_init(7);
 
-y_lsq_alt = y_lsq;
-y_lsq_alt(7) = y_init(7);
+y_lsq_0V_alt = y_lsq_0V;
+y_lsq_0V_alt(7) = y_init(7);
 return
 
 %phiRange = 13:-1:1;
@@ -49,8 +49,8 @@ return
 %show_F_vs_xc_x(dataTable,y_optimal,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',true,'ShowErrorBars',true)
 
 D_init = y_init(7:end);
-D_fminsearch = y_fminsearch_alt(7:end);
-D_lsq = y_lsq_alt(7:end);
+D_fminsearch = y_fminsearch_0V_alt(7:end);
+D_lsq = y_lsq_0V_alt(7:end);
 
 figure; hold on;
 makeAxesLogLog;

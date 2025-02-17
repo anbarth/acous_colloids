@@ -1,28 +1,24 @@
-%collapse_params;
-%load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); fxnType = 2;
-%load("y_09_04.mat"); y_optimal = y_handpicked_xcShifted_09_04; [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
-%y_optimal = y_Cv;
-%load("y_09_04.mat"); y_optimal = y_handpicked_xcShifted_09_04;
-y_optimal = y_handpicked_10_28;
-[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
+function plot_sigmastar(y_optimal)
+
+[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsHandpickedAll(y_optimal,13);
 
 volt_list = [0,5,10,20,40,60,80];
 
-figure; hold on;
+%figure; hold on;
 
 
 p = polyfit(volt_list,sigmastar,2);
 V = linspace(0,80);
-plot(V,p(1)*V.^2+p(2)*V+p(3),'-','LineWidth',1);
+%plot(V,p(1)*V.^2+p(2)*V+p(3),'--','LineWidth',1);
 
-plot(volt_list,sigmastar*19,'ok','LineWidth',2);
+plot(volt_list,sigmastar,'o-','LineWidth',2);
 
 xlabel('V')
 ylabel('\sigma^* (Pa)')
 
-sigmastarFit = (p(1)*volt_list.^2+p(2)*volt_list+p(3));
+%sigmastarFit = (p(1)*volt_list.^2+p(2)*volt_list+p(3));
 
-%return
+return
 figure; hold on;
 ax1=gca;
 ax1.XScale='log';
@@ -42,4 +38,6 @@ for jj=1:length(volt_list)
     myColor = cmap(round(1+255*voltage/80),:);
    % plot(sigmaFake,exp(-sigmastarFit(jj)./sigmaFake),'-','Color',myColor,'LineWidth',2)
    plot(sigmaFake,sigmaFake./(sigmastarFit(jj)+sigmaFake),'-','Color',myColor,'LineWidth',2)
+end
+
 end
