@@ -1,5 +1,5 @@
-optimize_C_jardy_02_11
-paramsVector = y_optimal_fmin;
+%optimize_C_jardy_02_11
+paramsVector = y_optimal;
 
 jacobian = numeric_jacobian(acoustics_free_data,paramsVector,myModelHandle);
 hessian = transpose(jacobian)*jacobian;
@@ -14,8 +14,8 @@ alpha = 0;
 voltNum = 1;
 
 
-D = paramsVector(13:25);
-D_err = confInts(13:25)';
+D = paramsVector(7:end);
+D_err = confInts(7:end)';
 
 figure; hold on;
 ax1=gca; ax1.XScale='log'; ax1.YScale='log';
@@ -29,10 +29,12 @@ l1 = 1:6;
 l2 = 10:13;
 
 linearfit = fittype('poly1');
-myft1 = fit(log(dphi(l1)),log(D(l1))',linearfit);
+%myft1 = fit(log(dphi(l1)),log(D(l1))',linearfit);
 myft2 = fit(log(dphi(l2)),log(D(l2))',linearfit);
-plot(dphi(l1),exp(myft1.p2)*dphi(l1).^myft1.p1,'k')
+%plot(dphi(l1),exp(myft1.p2)*dphi(l1).^myft1.p1,'k')
 plot(dphi(l2),exp(myft2.p2)*dphi(l2).^myft2.p1,'k')
+
+disp(myft2)
 
 %figure; hold on;
 %ylabel('C')

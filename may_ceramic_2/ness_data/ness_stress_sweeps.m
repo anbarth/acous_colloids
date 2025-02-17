@@ -82,7 +82,7 @@ end
 
 colormap(ax_eta,cmap);
 c_eta = colorbar(ax_eta);
-c_eta.Ticks = round((phi_list+phi_fudge')*100)/100;
+c_eta.Ticks = round((phi_list+phi_fudge')*1000)/1000;
 clim(ax_eta,[minPhi maxPhi]);
 
 

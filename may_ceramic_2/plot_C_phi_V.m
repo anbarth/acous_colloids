@@ -6,7 +6,7 @@ function plot_C_phi_V(stressTable, paramsVector)
 %load("y_09_04.mat"); y_optimal = y_handpicked_xcShifted_09_04; [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13);
 %load("y_fmin_09_12.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 
 
-[eta0, phi0, delta, A, width, sigmastar, D, phi_fudge] = unzipParams(paramsVector,13);
+[eta0, phi0, delta, A, width, sigmastar, D, phi_fudge] = unzipParamsHandpickedAll(paramsVector,13);
 phi_list = unique(stressTable(:,1));
 volt_list = [0,5,10,20,40,60,80];
 alpha = 0;
@@ -22,7 +22,7 @@ clim([0 80]);
 cbar.Ticks = [0,5,10,20,40,60,80];
 %xlim([0.15 0.65])
 %xline(phi0)
-ylabel('Q')
+ylabel('D')
 xlabel('\phi_0-\phi')
 
 for jj=1:size(D,2)
@@ -39,7 +39,7 @@ for jj=1:size(D,2)
 
     myColor = cmap(round(1+255*voltage/80),:);
     %plot(myPhi,myC,'-o','Color',myColor,'LineWidth',1.5);
-    plot(phi0-myPhi,1./myC,'-o','Color',myColor,'LineWidth',1);
+    plot(phi0-myPhi,myC,'-o','Color',myColor,'LineWidth',1);
 end
 
 return

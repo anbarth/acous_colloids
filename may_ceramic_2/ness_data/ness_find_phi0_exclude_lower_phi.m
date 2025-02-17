@@ -1,7 +1,7 @@
 dataTable = ness_data_table;
 phi = unique(dataTable(:,1));
 
-cutoffIndex = 6;
+includeIndices = phi>=0.55 & phi<0.64;
 
 eta = [];
 delta_eta = [];
@@ -29,14 +29,14 @@ delta_eta = delta_eta';
 
 figure; hold on;
 delta_eta_minushalf = 1/2 * eta.^(-3/2) .* delta_eta;
-plot(phi(1:cutoffIndex-1),eta(1:cutoffIndex-1).^(-1/2),'o','Color',[0.75 0.75 0.75])
-plot(phi(cutoffIndex:end),eta(cutoffIndex:end).^(-1/2),'ok')
+plot(phi(~includeIndices),eta(~includeIndices).^(-1/2),'o','Color',[0.75 0.75 0.75])
+plot(phi(includeIndices),eta(includeIndices).^(-1/2),'ok')
 xlabel('\phi')
 ylabel('\eta^{-1/2}');
 
-phi=phi(cutoffIndex:end);
-eta=eta(cutoffIndex:end);
-delta_eta=delta_eta(cutoffIndex:end);
+phi=phi(includeIndices);
+eta=eta(includeIndices);
+delta_eta=delta_eta(includeIndices);
 
 ft1 = fittype('m*(phi0-x)');
 opts = fitoptions(ft1);

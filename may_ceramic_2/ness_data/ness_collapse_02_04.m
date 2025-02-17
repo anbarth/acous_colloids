@@ -1,3 +1,4 @@
+load("ness_data_02_04.mat");
 dataTable = ness_data_table_exclude_low_phi;
 
 phi_list = unique(dataTable(:,1));
@@ -7,8 +8,10 @@ numV = length(volt_list);
 
 
 phi0 = 0.6492; % from ness_find_phi0_exclude_lower_phi
-%[eta0,sigmastar,phimu] = ness_wyart_cates_fix_phi0(dataTable,phi0,false);
-%[eta0,sigmastar,phimu,phi0WC] = ness_wyart_cates(dataTable,true);
+
+f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
+[eta0,sigmastar,phimu] = ness_wyart_cates_fix_phi0(dataTable,f,phi0,false);
+%[eta0,sigmastar,phimu,phi0WC] = ness_wyart_cates(dataTable,f,true);
 
 %return
 
@@ -22,7 +25,7 @@ phi0 = 0.6492; % from ness_find_phi0_exclude_lower_phi
 %C = ones(size(phi_list'));
 
 sigmastar = 0.03;
-C = 0.5*[6.0000    5.6000    5.1000    4.6000    4.1000    3.6000    3.30    2.6000    2.6    1.05];
+C = 0.5*[6.0000    5.6000    5.1000    4.6000    4.1000    3.6000    3.30    2.6000    2.6    1.05]*1/2.81;
 %C(10)=1.2
 
 D = (phi0-phimu)./(phi0-phi_list)';
@@ -34,10 +37,12 @@ y_init = [eta0,phi0,-2,eta0,0.5,sigmastar,D];
 myModelHandle = @modelNess;
 
 % check that initial guess looks ok before continuing
-show_F_vs_xc_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',false,'ColorBy',2,'ShowLines',true,'PhiRange',1:10);
-ylim([1e-1 1e3])
+
 show_F_vs_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',false,'ColorBy',2,'ShowLines',true,'PhiRange',1:10);
-ylim([1e-2 1e3])
+%ylim([1e-2 1e3])
+
+show_F_vs_xc_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',false,'ColorBy',2,'ShowLines',true,'PhiRange',1:10);
+%ylim([1e-1 1e3])
 return
 
 

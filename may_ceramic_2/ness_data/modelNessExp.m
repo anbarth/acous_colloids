@@ -1,4 +1,4 @@
-function [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelNess(stressTable, paramsVector)
+function [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelNessExp(stressTable, paramsVector)
 
 %[eta0, phi0, delta, A, width, sigmastar, D] = unzipParamsHandpickedAll(paramsVector,13); 
 eta0 = paramsVector(1);
@@ -9,8 +9,8 @@ width = paramsVector(5);
 sigmastar = paramsVector(6);
 D = paramsVector(7:end);
 
-%f = @(sigma) exp()
-f = @(sigma) sigma./(sigmastar+sigma);
+f = @(sigma) exp(-sigmastar./sigma);
+%f = @(sigma) sigma./(sigmastar+sigma);
 phi_list = unique(stressTable(:,1));
 
 N = size(stressTable,1);
@@ -52,6 +52,7 @@ if delta==-2
 end
 
 F_hat = 1./x.^(2/alpha) .* H_hat;
+F_hat(x<1e-155)=eta0;
 
 eta_hat = zeros(N,1);
 for kk = 1:N

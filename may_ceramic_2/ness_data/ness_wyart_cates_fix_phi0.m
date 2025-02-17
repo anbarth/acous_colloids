@@ -1,6 +1,6 @@
-function [eta0,sigmastar,phimu] = ness_wyart_cates_fix_phi0(my_data,phi0,showPlot)
+function [eta0,sigmastar,phimu] = ness_wyart_cates_fix_phi0(my_data,f,phi0,showPlot)
 %my_data = may_ceramic_09_17;
-if nargin < 3
+if nargin < 4
     showPlot = false;
 end
 
@@ -42,10 +42,7 @@ delta_eta = delta_eta(include_me);
 % x(1) = A
 % x(2) = sigma*
 % x(3) = phi_mu
-k=1;
-%f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^k);
-%f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
-f = @(sigma,sigmastar) sigma./sqrt(sigmastar^2+sigma.^2);
+
 fitfxn = @(x) x(1)*( phi0*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
 %costfxn = @(x) sum(( (fitfxn(x)-eta)).^2); 

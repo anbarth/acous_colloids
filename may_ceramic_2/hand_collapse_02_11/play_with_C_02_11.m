@@ -7,25 +7,26 @@ numV = length(volt_list);
 
 f = @(sigma,sigmastar) exp(-sigmastar./sigma);
 [eta0,sigmastar0V,phimu,phi0] = wyart_cates(may_ceramic_09_17,f,false);
-sigmastar = sigmastar0V*ones(1,numV);
-phi_fudge = zeros(size(phi_list))';
+%sigmastar = sigmastar0V*ones(1,numV);
+%phi_fudge = zeros(size(phi_list))';
 %return
 
 % not important here
 delta = -1; A = 0.02; width = 1;
 
 
-% guess C
-D = zeros(numPhi,numV);
+% guess D
 D_0V = [0.0005 0.005 0.05 0.1 0.3 0.6 0.8 0.9 0.9 1 1 1 1.025]*1/1.01/1.02;
-D(:,1) = D_0V;
 
-y_handpicked_02_11 = zipParamsHandpickedAll(eta0, phi0, delta, A, width, sigmastar, D, phi_fudge);
+
+%y_handpicked_02_11 = zipParamsHandpickedAll(eta0, phi0, delta, A, width, sigmastar, D, phi_fudge);
+y_handpicked_02_11 = [eta0, phi0, delta, A, width, sigmastar0V, D_0V];
+
 return
 phiRange = 13:-1:1;
-show_F_vs_xc_x(dataTable,y_handpicked_02_11, @modelHandpickedAllExp,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
-show_F_vs_x(dataTable,y_handpicked_02_11, @modelHandpickedAllExp,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
-%return
+show_F_vs_xc_x(dataTable,y_handpicked_02_11, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
+show_F_vs_x(dataTable,y_handpicked_02_11, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
+return
 
 figure; hold on;
 makeAxesLogLog;

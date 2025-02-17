@@ -29,7 +29,7 @@ delta_eta = delta_eta';
 
 
 figure; hold on; ax1=gca; ax1.XScale='log'; ax1.YScale='log';
-phi0 = 0.640;
+phi0 = 0.64;
 dphi = phi0-phi;
 
 dphi=dphi(1:end-2);

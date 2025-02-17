@@ -24,7 +24,7 @@ log_y_fminsearch = fminsearch(costfxn,log_y_init,optsFminsearch);
 y_fminsearch = logParamsToParams(log_y_fminsearch,3);
 
 optsLsq = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
-[log_y_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,log_y_init,lower_bounds,upper_bounds,optsLsq);
+[log_y_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,log_y_init,lower_boptsLsq);
 y_lsq = logParamsToParams(log_y_lsq,3);
 
 % if you don't take logs of parameters,
