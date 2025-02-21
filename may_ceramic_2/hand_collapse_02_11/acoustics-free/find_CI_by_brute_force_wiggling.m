@@ -4,15 +4,15 @@
 paramsVector = y_lsq_0V;
 myModelHandle = @modelHandpickedAllExp0V;
 
-paramNum=12;
+paramNum=3;
 
 
 myParamOptimal = paramsVector(paramNum);
 
 deltaParam = myParamOptimal*0.25;
-%paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+deltaParam,7);
+paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+deltaParam,7);
 
-paramRange = linspace(myParamOptimal-deltaParam,1,7);
+%paramRange = linspace(myParamOptimal-deltaParam,1,7);
 
 SSR = @(y) sum(get_residuals(acoustics_free_data, y, myModelHandle).^2); 
 resnorm0 = SSR(paramsVector);

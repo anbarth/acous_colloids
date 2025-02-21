@@ -150,7 +150,8 @@ if colorBy == 1
     c1.Ticks = [0,5,10,20,40,60,80];
 elseif colorBy == 2
     clim(ax_collapse,[minPhi maxPhi]);
-    c1.Ticks = phi_list;
+    %c1.Ticks = phi_list;
+    c1.Ticks = round(phi_list*100)/100;
 end
 
 

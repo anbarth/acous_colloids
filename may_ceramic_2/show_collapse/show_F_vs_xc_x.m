@@ -143,7 +143,8 @@ if colorBy == 1
     c2.Ticks = [0,5,10,20,40,60,80];
 elseif colorBy == 2
     caxis(ax_xc_x,[minPhi maxPhi]);
-    c2.Ticks = phi_list;
+    %c2.Ticks = phi_list;
+    c2.Ticks = round(100*phi_list)/100;
 elseif colorBy == 4
     % TODO what are these numbers? lol
     caxis(ax_xc_x,[1.6988,6])

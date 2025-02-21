@@ -44,9 +44,9 @@ y_lsq_0V_alt = y_lsq_0V;
 y_lsq_0V_alt(7) = y_init(7);
 return
 
-%phiRange = 13:-1:1;
-%show_F_vs_x(dataTable,y_optimal,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',true,'ShowErrorBars',true)
-%show_F_vs_xc_x(dataTable,y_optimal,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',true,'ShowErrorBars',true)
+phiRange = 13:-1:1;
+show_F_vs_x(dataTable,y_lsq_0V,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
+show_F_vs_xc_x(dataTable,y_lsq_0V,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
 
 D_init = y_init(7:end);
 D_fminsearch = y_fminsearch_0V_alt(7:end);
