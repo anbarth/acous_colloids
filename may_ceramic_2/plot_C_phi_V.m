@@ -12,7 +12,7 @@ volt_list = [0,5,10,20,40,60,80];
 alpha = 0;
 
 figure; hold on;
-ax1=gca; ax1.XScale='log'; ax1.YScale='log';
+%ax1=gca; ax1.XScale='log'; ax1.YScale='log';
 
 cmap = plasma(256);
 colormap(cmap);
@@ -38,8 +38,8 @@ for jj=1:size(D,2)
     myC = myC .* (phi0-myPhi).^alpha;
 
     myColor = cmap(round(1+255*voltage/80),:);
-    %plot(myPhi,myC,'-o','Color',myColor,'LineWidth',1.5);
-    plot(phi0-myPhi,myC,'-o','Color',myColor,'LineWidth',1);
+    plot(myPhi,myC,'-o','Color',myColor,'LineWidth',1.5);
+    %plot(phi0-myPhi,myC,'-o','Color',myColor,'LineWidth',1);
 end
 
 return
