@@ -1,12 +1,12 @@
-optimize_C_jardy_02_11;
-y = y_lsq_0V;
+optimize_logistic_C_02_18;
+y = y_lsq_smooth_0V;
 
 P = length(y);
 N = size(acoustics_free_data,1);
 dof = N-P;
 
 
-chi2 = @(y) sum(get_residuals(acoustics_free_data,y,@modelHandpickedAllExp0V).^2);
+chi2 = @(y) sum(get_residuals(acoustics_free_data,y,@modelLogisticCExp0V).^2);
 
 chi2_optimal = chi2(y);
 disp(chi2_optimal/dof)
