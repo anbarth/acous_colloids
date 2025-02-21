@@ -36,7 +36,7 @@ for ii=1:length(sigma_list)
     if sigma < 0.1
         continue
     end
-    L{end+1}=num2str(19*sigma);
+    L{end+1}=num2str(sigma);
     myData = dataTable(dataTable(:,1)==phi & dataTable(:,2)==sigma, :);
     myColor = cmap(round(1+255*(19*log(sigma)-minLogSig)/(maxLogSig-minLogSig)),:);
     V = myData(:,3);
@@ -48,8 +48,8 @@ for ii=1:length(sigma_list)
 
     percent_eta = eta ./ eta(1);
     
-    %plot(ax_eta,V,percent_eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
-    plot(ax_eta,V,eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+    plot(ax_eta,V,percent_eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+    %plot(ax_eta,V,eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
 
 end
 
