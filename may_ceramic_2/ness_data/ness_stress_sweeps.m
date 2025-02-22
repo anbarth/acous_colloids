@@ -86,7 +86,7 @@ c_eta.Ticks = round((phi_list+phi_fudge')*1000)/1000;
 clim(ax_eta,[minPhi maxPhi]);
 
 
-ylim([10 10^5])
+%ylim([10 10^5])
 
 
 % colormap(ax_eta_rescaled,cmap);

@@ -1,6 +1,6 @@
 function plot_sigmastar(y_optimal)
 
-[eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParamsHandpickedAll(y_optimal,13);
+[eta0, phi0, delta, A, width, sigmastar, D, phi_fudge] = unzipParamsHandpickedAll(y_optimal,13);
 
 volt_list = [0,5,10,20,40,60,80];
 
@@ -9,12 +9,12 @@ volt_list = [0,5,10,20,40,60,80];
 
 p = polyfit(volt_list,sigmastar,2);
 V = linspace(0,80);
-%plot(V,p(1)*V.^2+p(2)*V+p(3),'--','LineWidth',1);
+plot(V,p(1)*V.^2+p(2)*V+p(3),'--','LineWidth',1);
 
 plot(volt_list,sigmastar,'o-','LineWidth',2);
 
-xlabel('V')
-ylabel('\sigma^* (Pa)')
+xlabel('Acoustic \it{V} (V)')
+ylabel('Characteristic stress \sigma^* (Pa)')
 
 %sigmastarFit = (p(1)*volt_list.^2+p(2)*volt_list+p(3));
 

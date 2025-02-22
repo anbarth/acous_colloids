@@ -8,7 +8,8 @@ numV = length(volt_list);
 
 phi0 = 0.6492; % from ness_find_phi0_exclude_lower_phi
 %[eta0,sigmastar,phimu] = ness_wyart_cates_fix_phi0(dataTable,phi0,false);
-[eta0,sigmastar,phimu,phi0WC] = ness_wyart_cates(dataTable,false);
+f = @(sigma,sigmastar)  sigma./(sigmastar+sigma);
+[eta0,sigmastar,phimu,phi0WC] = ness_wyart_cates(dataTable,f,false);
 
 %return
 
@@ -31,7 +32,7 @@ myModelHandle = @modelNess;
 % check that initial guess looks ok before continuing
 %show_F_vs_xc_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',false,'ColorBy',2,'ShowLines',true,'PhiRange',10:-1:1);
 show_F_vs_x(dataTable,y_init,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true,'PhiRange',10:-1:1);
-%return
+return
 
 
 % figure; hold on; ax1=gca; ax1.XScale='log'; ax1.YScale='log';

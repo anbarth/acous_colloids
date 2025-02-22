@@ -1,4 +1,4 @@
-%optimize_C_jardy_02_11
+optimize_C_jardy_02_11
 paramsVector = y_lsq_0V;
 
 jacobian = numeric_jacobian(acoustics_free_data,paramsVector,myModelHandle);
