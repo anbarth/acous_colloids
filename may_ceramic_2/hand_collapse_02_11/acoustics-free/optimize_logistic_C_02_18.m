@@ -1,4 +1,4 @@
-%determine_CIs_on_D0V_02_11;
+determine_CIs_on_D0V_02_11;
 y_init = yLogistic0V;
 log_y_init = log(abs(y_init));
 myModelHandle = @modelLogisticCExp0V;

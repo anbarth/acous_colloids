@@ -101,8 +101,8 @@ if showPlot
         errorbar(myStress,myEta,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
         plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
 
-       %  errorbar(19*myStress,25*myEta,25*myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-       % plot(19*myStress,25*myEtaFit,'Color',myColor,'LineWidth',1.5);
+        %errorbar(19*myStress,25*myEta,25*myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+        %plot(19*myStress,25*myEtaFit,'Color',myColor,'LineWidth',1.5);
     end
     %title('stress sweeps');
     xlabel('\sigma (Pa)');

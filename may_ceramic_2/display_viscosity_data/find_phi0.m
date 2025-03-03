@@ -24,7 +24,7 @@ for ii=1:length(phi)
     %delta_eta(end+1) = myDeltaEta(lowStressIndex);
     delta_eta_rheo = myDeltaEta(lowStressIndex);
     
-    delta_phi=0.01;
+    delta_phi=0.02;
     delta_eta_volumefraction = myEta(lowStressIndex)*2*(0.7-phi(ii))^(-1)*delta_phi;
     delta_eta(end+1) = sqrt(delta_eta_rheo^2+delta_eta_volumefraction^2);
 end

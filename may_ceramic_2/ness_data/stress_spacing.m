@@ -1,7 +1,7 @@
-load("ness_data_02_15.mat")
-dataTable = ness_data_table_exclude_low_phi;
+%load("ness_data_02_15.mat")
+dataTable = ness_data_table;
 
-myPhi = 0.635;
+myPhi = 0.63;
 myPhiData = dataTable(dataTable(:,1)==myPhi,:);
 
 figure; hold on; ax1=gca; ax1.YScale='log';

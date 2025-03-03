@@ -1,5 +1,5 @@
-%dataTable = ness_data_table;
-dataTable = ness_data_table_exclude_low_phi;
+dataTable = ness_data_table_raw;
+dataTable = dataTable(dataTable(:,1)<0.64,:);
 %my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">",">"];
 
 

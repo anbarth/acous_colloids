@@ -1,4 +1,5 @@
-dataTable = ness_data_table;
+dataTable = ness_data_table_raw;
+dataTable = dataTable(dataTable(:,1)<0.64,:);
 phi = unique(dataTable(:,1));
 
 eta = [];

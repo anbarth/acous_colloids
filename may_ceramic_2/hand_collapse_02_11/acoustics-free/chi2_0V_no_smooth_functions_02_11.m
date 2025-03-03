@@ -1,4 +1,4 @@
-optimize_C_jardy_02_11;
+%optimize_C_jardy_02_11;
 y = y_lsq_0V;
 
 P = length(y);
@@ -22,3 +22,10 @@ disp(chi2cdf(chi2_optimal,dof))
 % if you're getting this chi2, then the answer to "how often would i expect
 % to see a chi2 value higher than this one?" is only 5% of the time
 %chi2_cutoff = chi2inv(0.95,dof);
+
+show_F_vs_x(acoustics_free_data,y,@modelHandpickedAllExp0V,'ColorBy',2,'ShowLines',true,'ShowErrorBars',true,'ShowInterpolatingFunction',true)
+xlim([1e-5 1.5])
+prettyPlot;
+
+show_F_vs_xc_x(acoustics_free_data,y,@modelHandpickedAllExp0V,'ColorBy',2,'ShowLines',true,'ShowErrorBars',true,'ShowInterpolatingFunction',true)
+prettyPlot;
