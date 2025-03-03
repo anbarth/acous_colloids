@@ -1,6 +1,6 @@
 %function wiggle_param_with_refitting(dataTable,paramsVector, modelHandle, paramNum)
 
-%optimize_C_jardy_02_11;
+optimize_C_jardy_02_11;
 paramsVector = y_lsq_0V;
 myModelHandle = @modelHandpickedAllExp0V;
 

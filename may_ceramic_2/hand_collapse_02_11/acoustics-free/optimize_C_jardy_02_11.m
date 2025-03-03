@@ -27,8 +27,12 @@ optsLsq = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
 [log_y_lsq_0V,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,log_y_init,lower_bounds,upper_bounds,optsLsq);
 y_lsq_0V = logParamsToParams(log_y_lsq_0V,3);
 
+optsFmincon = optimoptions('fmincon','Algorithm','sqp','MaxFunctionEvaluations',2e4);
+log_y_fmincon_0V = fmincon(costfxn,log(abs(y_init)),[],[],[],[],lower_bounds,upper_bounds,[],optsFmincon);
+y_fmincon_0V = logParamsToParams(log_y_fmincon_0V,3);
+
 % if you don't take logs of parameters,
-% lsq does perform as well
+% lsq doesnt perform as well
 %residualsfxn2 = @(y) get_residuals(acoustics_free_data,y,myModelHandle);
 %[y_lsq2,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn2,y_init,lower_bounds,upper_bounds);
 
@@ -52,9 +56,11 @@ show_F_vs_xc_x(dataTable,y_lsq_0V,myModelHandle,'PhiRange',phiRange,'ShowLines',
 D_init = y_init(7:end);
 D_fminsearch = y_fminsearch_0V_alt(7:end);
 D_lsq = y_lsq_0V_alt(7:end);
+D_fmincon = y_fmincon_0V(7:end);
 
 figure; hold on;
 makeAxesLogLog;
 plot(phi0-phi_list,D_init,'ok-');
 plot(phi0-phi_list,D_fminsearch,'or-');
 plot(phi0-phi_list,D_lsq,'ob-');
+plot(phi0-phi_list,D_fmincon,'og-');

@@ -9,7 +9,7 @@ paramNum=7;
 
 myParamOptimal = paramsVector(paramNum);
 
-deltaParam = myParamOptimal*0.2;
+deltaParam = myParamOptimal*0.5;
 paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+deltaParam,7);
 
 

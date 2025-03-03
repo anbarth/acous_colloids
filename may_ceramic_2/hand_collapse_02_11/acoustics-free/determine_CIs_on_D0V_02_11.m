@@ -7,7 +7,7 @@ hessian = transpose(jacobian)*jacobian;
 % compute confidence intervals?
 variances = diag(pinv(hessian));
 dof = size(jacobian,1)-size(jacobian,2); % dof = N-P
-confInts = sqrt(variances)*tinv(0.975,dof);
+confInts = real(sqrt(variances)*tinv(0.975,dof));
 %disp([myParams', errs])
 
 alpha = 0;
