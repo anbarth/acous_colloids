@@ -1,5 +1,6 @@
 load("optimized_params_02_11.mat");
 paramsVector = y_fminsearch;
+paramsVector(isnan(paramsVector))=0;
 
 jacobian = numeric_jacobian(may_ceramic_09_17,paramsVector,@modelHandpickedAllExp);
 hessian = transpose(jacobian)*jacobian;

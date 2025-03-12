@@ -2,7 +2,7 @@ data_table = may_ceramic_09_17;
 phi_list = unique(data_table(:,1));
 volt_list = [0 5 10 20 40 60 80];
 
-cutoffV = 40;
+cutoffV = 400;
 
 % load up desired parameters
 load("optimized_params_02_11.mat")
@@ -39,7 +39,7 @@ C_vec_err = C_err(C~=0);
 phi_vec = phi_mat(C~=0);
 volt_vec = volt_mat(C~=0);
 
-% fit only to V<40
+% fit only to V<cutopffV
 includeForFit = volt_vec<cutoffV;
 C_vec = C_vec(includeForFit);
 C_vec_err = C_vec_err(includeForFit);
@@ -47,9 +47,9 @@ phi_vec = phi_vec(includeForFit);
 volt_vec = volt_vec(includeForFit);
 
 
-logistic = @(L,k,x0,x1,x,V) L./(1+exp(-k*(x-x0-x1*V)));
+logistic = @(L,k,k1,x0,x1,x,V) L./(1+exp(-(k+k1*V).*(x-x0-x1*V)));
 logisticFit = fittype(logistic,independent=["x" "V"]);
-cFit = fit([phi_vec,volt_vec],C_vec,logisticFit,'StartPoint',[0.95, 25, 0.4, 0],'Weights',1./C_vec_err);
+cFit = fit([phi_vec,volt_vec],C_vec,logisticFit,'StartPoint',[0.95, 25, 0, 0.4, 0],'Weights',1./C_vec_err);
 %return
 
 
@@ -64,23 +64,20 @@ xlim([0.4 0.65])
 for jj=1:size(C,2)
 
     myC = C(:,jj);
-    myC_err = C_err(:,jj);
     myPhi = phi_list;
     voltage = volt_list(jj);
 
     myPhi = myPhi(myC ~= 0);
-    myC_err = myC_err(myC~=0);
     myC = myC(myC~=0);
 
     myColor = cmap(round(1+255*voltage/80),:);
-    errorbar(myPhi,myC,myC_err,'o','Color',myColor,'LineWidth',0.75,'MarkerFaceColor',myColor);
+    plot(myPhi,myC,'-o','Color',myColor,'LineWidth',0.75);
     
-    plot(phi_list,logistic(cFit.L,cFit.k,cFit.x0,cFit.x1,phi_list,voltage),'Color',myColor,'LineWidth',1.5)
+    plot(myPhi,logistic(cFit.L,cFit.k,cFit.k1,cFit.x0,cFit.x1,myPhi,voltage),'Color',myColor,'LineWidth',1.5)
 end
 
-
-
 figure; hold on;
+
 cmap2 = viridis(256);
 myColorPhi = @(phi) cmap2(round(1+255*(phi-min(phi_list))/(max(phi_list)-min(phi_list))),:);
 ylabel('C')
@@ -89,20 +86,18 @@ xlabel('V')
 for ii=1:size(C,1)
 
     myC = C(ii,:);
-    myC_err = C_err(ii,:);
     myV = volt_list;
     phi = phi_list(ii);
 
     myV = myV(myC ~= 0);
-    myC_err = myC_err(myC~=0);
     myC = myC(myC~=0);
 
     myColor = myColorPhi(phi);
-    errorbar(myV,myC,myC_err,'o','Color',myColor,'LineWidth',1,'MarkerFaceColor',myColor);
+    plot(myV,myC,'-o','Color',myColor,'LineWidth',1);
 
-    plot(myV,logistic(cFit.L,cFit.k,cFit.x0,cFit.x1,phi,myV),'Color',myColor,'LineWidth',1.5)
+    plot(myV,logistic(cFit.L,cFit.k,cFit.k1,cFit.x0,cFit.x1,phi,myV),'Color',myColor,'LineWidth',1.5)
 end
-
+return
 % now fit sigma* params
 includeForFit = volt_list < cutoffV;
 figure; hold on; xlabel('V'); ylabel('\sigma^*');
