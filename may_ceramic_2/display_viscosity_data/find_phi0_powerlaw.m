@@ -1,13 +1,13 @@
 dataTable = may_ceramic_09_17;
 phi = unique(dataTable(:,1));
-beta=1.8;
+
+phi0 = 0.85;
 
 %load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 
 phi_fudge = zeros(1,length(phi));
 %load("y_09_04.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_handpicked_fudge_xcShifted_09_04,13); 
 
-eta = [];
-delta_eta = [];
+eta = [];delta_eta = [];
 for ii=1:length(phi)
 
     myData = dataTable(dataTable(:,1)==phi(ii) & dataTable(:,3)==0, :);
@@ -36,26 +36,15 @@ delta_eta = delta_eta';
 
 % add fudge factor
 phi_fudged = phi+phi_fudge';
+dphi = phi0-phi_fudged;
 
 figure; hold on;
-title(strcat('\beta=',num2str(beta)))
-delta_eta_minushalf = 1/2 * eta.^(-3/2) .* delta_eta;
-errorbar(phi,eta.^(-1/beta),delta_eta_minushalf,'ok')
-%errorbar(phi_fudged,eta.^(-1/2),delta_eta_minushalf,'or')
-xlabel('\phi')
-ylabel('\eta^{-1/\beta} (Pa s)^{-1/\beta}');
+makeAxesLogLog;
+errorbar(dphi,eta,delta_eta,'ko-')
+xlabel('\phi_0-\phi')
+ylabel('\eta')
 
-ft1 = fittype('m*(phi0-x)');
-opts = fitoptions(ft1);
-opts.StartPoint = [16,0.67];
-myFit1 = fit(phi,eta.^(-1/beta),ft1,opts);
-m = myFit1.m;
-phi0 = myFit1.phi0;
-plot([.15,.72],m*(phi0-[.15,.72]));
-yline(0)
-
-
-ci = confint(myFit1);
-phi0_err = (ci(2,2)-ci(1,2))/2;
-disp(phi0)
-disp(phi0_err)
+p = polyfit(log(dphi),log(eta),1);
+plot(dphi,exp(polyval(p,log(dphi))),'r-')
+title(strcat('\phi_0=',num2str(phi0)))
+annotation("textbox",[0.2 0.1 0.1 0.1],"String",num2str(p(1)))

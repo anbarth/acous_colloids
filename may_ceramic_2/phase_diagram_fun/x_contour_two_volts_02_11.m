@@ -2,11 +2,8 @@ data_table = may_ceramic_09_17;
 
 
 % load up desired parameters
-load("01_12_optimal_params.mat")
-myModelHandle = @modelHandpickedAll; paramsVector = y_full_fmin_lsq;
-%myModelHandle = @modelSmoothFunctions; paramsVector = y_smooth_fmin_lsq;
-%play_with_CV_2_10_28;
-%myModelHandle = @modelHandpickedAll; paramsVector = y_handpicked_10_28;
+load("optimized_params_02_11.mat")
+paramsVector = y_fminsearch; myModelHandle=@modelHandpickedAllExp;
 [x_all,F_all,delta_F,F_hat,eta,delta_eta,eta_hat] = myModelHandle(data_table, paramsVector);
 phi0=paramsVector(2);
 

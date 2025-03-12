@@ -1,5 +1,7 @@
 function total_cost = bhattaCostFunction(dataTable, paramsVector, modelHandle)
 
+Q=2;
+
 phi_list = unique(dataTable(:,1));
 vol_frac_range = 1:length(phi_list);
 volt_list = [0 5 10 20 40 60 80];
@@ -49,7 +51,7 @@ for pp=1:length(curves)
             interpolated_F = interpolating_curve_p(x_q(ii));
             % returns nan for non-overlapping points
             if isnan(interpolated_F); continue; end
-            cost = abs(F_q(ii)-interpolated_F)/delta_F_q(ii);
+            cost = (abs(F_q(ii)-interpolated_F)/delta_F_q(ii)).^Q;
             %disp(cost)
             total_cost = total_cost+cost;
             Nover = Nover+1;
@@ -70,6 +72,6 @@ for pp=1:length(curves)
     end
 end
 
-total_cost = total_cost/Nover;
+total_cost = (total_cost/Nover)^(1/Q);
 
 end

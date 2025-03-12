@@ -1,8 +1,11 @@
 % find phi0, but use a log-log plot of eta vs phi
 % (instead of assuming the low-stress power law is -2)
 
-dataTable = ness_data_table;
+dataTable = ness_data_table_raw;
+dataTable = dataTable(dataTable(:,1)<0.64,:);
 phi = unique(dataTable(:,1));
+
+phi0 = 0.645;
 
 eta = [];
 delta_eta = [];
@@ -29,13 +32,15 @@ delta_eta = delta_eta';
 
 
 figure; hold on; ax1=gca; ax1.XScale='log'; ax1.YScale='log';
-phi0 = 0.64;
-dphi = phi0-phi;
+xlabel('\phi_0-\phi')
+ylabel('\eta')
+title(strcat('\phi_0=',num2str(phi0)))
 
-dphi=dphi(1:end-2);
-eta=eta(1:end-2);
+dphi = phi0-phi;
 
 plot(dphi, eta,'o-');
 p = polyfit(log(dphi), log(eta),1);
 plot(dphi,exp(polyval(p,log(dphi))),'-r');
 disp(p(1))
+annotation("textbox",[0.2 0.2 0.1 0.1],"String",num2str(p(1)))
+prettyPlot

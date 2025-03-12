@@ -21,7 +21,7 @@ D_err = confInts(7:end)';
 figure; hold on;
 ax1=gca; ax1.XScale='log'; ax1.YScale='log';
 phi0 = paramsVector(2);
-ylabel('D')
+ylabel('D/log(\phi_0-\phi)')
 xlabel('\phi_0-\phi')
 dphi = paramsVector(2)-phi_list;
 errorbar(dphi,D,D_err,'o','LineWidth',1)

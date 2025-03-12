@@ -1,7 +1,7 @@
 % populates phi0, sigmastar0V, D_0V, and interpolating function
 % parameters
 
-%optimize_C_jardy_02_11;
+optimize_C_jardy_02_11;
 y = y_lsq_0V_alt;
 eta0 = y(1);
 phi0 = y(2);
