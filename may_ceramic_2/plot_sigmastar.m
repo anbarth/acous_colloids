@@ -6,10 +6,12 @@ volt_list = [0,5,10,20,40,60,80];
 
 %figure; hold on;
 
+volt_list = volt_list(sigmastar~=0);
+sigmastar = sigmastar(sigmastar~=0);
 
 p = polyfit(volt_list,sigmastar,2);
 V = linspace(0,80);
-plot(V,p(1)*V.^2+p(2)*V+p(3),'--','LineWidth',1);
+%plot(V,p(1)*V.^2+p(2)*V+p(3),'--','LineWidth',1);
 
 plot(volt_list,sigmastar,'o-','LineWidth',2);
 

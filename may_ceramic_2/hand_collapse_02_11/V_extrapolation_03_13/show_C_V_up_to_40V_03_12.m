@@ -38,8 +38,8 @@ for jj=1:size(C,2)
     cmap = plasma(256);
     ylabel('C')
     xlabel('\phi')
-    xlim([0.42 0.65])
-    ylim([0.4 1.2])
+    xlim([0.2 0.65])
+    ylim([0 1.2])
 
 
 
@@ -57,4 +57,5 @@ for jj=1:size(C,2)
     
     plot(phi_list,logistic(cFit.L,cFit.k,cFit.x0,cFit.x1,phi_list,voltage),'Color',myColor,'LineWidth',1.5)
     prettyPlot;
+    set(gcf, 'Units', 'Normalized', 'OuterPosition', [0.2, 0.2, 0.21, 0.4]);
 end

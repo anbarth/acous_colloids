@@ -11,8 +11,8 @@ includeForFit=1:4;
 predictions = 5:7;
 
 p = polyfit(volt_list(includeForFit),sigmastar(includeForFit)*CSS,2);
-V1 = linspace(0,40);
-V2 = linspace(40,80);
+V1 = linspace(0,20);
+V2 = linspace(20,80);
 
 
 figure; hold on;

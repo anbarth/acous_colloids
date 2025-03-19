@@ -13,7 +13,7 @@ myColorPhi = @(phi) cmap2(round(1+255*(phi-min(phi_list))/(max(phi_list)-min(phi
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">",">"];
 for jj=5:7
     v = volt_list(jj);
-    figure; hold on; makeAxesLogLog; xlabel('\sigma'); ylabel('\eta');
+    figure; hold on; makeAxesLogLog; xlabel('Shear stress \sigma (Pa)'); ylabel('Viscosity \eta (Pa s)');
     title(v)
     for ii=1:length(phi_list)
         phi = phi_list(ii);
@@ -21,7 +21,7 @@ for jj=5:7
         if isempty(myData)
             continue
         end
-        mySigma = data_table(myData,2);
+        mySigma = data_table(myData,2)*19;
         myEta = eta(myData);
         myEtaErr = delta_eta(myData);
         myEtaHat = eta_hat(myData);
@@ -32,9 +32,10 @@ for jj=5:7
         myEtaHat=myEtaHat(sortIdx);
 
         errorbar(mySigma,myEta,myEtaErr,my_vol_frac_markers(ii),'Color',myColorPhi(phi),'MarkerFaceColor',myColorPhi(phi))
-        plot(mySigma,myEtaHat,'Color',myColorPhi(phi))
+        plot(mySigma,myEtaHat,'Color',myColorPhi(phi),'LineWidth',1)
         
         
     end
     prettyPlot;
+    xlim([1 1e4])
 end

@@ -1,8 +1,8 @@
 % populates phi0, sigmastar0V, D_0V, and interpolating function
 % parameters
 
-optimize_C_jardy_02_11;
-y = y_lsq_0V_alt;
+optimize_C_jardy_03_17;
+y = y_lsq_0V;
 eta0 = y(1);
 phi0 = y(2);
 delta = y(3);
@@ -38,26 +38,35 @@ D_0V = y(7:end);
 
     CV_6 = D_0V(6)*[1 0.999 0.99 0.98 0.95 0.94 0.9];
     sigmastar_6 = sigmastar0V*[1 1.1 1.3 2 3.4 6 9];
-    my_phi_num = 12;
+    my_phi_num = 6;
     voltRange = 1:7;
     showFxn = false;
     whichPlot = 0;
 
-    
 
 D = zeros(numPhi,numV);
 D(:,1) = D_0V';
 D(6:13,:) = [CV_6;CV_7;CV_8;CV_9;CV_10;CV_11;CV_12;CV_13];
-sigmastar_list = [sigmastar_6;sigmastar_7;sigmastar_8;sigmastar_9;sigmastar_10;sigmastar_11;sigmastar_12;sigmastar_13];
+% zero out the entries where i dont have data
+D(:,volts_to_exclude_indices) = 0;
+D(no_acoustic_vol_frac_indices,2:end) = 0;
+
+
+sigmastar_list_full = [sigmastar_6;sigmastar_7;sigmastar_8;sigmastar_9;sigmastar_10;sigmastar_11;sigmastar_12;sigmastar_13];
+sigmastar_list_temp = sigmastar_list_full;
+sigmastar_list_temp(:,volts_to_exclude_indices) = 0;
+sigmastar_list = zeros(size(sigmastar_list_temp));
+sigmastar_list(acoustic_vol_frac_indices-5,:) = sigmastar_list_temp(acoustic_vol_frac_indices-5,:);
+
 sigmastar = sigmastar_list(my_phi_num-5,:);
 
 phi_fudge = zeros(1,length(phi_list));
-y_handpicked_02_11 = zipParamsHandpickedAll(eta0, phi0, delta, A, width, sigmastar, D, phi_fudge);
+y_handpicked_03_17 = zipParamsHandpickedAll(eta0, phi0, delta, A, width, sigmastar, D, phi_fudge);
 if whichPlot==1
-    show_F_vs_x(dataTable,y_handpicked_02_11,@modelHandpickedAllExp,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
+    show_F_vs_x(restricted_data_table,y_handpicked_03_17,@modelHandpickedAllExp,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
     xlim([1e-3 1.5])
 elseif whichPlot == 2
-    show_F_vs_xc_x(dataTable,y_handpicked_02_11,@modelHandpickedAllExp,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
+    show_F_vs_xc_x(restricted_data_table,y_handpicked_03_17,@modelHandpickedAllExp,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
 end
 
 
