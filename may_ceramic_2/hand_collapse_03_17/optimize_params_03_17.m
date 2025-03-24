@@ -48,7 +48,7 @@ optsLsq = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
 [log_y_lsq,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,log_y_init,lower_bounds,upper_bounds,optsLsq);
 y_lsq = logParamsToParams(log_y_lsq,3);
 
-%return
+return
 
 plot_C_phi_V(may_ceramic_09_17,y_init); title('init')
 plot_C_phi_V(may_ceramic_09_17,y_fmincon); title('fmincon')

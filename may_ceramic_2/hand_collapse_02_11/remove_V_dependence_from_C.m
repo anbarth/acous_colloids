@@ -9,12 +9,14 @@ y_handpicked_all_0V = zipParamsHandpickedAll(eta0,phi0,delta,A,width,sigmastar,D
 show_F_vs_xc_x(may_ceramic_09_17,y_fminsearch,@modelHandpickedAllExp)
 show_F_vs_xc_x(may_ceramic_09_17,y_handpicked_all_0V,@modelHandpickedAllExp)
 
-
+%%
 %smooth_C_03_11;
-%paramsVector = y_logistic; myModelHandle=@modelLogisticCV;
-
+paramsVector = y_logistic; myModelHandle=@modelLogisticCV;
 y_logistic_0V = y_logistic;
 y_logistic_0V(13) = 0;
 
-show_F_vs_xc_x(may_ceramic_09_17,y_logistic,@modelLogisticCV)
-show_F_vs_xc_x(may_ceramic_09_17,y_logistic_0V,@modelLogisticCV)
+phiRange = 12;
+showLines = true;
+
+show_F_vs_xc_x(may_ceramic_09_17,y_logistic,@modelLogisticCV,'PhiRange',phiRange,'ShowLines',showLines)
+%show_F_vs_xc_x(may_ceramic_09_17,y_logistic_0V,@modelLogisticCV,'PhiRange',phiRange,'ShowLines',showLines)

@@ -3,6 +3,7 @@ function show_F_vs_x(stressTable,paramsVector,modelHandle,varargin)
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">"];
 
 phi_list = unique(stressTable(:,1));
+%phi_list = [0.1999 0.2503 0.2997 0.3500 0.4009 0.4396 0.4604 0.4811 0.5193 0.5398 0.5607 0.5898 0.6101]';
 vol_frac_plotting_range = length(phi_list):-1:1;
 volt_plotting_range = 1:7;
 highlight_stress = 0;
