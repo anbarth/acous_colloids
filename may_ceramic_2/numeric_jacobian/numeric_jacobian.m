@@ -1,7 +1,5 @@
 function jacobian = numeric_jacobian(dataTable,myParams,myModelHandle)
 
-
-
 [~,~,~,~,~,delta_eta,~] = myModelHandle(dataTable, myParams);
 
 % populate jacobian
@@ -30,8 +28,14 @@ for p = 1:length(myParams)
     % evaluate d(eta-hat)/d(epsilon)
     eta_hat_minus = get_eta_hat(dataTable, myParamsMinus, myModelHandle);
     eta_hat_plus = get_eta_hat(dataTable, myParamsPlus, myModelHandle);
-    
+
     jacobian(:,p) = (eta_hat_plus - eta_hat_minus) / (myParamsPlus(p)-myParamsMinus(p)) ./ delta_eta;
 end
+
+% special case for "dummy rows" i use for data table restriction
+% dummy rows are marked by eta=-1.
+% if included they will result in NaN entries in jacobian
+realDataRows = dataTable(:,4)~=-1;
+jacobian = jacobian(realDataRows,:);
 
 end

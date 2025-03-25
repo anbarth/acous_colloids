@@ -1,6 +1,6 @@
 % populates phi0, sigmastar0V, D_0V, and interpolating function
 % parameters
-optimize_C_03_21;
+%optimize_C_03_25;
 
 y = y_fmincon_0V;
 eta0 = y(1);
@@ -24,10 +24,10 @@ D = y(7:end);
     sigmastar_7 = sigmastar0V*[1 1.15 1.4 2 3.8 9 13];
     sigmastar_6 = sigmastar0V*[1 1.1 1.4 2 3.8 6.5 11];
 
-    my_phi_num = 12;
-    voltRange = 1:6;
+    my_phi_num = 13;
+    voltRange = 1:3;
     showFxn = false;
-    whichPlot = 0;
+    whichPlot = 2;
 
 % zero out unused entries
 sigmastar_list_full = [sigmastar_6;sigmastar_7;sigmastar_8;sigmastar_9;sigmastar_10;sigmastar_11;sigmastar_12;sigmastar_13];
@@ -39,13 +39,13 @@ sigmastar_list(included_acous_phi_indices-5,:) = sigmastar_list_temp(included_ac
 
 sigmastar = sigmastar_list(my_phi_num-5,:);
 
-y_handpicked_03_21 = [eta0, phi0, delta, A, width, sigmastar, D];
+y_handpicked_03_25 = [eta0, phi0, delta, A, width, sigmastar, D];
 
 if whichPlot==1
-    show_F_vs_x(dataTable,y_handpicked_03_21,@modelHandpickedSigmastarV,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
+    show_F_vs_x(dataTable,y_handpicked_03_25,@modelHandpickedSigmastarV,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
     xlim([1e-3 1.5])
 elseif whichPlot == 2
-    show_F_vs_xc_x(dataTable,y_handpicked_03_21,@modelHandpickedSigmastarV,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
+    show_F_vs_xc_x(dataTable,y_handpicked_03_25,@modelHandpickedSigmastarV,'PhiRange',my_phi_num,'ShowLines',true,'VoltRange',voltRange,'ColorBy',1,'ShowInterpolatingFunction',showFxn)
 end
 
 

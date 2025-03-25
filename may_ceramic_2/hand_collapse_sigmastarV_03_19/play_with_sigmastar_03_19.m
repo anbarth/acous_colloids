@@ -1,7 +1,7 @@
 % populates phi0, sigmastar0V, D_0V, and interpolating function
 % parameters
 
-%optimize_C_jardy_03_19;
+optimize_C_jardy_03_19;
 y = y_lsq_0V;
 eta0 = y(1);
 phi0 = y(2);
@@ -43,7 +43,7 @@ elseif whichPlot == 2
 end
 
 
-
+%show_F_vs_xc_x(dataTable,y_handpicked_03_19,@modelHandpickedSigmastarV)
 
 
 
