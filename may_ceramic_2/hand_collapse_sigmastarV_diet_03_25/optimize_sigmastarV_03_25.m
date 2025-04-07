@@ -1,4 +1,4 @@
-avg_sigmastar_03_21;
+avg_sigmastar_03_25;
 y_init = y;
 log_y_init = log(abs(y_init));
 myModelHandle = @modelHandpickedSigmastarV;

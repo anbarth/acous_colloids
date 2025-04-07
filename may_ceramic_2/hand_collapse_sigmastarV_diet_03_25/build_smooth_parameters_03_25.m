@@ -1,13 +1,14 @@
-optimize_sigmastarV_03_21;
+optimize_sigmastarV_03_25;
 
 % start with parameters where sigma*(V) and D(phi) are picked pt-by-pt
 y_pointwise = y_fmincon; myModelHandle = @modelHandpickedSigmastarV;
 confints = get_conf_ints(restricted_data_table,y_pointwise,myModelHandle);
 
 % optionally plot things
-makeSigmastarPlot = false;
+makeSigmastarPlot = true;
 makeDplot = false;
-makeCplot = false;
+makeCplot = true;
+makeCollapsePlot = true;
 
 % fit a quadratic to sigma*(V)
 volt_list = [0 5 10 20 40 60 80];
@@ -18,14 +19,17 @@ sigmastar = sigmastar(s);
 volt_list_restricted = volt_list(s);
 sigmastar_err = sigmastar_err(s);
 
-quadParams = polyfit(volt_list_restricted,sigmastar,2);
+quadfit = fittype("a*x^2+b*x+c");
+sigmastarFit = fit(volt_list_restricted',sigmastar',quadfit,'StartPoint',[0.0001, 0.0005, 0.07],'Weights',1./sigmastar_err);
+
+quadParams = [sigmastarFit.a sigmastarFit.b sigmastarFit.c];
 
 if makeSigmastarPlot
     figure; hold on;
     xlabel("Acoustic voltage V")
     ylabel("\sigma^* (Pa)")
     plot(volt_list_restricted,sigmastar,'ko');
-    %errorbar(volt_list_restricted,sigmastar,sigmastar_err,'ko')
+    errorbar(volt_list_restricted,sigmastar,sigmastar_err,'ko')
 
     V = linspace(0,80);
     plot(V,polyval(quadParams,V),'r-');
@@ -66,12 +70,13 @@ end
 C = D'.*dphi.^alpha;
 logistic = @(L,k,x0,x) L./(1+exp(-k*(x-x0)));
 logisticFit = fittype(logistic);
-cFit = fit(my_phi_list,C,logisticFit,'StartPoint',[0.95, 50, 0.4]);%,'Weights',1./D_err);
+cFit = fit(my_phi_list,C,logisticFit,'StartPoint',[0.95, 50, 0.4],'Weights',1./D_err);
 
 if makeCplot
     figure; hold on;
     xlabel('\phi'); ylabel('C')
     plot(my_phi_list,C,'ko')
+    errorbar(my_phi_list,C,D_err,'ko')
     plot(phi_list,logistic(cFit.L,cFit.k,cFit.x0,phi_list));
 end
 
@@ -79,6 +84,10 @@ end
 % altho this version is awkward bc the shape of the scaling fcn isnt
 % optimized to this new set of parameters
 y_smooth_restricted = [y_pointwise(1:5) quadParams alpha cFit.L cFit.k cFit.x0];
-%show_F_vs_x(restricted_data_table,y_smooth_restricted,@modelLogisticCSigmastarV,'ShowInterpolatingFunction',true,'ShowErrorBars',true)
-%show_F_vs_xc_x(restricted_data_table,y_smooth_restricted,@modelLogisticCSigmastarV,'ShowInterpolatingFunction',true,'ShowErrorBars',true)
 
+if makeCollapsePlot
+    dataTable = may_ceramic_09_17;
+    show_F_vs_x(dataTable,y_smooth_restricted,@modelLogisticCSigmastarV)
+    show_F_vs_xc_x(dataTable,y_smooth_restricted,@modelLogisticCSigmastarV)
+    [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelLogisticCSigmastarV(dataTable, y_smooth_restricted);
+end

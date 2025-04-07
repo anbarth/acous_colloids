@@ -1,6 +1,6 @@
 % populates phi0, sigmastar0V, D_0V, and interpolating function
 % parameters
-%optimize_C_03_25;
+optimize_C_03_25;
 
 y = y_fmincon_0V;
 eta0 = y(1);
@@ -16,18 +16,18 @@ D = y(7:end);
 
 
     sigmastar_13 = sigmastar0V*[1 1.1 1.4 2.1 4 6 11];
-    sigmastar_12 = sigmastar0V*[1 1.1 1.4 1.8 3.2 5 6];
+    sigmastar_12 = sigmastar0V*[1 1.1 1.3 1.8 3.5 5 6];
     sigmastar_11 = sigmastar0V*[1 1.1 1.3 1.9 3.5 0 0];
-    sigmastar_10 = sigmastar0V*[1 1.1 1.3 1.8 3.7 6.5 8];
+    sigmastar_10 = sigmastar0V*[1 1.1 1.3 1.8 3.2 6 8];
     sigmastar_9 = sigmastar0V*[1 1.05 1.4 2 3.5 6 8];
-    sigmastar_8 = sigmastar0V*[1 1.1 1.4 2 4.2 10 16];
+    sigmastar_8 = sigmastar0V*[1 1.1 1.3 2 4 9 16];
     sigmastar_7 = sigmastar0V*[1 1.15 1.4 2 3.8 9 13];
-    sigmastar_6 = sigmastar0V*[1 1.1 1.4 2 3.8 6.5 11];
+    sigmastar_6 = sigmastar0V*[1 1.1 1.3 2 3.6 6 11];
 
-    my_phi_num = 13;
-    voltRange = 1:3;
+    my_phi_num = 6;
+    voltRange = 1:7;
     showFxn = false;
-    whichPlot = 2;
+    whichPlot = 0;
 
 % zero out unused entries
 sigmastar_list_full = [sigmastar_6;sigmastar_7;sigmastar_8;sigmastar_9;sigmastar_10;sigmastar_11;sigmastar_12;sigmastar_13];

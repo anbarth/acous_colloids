@@ -5,9 +5,10 @@ y_pointwise = y_fmincon; myModelHandle = @modelHandpickedSigmastarV;
 confints = get_conf_ints(restricted_data_table,y_pointwise,myModelHandle);
 
 % optionally plot things
-makeSigmastarPlot = false;
-makeDplot = false;
-makeCplot = false;
+makeSigmastarPlot = true;
+makeDplot = true;
+makeCplot = true;
+makeCollapsePlot = true;
 
 % fit a quadratic to sigma*(V)
 volt_list = [0 5 10 20 40 60 80];
@@ -58,7 +59,7 @@ if makeDplot
     xlabel('\phi_0-\phi')
     ylabel('D')
     plot(dphi,D,'ko');
-    %errorbar(dphi,D,D_err,'ko')
+    errorbar(dphi,D,D_err,'ko')
     plot(dphi(l2),exp(myft2.p2)*dphi(l2).^(-alpha)/1.02,'b-')
 end
 
@@ -66,12 +67,14 @@ end
 C = D'.*dphi.^alpha;
 logistic = @(L,k,x0,x) L./(1+exp(-k*(x-x0)));
 logisticFit = fittype(logistic);
-cFit = fit(my_phi_list,C,logisticFit,'StartPoint',[0.95, 50, 0.4]);%,'Weights',1./D_err);
+cFit = fit(my_phi_list,C,logisticFit,'StartPoint',[0.95, 50, 0.4],'Weights',1./D_err);
+%cFit = fit(my_phi_list,C,logisticFit,'StartPoint',[0.95, 50, 0.4]);
 
 if makeCplot
     figure; hold on;
     xlabel('\phi'); ylabel('C')
     plot(my_phi_list,C,'ko')
+    errorbar(my_phi_list,C,D_err,'ko')
     plot(phi_list,logistic(cFit.L,cFit.k,cFit.x0,phi_list));
 end
 
@@ -82,3 +85,9 @@ y_smooth_restricted = [y_pointwise(1:5) quadParams alpha cFit.L cFit.k cFit.x0];
 %show_F_vs_x(restricted_data_table,y_smooth_restricted,@modelLogisticCSigmastarV,'ShowInterpolatingFunction',true,'ShowErrorBars',true)
 %show_F_vs_xc_x(restricted_data_table,y_smooth_restricted,@modelLogisticCSigmastarV,'ShowInterpolatingFunction',true,'ShowErrorBars',true)
 
+if makeCollapsePlot
+    dataTable = may_ceramic_09_17;
+    show_F_vs_x(dataTable,y_smooth_restricted,@modelLogisticCSigmastarV)
+    show_F_vs_xc_x(dataTable,y_smooth_restricted,@modelLogisticCSigmastarV)
+    [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelLogisticCSigmastarV(dataTable, y_smooth_restricted);
+end
