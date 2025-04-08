@@ -1,4 +1,4 @@
-%optimize_sigmastarV_03_19;
+optimize_sigmastarV_03_19;
 
 % start with parameters where sigma*(V) and D(phi) are picked pt-by-pt
 y_pointwise = y_fmincon; myModelHandle = @modelHandpickedSigmastarV;
@@ -7,8 +7,8 @@ confInts = get_conf_ints(may_ceramic_09_17,y_pointwise,myModelHandle);
 % optionally plot things
 makeSigmastarPlot = true;
 correctSigmastarPlotUnits = true;
-makeDplot = true;
-makeCplot = true;
+makeDplot = false;
+makeCplot = false;
 makeCollapsePlot = false;
 
 % extract alpha from D
@@ -60,7 +60,7 @@ sigmastarFit = fit(my_volt_list',sigmastar',quadfit,'StartPoint',[0.0001, 0.0005
 %return
 if makeSigmastarPlot
     figure; hold on; 
-    xlabel('V'); ylabel('\sigma^*');
+    xlabel('Acoustic voltage {\itV} (V)'); ylabel('\sigma^* (Pa)');
     CSS=1;
     if correctSigmastarPlotUnits
         CSS=19;
@@ -74,12 +74,15 @@ if makeSigmastarPlot
     cmap = plasma(256);
     myColor = @(V) cmap(round(1+255*V/80),:);
     for jj=1:length(my_volt_list)
-        %plot(my_volt_list,sigmastar,'ko');
         colorV = myColor(my_volt_list(jj));
-        errorbar(my_volt_list(jj),CSS*sigmastar(jj),CSS*sigmastar_ci(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',15,'LineWidth',1.5);
+        %errorbar(my_volt_list(jj),CSS*sigmastar(jj),CSS*sigmastar_ci(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',15,'LineWidth',1.5);
+        plot(my_volt_list(jj),CSS*sigmastar(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',15,'LineWidth',1.5);
         prettyPlot;
         xlim([0 100])
     end
+
+    myfig = gcf;
+    myfig.Position=[1015,677,414,323];
     
 end
 

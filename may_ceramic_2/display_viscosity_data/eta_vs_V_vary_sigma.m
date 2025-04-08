@@ -13,16 +13,17 @@ phi = phi_list(phiNum);
 fig_eta = figure;
 %ax_eta = axes('Parent', fig_eta,'YScale','log');
 ax_eta = axes('Parent', fig_eta);
-ax_eta.XLabel.String = 'Acoustic voltage (V)';
+ax_eta.XLabel.String = 'Acoustic voltage{\it V} (V)';
 ax_eta.YLabel.String = 'Viscosity \eta (Pa s)';
+%ax_eta.Title.String = strcat("\phi=",num2str(phi));
 hold(ax_eta,'on');
 cmap = winter(256);
 colormap(ax_eta,cmap);
 
 
-%disp(phi)
+
 markerCode = strcat('-',my_vol_frac_markers(phiNum));
-ax_eta.Title.String = strcat("\phi=",num2str(phi));
+
 
 myData = dataTable(dataTable(:,1)==phi, :);
 sigma_list = unique(myData(:,2));
@@ -60,3 +61,7 @@ legend(L)
 
 
 end
+
+prettyPlot;
+myfig = gcf;
+myfig.Position=[1015,677,414,323];

@@ -81,12 +81,13 @@ end
 
 colormap(ax_eta,cmap);
 c_eta = colorbar(ax_eta);
+c_eta.Ruler.TickLabelFormat='%.2f';
 c_eta.Ticks = round((phi_list+phi_fudge')*100)/100;
 clim(ax_eta,[minPhi maxPhi]);
 
 
-%close(fig_rate)
-%close(fig_eta_rescaled)
+close(fig_rate)
+close(fig_eta_rescaled)
 
 
 % colormap(ax_eta_rescaled,cmap);

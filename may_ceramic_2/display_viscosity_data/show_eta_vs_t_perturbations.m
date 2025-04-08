@@ -19,12 +19,17 @@ for jj=2:length(volt_list)
 end
 xlim([-5 10])
 ylim([500 20000])
+
+
+xlabel('{\itt}-{\itt}_{acous} (s)')
+ylabel('Viscosity \eta (Pa s)')
 prettyPlot;
-xlabel('\it{t}-\it{t}_{acous}')
-ylabel('Viscosity (Pa s)')
 
 
 colormap(cmap);
 c1=colorbar;
 clim([0 80]);
 c1.Ticks = [0,5,10,20,40,60,80];
+
+myfig = gcf;
+myfig.Position=[627,403,465,323];

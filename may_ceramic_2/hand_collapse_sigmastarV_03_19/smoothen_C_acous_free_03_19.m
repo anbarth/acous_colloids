@@ -1,8 +1,9 @@
-%optimize_C_jardy_03_19;
+optimize_C_jardy_03_19;
 
-% start with parameters where sigma*(V) and D(phi) are picked pt-by-pt
+% start with parameters where D(phi) is picked pt-by-pt
 y_pointwise = y_lsq_0V; myModelHandle = @modelHandpickedAllExp0V;
-confInts = get_conf_ints(may_ceramic_09_17,y_pointwise,myModelHandle);
+acoustics_free_data = may_ceramic_09_17(may_ceramic_09_17(:,3)==0,:);
+confInts = get_conf_ints(acoustics_free_data,y_pointwise,myModelHandle);
 
 % optionally plot things
 makeDplot = true;
@@ -29,6 +30,8 @@ if makeDplot
     prettyPlot;
     ylim([7e-9 2])
     xlim([0.07 0.6])
+    myfig = gcf;
+    myfig.Position=[1015,677,414,323];
 end
 
 % fit a logistic curve to C
@@ -46,15 +49,17 @@ if makeCplot
 
     phifake = linspace(min(phi_list),max(phi_list));
     plot(phifake,logistic(cFit.L,cFit.k,cFit.x0,phifake));
+    xlim([0.1 0.7])
     prettyPlot;
+    myfig = gcf;
+    myfig.Position=[1015,677,414,323];
 end
 
 y = y_pointwise;
 y(7:end) = dphi.^(-alpha) .* logistic(cFit.L,cFit.k,cFit.x0,phi_list);
 
 if makeCollapsePlot
-    dataTable = may_ceramic_09_17;
-    dataTable = dataTable(dataTable(:,3)==0,:);
+    dataTable = acoustics_free_data;
     show_F_vs_x(dataTable,y,myModelHandle,'ColorBy',2)
     show_F_vs_xc_x(dataTable,y,myModelHandle,'ColorBy',2)
     [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = myModelHandle(dataTable, y);
