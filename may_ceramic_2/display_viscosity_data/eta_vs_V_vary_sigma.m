@@ -1,6 +1,6 @@
 dataTable = may_ceramic_09_17;
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
-
+CSS = (50/19)^3;
 
 
 phi_list = unique(dataTable(:,1));
@@ -27,9 +27,9 @@ markerCode = strcat('-',my_vol_frac_markers(phiNum));
 
 myData = dataTable(dataTable(:,1)==phi, :);
 sigma_list = unique(myData(:,2));
-minLogSig = 19*log(min(sigma_list));
+minLogSig = CSS*log(min(sigma_list));
 %minLogSig = log(1);
-maxLogSig = 19*log(max(sigma_list));
+maxLogSig = CSS*log(max(sigma_list));
 
 L = {};
 for ii=1:length(sigma_list)
@@ -39,9 +39,9 @@ for ii=1:length(sigma_list)
     end
     L{end+1}=num2str(sigma);
     myData = dataTable(dataTable(:,1)==phi & dataTable(:,2)==sigma, :);
-    myColor = cmap(round(1+255*(19*log(sigma)-minLogSig)/(maxLogSig-minLogSig)),:);
+    myColor = cmap(round(1+255*(CSS*log(sigma)-minLogSig)/(maxLogSig-minLogSig)),:);
     V = myData(:,3);
-    eta = 25*myData(:,4);
+    eta = CSS*myData(:,4);
     
     % sort in order of ascending V
     [V,sortIdx] = sort(V,'ascend');

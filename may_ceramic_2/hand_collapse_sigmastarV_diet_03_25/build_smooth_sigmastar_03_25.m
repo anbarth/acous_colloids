@@ -29,7 +29,7 @@ if makeSigmastarPlot
     ylabel("\sigma^* (Pa)")
     CSS=1;
     if correctSigmastarPlotUnits
-        CSS=19;
+        CSS=(50/19)^3;
     end
 
     % quadratic interpolation

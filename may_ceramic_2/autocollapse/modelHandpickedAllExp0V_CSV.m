@@ -1,6 +1,6 @@
 function [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelHandpickedAllExp0V_CSV(stressTable, y)
 
-CSV=25;
+CSV=(50/19)^3;
 
 [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelHandpickedAllExp0V(stressTable, y);
 
