@@ -1,8 +1,9 @@
 build_smooth_sigmastar_03_25;
 
+CSS = (50/19)^3;
+
 y = y_smooth_restricted;
 dataTable = may_ceramic_09_17;
-% TODO TODO TODO need to change this to a CSV model
 myModelHandle = @modelHandpickedSigmastarV_CSV;
 
 % collapse all data
@@ -26,8 +27,8 @@ for jj=excluded_V_indices
         if isempty(myData)
             continue
         end
-        mySigma = dataTable(myData,2)*19;
-        myEta = eta(myData);
+        mySigma = dataTable(myData,2)*CSS;
+        myEta = eta(myData); % taken from output of model, so it already includes CSV
         myEtaErr = delta_eta(myData);
         myEtaHat = eta_hat(myData);
 

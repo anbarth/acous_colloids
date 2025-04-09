@@ -1,7 +1,7 @@
 correctStressUnits = true;
 CSS=1;
 if correctStressUnits
-    CSS=19;
+    CSS=(50/19)^3;
 end
 
 %optimize_sigmastarV_03_19;
