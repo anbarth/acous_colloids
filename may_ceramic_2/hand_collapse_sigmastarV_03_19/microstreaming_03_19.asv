@@ -61,16 +61,14 @@ myfig.Position=[50,50,414,323];
 %%
 figure; hold on; 
 xlabel('E_0'); ylabel('\sigma^*_a (Pa)');
-%makeAxesLogLog
+makeAxesLogLog
 plot(stress_microstreaming(my_volt_list),sigmastar_acous,'o-');
-%errorbar(stress_microstreaming(my_volt_list),sigmastar_acous,sigmastar_ci*CSS,'o-');
 myfittype = fittype('a*x');
 myfit = fit(stress_microstreaming(my_volt_list)',sigmastar_acous',myfittype);
 plot(stress_microstreaming(my_volt_list), myfit.a*stress_microstreaming(my_volt_list),'r-')
-plot(stress_microstreaming(my_volt_list), stress_microstreaming(my_volt_list),'k-')
 
 %%
 figure; hold on; 
 xlabel('V'); ylabel('\sigma^*/E_0 (Pa)');
 %makeAxesLogLog
-plot(my_volt_list,sigmastar_acous./stress_microstreaming(my_volt_list),'o-');
+plot(my_volt_list,CSS*(sigmastar-sigmastar(1))./stress_microstreaming(my_volt_list),'o-');
