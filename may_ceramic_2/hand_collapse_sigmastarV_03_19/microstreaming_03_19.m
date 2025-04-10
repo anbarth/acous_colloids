@@ -1,4 +1,4 @@
-%optimize_sigmastarV_03_19;
+optimize_sigmastarV_03_19;
 
 % start with parameters where sigma*(V) and D(phi) are picked pt-by-pt
 y_pointwise = y_fmincon; myModelHandle = @modelHandpickedSigmastarV;
@@ -33,7 +33,7 @@ if makeSigmastarPlot
     xlabel('Acoustic voltage {\itV} (V)'); ylabel('\sigma^* (Pa)');
     CSS=1;
     if correctSigmastarPlotUnits
-        CSS=19;
+        CSS=(50/19)^3;
     end
 
     % quadratic interpolation
@@ -46,7 +46,7 @@ if makeSigmastarPlot
     myColor = @(V) cmap(round(1+255*V/80),:);
     for jj=1:length(my_volt_list)
         colorV = myColor(my_volt_list(jj));
-        plot(my_volt_list(jj),CSS*(sigmastar(jj)-sigmastar(1)),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',15,'LineWidth',1.5);
+        plot(my_volt_list(jj),CSS*(sigmastar(jj)-sigmastar(1)),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',5,'LineWidth',1.5);
         
         prettyPlot;
         xlim([0 100])

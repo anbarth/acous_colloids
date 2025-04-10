@@ -1,4 +1,4 @@
-%optimize_sigmastarV_03_19;
+optimize_sigmastarV_03_19;
 
 % start with parameters where sigma*(V) and D(phi) are picked pt-by-pt
 y_pointwise = y_fmincon; myModelHandle = @modelHandpickedSigmastarV;
@@ -76,7 +76,7 @@ if makeSigmastarPlot
     for jj=1:length(my_volt_list)
         colorV = myColor(my_volt_list(jj));
         %errorbar(my_volt_list(jj),CSS*sigmastar(jj),CSS*sigmastar_ci(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',15,'LineWidth',1.5);
-        plot(my_volt_list(jj),CSS*sigmastar(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',15,'LineWidth',1.5);
+        plot(my_volt_list(jj),CSS*sigmastar(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',5,'LineWidth',1.5);
         %plot(my_volt_list(jj),CSS*(sigmastar(jj)-sigmastar(1)),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',15,'LineWidth',1.5);
         
         prettyPlot;
@@ -84,7 +84,7 @@ if makeSigmastarPlot
     end
 
     myfig = gcf;
-    myfig.Position=[50,50,414,323];
+    myfig.Position=[603,135,319,249];
     
 end
 

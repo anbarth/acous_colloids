@@ -30,5 +30,5 @@ for jj=1:length(my_volt_list)
 end
 
 myfig = gcf;
-myfig.Position=[1015,677,414,323];
+myfig.Position=[603,135,319,249];
     

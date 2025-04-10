@@ -39,7 +39,7 @@ y_fmincon(12+excluded_phi_indices)=0;
 
 return
 %%
-phiRange = 10;
+phiRange = included_phi_indices;
 showLines = true;
 show_F_vs_x(dataTable,y_lsq,myModelHandle,'PhiRange',phiRange,'ShowLines',showLines,'ShowInterpolatingFunction',false,'ShowErrorBars',false)
 show_F_vs_xc_x(dataTable,y_lsq,myModelHandle,'PhiRange',phiRange,'ShowLines',showLines,'ShowInterpolatingFunction',false,'ShowErrorBars',false)

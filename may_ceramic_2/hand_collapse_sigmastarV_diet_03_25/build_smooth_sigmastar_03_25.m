@@ -43,13 +43,20 @@ if makeSigmastarPlot
         %plot(volt_list_restricted,sigmastar,'ko');
         colorV = myColor(volt_list_restricted(jj));
         %errorbar(volt_list_restricted(jj),CSS*sigmastar(jj),CSS*sigmastar_err(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',15,'LineWidth',1.5);
-        plot(volt_list_restricted(jj),CSS*sigmastar(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',15,'LineWidth',1.5);
+        plot(volt_list_restricted(jj),CSS*sigmastar(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',5,'LineWidth',1.5);
         prettyPlot;
         xlim([0 100])
     end
+
+    for volt=[5 20 80]
+        colorV = myColor(volt);
+        %plot(volt,CSS*polyval(quadParams,volt),'p','MarkerFaceColor',colorV,'MarkerSize',5,'LineWidth',1.5);
+        plot(volt,CSS*polyval(quadParams,volt),'p','MarkerFaceColor',colorV,'MarkerSize',10,'MarkerEdgeColor','r');
+    end
+
     
     myfig = gcf;
-    myfig.Position=[1015,677,414,323];
+    myfig.Position=[50,50,414,323];
     
 end
 

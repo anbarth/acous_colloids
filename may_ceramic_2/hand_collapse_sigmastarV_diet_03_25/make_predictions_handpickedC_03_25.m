@@ -7,8 +7,8 @@ dataTable = may_ceramic_09_17;
 myModelHandle = @modelHandpickedSigmastarV_CSV;
 
 % collapse all data
-show_F_vs_x(dataTable,y,myModelHandle,'ColorBy',1); xlim([1e-5 1.5])
-show_F_vs_xc_x(dataTable,y,myModelHandle,'ColorBy',1);
+%show_F_vs_x(dataTable,y,myModelHandle,'ColorBy',1); xlim([1e-5 1.5])
+%show_F_vs_xc_x(dataTable,y,myModelHandle,'ColorBy',1);
 
 [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = myModelHandle(dataTable, y);
 
@@ -43,5 +43,10 @@ for jj=excluded_V_indices
         
     end
     prettyPlot;
-    xlim([0.8 1e4])
+    xlim([0.5 1e4])
+    ylim([5 2e4])
+    xticks([1 1e2 1e4])
+    yticks([1e1 1e4])
+    myfig = gcf;
+    myfig.Position=[50,50,287,323];
 end
