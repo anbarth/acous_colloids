@@ -1,6 +1,7 @@
-play_with_sigmastar_03_19;
+%play_with_sigmastar_03_19;
 
 makePlot = false;
+makePlot2 = true;
 
 V_data = [volt_list,volt_list,volt_list,volt_list,volt_list,volt_list,volt_list,volt_list];
 sigmastar_data = [sigmastar_6,sigmastar_7,sigmastar_8,sigmastar_9,sigmastar_10,sigmastar_11,sigmastar_12,sigmastar_13];
@@ -41,6 +42,35 @@ if makePlot
     %pSigmastar = polyfit(V_data,sigmastar_data,2);
     %V = linspace(0,80);
     %plot(V,pSigmastar(1)*V.^2+pSigmastar(2)*V+pSigmastar(3),'--k','LineWidth',2);
+end
+
+if makePlot2
+    figure; hold on;
+    makeAxesLogLog;
+    xlabel('E')
+    ylabel('\sigma^*_a')
+    minPhi = min(phi_list); maxPhi = max(phi_list); cmap = viridis(256); myColor = @(phi) cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
+    for my_phi_num = 6:13
+        phi = phi_list(my_phi_num);
+        mySigmastar = sigmastar_list_full(my_phi_num-5,:);
+        mySigmastar = mySigmastar-mySigmastar(1);
+        myVoltList = volt_list(mySigmastar~=0);
+        mySigmastar = mySigmastar(mySigmastar~=0);
+        plot(acoustic_energy_density(myVoltList),mySigmastar,'o','Color',myColor(phi),'MarkerFaceColor',myColor(phi));
+        %disp(mySigmastar)
+    end
+
+    errorbar(acoustic_energy_density(volt_list),sigmastar_avg-sigmastar_avg(1),sigmastar_std,'ok')
+    
+    ylim([1e-3 3])
+    xlim([0.03 30])
+
+    % quadratic to guide the eye
+    pSigmastar = polyfit(V_data,sigmastar_data,2);
+    V = linspace(0,80);
+    %plot(acoustic_energy_density(V),pSigmastar(1)*V.^2+pSigmastar(2)*V+pSigmastar(3),'--k','LineWidth',2);
+    plot(acoustic_energy_density(V),pSigmastar(1)*V.^2+pSigmastar(2)*V,'--k','LineWidth',1);
+    plot(acoustic_energy_density(V),acoustic_energy_density(V)/CSS,'r--')
 end
 
 
