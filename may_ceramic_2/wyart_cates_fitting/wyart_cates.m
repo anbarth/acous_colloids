@@ -48,25 +48,24 @@ eta = eta(include_me);
 % x(2) = sigma*
 % x(3) = phi_mu
 % x(4) = phi_0
-%f = @(sigma,sigmastar) exp(-(sigmastar./sigma).^0.7);
-%f = @(sigma,sigmastar) sigma./(sigmastar+sigma);
-%f = @(sigma,sigmastar) sigma./(sigmastar^2+sigma.^2).^(1/2);
-%f = @(sigma,sigmastar) sigma.^2./(sigmastar^2+sigma.^2);
 fitfxn = @(x) x(1)*( x(4)*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
-costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
+%costfxn = @(x) sum(( (fitfxn(x)-eta)./delta_eta ).^2);  
+%opts = optimset('Display','off');
+%s = fminsearch(costfxn,[0.1, 0.5, 0.65, 0.70],opts);
+%disp(s)
 
 
-opts = optimset('Display','off');
-s = fminsearch(costfxn,[0.1, 0.5, 0.65, 0.70],opts);
-
+wc = @(A,sigmastar,phimu,phi0,phi,sigma) A*( phi0*(1-f(sigma,sigmastar)) + phimu*f(sigma,sigmastar) - phi ).^(-2);
+wcFitType = fittype(wc,'independent',["phi","sigma"]);
+myWCfit = fit([phi,sigma],eta,wcFitType,'StartPoint',[0.1, 0.5, 0.65, 0.70],'Weights',1./delta_eta.^2);
+%disp(myWCfit)
+s = [myWCfit.A myWCfit.sigmastar myWCfit.phimu myWCfit.phi0];
 
 eta0 = s(1);
 sigmastar = s(2);
 phimu = s(3);
 phi0 = s(4);
-%disp(s);
-%dof = length(eta)-4;
-%disp(costfxn(s)/dof)
+
 etaFit = fitfxn(s);
 
 
