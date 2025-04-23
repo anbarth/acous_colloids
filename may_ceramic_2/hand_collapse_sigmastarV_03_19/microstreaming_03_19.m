@@ -1,4 +1,4 @@
-%optimize_sigmastarV_03_19;
+optimize_sigmastarV_03_19;
 
 makeVplot = false;
 makeUplot = true;
@@ -62,7 +62,7 @@ if makeUplot
 
     logMinE0 = log(acoustic_energy_density(5));
     logMaxE0 = log(acoustic_energy_density(80));
-
+    cmap = plasma(256);
     for jj=2:length(my_volt_list)
         U = acoustic_energy_density(my_volt_list(jj));
         colorU = cmap(round(1+255*(log(U)-logMinE0)/( logMaxE0-logMinE0 )),:);
