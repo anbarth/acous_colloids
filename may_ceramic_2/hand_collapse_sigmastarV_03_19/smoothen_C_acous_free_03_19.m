@@ -1,7 +1,10 @@
-optimize_C_jardy_03_19;
+%optimize_C_jardy_03_19;
+optimize_C_powerlaw_03_19;
 
 % start with parameters where D(phi) is picked pt-by-pt
-y_pointwise = y_lsq_0V; myModelHandle = @modelHandpickedAllExp0V;
+y_pointwise = y_lsq_0V; 
+%myModelHandle = @modelHandpickedAllExp0V;
+myModelHandle = @modelHandpickedAllExpPowerLawF0V;
 acoustics_free_data = may_ceramic_09_17(may_ceramic_09_17(:,3)==0,:);
 confInts = get_conf_ints(acoustics_free_data,y_pointwise,myModelHandle);
 
@@ -31,7 +34,7 @@ if makeDplot
     ylim([7e-9 2])
     xlim([0.07 0.6])
     myfig = gcf;
-    myfig.Position=[1015,677,414,323];
+    myfig.Position=[100,100,414,323];
 end
 
 % fit a logistic curve to C
@@ -52,7 +55,7 @@ if makeCplot
     xlim([0.1 0.7])
     prettyPlot;
     myfig = gcf;
-    myfig.Position=[1015,677,414,323];
+    myfig.Position=[100,100,414,323];
 end
 
 y = y_pointwise;
