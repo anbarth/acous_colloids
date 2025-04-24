@@ -1,0 +1,10 @@
+transientTimeSeries = {phi55_04_21.d005_0005pa,phi55_04_21.d005_005pa,phi55_04_21.d005_05pa,phi55_04_21.d005_5pa};
+
+for ii=1:length(transientTimeSeries)
+    figure; hold on;
+    xlabel('t (s)'); ylabel('\eta (Pa s)')
+    timeSeries = transientTimeSeries{ii};
+    time = timeSeries.data(:,2);
+    stress = timeSeries.data(:,3)*(50/19)^3;
+    rate = time
+end

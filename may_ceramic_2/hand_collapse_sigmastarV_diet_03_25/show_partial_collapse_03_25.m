@@ -1,9 +1,10 @@
-%optimize_sigmastarV_03_25;
+optimize_sigmastarV_03_25;
 
 myModelHandle = @modelHandpickedSigmastarV_CSV;
 phiRange = included_phi_indices;
 showLines = false;
-show_F_vs_x(dataTable,y_lsq,myModelHandle,'PhiRange',phiRange,'ShowLines',showLines,'ShowInterpolatingFunction',true,'ShowErrorBars',false)
+colorBy = 3;
+show_F_vs_x(dataTable,y_lsq,myModelHandle,'PhiRange',phiRange,'ShowLines',showLines,'ShowInterpolatingFunction',true,'ShowErrorBars',false,'ColorBy',3)
 prettyPlot;
 myfig = gcf;
 myfig.Position=[50,50,414,323];

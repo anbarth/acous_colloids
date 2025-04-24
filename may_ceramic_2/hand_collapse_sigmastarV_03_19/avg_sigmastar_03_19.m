@@ -1,7 +1,7 @@
-%play_with_sigmastar_03_19;
+play_with_sigmastar_03_19;
 
 makePlot = false;
-makePlot2 = true;
+makePlot2 = false;
 
 V_data = [volt_list,volt_list,volt_list,volt_list,volt_list,volt_list,volt_list,volt_list];
 sigmastar_data = [sigmastar_6,sigmastar_7,sigmastar_8,sigmastar_9,sigmastar_10,sigmastar_11,sigmastar_12,sigmastar_13];

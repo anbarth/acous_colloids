@@ -4,8 +4,8 @@ CSS = (50/19)^3;
 
 
 phi_list = unique(dataTable(:,1));
-%for phiNum = 9
-for phiNum=6:13
+for phiNum = 9
+%for phiNum=6:13
     
 phi = phi_list(phiNum);
 
@@ -42,6 +42,11 @@ for ii=1:length(sigma_list)
     myColor = cmap(round(1+255*(CSS*log(sigma)-minLogSig)/(maxLogSig-minLogSig)),:);
     V = myData(:,3);
     eta = CSS*myData(:,4);
+    deltaEta = CSS*myData(:,5);
+    
+    delta_phi = 0.02;
+    delta_eta_volumefraction = eta*2*(0.7-phi)^(-1)*delta_phi;
+    delta_eta_total = sqrt(deltaEta.^2+delta_eta_volumefraction.^2);
     
     % sort in order of ascending V
     [V,sortIdx] = sort(V,'ascend');
@@ -49,8 +54,9 @@ for ii=1:length(sigma_list)
 
     percent_eta = eta ./ eta(1);
     
-    plot(ax_eta,acoustic_energy_density(V)/sigma,eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+    %plot(ax_eta,acoustic_energy_density(V)/sigma,eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
     %plot(ax_eta,acoustic_energy_density(V),eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+    errorbar(ax_eta,acoustic_energy_density(V),eta,delta_eta_total, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
 
 end
 
@@ -68,8 +74,8 @@ myfig.Position=[60, 60,414,323];
 
 ax1=gca;
 ax1.XScale = 'log';
-%ax1.YScale = 'log';
-%xlim([0.03 30])
-%xticks([10^-1 10^0 10^1])
+ax1.YScale = 'log';
+xlim([0.03 30])
+xticks([10^-1 10^0 10^1])
 
 end

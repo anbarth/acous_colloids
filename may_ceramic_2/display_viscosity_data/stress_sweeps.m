@@ -50,6 +50,7 @@ maxPhi = max(phi_list);
 %cmap = turbo;
 cmap = viridis(256);
 
+phi0=0.7;
 for ii=1:length(phi_list)
     if ~ismember(ii,plot_indices)
         continue
@@ -66,13 +67,19 @@ for ii=1:length(phi_list)
     [sigma,sortIdx] = sort(sigma,'ascend');
     eta = eta(sortIdx);
     deltaEta = deltaEta(sortIdx);
+    delta_phi = 0.02;
+    delta_eta_volumefraction = eta*2*(phi0-phi)^(-1)*delta_phi;
+    delta_eta_total = sqrt(deltaEta.^2+delta_eta_volumefraction.^2);
     
     %plot(ax_eta,sigma,eta, '-d','Color',myColor,'LineWidth',2);
     myMarker = my_vol_frac_markers(ii);
-    plot(ax_eta,sigma*CSS,eta*CSS, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
+    
+    
+    errorbar(ax_eta,sigma*CSS,eta*CSS, delta_eta_total*CSS,strcat(myMarker,'-'),'Color',myColor,'LineWidth',1,'MarkerFaceColor',myColor);
     %plot(ax_eta,sigma,eta, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
     
     plot(ax_rate,sigma./eta,sigma, '-d','Color',myColor,'LineWidth',1);
+    %plot(ax_eta,sigma*CSS,eta*CSS, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
     %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
 
     plot(ax_eta_rescaled,sigma,eta*(phi0-phi_fudged)^2, '-d','Color',myColor,'LineWidth',1);
