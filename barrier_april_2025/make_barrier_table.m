@@ -14,7 +14,7 @@ for ii=1:length(phi55_rheo_structs)
     myData = myRheoStruct.data;
     prevStress = 0;
     for jj=1:size(myData,1)
-        gap = round(myData(jj,6),4);
+        gap = round(myData(jj,6),3);
         stress = myData(jj,3)*CSS;
         rate = myData(jj,4);
         if stress > prevStress
