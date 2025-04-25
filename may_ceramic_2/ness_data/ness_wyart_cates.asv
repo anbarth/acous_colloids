@@ -15,8 +15,11 @@ no_acoustics = my_data(my_data(:,3)==0, :);
 phi = no_acoustics(:,1);
 sigma = no_acoustics(:,2);
 eta = no_acoustics(:,4);
-delta_eta = eta*0.01;
-%delta_eta = 0.01*ones(size(eta));
+delta_eta_rheometer = no_acoustics(:,5);
+deltaPhi = 0.02;
+delta_eta_volumefraction = 2*eta.*(0.7-phi).^(-1)*deltaPhi;
+delta_eta = sqrt(delta_eta_rheometer.^2+delta_eta_volumefraction.^2);
+
 
 
 % only include volume fractions listed at the top
@@ -39,8 +42,6 @@ end
 phi = phi(include_me);
 sigma = sigma(include_me);
 eta = eta(include_me);
-delta_eta = delta_eta(include_me);
-phis = unique(phi);
 
 % eta = A*(phi_0 (1-f) + phi_mu f - phi)^-2
 % x(1) = A
@@ -56,9 +57,9 @@ fitfxn = @(x) x(1)*( x(4)*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 
 wc = @(A,sigmastar,phimu,phi0,phi,sigma) A*( phi0*(1-f(sigma,sigmastar)) + phimu*f(sigma,sigmastar) - phi ).^(-2);
 wcFitType = fittype(wc,'independent',["phi","sigma"]);
-ftOpts = fitoptions(fitoptions(wcFitType),'StartPoint',[0.4, 0.05, 0.6, 0.65],'Lower',[0 0 0 0],'Upper',[Inf Inf 1 1],'Weights',1./delta_eta.^2);
+ftOpts = fitoptions(fitoptions(wcFitType),'StartPoint',[0.1, 0.5, 0.65, 0.70],'Lower',[0 0 0 0],'Upper',[Inf Inf 1 1]);
 myWCfit = fit([phi,sigma],eta,wcFitType,ftOpts);
-disp(myWCfit)
+%disp(myWCfit)
 s = [myWCfit.A myWCfit.sigmastar myWCfit.phimu myWCfit.phi0];
 
 eta0 = s(1);
@@ -66,11 +67,7 @@ sigmastar = s(2);
 phimu = s(3);
 phi0 = s(4);
 
-
-% eta0 = 0.4;
-% sigmastar = 0.05;
-% phimu = 0.6;
-% phi0 = 0.65;
+etaFit = fitfxn(s);
 
 
 if showPlot
@@ -102,11 +99,7 @@ if showPlot
     phi_plot = linspace(minPhi, maxPhi, 7);
     sigma_plot = logspace(log10(min(sigma)),log10(max(sigma)));
     for ii=1:length(phi_plot)
-        % wc = @(A,sigmastar,phimu,phi0,phi,sigma) 
-        myPhi = phi_plot(ii);
-        myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
-        eta_predicted = wc(eta0, sigmastar, phimu, phi0, myPhi, sigma_plot);
-        plot(sigma_plot,eta_predicted,'-','Color',myColor,'LineWidth',1)
+        eta_predicted = wc()
     end
 
 
