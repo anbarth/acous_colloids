@@ -56,7 +56,7 @@ fitfxn = @(x) x(1)*( x(4)*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 
 wc = @(A,sigmastar,phimu,phi0,phi,sigma) A*( phi0*(1-f(sigma,sigmastar)) + phimu*f(sigma,sigmastar) - phi ).^(-2);
 wcFitType = fittype(wc,'independent',["phi","sigma"]);
-ftOpts = fitoptions(fitoptions(wcFitType),'StartPoint',[0.4, 0.05, 0.6, 0.65],'Lower',[0 0 0 0],'Upper',[Inf Inf 1 1],'Weights',1./delta_eta.^2);
+ftOpts = fitoptions(fitoptions(wcFitType),'StartPoint',[0.4, 0.05, 0.6, 0.646],'Lower',[0 0 0 0],'Upper',[Inf Inf 1 1],'Weights',1./delta_eta.^2);
 myWCfit = fit([phi,sigma],eta,wcFitType,ftOpts);
 disp(myWCfit)
 s = [myWCfit.A myWCfit.sigmastar myWCfit.phimu myWCfit.phi0];
@@ -99,7 +99,7 @@ if showPlot
         %plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
 
     end
-    phi_plot = linspace(minPhi, maxPhi, 7);
+    phi_plot = linspace(minPhi, maxPhi, 10);
     sigma_plot = logspace(log10(min(sigma)),log10(max(sigma)));
     for ii=1:length(phi_plot)
         % wc = @(A,sigmastar,phimu,phi0,phi,sigma) 

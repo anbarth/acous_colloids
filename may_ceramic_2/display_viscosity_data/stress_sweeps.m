@@ -19,6 +19,7 @@ ax_rate = axes('Parent', fig_rate,'XScale','log','YScale','log');
 ax_rate.YLabel.String = '\sigma (Pa)';
 ax_rate.XLabel.String = 'shear rate (1/s)';
 hold(ax_rate,'on');
+
 % 
 fig_eta_rescaled = figure;
 ax_eta_rescaled = axes('Parent', fig_eta_rescaled,'XScale','log','YScale','log');
@@ -93,7 +94,7 @@ c_eta.Ticks = round((phi_list+phi_fudge')*100)/100;
 clim(ax_eta,[minPhi maxPhi]);
 
 
-close(fig_rate)
+%close(fig_rate)
 close(fig_eta_rescaled)
 
 

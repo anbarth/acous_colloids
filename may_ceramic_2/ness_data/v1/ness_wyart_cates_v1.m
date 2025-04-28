@@ -1,4 +1,4 @@
-function [eta0,sigmastar,phimu,phi0] = ness_wyart_cates(my_data,f,showPlot)
+function [eta0,sigmastar,phimu,phi0] = ness_wyart_cates_v1(my_data,f,showPlot)
 %my_data = may_ceramic_09_17;
 if nargin < 3
     showPlot = false;

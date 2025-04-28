@@ -8,18 +8,21 @@ ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
 ax_eta.XLabel.String = 'Stress \sigma a^2/f*';
 ax_eta.YLabel.String = 'Viscosity \sigma/\eta\cdot rate';
 hold(ax_eta,'on');
+prettyplot
 
 fig_rate = figure;
 ax_rate = axes('Parent', fig_rate,'XScale','log','YScale','log');
 ax_rate.YLabel.String = 'Stress \sigma a^2/f*';
 ax_rate.XLabel.String = 'Rate \eta a^2 \gamma / f*';
 hold(ax_rate,'on');
-% 
-% fig_eta_rescaled = figure;
-% ax_eta_rescaled = axes('Parent', fig_eta_rescaled,'XScale','log','YScale','log');
-% ax_eta_rescaled.XLabel.String = '\sigma (rheometer Pa)';
-% ax_eta_rescaled.YLabel.String = '\eta*(\phi_0-\phi)^2 (rheometer Pa s)';
-% hold(ax_eta_rescaled,'on');
+prettyplot
+
+fig_eta_rescaled = figure;
+ax_eta_rescaled = axes('Parent', fig_eta_rescaled,'XScale','log','YScale','log');
+ax_eta_rescaled.XLabel.String = '\sigma (rheometer Pa)';
+ax_eta_rescaled.YLabel.String = '\eta*(\phi_0-\phi)^2 (rheometer Pa s)';
+hold(ax_eta_rescaled,'on');
+prettyplot
 
 %phi_high = [0.44,0.48,0.52,0.56,0.59];
 phi_list = unique(dataTable(:,1));
@@ -28,18 +31,17 @@ plot_indices = 1:length(phi_list);
 
 
 
-
+cmap = viridis(256);
 minPhi = min(phi_list);
 maxPhi = max(phi_list);
 colorPhi = @(phi) cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
-
 minEta = min(dataTable(:,4));
 maxEta = max(dataTable(:,4));
 colorEta = @(eta) cmap(round(1+255*(log(eta)-log(minEta))/(log(maxEta)-log(minEta))),:);
 
 
 
-cmap = viridis(256);
+
 
 for ii=1:length(phi_list)
     if ~ismember(ii,plot_indices)
@@ -54,8 +56,8 @@ for ii=1:length(phi_list)
     eta = myData(:,4);
     deltaEta = myData(:,5);
     
-    myColor = colorEta(eta);
-    %myColor = colorPhi(phi);
+    %myColor = colorEta(eta);
+    myColor = colorPhi(phi);
 
     % sort in order of ascending sigma
     [sigma,sortIdx] = sort(sigma,'ascend');
@@ -69,7 +71,7 @@ for ii=1:length(phi_list)
     plot(ax_rate,sigma./eta,sigma, '-d','Color',myColor,'LineWidth',1);
 
 
-    %plot(ax_eta_rescaled,sigma,eta*(phi0-phi_fudged)^2, '-d','Color',myColor,'LineWidth',1);
+    plot(ax_eta_rescaled,sigma,eta*(0.646-phi)^2, '-d','Color',myColor,'LineWidth',1);
 end
 
 colormap(ax_eta,cmap);
