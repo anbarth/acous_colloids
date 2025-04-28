@@ -19,8 +19,8 @@ prettyplot
 
 fig_eta_rescaled = figure;
 ax_eta_rescaled = axes('Parent', fig_eta_rescaled,'XScale','log','YScale','log');
-ax_eta_rescaled.XLabel.String = '\sigma (rheometer Pa)';
-ax_eta_rescaled.YLabel.String = '\eta*(\phi_0-\phi)^2 (rheometer Pa s)';
+ax_eta_rescaled.XLabel.String = 'Stress \sigma a^2/f*';
+ax_eta_rescaled.YLabel.String = '\eta(\phi_0-\phi)^2';
 hold(ax_eta_rescaled,'on');
 prettyplot
 
