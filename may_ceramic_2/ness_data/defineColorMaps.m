@@ -1,0 +1,12 @@
+cmap = viridis(256);
+minPhi = min(dataTable(:,1));
+maxPhi = max(dataTable(:,1));
+colorPhi = @(phi) cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
+minEta = min(dataTable(:,4));
+maxEta = max(dataTable(:,4));
+colorEta = @(eta) cmap(round(1+255*(log(eta)-log(minEta))/(log(maxEta)-log(minEta))),:);
+%minP = min(dataTable(:,6));
+%maxP = max(dataTable(:,6));
+minP = 1e-4;
+maxP = 100;
+colorP = @(p) cmap(round(1+255*(log(p)-log(minP))/(log(maxP)-log(minP))),:);

@@ -38,6 +38,9 @@ colorPhi = @(phi) cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
 minEta = min(dataTable(:,4));
 maxEta = max(dataTable(:,4));
 colorEta = @(eta) cmap(round(1+255*(log(eta)-log(minEta))/(log(maxEta)-log(minEta))),:);
+minP = min(dataTable(:,6));
+maxP = max(dataTable(:,6));
+colorP = @(p) cmap(round(1+255*(log(p)-log(minP))/(log(maxP)-log(minP))),:);
 
 
 
@@ -56,8 +59,9 @@ for ii=1:length(phi_list)
     eta = myData(:,4);
     deltaEta = myData(:,5);
     
-    %myColor = colorEta(eta);
-    myColor = colorPhi(phi);
+    myColor = colorEta(eta);
+    %myColor = colorPhi(phi);
+    %myColor = colorP(myData(:,6));
 
     % sort in order of ascending sigma
     [sigma,sortIdx] = sort(sigma,'ascend');
