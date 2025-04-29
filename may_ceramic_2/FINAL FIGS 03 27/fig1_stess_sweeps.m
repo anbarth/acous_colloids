@@ -6,5 +6,7 @@ ylabel('Viscosity \eta (Pa s)')
 xlabel('Shear stress \sigma (Pa)')
 myfig = gcf;
 myfig.Position=[1015,677,414,323];
+ax1=gca;
+ax1.XTick = [1e-2 1 1e2 1e4];
 %cb=colorbar;
 

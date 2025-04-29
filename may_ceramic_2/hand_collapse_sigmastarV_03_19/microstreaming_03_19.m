@@ -49,7 +49,7 @@ if makeVplot
     end
     
     myfig = gcf;
-    myfig.Position=[50,50,414,323];
+    myfig.Position=[50,50,268,323];
 end
 
 
@@ -67,7 +67,8 @@ if makeUplot
         U = acoustic_energy_density(my_volt_list(jj));
         colorU = cmap(round(1+255*(log(U)-logMinE0)/( logMaxE0-logMinE0 )),:);
         %errorbar(acoustic_energy_density(my_volt_list(jj)),sigmastar_acous(jj),CSS*sigmastar_ci(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',5,'LineWidth',1.5);
-        plot(U,sigmastar_acous(jj),'p','Color',colorU,'MarkerFaceColor',colorU,'MarkerSize',10,'LineWidth',1.5);
+        %plot(U,sigmastar_acous(jj),'o','Color',colorU,'MarkerFaceColor',colorU,'MarkerSize',5,'LineWidth',1.5);
+        plot(U,sigmastar_acous(jj),'o','Color',colorU,'MarkerSize',5,'LineWidth',1.5);
     end
     prettyPlot;
     
