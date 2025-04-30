@@ -79,28 +79,47 @@ ax1=gca; ax1.XScale='log';
 xlabel('P');ylabel('\phi_J')
 plot(Pplot,phijamP(p.phi_J1,p.phi_J2,p.Pc,Pplot),'-')
 
-%% eta vs phi and phiJ-phi
+%% eta vs phi
 figure; hold on; prettyplot;
+makeAxesLogLog;
 xlabel('\phi');ylabel('\eta');
-ax1=gca; ax1.YScale='log';
-
-figure; hold on; prettyplot;
-xlabel('\phi_J-\phi');ylabel('\eta');
-ax2=gca; ax2.XScale='log'; ax2.YScale='log';
 for kk=1:length(eta)
     myColor = colorP(P(kk));
-    plot(ax1,phi(kk),eta(kk),'o','Color',myColor)
-    plot(ax2,phijamP(p.phi_J1,p.phi_J2,p.Pc,P(kk))-phi(kk),eta(kk),'o','Color',myColor)
+    %myColor = colorSigma(sigma(kk));
+    plot(phi(kk),eta(kk),'o','Color',myColor)
 end
 
 for myP=logspace(-4,2,5)
-    phiFake = linspace(min(phi),max(phi),12);
+    phiFake = linspace(min(phi),max(phi),5);
     Jplot = JphiP(p.phi_J1,p.B1,p.beta1,p.phi_J2,p.B2,p.beta2,p.Pc,phiFake,myP);
     etaModelled = 1./Jplot.*muJP(m.mu_c1,m.A1,m.alpha1,m.mu_c2,m.A2,m.alpha2,m.Pc,Jplot,myP);
-    plot(ax1,phiFake,etaModelled,'-','Color',colorP(myP))
-    plot(ax2,phijamP(p.phi_J1,p.phi_J2,p.Pc,P(kk))-phiFake,etaModelled,'-','Color',colorP(myP))
+    plot(phiFake,etaModelled,'o','Color',colorP(myP))
+    %plot(dphiFake,1./Jplot.*muJP(m.mu_c1,m.A1,m.alpha1,m.mu_c2,m.A2,m.alpha2,m.Pc,Jplot,myP),'-','Color',colorP(myP));
 end
 
+%% eta vs phiJ-phi
+figure; hold on; prettyplot;
+makeAxesLogLog;
+xlabel('\phi_J-\phi');ylabel('\eta');
+for kk=1:length(eta)
+    myColor = colorP(P(kk));
+    %myColor = colorSigma(sigma(kk));
+    plot(phijamP(p.phi_J1,p.phi_J2,p.Pc,P(kk))-phi(kk),eta(kk),'o','Color',myColor)
+end
+dphiFake = logspace(-3,-1);
+%plot(dphiFake,0.1*dphiFake.^(-1/p.beta1),'b--')
+%plot(dphiFake,dphiFake.^(-1/p.beta2),'r--')
+%plot(dphiFake,0.1*dphiFake.^(-2),'b--')
+%plot(dphiFake,0.5*dphiFake.^(-2.5),'r--')
+
+% TODO solve for J(phi,P)
+for myP=logspace(-4,2,5)
+    phiFake = linspace(min(phi),max(phi),5);
+    Jplot = JphiP(p.phi_J1,p.B1,p.beta1,p.phi_J2,p.B2,p.beta2,p.Pc,phiFake,myP);
+    etaModelled = 1./Jplot.*muJP(m.mu_c1,m.A1,m.alpha1,m.mu_c2,m.A2,m.alpha2,m.Pc,Jplot,myP);
+    plot(phijamP(p.phi_J1,p.phi_J2,p.Pc,myP)-phiFake,etaModelled,'o','Color',colorP(myP))
+    %plot(dphiFake,1./Jplot.*muJP(m.mu_c1,m.A1,m.alpha1,m.mu_c2,m.A2,m.alpha2,m.Pc,Jplot,myP),'-','Color',colorP(myP));
+end
 
 
 

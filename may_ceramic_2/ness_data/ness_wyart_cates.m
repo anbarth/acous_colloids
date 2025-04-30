@@ -93,13 +93,15 @@ if showPlot
         myDeltaEta = myDeltaEta(sortIdx);
         
         myMarker = 'o';
+        %disp([myPhi minPhi maxPhi round(1+255*(myPhi-minPhi)/(maxPhi-minPhi))])
         myColor = cmap(round(1+255*(myPhi-minPhi)/(maxPhi-minPhi)),:);
 
         errorbar(myStress,myEta,myDeltaEta,strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
         %plot(myStress,myEtaFit,'Color',myColor,'LineWidth',1);
 
     end
-    phi_plot = linspace(minPhi, maxPhi, 10);
+    %phi_plot = linspace(minPhi, maxPhi, 10);
+    phi_plot = [0.45 0.5 0.53 0.56 0.59 0.6 0.62 0.63 0.64];
     sigma_plot = logspace(log10(min(sigma)),log10(max(sigma)));
     for ii=1:length(phi_plot)
         % wc = @(A,sigmastar,phimu,phi0,phi,sigma) 
@@ -110,14 +112,15 @@ if showPlot
     end
 
 
-    xlabel('\sigma (Pa)');
-    ylabel('\eta (Pa s)');
+    xlabel('\sigma');
+    ylabel('\eta');
     
     colormap(cmap);
     %c = colorbar;
     %c.Ticks = phis;
     clim([minPhi maxPhi])
    % xline(sigmastar)
+   prettyplot;
 end
 
 end
