@@ -1,6 +1,6 @@
 read_chris_data_04_25;
 dataTable = chris_table_04_25;
-%dataTable = dataTable(dataTable(:,1)>0.54,:);
+dataTable = dataTable(dataTable(:,1)>0.54,:);
 
 f=@(sigma,sigmastar) exp(-(sigmastar./sigma));
 %f=@(sigma,sigmastar) 1-exp(-(sigma./sigmastar));

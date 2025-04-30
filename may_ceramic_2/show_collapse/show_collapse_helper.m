@@ -10,7 +10,7 @@ phi_list = unique(stressTable(:,1));
 vol_frac_plotting_range = length(phi_list):-1:1;
 volt_plotting_range = 1:7;
 highlight_stress = 0;
-colorBy = 1; % 1 for V, 2 for phi, 3 for E0, 4 for stress
+colorBy = 1; % 1 for V, 2 for phi, 3 for E0, 4 for stress, 5 for pressure (chris simulations)
 showLines = false;
 showMeera = false;
 showInterpolatingFunction = false;
@@ -47,7 +47,7 @@ volt_list = [0,5,10,20,40,60,80];
 
 if colorBy == 2
     cmap = viridis(256); 
-elseif colorBy == 4
+elseif colorBy == 4 || colorBy == 5
     cmap = winter(256);
 else
     cmap = plasma(256);
@@ -104,6 +104,8 @@ for ii = vol_frac_plotting_range
             end
         elseif colorBy == 4
             myColor = log(sigma);
+        elseif colorBy == 5
+            myColor = log(stressTable(myData,6));
         end        
 
         % sort in order of ascending x

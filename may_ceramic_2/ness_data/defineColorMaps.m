@@ -10,3 +10,6 @@ colorEta = @(eta) cmap(round(1+255*(log(eta)-log(minEta))/(log(maxEta)-log(minEt
 minP = 1e-4;
 maxP = 100;
 colorP = @(p) cmap(round(1+255*(log(p)-log(minP))/(log(maxP)-log(minP))),:);
+minSig = min(dataTable(:,2));
+maxSig = max(dataTable(:,2));
+colorSigma = @(sig) cmap(round(1+255*(log(sig)-log(minSig))/(log(maxSig)-log(minSig))),:);

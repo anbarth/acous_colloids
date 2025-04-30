@@ -27,3 +27,11 @@ disp(p(1))
 plot(phi0phiF,exp(polyval(p,log(phi0phiF))),'r-');
 
 prettyplot
+
+
+% now try mu-J rheology
+muJ = @(mu_c,A,alpha,J) mu_c+A*J.^alpha; 
+Jphi = @(phi_J,B,beta,phi) (1/B*(phi_J./phi-1)).^(1/beta);
+etaPhi = @(mu_c,A,alpha,phi_J,B,beta,phi)  muJ(mu_c,A,alpha,Jphi(phi_J,B,beta,phi)) ./ Jphi(phi_J,B,beta,phi);
+etaPhiFittype = fittype(etaPhi,"Independent","phi");
+etaPhiFit = fit(phi',eta',etaPhiFittype,'StartPoint',[0.15 4 0.5 0.64 1 0.54],'Lower',[0 0 0 max(phi) 0 0]);
