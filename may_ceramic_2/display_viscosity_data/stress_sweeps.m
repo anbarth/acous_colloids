@@ -2,8 +2,8 @@ dataTable = may_ceramic_09_17;
 %dataTable = ness_data_table;
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">",">"];
 
-CSS = 1;
-%CSS = (50/19)^3;
+%CSS = 1;
+CSS = (50/19)^3;
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'XScale','log','YScale','log');
@@ -94,7 +94,7 @@ c_eta.Ticks = round((phi_list+phi_fudge')*100)/100;
 clim(ax_eta,[minPhi maxPhi]);
 
 
-%close(fig_rate)
+close(fig_rate)
 close(fig_eta_rescaled)
 
 

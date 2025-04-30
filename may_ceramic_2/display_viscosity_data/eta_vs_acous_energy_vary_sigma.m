@@ -13,7 +13,7 @@ phi = phi_list(phiNum);
 fig_eta = figure;
 %ax_eta = axes('Parent', fig_eta,'YScale','log');
 ax_eta = axes('Parent', fig_eta);
-ax_eta.XLabel.String = 'Acoustic energy density{\it U_a}/\sigma ';
+ax_eta.XLabel.String = 'Acoustic energy density{\it U_a} (Pa)';
 ax_eta.YLabel.String = 'Viscosity \eta (Pa s)';
 %ax_eta.Title.String = strcat("\phi=",num2str(phi));
 hold(ax_eta,'on');
@@ -56,7 +56,7 @@ for ii=1:length(sigma_list)
     
     %plot(ax_eta,acoustic_energy_density(V)/sigma,eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
     %plot(ax_eta,acoustic_energy_density(V),eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
-    errorbar(ax_eta,acoustic_energy_density(V)/sigma,eta,delta_eta_total, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+    errorbar(ax_eta,acoustic_energy_density(V),eta,delta_eta_total, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
 
 end
 
@@ -75,7 +75,7 @@ myfig.Position=[60, 60,414,323];
 ax1=gca;
 ax1.XScale = 'log';
 ax1.YScale = 'log';
-xlim([0.03 30])
+xlim([0.05 50])
 xticks([10^-1 10^0 10^1])
-
+ylim([9 165])
 end
