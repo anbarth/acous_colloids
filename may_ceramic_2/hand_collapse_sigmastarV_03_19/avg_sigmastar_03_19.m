@@ -1,7 +1,7 @@
-play_with_sigmastar_03_19;
+%play_with_sigmastar_03_19;
 
-makePlot = false;
-makePlot2 = false;
+makePlotV = false;
+makePlotU = false;
 
 V_data = [volt_list,volt_list,volt_list,volt_list,volt_list,volt_list,volt_list,volt_list];
 sigmastar_data = [sigmastar_6,sigmastar_7,sigmastar_8,sigmastar_9,sigmastar_10,sigmastar_11,sigmastar_12,sigmastar_13];
@@ -23,7 +23,7 @@ y = [eta0, phi0, delta, A, width, sigmastar, D];
 
 
 
-if makePlot
+if makePlotV
     figure; hold on;
     xlabel('V')
     ylabel('\sigma^*')
@@ -44,7 +44,7 @@ if makePlot
     %plot(V,pSigmastar(1)*V.^2+pSigmastar(2)*V+pSigmastar(3),'--k','LineWidth',2);
 end
 
-if makePlot2
+if makePlotU
     figure; hold on;
     makeAxesLogLog;
     xlabel('E')
@@ -69,7 +69,7 @@ if makePlot2
     pSigmastar = polyfit(V_data,sigmastar_data,2);
     V = linspace(0,80);
     %plot(acoustic_energy_density(V),pSigmastar(1)*V.^2+pSigmastar(2)*V+pSigmastar(3),'--k','LineWidth',2);
-    plot(acoustic_energy_density(V),pSigmastar(1)*V.^2+pSigmastar(2)*V,'--k','LineWidth',1);
+    %plot(acoustic_energy_density(V),pSigmastar(1)*V.^2+pSigmastar(2)*V,'--k','LineWidth',1);
     plot(acoustic_energy_density(V),acoustic_energy_density(V)/CSS,'r--')
 end
 
