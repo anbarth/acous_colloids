@@ -1,17 +1,24 @@
 %function wiggle_param_with_refitting(dataTable,paramsVector, modelHandle, paramNum)
 
 dataTable = may_ceramic_09_17;
-load("01_12_optimal_params.mat")
+%load("01_12_optimal_params.mat")
 %myModelHandle = @modelHandpickedAll; paramsVector = y_full_fmin_lsq;
-myModelHandle = @modelSmoothFunctions; paramsVector = y_smooth_fmin_lsq;
+%myModelHandle = @modelSmoothFunctions; paramsVector = y_smooth_fmin_lsq;
 
-paramNum=5;
+%optimize_sigmastarV_03_19;
+paramsVector = y_fmincon;
+myModelHandle = @modelHandpickedSigmastarV;
 
+paramNum=3;
+
+confints = get_conf_ints(dataTable,paramsVector,myModelHandle);
+myConfInt = confints(paramNum);
 
 myParamOptimal = paramsVector(paramNum);
 
+deltaParam = myConfInt*1.5;
 %deltaParam = myParamOptimal*0.1;
-deltaParam = 0.5;
+%deltaParam = 0.5;
 paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+deltaParam,7);
 
 SSR = @(yReduced) sum(get_residuals(dataTable, yReduced, myModelHandle).^2); 
@@ -36,4 +43,6 @@ hold on;
 plot(epsilon,resnorm,'-o','LineWidth',1)
 ylabel('\Delta SSR')
 xlabel('\Delta parameter')
+xline(myConfInt)
+xline(-myConfInt)
 %end

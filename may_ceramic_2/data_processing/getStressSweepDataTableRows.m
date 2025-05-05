@@ -1,4 +1,12 @@
-function dataTable = getStressSweepDataTableRows(mySweep,myPhi,excludeSigma,fillInHighVolts,showPlot)
+function [dataTable,dateTimeList] = getStressSweepDataTableRows(mySweep,myPhi,excludeSigma,fillInHighVolts,showPlot)
+
+if nargin < 2 
+    myPhi = 0;
+end
+
+if nargin < 3
+    excludeSigma = [];
+end
 
 if nargin < 4
    fillInHighVolts = 0; 
@@ -57,4 +65,8 @@ if showPlot
     for ii = 1:length(viscosities)
         yline(viscosities(ii))
     end
+end
+
+dateTimeList = mySweep.datetime(1) + hours(zeros(size(dataTable,1),1));
+
 end

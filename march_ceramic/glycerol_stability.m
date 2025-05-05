@@ -7,6 +7,7 @@ load('data/phi59_variation_05_27_part2.mat')
 
 
 % all of these are w non-segregated particles
+% all of these mix some acoustic testing and some repeated stress sweeps
 phi44_batch2_sample1 = {glycerol_phi44_sample1_05_20.sweep1,glycerol_phi44_sample1_05_20.sweep2,...
     glycerol_phi44_sample1_05_20.sweep3,glycerol_phi44_sample1_05_20.sweep4,...
     glycerol_phi44_sample1_05_20.sweep5,glycerol_phi44_sample1_05_20.sweep6,...
@@ -61,13 +62,17 @@ phi59_batchA_sample3 = {phi59_A_3_05_27.A_3_sweep1,...
     phi59_A_3_05_27.A_3_sweep8,...
     phi59_A_3_05_27.A_3_sweep9};
 
+% NOTE i have removed the 7th stress sweep bc its a huge outlier
 phi59_batchB_sample2 = {phi59_variation_05_27.B_2_sweep1,phi59_variation_05_27.B_2_sweep2,...
     phi59_variation_05_27.B_2_sweep3,phi59_variation_05_27.B_2_sweep4,...
-    phi59_variation_05_27.B_2_sweep5,phi59_variation_05_27.B_2_sweep6,...
-    phi59_variation_05_27.B_2_sweep7,phi59_variation_05_27.B_2_sweep8,...
+    phi59_variation_05_27.B_2_sweep5,phi59_variation_05_27.B_2_sweep6,... 
+    phi59_variation_05_27.B_2_sweep8,... %phi59_variation_05_27.B_2_sweep7,phi59_variation_05_27.B_2_sweep8,...
     phi59_variation_05_27.B_2_sweep9,phi59_variation_05_27.B_2_sweep10,...
     phi59_variation_05_27.B_2_sweep11,phi59_variation_05_27.B_2_sweep12,...
     phi59_variation_05_27.B_2_sweep13,phi59_variation_05_27.B_2_sweep14};
+
+
+
 
 % phi59_batchA_sample3 = {phi59_A_3_05_27.A_3_low1,phi59_A_3_05_27.A_3_sweep1,...
 %     phi59_A_3_05_27.A_3_low2,phi59_A_3_05_27.A_3_sweep2,...
@@ -82,19 +87,21 @@ phi59_batchB_sample2 = {phi59_variation_05_27.B_2_sweep1,phi59_variation_05_27.B
 
 
 
-all_loads = {phi44_batch2_sample1,phi44_batch2_sample2,phi44_batch3_sample1,phi59_batch1_sample1,phi59_batch1_sample2,phi59_batchA_sample3,phi59_batchB_sample2};
-colors = ["#0072BD","#0072BD","#0072BD","#77AC30","#77AC30","#77AC30","#77AC30"];
+%all_loads = {phi44_batch2_sample1,phi44_batch2_sample2,phi44_batch3_sample1,phi59_batch1_sample1,phi59_batch1_sample2,phi59_batchA_sample3,phi59_batchB_sample2};
+%colors = ["#0072BD","#0072BD","#0072BD","#77AC30","#77AC30","#77AC30","#77AC30"];
 %blue, green
 
+all_loads = {phi44_batch2_sample1,phi44_batch2_sample2,phi44_batch3_sample1};
 %all_loads = {phi59_batch1_sample1,phi59_batch1_sample2,phi59_batchA_sample3,phi59_batchB_sample2};
-%colors = ["#0072BD","#77AC30","#a136ff","#ffb917"];
+colors = ["#0072BD","#77AC30","#a136ff","#ffb917"];
 % blue green purple yellow
 sigma=10;
 figure; hold on;
 ax1 = gca;
 %ylim([-0.2 0.2])
 %xlim([0 60*9])
-ylabel(strcat('\eta(\sigma=',num2str(sigma),' rheo Pa) (rheo Pa s)'))
+CSS = (50/19)^3;
+ylabel(strcat('\Delta\eta/\eta(t=0) at \sigma=',num2str(round(sigma*CSS*10)/10),' Pa'))
 xlabel('t (min)')
 
 %for ii=4

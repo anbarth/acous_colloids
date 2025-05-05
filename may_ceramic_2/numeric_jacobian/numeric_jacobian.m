@@ -17,11 +17,11 @@ for p = 1:length(myParams)
     % don't allow the sign of param to change
     if myParams(p)<0
         if myParamsPlus(p)>0
-            myParamsPlus(p)=-1*eps;
+            myParamsPlus(p)=-1*sqrt(eps);
         end
     else
         if myParamsMinus(p)<0
-            myParamsMinus(p)=eps;
+            myParamsMinus(p)=sqrt(eps);
         end
     end
 

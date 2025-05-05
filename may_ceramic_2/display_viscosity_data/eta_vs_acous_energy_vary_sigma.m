@@ -42,7 +42,7 @@ for ii=1:length(sigma_list)
     myColor = cmap(round(1+255*(CSS*log(sigma)-minLogSig)/(maxLogSig-minLogSig)),:);
     V = myData(:,3);
     eta = CSS*myData(:,4);
-    deltaEta = CSS*myData(:,5);
+    deltaEta = max(CSS*myData(:,5),eta*0.2);
     
     delta_phi = 0.02;
     delta_eta_volumefraction = eta*2*(0.7-phi)^(-1)*delta_phi;

@@ -1,4 +1,4 @@
-%play_with_sigmastar_03_19;
+play_with_sigmastar_03_19;
 
 makePlotV = false;
 makePlotU = false;
