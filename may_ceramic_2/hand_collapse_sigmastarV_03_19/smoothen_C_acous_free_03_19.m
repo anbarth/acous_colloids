@@ -1,5 +1,5 @@
-%optimize_C_jardy_03_19;
-optimize_C_powerlaw_03_19;
+optimize_C_jardy_03_19;
+%optimize_C_powerlaw_03_19;
 
 % start with parameters where D(phi) is picked pt-by-pt
 y_pointwise = y_lsq_0V; 
