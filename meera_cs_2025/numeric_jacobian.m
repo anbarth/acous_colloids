@@ -17,11 +17,11 @@ for p = 1:length(myParams)
     % don't allow the sign of param to change
     if myParams(p)<0
         if myParamsPlus(p)>0
-            myParamsPlus(p)=-1*sqrt(eps);
+            myParamsPlus(p)=-1*eps;
         end
     else
         if myParamsMinus(p)<0
-            myParamsMinus(p)=sqrt(eps);
+            myParamsMinus(p)=eps;
         end
     end
 
@@ -32,10 +32,5 @@ for p = 1:length(myParams)
     jacobian(:,p) = (eta_hat_plus - eta_hat_minus) / (myParamsPlus(p)-myParamsMinus(p)) ./ delta_eta;
 end
 
-% special case for "dummy rows" i use for data table restriction
-% dummy rows are marked by eta=-1.
-% if included they will result in NaN entries in jacobian
-realDataRows = dataTable(:,4)~=-1;
-jacobian = jacobian(realDataRows,:);
 
 end

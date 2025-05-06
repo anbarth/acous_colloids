@@ -46,7 +46,7 @@ volt_list = [0,5,10,20,40,60,80];
 %%%%%%%%%%%%%%%%%% make the figure %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if colorBy == 2
-    cmap = viridis(256); 
+    cmap = flipud(viridis(256)); 
 elseif colorBy == 4
     cmap = winter(256);
 else
@@ -128,9 +128,11 @@ for ii = vol_frac_plotting_range
                myMarker = strcat(myMarker,'-');
            end
            if showErrorBars
-               errorbar(ax_collapse,x_axis_var,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
+               %errorbar(ax_collapse,x_axis_var,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
+               errorbar(ax_collapse,x_axis_var,F,delta_F,myMarker,'Color',myColor,'LineWidth',1);
            else
-                plot(ax_collapse,x_axis_var,F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+               %plot(ax_collapse,x_axis_var,F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+               plot(ax_collapse,x_axis_var,F,myMarker,'Color',myColor,'LineWidth',1);
            end
         else
             scatter(ax_collapse,x_axis_var,F,[],myColor,'filled',myMarker);
@@ -183,9 +185,9 @@ if showInterpolatingFunction
     [x_all,sortIdx] = sort(x_all,'ascend');
     F_hat_all = F_hat_all(sortIdx);
     if option==0
-        plot(ax_collapse,x_all,F_hat_all,'-r','LineWidth',2)
+        plot(ax_collapse,x_all,F_hat_all,'-r','LineWidth',1)
     elseif option==1
-        plot(ax_collapse,1-x_all,F_hat_all,'-r','LineWidth',2)
+        plot(ax_collapse,1-x_all,F_hat_all,'-r','LineWidth',1)
     end
 end
 

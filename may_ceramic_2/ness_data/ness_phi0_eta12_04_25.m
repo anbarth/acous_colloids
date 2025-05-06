@@ -22,8 +22,8 @@ prettyplot
 
 myline = @(m,b,x) m*(b-x);
 mylinefittype = fittype(myline,'Independent','x');
-mylinefit = fit(phi(phi>0.54)',eta12(phi>0.54)',mylinefittype,'StartPoint',[-2 0.65]);
-phiF = linspace(0.545,0.65);
+mylinefit = fit(phi(phi>0.57)',eta12(phi>0.57)',mylinefittype,'StartPoint',[-2 0.65]);
+phiF = linspace(0.57,0.65);
 plot(phiF,myline(mylinefit.m,mylinefit.b,phiF),'r-');
 disp(mylinefit.b)
 

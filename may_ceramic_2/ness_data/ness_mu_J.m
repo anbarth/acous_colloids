@@ -5,6 +5,7 @@ dataTable = chris_table_04_25;
 
 phi = dataTable(:,1);
 sigma = dataTable(:,2);
+eta = dataTable(:,4);
 P = dataTable(:,6);
 rate = sigma./dataTable(:,4);
 

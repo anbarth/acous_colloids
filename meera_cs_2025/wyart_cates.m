@@ -17,7 +17,7 @@ sigma = no_acoustics(:,2);
 eta = no_acoustics(:,4);
 delta_eta_rheometer = no_acoustics(:,5);
 deltaPhi = 0.02;
-delta_eta_volumefraction = 2*eta.*(0.7-phi).^(-1)*deltaPhi;
+delta_eta_volumefraction = 2*eta.*(0.64-phi).^(-1)*deltaPhi;
 delta_eta = sqrt(delta_eta_rheometer.^2+delta_eta_volumefraction.^2);
 
 
@@ -58,6 +58,7 @@ fitfxn = @(x) x(1)*( x(4)*(1-f(sigma,x(2))) + x(3)*f(sigma,x(2)) - phi ).^(-2);
 wc = @(A,sigmastar,phimu,phi0,phi,sigma) A*( phi0*(1-f(sigma,sigmastar)) + phimu*f(sigma,sigmastar) - phi ).^(-2);
 wcFitType = fittype(wc,'independent',["phi","sigma"]);
 myWCfit = fit([phi,sigma],eta,wcFitType,'StartPoint',[0.1, 0.5, 0.65, 0.70],'Weights',1./delta_eta.^2);
+%myWCfit = fit([phi,sigma],eta,wcFitType,'StartPoint',[0.1, 0.5, 0.65, 0.70],'Weights',1./eta.^2);
 %disp(myWCfit)
 s = [myWCfit.A myWCfit.sigmastar myWCfit.phimu myWCfit.phi0];
 

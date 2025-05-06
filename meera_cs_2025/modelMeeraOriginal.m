@@ -1,16 +1,35 @@
-function [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelHandpicked(stressTable, y)
+function [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelMeeraOriginal(stressTable, y)
 
 eta0 = y(1);
-phi0 = y(2);
-delta = y(3);
-A = y(4);
-width = y(5);
-sigmastar = y(6);
-D = y(7:end);
+delta = y(2);
+A = y(3);
+width = y(4);
+
+
+% extracted from spreadsheet
+sigmastar = 3.884513;
+phi0 = 0.6448091;
+
+% from the sheet Cphi2
+phi_list_full = [0.162790698	0.205882353	0.249821437	0.267491927	0.295363632	0.313466986	0.341182353	0.35944277 ...
+    0.388888889	0.413043478	0.437401565	0.457485301	0.466654914	0.466954638	0.476871023	0.487139892	...
+    0.487240829	0.497157577	0.497664856	0.507123776	0.507429647	0.517652161	0.527617952	0.535150646 ...
+    0.538357991	0.548322838	0.558650724	0.559173733	0.569031441	0.580099477]';
+C1 = 1/14.5*[0.015927632	0.018405264	0.097091989	0.449867948	0.738476722	0.690197403 ...
+    1.09725352	1.434802329	1.901770102	2.192992289	2.439498924	2.409932549	...
+    2.348813303	2.394189546	2.31713165	2.191783254	2.170025002	2.096806397	2.052581479...
+    1.930983088	1.912993783	1.804182513	1.622650521	1.577736347	1.514463988	1.39644087	...
+    1.242312633	1.260424989	1.093716733	0.953947368];
+phi_list = unique(stressTable(:,1));
+
+phi_list_rounded = round(phi_list*1000)/1000;
+phi_list_full_rounded = round(phi_list_full*1000)/1000;
+C = C1(ismember(phi_list_full_rounded,phi_list_rounded));
+D = C'./(phi0-phi_list);
+
 
 f = @(sigma) exp(-sigmastar./sigma);
-phi_list = unique(stressTable(:,1));
-volt_list = [0,5,10,20,40,60,80];
+
 
 N = size(stressTable,1);
 x = zeros(N,1);

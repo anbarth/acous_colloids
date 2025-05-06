@@ -19,8 +19,8 @@ if myT == 0
     baselineEta = eta;
 
 else
-    [eta,delta_eta] = getDethickenedViscosity(rheoData,myT,myT+10,showPlots); baselineEta=0; sloppy=false;
-    %[eta,delta_eta,baselineEta,sloppy] = getDethickenedViscosity_excludeSloppy(rheoData,myT,myT+10,showPlots);
+    %[eta,delta_eta] = getDethickenedViscosity(rheoData,myT,myT+10,showPlots); baselineEta=0; sloppy=false;
+    [eta,delta_eta,baselineEta,sloppy] = getDethickenedViscosity_excludeSloppy(rheoData,myT,myT+10,showPlots);
 end
 
 end

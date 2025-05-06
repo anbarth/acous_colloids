@@ -1,19 +1,21 @@
 % run these individually with showPlots set to true to check that the
 % automated part is working correctly
 
-rows20 = getStressSweepDataTableRows(phi20_sample1_05_28.sweep2,0.1999,[]); 
-rows25 = getStressSweepDataTableRows(phi25_sample1_05_31.sweep1,0.2503,[]);
-rows30 = getStressSweepDataTableRows(phi30_sample1_05_28.sweep3,0.2997,[]);
-rows35 = getStressSweepDataTableRows(phi35_sample1_05_31.sweep3,0.3500,[]);
-rows40 = getStressSweepDataTableRows(phi40_sample3_05_31.sweep1,0.4009,[]);
-rows44 = getAcousDataTableRows(phi44_05_29,false);
-rows46 = getAcousDataTableRows(phi46_06_19,false);
-rows48 = getAcousDataTableRows(phi48_05_31,false);
-rows52 = getAcousDataTableRows(phi52_05_29,false);
-rows54 = getAcousDataTableRows(phi54_06_01,false);
-rows56 = getAcousDataTableRows(phi56_05_31,false);
-rows59 = getAcousDataTableRows(phi59_05_30,false);
-rows61 = getAcousDataTableRows(phi61_06_20,false);
+[rows20, datetime20] = getStressSweepDataTableRows(phi20_sample1_05_28.sweep2,0.1999,[]); 
+[rows25, datetime25] = getStressSweepDataTableRows(phi25_sample1_05_31.sweep1,0.2503,[]);
+[rows30, datetime30] = getStressSweepDataTableRows(phi30_sample1_05_28.sweep3,0.2997,[]);
+[rows35, datetime35] = getStressSweepDataTableRows(phi35_sample1_05_31.sweep3,0.3500,[]);
+[rows40, datetime40] = getStressSweepDataTableRows(phi40_sample3_05_31.sweep1,0.4009,[]);
+
+
+[rows44,datetime44] = getAcousDataTableRows(phi44_05_29,false);
+[rows46,datetime46] = getAcousDataTableRows(phi46_06_19,false);
+[rows48,datetime48] = getAcousDataTableRows(phi48_05_31,false);
+[rows52,datetime52] = getAcousDataTableRows(phi52_05_29,false);
+[rows54,datetime54] = getAcousDataTableRows(phi54_06_01,false);
+[rows56,datetime56] = getAcousDataTableRows(phi56_05_31,false);
+[rows59,datetime59] = getAcousDataTableRows(phi59_05_30,false);
+[rows61,datetime61] = getAcousDataTableRows(phi61_06_20,false);
 
 % exclude higher stresses where stress sweep begins to bend down
 % phi44_rows = phi44_rows(phi44_rows(:,2)~=10 & phi44_rows(:,2)~=20,:);
@@ -36,3 +38,7 @@ clear dataTable
 dataTable = [rows20; rows25; rows30; rows35;...
     rows40; rows44; rows46; rows48; rows52;...
     rows54; rows56; rows59; rows61];
+clear dateTimeList
+dateTimeList = [datetime20; datetime25; datetime30; datetime35;...
+    datetime40; datetime44; datetime46; datetime48; datetime52;...
+    datetime54; datetime56; datetime59; datetime61];
