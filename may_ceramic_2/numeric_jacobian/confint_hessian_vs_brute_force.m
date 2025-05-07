@@ -7,12 +7,12 @@ dataTable = may_ceramic_09_17;
 %paramsVector = y_fmincon;
 %myModelHandle = @modelHandpickedSigmastarV;
 
-optimize_C_jardy_03_19;
+%optimize_C_jardy_03_19;
 paramsVector = y_lsq_0V;
 myModelHandle = @modelHandpickedAllExp0V;
 dataTable = dataTable(dataTable(:,3)==0,:);
 
-paramNum = 3;
+paramNum = 6;
 
 jacobian = numeric_jacobian(dataTable,paramsVector,myModelHandle);
 hessian = transpose(jacobian)*jacobian;
@@ -31,10 +31,11 @@ myParamsAlt(paramNum) = paramsVector(paramNum)+hessian_ci(paramNum);
 %show_F_vs_xc_x(dataTable,myParams,myModelHandle,'ShowInterpolatingFunction',true,'VoltRange',1,'ColorBy',2,'ShowErrorBars',true)
 %show_F_vs_xc_x(dataTable,myParamsAlt,myModelHandle,'ShowInterpolatingFunction',true,'VoltRange',1,'ColorBy',2,'ShowErrorBars',true)
 
-deltaParam = myParamOptimal*0.8;
-%deltaParam = myHessianCI;
+%deltaParam = myParamOptimal*0.85;
+deltaParam = myHessianCI*1;
 %deltaParam = 0.5;
 paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+deltaParam,9);
+%paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal,9);
 
 SSR = @(y) sum(get_residuals(dataTable, y, myModelHandle).^2); 
 resnorm0 = SSR(paramsVector);
@@ -52,10 +53,10 @@ for ii = 1:length(paramRange)
     epsilon(ii) = myParam-myParamOptimal;
     resnorm(ii) = myResnorm-resnorm0;
 
-    if myParam==myParamOptimal || ii==1 || ii==length(paramRange)
-       show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); xlim([1e-2 1.5])
-       title(myParam-myParamOptimal)
-    end
+    %if myParam==myParamOptimal || ii==1 || ii==length(paramRange)
+    %   show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); xlim([1e-2 1.5])
+    %   title(myParam-myParamOptimal)
+    %end
 
     hessian_resnorm(ii) = (1/2)*(y-paramsVector)*hessian*(y-paramsVector)';
     
