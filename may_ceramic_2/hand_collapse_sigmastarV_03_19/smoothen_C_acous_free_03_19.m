@@ -1,10 +1,12 @@
-optimize_C_jardy_03_19;
+%optimize_C_jardy_03_19;
 %optimize_C_powerlaw_03_19;
+optimize_C_logsigmastar_03_19;
 
 % start with parameters where D(phi) is picked pt-by-pt
 y_pointwise = y_lsq_0V; 
-myModelHandle = @modelHandpickedAllExp0V;
+%myModelHandle = @modelHandpickedAllExp0V;
 %myModelHandle = @modelHandpickedAllExpPowerLawF0V;
+myModelHandle = @modelHandpickedAllExp0V_logsigmastar;
 acoustics_free_data = may_ceramic_09_17(may_ceramic_09_17(:,3)==0,:);
 confInts = get_conf_ints(acoustics_free_data,y_pointwise,myModelHandle);
 
