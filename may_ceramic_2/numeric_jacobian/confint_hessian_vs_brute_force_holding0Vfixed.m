@@ -1,27 +1,15 @@
 dataTable = may_ceramic_09_17;
 
-
-%load("01_12_optimal_params.mat")
-%myModelHandle = @modelHandpickedAll; paramsVector = y_full_fmin_lsq;
-%myModelHandle = @modelSmoothFunctions; paramsVector = y_smooth_fmin_lsq;
-
+optimize_sigmastarV_hold_0V_fixed_03_19;
 %optimize_sigmastarV_03_19;
-%paramsVector = y_fmincon;
-%myModelHandle = @modelHandpickedSigmastarV;
-
-optimize_C_jardy_03_19;
-%dataTable = dataTable(dataTable(:,3)==0,:);
-myModelHandle = @modelHandpickedAllExp0V; paramsVector = y_lsq_0V;
-%myModelHandle = @modelHandpickedAllExp0V_expsigmastar; y_exp=y_lsq_0V; y_exp(6) = exp(y_lsq_0V(6)); paramsVector = y_exp;
-%myModelHandle = @modelHandpickedAllExp0V_logsigmastar; y_log=y_lsq_0V; y_log(6) = log(y_lsq_0V(6)); paramsVector = y_log;
-% NOTE that if you pick the logsigma* option, then you need to go down to optimize_params_fix_one_param_loggily
-% and add 6 as an additional parameter. bc log(sigma*)<0. and this means we
-% have to assume sigma*<1, which is... probably true.
+paramsVector = y_fmincon;
+myModelHandle = @modelHandpickedSigmastarV;
 
 
 paramNum = 3;
 
 jacobian = numeric_jacobian(dataTable,paramsVector,myModelHandle);
+%jacobian = jacobian(:,7:12);
 %jacobian = numeric_jacobian_loggily(dataTable,paramsVector,myModelHandle,3);
 hessian = transpose(jacobian)*jacobian;
 
@@ -32,6 +20,7 @@ hessian_ci = sqrt(variances)*tinv(0.975,dof);
 
 myParamOptimal = paramsVector(paramNum);
 myHessianCI = hessian_ci(paramNum);
+%myHessianCI = hessian_ci(paramNum-6);
 disp([myParamOptimal myHessianCI])
 
 return
