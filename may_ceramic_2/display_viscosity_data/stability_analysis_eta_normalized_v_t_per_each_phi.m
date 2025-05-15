@@ -36,6 +36,11 @@ allPhi = {phi44sweeps,phi46sweeps,phi48sweeps,phi52sweeps,phi54sweeps,phi56sweep
 dataTable = may_ceramic_09_17;
 phi_list = unique(dataTable(:,1));
 
+% set up stress cmap
+big_sigma_list = unique(dataTable(:,2));
+cmap = winter(256);
+myColor = @(sig) cmap(round(1+255*(log(sig)-log(min(big_sigma_list)))/(log(max(big_sigma_list))-log(min(big_sigma_list)))),:);
+
 %for myPhiNum=13
 for myPhiNum = 6:13
 
@@ -44,15 +49,13 @@ myPhi = phi_list(myPhiNum);
 mySweeps = allPhi{myPhiNum-5};
 [sigma_list,~] = getStressSweep(mySweeps{1});
 
-% set up stress cmap
-cmap = winter(256);
-myColor = @(sig) cmap(round(1+255*(log(sig)-log(min(sigma_list)))/(log(max(sigma_list))-log(min(sigma_list)))),:);
+
 
 % set up figure
 figure; hold on; prettyplot
 CSS = (50/19)^3;
-ylabel(strcat('\eta/\eta_{dataset}'))
-xlabel('t (hr)')
+ylabel(strcat('\eta({\itt})/\eta_{dataset}'))
+xlabel('time {\itt} (hr)')
 title(strcat('\phi=',num2str(myPhi)))
 L = {};
 
@@ -108,10 +111,26 @@ for ii=1:length(sigma_list)
     
 end
 yline(1,'k')
-a=0.05;
+deta_fractional = 2*(0.7-myPhi)^-1*0.02;
+a=0.15;
+%a=deta_fractional;
 yline(1-a,'k--')
 yline(1+a,'k--')
-ylim([0.7 1.3])
+ylim([0.5 1.5])
 %legend(L);
+f1=gcf;
+f1.Position = [1276,298,366,350];
+
+fname = strcat("C:\Users\Anna Barth\Desktop\acous_scalnig_figs\05_13_stability_",num2str(round(myPhi*100)),".png");
+%exportgraphics(gcf, fname,'Resolution',900)
 
 end
+
+% just the 61% one
+ylim([0.5 2])
+
+colormap(cmap)
+c1=colorbar;
+clim([log(min(big_sigma_list)) log(max(big_sigma_list))])
+c1.Ticks = log(big_sigma_list);
+c1.TickLabels = round(big_sigma_list*(50/19)^3,3,'significant');
