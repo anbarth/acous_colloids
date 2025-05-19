@@ -18,18 +18,19 @@ C = C1(ismember(phi_list_full,phi_list));
 D = C./(phi0-phi_list');
 
 f=@(sigma,sigmastar) exp(-sigmastar./sigma);
-[eta0,sigmastar_WC,phimu,phi0_WC] = wyart_cates(dataTable,f,false);
+[F0,sigmastar_WC,phimu,phi0_WC] = wyart_cates(dataTable,f,false);
 
-eta0 = eta0*1.5;
+F0 = F0*1.5;
 delta = -1.5;
-A = eta0;
+A = 1;
 width = 0.5;
-y = [eta0 phi0 delta A width sigmastar D];
+y_cs_og = [F0 phi0 delta A width sigmastar D];
 
 % show collapse
-show_F_vs_x(dataTable,y,@modelHandpicked,'ShowInterpolatingFunction',false); prettyplot; xlim([1e-5 1.5])
-show_F_vs_xc_x(dataTable,y,@modelHandpicked,'ShowInterpolatingFunction',false); prettyplot;
+show_F_vs_x(dataTable,y_cs_og,@modelHandpicked,'ShowInterpolatingFunction',true); prettyplot; xlim([1e-5 1.5])
+show_F_vs_xc_x(dataTable,y_cs_og,@modelHandpicked,'ShowInterpolatingFunction',true); prettyplot;
 
+return
 % find alpha
 dphi = phi0-phi_list;
 cutoff_dphi = 0.17;

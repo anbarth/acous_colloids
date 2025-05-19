@@ -62,7 +62,7 @@ for ii=1:length(phi_list)
     myColor = cmap(round(1+255*(phi_fudged-minPhi)/(maxPhi-minPhi)),:);
     sigma = myData(:,2);
     eta = myData(:,4);
-    deltaEta = max(myData(:,5),eta*0.2);
+    deltaEta = max(myData(:,5),eta*0.15);
     
     % sort in order of ascending sigma
     [sigma,sortIdx] = sort(sigma,'ascend');

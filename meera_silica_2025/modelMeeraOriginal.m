@@ -1,5 +1,7 @@
 function [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelMeeraOriginal(stressTable, y)
 
+disp("Anna you should NOT be using this bc you need to change the parameters to silica. its still CS parameters")
+
 eta0 = y(1);
 delta = y(2);
 A = y(3);

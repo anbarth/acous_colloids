@@ -2,12 +2,13 @@ function show_collapse_helper(option,stressTable,paramsVector,modelHandle,vararg
 % option:
 % 0 = F vs x
 % 1 = F vs xc-x
+% 2 = J vs 1/xc-1/x
 
 my_vol_frac_markers = [];
 
 phi_list = unique(stressTable(:,1));
-vol_frac_plotting_range = 1:length(phi_list);
-%vol_frac_plotting_range = length(phi_list):-1:1;
+%phi_list = [0.1999 0.2503 0.2997 0.3500 0.4009 0.4396 0.4604 0.4811 0.5193 0.5398 0.5607 0.5898 0.6101]';
+vol_frac_plotting_range = length(phi_list):-1:1;
 volt_plotting_range = 1:7;
 highlight_stress = 0;
 colorBy = 2; % 1 for V, 2 for phi, 3 for E0, 4 for stress
@@ -46,7 +47,7 @@ volt_list = [0,5,10,20,40,60,80];
 %%%%%%%%%%%%%%%%%% make the figure %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if colorBy == 2
-    cmap = flipud(silica(256)); 
+    cmap = flipud(viridis(256)); 
 elseif colorBy == 4
     cmap = winter(256);
 else
@@ -56,8 +57,17 @@ end
 fig_collapse = figure;
 ax_collapse = axes('Parent', fig_collapse,'XScale','log','YScale','log');
 hold(ax_collapse,'on');
-ax_collapse.XLabel.String = "x";
-ax_collapse.YLabel.String = "F";
+if option==0
+    ax_collapse.XLabel.String = "x";
+    ax_collapse.YLabel.String = "F/F0";
+elseif option==1
+    ax_collapse.XLabel.String = "x_c-x";
+    ax_collapse.YLabel.String = "F/F0";
+elseif option==2
+    ax_collapse.XLabel.String = "1/x-1/x_c";
+    ax_collapse.YLabel.String = "J=x^2F/F_0";
+end
+
 
 if showMeera
     meeraMultiplier_X = 1/13.8;
@@ -116,12 +126,24 @@ for ii = vol_frac_plotting_range
             x_axis_var = x;
         elseif option==1
             x_axis_var = 1-x;
+        elseif option==2
+            x_axis_var = 1./x-1;
+        end
+
+        y_axis_var = 0;
+        y_axis_delta = 0;
+        if option==0 || option==1
+            y_axis_var = F;
+            y_axis_delta = delta_F;
+        elseif option==2
+            y_axis_var = F.*x.^2;
+            y_axis_delta = 0;
         end
         
         if ~isempty(my_vol_frac_markers)
             myMarker = my_vol_frac_markers(ii);
         else
-            myMarker = 'd';
+            myMarker = 'o';
         end
         if colorBy <= 3
            if showLines
@@ -129,20 +151,20 @@ for ii = vol_frac_plotting_range
            end
            if showErrorBars
                %errorbar(ax_collapse,x_axis_var,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
-               errorbar(ax_collapse,x_axis_var,F,delta_F,myMarker,'Color',myColor,'LineWidth',1);
+               errorbar(ax_collapse,x_axis_var,y_axis_var,y_axis_delta,myMarker,'Color',myColor,'LineWidth',1);
            else
                %plot(ax_collapse,x_axis_var,F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
-               plot(ax_collapse,x_axis_var,F,myMarker,'Color',myColor,'LineWidth',1);
+               plot(ax_collapse,x_axis_var,y_axis_var,myMarker,'Color',myColor,'LineWidth',1);
            end
         else
-            scatter(ax_collapse,x_axis_var,F,[],myColor,'filled',myMarker);
+            scatter(ax_collapse,x_axis_var,y_axis_var,[],myColor,'filled',myMarker);
         end
 
         if highlight_stress
             myDataHighlight = stressTable(:,1)==phi & stressTable(:,3)==voltage & stressTable(:,2)==highlight_stress;
             xHighlight = x_axis_var(myDataHighlight);
-            FHighlight = F_all(myDataHighlight);
-            s=scatter(ax_collapse,xHighlight,FHighlight,'red','filled',myMarker);
+            yHighlight = y_axis_var(myDataHighlight);
+            s=scatter(ax_collapse,xHighlight,yHighlight,'red','filled',myMarker);
             uistack(s,'bottom')
         end
 
@@ -188,6 +210,8 @@ if showInterpolatingFunction
         plot(ax_collapse,x_all,F_hat_all,'-r','LineWidth',1)
     elseif option==1
         plot(ax_collapse,1-x_all,F_hat_all,'-r','LineWidth',1)
+    elseif option==2
+        plot(ax_collapse,1-1./x_all,F_hat_all.*x_all.^2,'-r','LineWidth',1)
     end
 end
 

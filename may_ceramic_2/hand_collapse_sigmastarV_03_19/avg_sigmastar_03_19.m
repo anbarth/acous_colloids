@@ -2,6 +2,7 @@ play_with_sigmastar_03_19;
 
 makePlotV = false;
 makePlotU = false;
+CSS = (50/19)^3;
 
 V_data = [volt_list,volt_list,volt_list,volt_list,volt_list,volt_list,volt_list,volt_list];
 sigmastar_data = [sigmastar_6,sigmastar_7,sigmastar_8,sigmastar_9,sigmastar_10,sigmastar_11,sigmastar_12,sigmastar_13];
@@ -47,7 +48,7 @@ end
 if makePlotU
     figure; hold on;
     makeAxesLogLog;
-    xlabel('E')
+    xlabel('U_a')
     ylabel('\sigma^*_a')
     minPhi = min(phi_list); maxPhi = max(phi_list); cmap = viridis(256); myColor = @(phi) cmap(round(1+255*(phi-minPhi)/(maxPhi-minPhi)),:);
     for my_phi_num = 6:13
@@ -57,6 +58,8 @@ if makePlotU
         myVoltList = volt_list(mySigmastar~=0);
         mySigmastar = mySigmastar(mySigmastar~=0);
         plot(acoustic_energy_density(myVoltList),mySigmastar,'o','Color',myColor(phi),'MarkerFaceColor',myColor(phi));
+        
+        %plot(acoustic_energy_density_phi(myVoltList,phi),mySigmastar,'o','Color',myColor(phi),'MarkerFaceColor',myColor(phi));
         %disp(mySigmastar)
     end
 
@@ -70,7 +73,7 @@ if makePlotU
     V = linspace(0,80);
     %plot(acoustic_energy_density(V),pSigmastar(1)*V.^2+pSigmastar(2)*V+pSigmastar(3),'--k','LineWidth',2);
     %plot(acoustic_energy_density(V),pSigmastar(1)*V.^2+pSigmastar(2)*V,'--k','LineWidth',1);
-    plot(acoustic_energy_density(V),acoustic_energy_density(V)/CSS,'r--')
+    %plot(acoustic_energy_density(V),acoustic_energy_density(V)/CSS,'r--')
 end
 
 

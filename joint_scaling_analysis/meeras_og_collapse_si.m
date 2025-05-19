@@ -16,17 +16,16 @@ D = C./(phi0-phi_list');
 
 
 f=@(sigma,sigmastar) exp(-sigmastar./sigma);
-[eta0,sigmastar_WC,phimu,phi0_WC] = wyart_cates(dataTable,f,false);
+[F0,sigmastar_WC,phimu,phi0_WC] = wyart_cates(dataTable,f,false);
 
 
-eta0 = eta0;
 delta = -1.5;
-A = eta0;
+A = 1;
 width = 0.5;
-y = [eta0 phi0 delta A width sigmastar D];
+y_si = [F0 phi0 delta A width sigmastar D];
 
 % show collapse
-show_F_vs_x(dataTable,y,@modelHandpicked,'ShowInterpolatingFunction',false,'ShowLines',true); prettyplot; xlim([1e-5 1.5])
+show_F_vs_x(dataTable,y_si,@modelHandpicked,'ShowInterpolatingFunction',true,'ShowLines',true); prettyplot; xlim([1e-5 1.5])
 %show_F_vs_xc_x(dataTable,y,@modelHandpicked,'ShowInterpolatingFunction',true); prettyplot;
 
 

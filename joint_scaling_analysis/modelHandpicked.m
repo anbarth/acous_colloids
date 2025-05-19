@@ -1,16 +1,15 @@
-function [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelHandpickedSigmastarV(stressTable, y)
+function [x,F,delta_F,F_hat,eta,delta_eta,eta_hat] = modelHandpicked(stressTable, y)
 
-eta0 = y(1);
+F0 = y(1);
 phi0 = y(2);
 delta = y(3);
 A = y(4);
 width = y(5);
-sigmastar = y(6:12);
-D = y(13:end);
+sigmastar = y(6);
+D = y(7:end);
 
-f = @(sigma,jj) exp(-sigmastar(jj)./sigma);
+f = @(sigma) exp(-sigmastar./sigma);
 phi_list = unique(stressTable(:,1));
-volt_list = [0,5,10,20,40,60,80];
 
 N = size(stressTable,1);
 x = zeros(N,1);
@@ -30,19 +29,22 @@ for kk = 1:N
     delta_eta(kk) = sqrt(delta_eta_rheo.^2+delta_eta_volumefraction.^2);
 
     ii = find(phi == phi_list);
-    jj = find(voltage == volt_list);
-    if voltage==-1 % dummy entry
-        continue
+    
+    if voltage == 0
+        x(kk) = D(ii)*f(sigma);
+        F(kk) = eta(kk)*(phi0-phi)^2 / F0;
+        delta_F(kk) = F(kk) .* (eta(kk).^(-2).*delta_eta_rheo.^2 + 4/(phi0-phi)^2*delta_phi^2 ).^(1/2);
+    else
+        x(kk) = 0;
+        F(kk) = 0;
+        delta_F(kk) = 0;
     end
-
-    x(kk) = D(ii)*f(sigma,jj);
-    F(kk) = eta(kk)*(phi0-phi)^2;
-    delta_F(kk) = F(kk) .* (eta(kk).^(-2).*delta_eta_rheo.^2 + 4/(phi0-phi)^2*delta_phi^2 ).^(1/2);
 end
 
 % calculate F_hat from x
 alpha=1;
-xi = x.^(-1/alpha)-1;
+eta0=1;
+xi = x.^(-1/alpha)-1^(-1/alpha);
 logintersection = log(A/eta0)/(-delta-2);
 mediator = cosh(width*(log(xi)-logintersection));
 Hconst = exp(1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0));
@@ -53,11 +55,13 @@ if delta==-2
 end
 
 F_hat = 1./x.^(2/alpha) .* H_hat;
+F_hat(H_hat==0) = eta0;
+F_hat(isinf(1./x.^(2/alpha))) = eta0;
 
 eta_hat = zeros(N,1);
 for kk = 1:N
     phi = stressTable(kk,1);
-    eta_hat(kk) = F_hat(kk)*(phi0-phi)^-2;
+    eta_hat(kk) = F0*F_hat(kk)*(phi0-phi)^-2;
 end 
 
 

@@ -14,11 +14,11 @@ ax_eta.XLabel.String = 'Stress \sigma a^2/fstar';
 ax_eta.YLabel.String = 'Viscosity \sigma/\eta\cdot rate';
 hold(ax_eta,'on');
 
-% fig_rate = figure;
-% ax_rate = axes('Parent', fig_rate,'XScale','log','YScale','log');
-% ax_rate.YLabel.String = '\eta (Pa s)';
-% ax_rate.XLabel.String = 'shear rate (1/s)';
-% hold(ax_rate,'on');
+fig_rate = figure;
+ax_rate = axes('Parent', fig_rate,'XScale','log','YScale','log');
+ax_rate.YLabel.String = 'Stress \sigma a^2/f^*';
+ax_rate.XLabel.String = 'Rate \eta_s \gamma a^2/f^*';
+hold(ax_rate,'on');
 % 
 % fig_eta_rescaled = figure;
 % ax_eta_rescaled = axes('Parent', fig_eta_rescaled,'XScale','log','YScale','log');
@@ -73,7 +73,7 @@ for ii=1:length(phi_list)
     %plot(ax_eta,sigma*19,eta*25, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
     plot(ax_eta,sigma,eta, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
     
-    %plot(ax_rate,sigma./eta,eta, '-d','Color',myColor,'LineWidth',1);
+    plot(ax_rate,sigma./eta,sigma, '-d','Color',myColor,'LineWidth',1);
     %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
 
     %plot(ax_eta_rescaled,sigma,eta*(phi0-phi_fudged)^2, '-d','Color',myColor,'LineWidth',1);
