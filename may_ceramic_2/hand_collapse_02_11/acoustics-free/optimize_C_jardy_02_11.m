@@ -18,7 +18,7 @@ residualsfxn = @(log_y) get_residuals(acoustics_free_data,logParamsToParams(log_
 costfxn = @(log_y)  sum(get_residuals(acoustics_free_data,logParamsToParams(log_y,3),myModelHandle).^2);
 
 %optsFmin = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
-%[y_optimal_fmin,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],optsFmin);
+[y_optimal_fmin,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],optsFmin);
 optsFminsearch = optimset('MaxFunEvals',3e6,'MaxIter',3e6);
 log_y_fminsearch_0V = fminsearch(costfxn,log_y_init,optsFminsearch);
 y_fminsearch_0V = logParamsToParams(log_y_fminsearch_0V,3);

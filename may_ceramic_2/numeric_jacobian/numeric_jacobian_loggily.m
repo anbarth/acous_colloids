@@ -31,7 +31,8 @@ for p = 1:length(myParams)
     eta_hat_minus = get_eta_hat(dataTable, logParamsToParams(myLogParamsMinus,varargin{:}), myModelHandle);
     eta_hat_plus = get_eta_hat(dataTable, logParamsToParams(myLogParamsPlus,varargin{:}), myModelHandle);
 
-    jacobian(:,p) = (eta_hat_plus - eta_hat_minus) / (myLogParamsPlus(p)-myLogParamsMinus(p)) ./ delta_eta;
+    jacobian(:,p) = 1/myParams(p) * (eta_hat_plus - eta_hat_minus) / (myLogParamsPlus(p)-myLogParamsMinus(p)) ./ delta_eta;
+    %jacobian(:,p) = (eta_hat_plus - eta_hat_minus) / (myLogParamsPlus(p)-myLogParamsMinus(p)) ./ delta_eta;
 end
 
 % special case for "dummy rows" i use for data table restriction

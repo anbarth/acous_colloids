@@ -1,4 +1,5 @@
-dataTable = may_ceramic_09_17;
+%dataTable = may_ceramic_09_17;
+%dataTable = dataTable(dataTable(:,3)==0,:);
 
 
 %load("01_12_optimal_params.mat")
@@ -9,8 +10,8 @@ dataTable = may_ceramic_09_17;
 %paramsVector = y_fmincon;
 %myModelHandle = @modelHandpickedSigmastarV;
 
-optimize_C_jardy_03_19;
-%dataTable = dataTable(dataTable(:,3)==0,:);
+%optimize_C_jardy_03_19;
+
 myModelHandle = @modelHandpickedAllExp0V; paramsVector = y_lsq_0V;
 %myModelHandle = @modelHandpickedAllExp0V_expsigmastar; y_exp=y_lsq_0V; y_exp(6) = exp(y_lsq_0V(6)); paramsVector = y_exp;
 %myModelHandle = @modelHandpickedAllExp0V_logsigmastar; y_log=y_lsq_0V; y_log(6) = log(y_lsq_0V(6)); paramsVector = y_log;
@@ -19,7 +20,7 @@ myModelHandle = @modelHandpickedAllExp0V; paramsVector = y_lsq_0V;
 % have to assume sigma*<1, which is... probably true.
 
 
-paramNum = 3;
+paramNum = 6;
 
 jacobian = numeric_jacobian(dataTable,paramsVector,myModelHandle);
 %jacobian = numeric_jacobian_loggily(dataTable,paramsVector,myModelHandle,3);
@@ -34,7 +35,7 @@ myParamOptimal = paramsVector(paramNum);
 myHessianCI = hessian_ci(paramNum);
 disp([myParamOptimal myHessianCI])
 
-return
+%return
 myParamsAlt = paramsVector;
 myParamsAlt(paramNum) = paramsVector(paramNum)+hessian_ci(paramNum);
 
@@ -74,8 +75,8 @@ for ii = 1:length(paramRange)
     resnorm(ii) = myResnorm-resnorm0;
 
     if myParam==myParamOptimal || first || ii==length(paramRange)
-      % show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); xlim([1e-2 1.5])
-       show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ShowLines',true,'VoltRange',paramNum-5); xlim([1e-2 1.5])
+       show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); xlim([1e-2 1.5])
+      % show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ShowLines',true,'VoltRange',paramNum-5); xlim([1e-2 1.5])
        title(myParam-myParamOptimal)
     end
 

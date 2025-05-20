@@ -19,25 +19,37 @@ costfxn = @(log_y)  sum(get_residuals(acoustics_free_data,logParamsToParams(log_
 
 %optsFmin = optimoptions('fmincon','Display','final','MaxFunctionEvaluations',3e5);
 %[y_optimal_fmin,fval,exitflag,output,lambda,grad,hessian] = fmincon(costfxn,y_init,[],[],[],[],lower_bounds,upper_bounds,[],optsFmin);
-optsFminsearch = optimset('MaxFunEvals',3e6,'MaxIter',3e6);
-log_y_fminsearch_0V = fminsearch(costfxn,log_y_init,optsFminsearch);
-y_fminsearch_0V = logParamsToParams(log_y_fminsearch_0V,3);
+% optsFminsearch = optimset('MaxFunEvals',3e6,'MaxIter',3e6);
+% log_y_fminsearch_0V = fminsearch(costfxn,log_y_init,optsFminsearch);
+% y_fminsearch_0V = logParamsToParams(log_y_fminsearch_0V,3);
 
 optsLsq = optimoptions('lsqnonlin','Algorithm','levenberg-marquardt');
 [log_y_lsq_0V,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn,log_y_init,lower_bounds,upper_bounds,optsLsq);
 y_lsq_0V = logParamsToParams(log_y_lsq_0V,3);
 
-optsFmincon = optimoptions('fmincon','Algorithm','sqp','MaxFunctionEvaluations',2e4);
-log_y_fmincon_0V = fmincon(costfxn,log(abs(y_init)),[],[],[],[],lower_bounds,upper_bounds,[],optsFmincon);
-y_fmincon_0V = logParamsToParams(log_y_fmincon_0V,3);
+% optsFmincon = optimoptions('fmincon','Algorithm','sqp','MaxFunctionEvaluations',2e4);
+% log_y_fmincon_0V = fmincon(costfxn,log(abs(y_init)),[],[],[],[],lower_bounds,upper_bounds,[],optsFmincon);
+% y_fmincon_0V = logParamsToParams(log_y_fmincon_0V,3);
 
 % if you don't take logs of parameters,
 % lsq doesnt perform as well
-%residualsfxn2 = @(y) get_residuals(acoustics_free_data,y,myModelHandle);
-%[y_lsq2,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn2,y_init,lower_bounds,upper_bounds);
+% residualsfxn2 = @(y) get_residuals(acoustics_free_data,y,myModelHandle);
+% costfxn2 = @(y)  sum(get_residuals(acoustics_free_data,y,myModelHandle).^2);
+% [y_lsq2,resnorm,residual,exitflag,output,lambda,jacobian]  = lsqnonlin(residualsfxn2,y_init,lower_bounds,upper_bounds);
+
 
 return
 
+%% SHOW CONF INTS
+ci = get_conf_ints(acoustics_free_data,y_lsq_0V,myModelHandle);
+s = ["F0","phi0","delta","A","h","sigma*"];
+for ii=1:length(s)
+    disp(s(ii))
+    disp([y_init(ii) y_lsq_0V(ii) ci(ii)])
+end
+
+
+%%
 phiRange = 13:-1:1;
 show_F_vs_x(dataTable,y_lsq_0V,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
 show_F_vs_xc_x(dataTable,y_lsq_0V,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
