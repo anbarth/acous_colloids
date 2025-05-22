@@ -41,7 +41,7 @@ hold(ax_collapse,'on');
 if option==0
     ax_collapse.XLabel.String = "x";
     ax_collapse.YLabel.String = "F/F_0";
-    xlim([1e-5 1.5])
+    %xlim([1e-5 1.5])
 elseif option==1
     ax_collapse.XLabel.String = "x_c-x";
     ax_collapse.YLabel.String = "F/F_0";

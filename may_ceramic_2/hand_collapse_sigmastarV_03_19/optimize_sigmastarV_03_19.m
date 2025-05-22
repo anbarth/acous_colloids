@@ -27,6 +27,22 @@ log_y_fmincon = fmincon(costfxn,log(abs(y_init)),[],[],[],[],lower_bounds,upper_
 y_fmincon = logParamsToParams(log_y_fmincon,3);
 
 return
+%% SHOW CONF INTS
+ci = get_conf_ints(dataTable,y_lsq,@modelHandpickedSigmastarV);
+s = ["F0","phi0","delta","A","h","sigma*_0"];
+for ii=1:length(s)
+    disp(s(ii))
+    disp([y_init(ii) y_lsq(ii) ci(ii)])
+%     if ii==6
+%         ci_l =  y_lsq_0V(ii) - exp(log(y_lsq_0V(ii))-ci(ii));
+%         ci_u =  exp(log(y_lsq_0V(ii))+ci(ii)) - y_lsq_0V(ii);
+%         disp([y_init(ii) y_lsq_0V(ii) ci_l ci_u])
+%     else
+%         disp([y_init(ii) y_lsq_0V(ii) ci(ii)])
+%     end
+end
+
+
 %%
 phiRange = 13:-1:1;
 showLines = false;

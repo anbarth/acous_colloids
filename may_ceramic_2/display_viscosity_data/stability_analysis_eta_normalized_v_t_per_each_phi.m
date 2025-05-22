@@ -54,9 +54,9 @@ mySweeps = allPhi{myPhiNum-5};
 % set up figure
 figure; hold on; prettyplot
 CSS = (50/19)^3;
-ylabel(strcat('\eta({\itt})/\eta_{dataset}'))
+%ylabel(strcat('\eta({\itt})/\eta_{dataset}'))
 xlabel('time {\itt} (hr)')
-title(strcat('\phi=',num2str(myPhi)))
+%title(strcat('\phi=',num2str(myPhi)))
 L = {};
 
 for ii=1:length(sigma_list)
@@ -110,27 +110,32 @@ for ii=1:length(sigma_list)
     end
     
 end
-yline(1,'k')
+yline(1,'k','LineWidth',2)
 deta_fractional = 2*(0.7-myPhi)^-1*0.02;
 a=0.15;
 %a=deta_fractional;
-yline(1-a,'k--')
-yline(1+a,'k--')
+yline(1-a,'k--','LineWidth',2)
+yline(1+a,'k--','LineWidth',2)
 ylim([0.5 1.5])
+if myPhiNum==13
+    ylim([0.5 2])
+end
+%xticks([0 2 4 6 8 10])
+
 %legend(L);
 f1=gcf;
-f1.Position = [1276,298,366,350];
+f1.Position = [1276,298,307,350];
 
-fname = strcat("C:\Users\Anna Barth\Desktop\acous_scalnig_figs\05_13_stability_",num2str(round(myPhi*100)),".png");
-%exportgraphics(gcf, fname,'Resolution',900)
+fname = strcat("C:\Users\Anna Barth\Desktop\acous_scalnig_figs\05_21_stability_",num2str(round(myPhi*100)),".png");
+exportgraphics(gcf, fname,'Resolution',900)
 
 end
 
 % just the 61% one
-ylim([0.5 2])
 
-colormap(cmap)
-c1=colorbar;
-clim([log(min(big_sigma_list)) log(max(big_sigma_list))])
-c1.Ticks = log(big_sigma_list);
-c1.TickLabels = round(big_sigma_list*(50/19)^3,3,'significant');
+
+% colormap(cmap)
+% c1=colorbar;
+% clim([log(min(big_sigma_list)) log(max(big_sigma_list))])
+% c1.Ticks = log(big_sigma_list);
+% c1.TickLabels = round(big_sigma_list*(50/19)^3,3,'significant');

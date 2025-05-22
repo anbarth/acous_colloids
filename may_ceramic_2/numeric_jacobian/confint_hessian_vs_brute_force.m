@@ -1,5 +1,5 @@
-%dataTable = may_ceramic_09_17;
-%dataTable = dataTable(dataTable(:,3)==0,:);
+dataTable = may_ceramic_09_17;
+dataTable = dataTable(dataTable(:,3)==0,:);
 
 
 %load("01_12_optimal_params.mat")
@@ -7,11 +7,10 @@
 %myModelHandle = @modelSmoothFunctions; paramsVector = y_smooth_fmin_lsq;
 
 %optimize_sigmastarV_03_19;
-%paramsVector = y_fmincon;
-%myModelHandle = @modelHandpickedSigmastarV;
+%myModelHandle = @modelHandpickedSigmastarV;paramsVector = y_lsq;
+%myModelHandle = @modelHandpickedSigmastarV_logsigmastar; y_log=y_fmincon; y_log(6:12)=log(y_fmincon(6:12)); paramsVector = y_log;
 
 %optimize_C_jardy_03_19;
-
 myModelHandle = @modelHandpickedAllExp0V; paramsVector = y_lsq_0V;
 %myModelHandle = @modelHandpickedAllExp0V_expsigmastar; y_exp=y_lsq_0V; y_exp(6) = exp(y_lsq_0V(6)); paramsVector = y_exp;
 %myModelHandle = @modelHandpickedAllExp0V_logsigmastar; y_log=y_lsq_0V; y_log(6) = log(y_lsq_0V(6)); paramsVector = y_log;
@@ -20,10 +19,11 @@ myModelHandle = @modelHandpickedAllExp0V; paramsVector = y_lsq_0V;
 % have to assume sigma*<1, which is... probably true.
 
 
-paramNum = 6;
+paramNum = 11;
 
 jacobian = numeric_jacobian(dataTable,paramsVector,myModelHandle);
 %jacobian = numeric_jacobian_loggily(dataTable,paramsVector,myModelHandle,3);
+%jacobian = numeric_jacobian_logsome(dataTable,paramsVector,myModelHandle,6,7,8,9,10,11,12);
 hessian = transpose(jacobian)*jacobian;
 
 % compute confidence intervals via hessian
@@ -34,19 +34,16 @@ hessian_ci = sqrt(variances)*tinv(0.975,dof);
 myParamOptimal = paramsVector(paramNum);
 myHessianCI = hessian_ci(paramNum);
 disp([myParamOptimal myHessianCI])
+%disp([myParamOptimal-myHessianCI myParamOptimal myParamOptimal+myHessianCI])
+%disp(exp([myParamOptimal-myHessianCI myParamOptimal myParamOptimal+myHessianCI]))
+%disp([exp(log(myParamOptimal)-myHessianCI) myParamOptimal exp(log(myParamOptimal)+myHessianCI)])
 
 %return
-myParamsAlt = paramsVector;
-myParamsAlt(paramNum) = paramsVector(paramNum)+hessian_ci(paramNum);
-
-%show_F_vs_xc_x(dataTable,myParams,myModelHandle,'ShowInterpolatingFunction',true,'VoltRange',1,'ColorBy',2,'ShowErrorBars',true)
-%show_F_vs_xc_x(dataTable,myParamsAlt,myModelHandle,'ShowInterpolatingFunction',true,'VoltRange',1,'ColorBy',2,'ShowErrorBars',true)
-
 
 deltaParam = myHessianCI*1;
-%deltaParam = 0.5;
+%deltaParam = 0.1;
 paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+deltaParam,9);
-%paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal,9);
+
 
 SSR = @(y) sum(get_residuals(dataTable, y, myModelHandle).^2); 
 resnorm0 = SSR(paramsVector);
@@ -75,8 +72,10 @@ for ii = 1:length(paramRange)
     resnorm(ii) = myResnorm-resnorm0;
 
     if myParam==myParamOptimal || first || ii==length(paramRange)
+    %     show_cardy(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true)
+     %    show_F_vs_xc_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true)
        show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); xlim([1e-2 1.5])
-      % show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ShowLines',true,'VoltRange',paramNum-5); xlim([1e-2 1.5])
+     % show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ShowLines',true,'VoltRange',paramNum-5); xlim([1e-2 1.5])
        title(myParam-myParamOptimal)
     end
 
@@ -86,12 +85,12 @@ end
 
 figure;
 hold on;
-plot(epsilon,resnorm,'-o','LineWidth',1)
-plot(epsilon,hessian_resnorm,'-o','LineWidth',1)
+plot(paramRange,resnorm,'-o','LineWidth',1)
+plot(paramRange,hessian_resnorm,'-o','LineWidth',1)
 ylabel('\Delta SSR')
-xlabel('\Delta parameter')
-xline(-myHessianCI)
-xline(myHessianCI)
+xlabel('parameter')
+xline(myParamOptimal-myHessianCI)
+xline(myParamOptimal+myHessianCI)
 
 % figure;
 % hold on;

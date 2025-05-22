@@ -5,7 +5,8 @@ dataTable = dataTable(dataTable(:,1)<=0.53,:);
 
 % extracted from spreadsheet
 sigmastar = 48.21682;
-phi0 = 0.5777;
+%phi0 = 0.5777;
+phi0=0.59;
 
 % from the sheet Cphi2
 C1 = 1/14.5*[0.820754717	1.299528302	1.299528302	1.215932914	0.968069666	0.889150943	0.783303983	0.577623844];

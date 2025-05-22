@@ -2,6 +2,7 @@ function show_collapse_helper(option,stressTable,paramsVector,modelHandle,vararg
 % option:
 % 0 = F vs x
 % 1 = F vs xc-x
+% 2 = cardy
 
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">"];
 
@@ -56,8 +57,16 @@ end
 fig_collapse = figure;
 ax_collapse = axes('Parent', fig_collapse,'XScale','log','YScale','log');
 hold(ax_collapse,'on');
-ax_collapse.XLabel.String = "x";
-ax_collapse.YLabel.String = "F";
+if option == 0
+    ax_collapse.XLabel.String = "x";
+    ax_collapse.YLabel.String = "F";
+elseif option==1
+    ax_collapse.XLabel.String = "x_x-c";
+    ax_collapse.YLabel.String = "F";
+elseif option==2
+    ax_collapse.XLabel.String = "1/x-1/x_c";
+    ax_collapse.YLabel.String = "H";
+end
 
 if showMeera
     meeraMultiplier_X = 1/13.8;
@@ -118,6 +127,18 @@ for ii = vol_frac_plotting_range
             x_axis_var = x;
         elseif option==1
             x_axis_var = 1-x;
+        elseif option==2
+            x_axis_var = 1./x-1;
+        end
+
+        y_axis_var=0;
+        delta_y_axis_var=0;
+        if option==0 || option==1
+            y_axis_var=F;
+            delta_y_axis_var=delta_F;
+        elseif option==2
+            y_axis_var=F.*x.^2;
+            delta_y_axis_var=0;
         end
         
         if ~isempty(my_vol_frac_markers)
@@ -130,9 +151,9 @@ for ii = vol_frac_plotting_range
                myMarker = strcat(myMarker,'-');
            end
            if showErrorBars
-               errorbar(ax_collapse,x_axis_var,F,delta_F,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
+               errorbar(ax_collapse,x_axis_var,y_axis_var,delta_y_axis_var,myMarker,'Color',myColor,'MarkerFaceColor',myColor);
            else
-                plot(ax_collapse,x_axis_var,F,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+                plot(ax_collapse,x_axis_var,y_axis_var,myMarker,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
            end
         else
             scatter(ax_collapse,x_axis_var,F,[],myColor,'filled',myMarker);
@@ -188,6 +209,8 @@ if showInterpolatingFunction
         plot(ax_collapse,x_all,F_hat_all,'-r','LineWidth',2)
     elseif option==1
         plot(ax_collapse,1-x_all,F_hat_all,'-r','LineWidth',2)
+    elseif option==2
+        plot(ax_collapse,1./x_all-1,F_hat_all.*x_all.^2,'-r','LineWidth',2)
     end
 end
 
@@ -197,8 +220,8 @@ if colorBy == 1
     c1.Ticks = [0,5,10,20,40,60,80];
 elseif colorBy == 2
     clim(ax_collapse,[minPhi maxPhi]);
-    %c1.Ticks = phi_list;
-    %c1.Ticks = round(phi_list*100)/100;
+    c1.Ticks = phi_list;
+    c1.Ticks = round(phi_list*100)/100;
 elseif colorBy ==3
     clim(ax_collapse,[log(acoustic_energy_density(5)) log(acoustic_energy_density(80))])
     c1.Ticks = log(acoustic_energy_density([5 10 20 40 60 80]));

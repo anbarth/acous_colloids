@@ -41,6 +41,7 @@ end
 
 minPhi = min(phi_list);
 maxPhi = max(phi_list);
+%maxPhi = 0.54;
 volt_list = [0,5,10,20,40,60,80];
 
 %%%%%%%%%%%%%%%%%% make the figure %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

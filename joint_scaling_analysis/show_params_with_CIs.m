@@ -54,7 +54,8 @@ for mm=1:numMaterials
     xlabel('\phi')
     ylabel('D(\phi)')
     plot(phi_list,D_init,'-o','LineWidth',0.75);
-    plot(phi_list,D,'-o','LineWidth',2);
+    %plot(phi_list,D,'-o','LineWidth',2);
+    errorbar(phi_list,D,D_err,'-o','LineWidth',2);
     prettyplot;
 
     % move startIndex for next iteration
