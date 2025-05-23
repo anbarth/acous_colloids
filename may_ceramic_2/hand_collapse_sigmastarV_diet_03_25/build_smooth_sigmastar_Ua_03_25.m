@@ -1,4 +1,4 @@
-%optimize_sigmastarV_03_25;
+optimize_sigmastarV_03_25;
 
 % start with parameters where sigma*(V) and D(phi) are picked pt-by-pt
 y_pointwise = y_fmincon; myModelHandle = @modelHandpickedSigmastarV;
@@ -25,7 +25,8 @@ sigmastar_err = sigmastar_err(s);
 
 % fit sigma*_acous(U) to a line
 linfit = fittype("a*x");
-sigmastarFitParam = fit(E_list_restricted',sigmastar_acous',linfit,'StartPoint',1,'Weights',1./sigmastar_err);
+%sigmastarFitParam = fit(E_list_restricted',sigmastar_acous',linfit,'StartPoint',1,'Weights',1./sigmastar_err);
+sigmastarFitParam = fit(E_list_restricted',sigmastar_acous',linfit,'StartPoint',1);
 
 sigmastarFit = @(V) sigmastar0V + sigmastarFitParam.a*acoustic_energy_density(V);
 sigmastar_aFit = @(V) sigmastarFitParam.a*acoustic_energy_density(V);

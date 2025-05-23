@@ -7,7 +7,7 @@ confInts = get_conf_ints(may_ceramic_09_17,y_pointwise,myModelHandle);
 % optionally plot things
 makeSigmastarPlot = true;
 correctSigmastarPlotUnits = true;
-makeDplot = false;
+makeDplot = true;
 makeCplot = false;
 makeCollapsePlot = false;
 
@@ -26,8 +26,13 @@ if makeDplot
     figure; hold on; makeAxesLogLog;
     xlabel('\phi_0-\phi')
     ylabel('D')
-    errorbar(dphi,D,D_ci,'ko');
+    errorbar(dphi,D,D_ci,'ko','MarkerFaceColor','k');
     plot(dphi(l2),dphi(l2).^myft2.p1*exp(myft2.p2),'b-')
+    prettyPlot;
+    ylim([7e-9 2])
+    xlim([0.07 0.6])
+    myfig = gcf;
+    myfig.Position=[100,100,414,323];
 end
 
 % fit a logistic curve to C

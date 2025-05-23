@@ -42,15 +42,26 @@ return
 
 %% SHOW CONF INTS
 %[ci_u,ci_l] = get_conf_ints(acoustics_free_data,y_lsq_0V,myModelHandle,6);
-y_log = y_lsq_0V; y_log(6) = log(y_lsq_0V(6));
-ci = get_conf_ints(acoustics_free_data,y_log,@modelHandpickedAllExp0V_logsigmastar);
+% y_log = y_lsq_0V; y_log(6) = log(y_lsq_0V(6));
+% ci = get_conf_ints(acoustics_free_data,y_log,@modelHandpickedAllExp0V_logsigmastar);
+% s = ["F0","phi0","delta","A","h","sigma*"];
+% for ii=1:length(s)
+%     disp(s(ii))
+%     if ii==6
+%         ci_l =  y_lsq_0V(ii) - exp(log(y_lsq_0V(ii))-ci(ii));
+%         ci_u =  exp(log(y_lsq_0V(ii))+ci(ii)) - y_lsq_0V(ii);
+%         disp([y_init(ii) y_lsq_0V(ii) ci_l ci_u])
+%     else
+%         disp([y_init(ii) y_lsq_0V(ii) ci(ii)])
+%     end
+% end
+
+ci = get_conf_ints(acoustics_free_data,y_lsq_0V,myModelHandle);
 s = ["F0","phi0","delta","A","h","sigma*"];
 for ii=1:length(s)
     disp(s(ii))
-    if ii==6
-        ci_l =  y_lsq_0V(ii) - exp(log(y_lsq_0V(ii))-ci(ii));
-        ci_u =  exp(log(y_lsq_0V(ii))+ci(ii)) - y_lsq_0V(ii);
-        disp([y_init(ii) y_lsq_0V(ii) ci_l ci_u])
+    if ii==1 || ii==4 || ii==6
+        disp((50/19)^3*[y_init(ii) y_lsq_0V(ii) ci(ii)])
     else
         disp([y_init(ii) y_lsq_0V(ii) ci(ii)])
     end

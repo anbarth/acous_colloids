@@ -6,7 +6,7 @@ prettyPlot;
 myfig = gcf;
 myfig.Position=[1015,677,414,323];
 ylim([1e-1 2e2])
-xlim([1e-21 10])
+xlim([1e-23 10])
 
 show_F_vs_x(dataTable,y_lsq_0V,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
 prettyPlot;

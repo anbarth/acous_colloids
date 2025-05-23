@@ -32,13 +32,17 @@ ci = get_conf_ints(dataTable,y_lsq,@modelHandpickedSigmastarV);
 s = ["F0","phi0","delta","A","h","sigma*_0"];
 for ii=1:length(s)
     disp(s(ii))
-    disp([y_init(ii) y_lsq(ii) ci(ii)])
+    if ii==1 || ii==4 || ii==6
+        disp((50/19)^3*[y_init(ii) y_lsq(ii) ci(ii)])
+    else
+        disp([y_init(ii) y_lsq(ii) ci(ii)])
+    end
 %     if ii==6
-%         ci_l =  y_lsq_0V(ii) - exp(log(y_lsq_0V(ii))-ci(ii));
-%         ci_u =  exp(log(y_lsq_0V(ii))+ci(ii)) - y_lsq_0V(ii);
-%         disp([y_init(ii) y_lsq_0V(ii) ci_l ci_u])
+%         ci_l =  y_lsq_0V(ii) - exp(log(y_lsq(ii))-ci(ii));
+%         ci_u =  exp(log(y_lsq(ii))+ci(ii)) - y_lsq(ii);
+%         disp([y_init(ii) y_lsq(ii) ci_l ci_u])
 %     else
-%         disp([y_init(ii) y_lsq_0V(ii) ci(ii)])
+%         disp([y_init(ii) y_lsq(ii) ci(ii)])
 %     end
 end
 
