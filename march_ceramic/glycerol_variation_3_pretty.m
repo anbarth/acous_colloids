@@ -3,6 +3,7 @@ load('data/glycerol_variation_05_25.mat')
 load('data/phi59_variation_05_26.mat')
 load('data/phi59_variation_05_27.mat')
 load('data/phi59_variation_05_27_part2.mat')
+load('data/glycerol_phi30_may_2024.mat')
 
 
 % older stuff
@@ -52,6 +53,8 @@ phi59_batchB = {glycerol_variation_05_25.phi59_B_1,...
     phi59_variation_05_27.B_2_low3, phi59_variation_05_27.B_2_sweep3,...
     phi59_variation_05_27.B_3_low1,phi59_variation_05_27.B_3_sweep1};
 
+% 30% with segregated particles
+phi30_batchA = {phi30_sample1_05_28.sweep1,phi30_sample2_05_31.sweep1,phi30_sample3_05_31.sweep1}; 
 
 batches = {phi44_batchA, phi44_batchB, phi44_batchC};
 %oldbatches = {batch2, batch3, batch4};
@@ -71,6 +74,7 @@ ylabel('\eta (Pa s)')
 xlim([1e-2 10^(2.5)])
 ylim([4 30])
 prettyplot
+
 % plot samples
 sigma_all = [];
 eta_all = [];
@@ -149,6 +153,58 @@ deta_fractional = 2*(0.7-phi)^-1*0.02;
 outline_x = CSS*[sig_list;flip(sig_list)];
 outline_y = CSS*[eta_avg*(1+deta_fractional);flip(eta_avg)*(1-deta_fractional)];
 
+p=patch(outline_x,outline_y,"red",'FaceColor','#ffed8a','EdgeColor','none');
+h=get(gca,'Children');
+set(gca,'Children',[h(2:end);h(1)]);
+
+
+
+
+
+
+
+
+batches = {phi30_batchA};
+%oldbatches = {batch2, batch3, batch4};
+oldbatches = {{glycerol_batch3_sample1_05_22.sweep1, glycerol_batch3_sample1_05_22.sweep7}};
+colors = ["#0072BD", "#D95319", "#77AC30"];
+
+% set up plot
+figure; hold on;
+ax1 = gca;
+ax1.XScale = 'log';
+ax1.YScale = 'log';
+title('\phi=30%')
+xlabel('\sigma (Pa)')
+ylabel('\eta (Pa s)')
+%xlim([1e-2 10^(2.5)])
+%ylim([4 30])
+prettyplot
+
+% plot samples
+sigma_all = [];
+eta_all = [];
+for ii=1:length(batches)
+    myBatch = batches{ii};
+    for jj=1:length(myBatch)
+        mySweep = myBatch{jj};
+        [sigma,eta] = getStressSweep(mySweep);
+        plot(CSS*sigma,CSS*eta,'-o','LineWidth',2,'Color',colors(ii)); 
+        sigma_all = [sigma_all; sigma];
+        eta_all = [eta_all; eta];
+    end
+end
+sig_list = unique(sigma_all);
+eta_avg = zeros(size(sig_list));
+for ii=1:length(sig_list)
+    eta_avg(ii) = mean(eta_all(sigma_all==sig_list(ii)));
+end
+%plot(sig_list*CSS,eta_avg*CSS,'k-','LineWidth',2)
+
+phi = 0.3;
+deta_fractional = 2*(0.7-phi)^-1*0.02;
+outline_x = CSS*[sig_list;flip(sig_list)];
+outline_y = CSS*[eta_avg*(1+deta_fractional);flip(eta_avg)*(1-deta_fractional)];
 p=patch(outline_x,outline_y,"red",'FaceColor','#ffed8a','EdgeColor','none');
 h=get(gca,'Children');
 set(gca,'Children',[h(2:end);h(1)]);

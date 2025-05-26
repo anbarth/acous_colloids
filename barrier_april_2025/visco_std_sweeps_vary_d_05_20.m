@@ -1,6 +1,6 @@
-datatable = viscostdtable_05_09;
+datatable = visco_std_table_05_20;
 hList = unique(datatable(:,1));
-percentGapOpen = @(h) 1-0.9173./(h+0.9173);
+percentGapOpen = @(h) 1-0.88./(h+0.88);
 
 newtonianEtaVsH = zeros(size(hList));
 
@@ -38,7 +38,7 @@ end
 %yline(5.034,'r')
 prettyplot
 %close
-
+return
 figure; hold on; prettyplot;
 %ax1=gca; ax1.YScale='log';
 ylabel('\eta (Pa s)'); 

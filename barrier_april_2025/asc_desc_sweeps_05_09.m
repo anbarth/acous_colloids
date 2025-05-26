@@ -1,6 +1,8 @@
-dataTable = phi61table_05_14;
+%dataTable = phi61table_05_14;
+dataTable = phi61table_05_20;
 hList = unique(dataTable(:,1));
-percentGapOpen = @(h) 1-0.9173./(h+0.9173);
+%percentGapOpen = @(h) 1-0.9173./(h+0.9173); % 05/09, 05/14
+percentGapOpen = @(h) 1-0.88./(h+0.88); % 05/20
 
 % plot stress sweeps for each d
 cmap=viridis(256);
