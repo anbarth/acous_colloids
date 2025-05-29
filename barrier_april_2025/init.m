@@ -8,3 +8,4 @@ addpath(genpath('..\barrier_april_2025\'))
 
 make_barrier_table_05_09;
 make_barrier_table_05_14;
+make_barrier_table_05_20;

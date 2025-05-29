@@ -206,9 +206,9 @@ if showInterpolatingFunction
     [x_all,sortIdx] = sort(x_all,'ascend');
     F_hat_all = F_hat_all(sortIdx);
     if option==0
-        plot(ax_collapse,x_all,F_hat_all,'-r','LineWidth',2)
+        plot(ax_collapse,x_all,F_hat_all,'-r','LineWidth',1.5)
     elseif option==1
-        plot(ax_collapse,1-x_all,F_hat_all,'-r','LineWidth',2)
+        plot(ax_collapse,1-x_all,F_hat_all,'-r','LineWidth',1.5)
     elseif option==2
         plot(ax_collapse,1./x_all-1,F_hat_all.*x_all.^2,'-r','LineWidth',2)
     end

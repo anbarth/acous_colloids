@@ -60,12 +60,12 @@ if makeSigmastarPlot
     for volt=[5 20 80]
         colorV = myColor(acoustic_energy_density(volt));
         %plot(volt,CSS*polyval(quadParams,volt),'p','MarkerFaceColor',colorV,'MarkerSize',5,'LineWidth',1.5);
-        plot(acoustic_energy_density(volt),CSS*sigmastar_aFit(volt),'x','MarkerFaceColor',colorV,'MarkerSize',10,'MarkerEdgeColor',colorV,'LineWidth',3);
+        plot(acoustic_energy_density(volt),CSS*sigmastar_aFit(volt),'o','MarkerFaceColor',colorV,'MarkerSize',5,'MarkerEdgeColor',colorV,'LineWidth',3);
     end
 
     
     myfig = gcf;
-    myfig.Position=[50,50,414,323];
+    myfig.Position=[886,181,267,337];
     makeAxesLogLog
     xlim([0.05,50])
     xticks([10^-1 10^0 10^1])

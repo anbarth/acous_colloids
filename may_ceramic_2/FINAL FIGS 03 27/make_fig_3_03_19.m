@@ -5,21 +5,22 @@ myModelHandle = @modelHandpickedSigmastarV_CSV;
 dataTable = may_ceramic_09_17;
 
 colorBy=3; % 3 for U, 1 for V
+interp = true;
 
-show_F_vs_x(dataTable,y,myModelHandle,'ColorBy',colorBy); prettyPlot;
+show_F_vs_x(dataTable,y,myModelHandle,'ColorBy',colorBy,'ShowInterpolatingFunction',interp); prettyPlot;
 % ylim([0.3 1e2]); xlim([1e-20 10]);
 myfig = gcf;
 myfig.Position=[20,100,414,323];
 ylim([1e-1 2e2])
 xlim([1e-21 10])
 
-show_F_vs_x(dataTable,y,myModelHandle,'ColorBy',colorBy); prettyPlot;
+show_F_vs_x(dataTable,y,myModelHandle,'ColorBy',colorBy,'ShowInterpolatingFunction',interp); prettyPlot;
 myfig = gcf;
 myfig.Position=[20,100,361,323];
 ylim([1e-1 2e2])
 xlim([1e-2 1.7])
 
-show_F_vs_xc_x(dataTable,y,myModelHandle,'ColorBy',colorBy); prettyPlot;
+show_F_vs_xc_x(dataTable,y,myModelHandle,'ColorBy',colorBy,'ShowInterpolatingFunction',interp); prettyPlot;
 myfig = gcf;
 myfig.Position=[20,100,414,323];
 ylim([1e-1 2e2])

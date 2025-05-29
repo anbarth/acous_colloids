@@ -1,4 +1,5 @@
 load("phi61_05_20.mat");
+load("visco_std_05_20.mat")
 
 CSS = (50/19)^3;
 %CSS=1;
