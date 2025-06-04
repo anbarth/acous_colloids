@@ -37,6 +37,7 @@ for ii=1:length(hList)
 end
 %yline(5.034,'r')
 prettyplot
+close
 
 %eta_solvent=1;
 eta_solvent = 5.034;
@@ -44,28 +45,34 @@ eta_solvent = 5.034;
 % set up plot
 figure; hold on; prettyplot;
 %ax1=gca; ax1.YScale='log';
-ylabel('\eta (Pa s)'); 
-ylabel('\eta_{eff}/\eta_{true}')
+%ylabel('\eta (Pa s)'); 
+ylabel('\eta_{eff}')
 
 % plot measured viscosities
 hd = percentGapOpen(hList);
-plot(hd, newtonianEtaVsH/eta_solvent,'-o'); xlabel('h/d'); 
+plot(hd, newtonianEtaVsH,'-o'); xlabel('h/d'); 
 
 % fit to line 
 p = polyfit(percentGapOpen(hList),newtonianEtaVsH,1);
-hdFake = linspace(0.1,0.7);
-plot(hdFake,polyval(p,hdFake)/eta_solvent,'r-')
+hdFake = linspace(0.1,0.8);
+plot(hdFake,p(2)+p(1)*hdFake,'r-')
+disp('eta_solvent')
+disp(p(1)+p(2))
+disp('A')
+disp(p(2)/(p(1)+p(2)))
 
 % extrapolate to extra h values
 extraH = [0.9; 1.4; 2];
-plot(percentGapOpen(extraH),polyval(p,percentGapOpen(extraH))/eta_solvent,'ro')
+plot(percentGapOpen(extraH),polyval(p,percentGapOpen(extraH)),'ro')
 disp([newtonianEtaVsH; polyval(p,percentGapOpen(extraH))])
 newtonianEtaVsH_05_20 = [newtonianEtaVsH; polyval(p,percentGapOpen(extraH))];
 
 % compare with meera's prediction
-A = (1*19)/(pi*(19/2)^2); % fraction of plate area covered by barrier
-eta_effective = @(hd) eta_solvent*(A+hd*(1-A));
+A1 = 22.5/360; % fraction of plate area covered by barrier
+A2 = 30/360;
+eta_effective = @(A,hd) eta_solvent*(A+hd*(1-A));
 
 
 %hd = linspace(0,1);
-plot(hd, eta_effective(hd)/eta_solvent,'r-');
+%plot(hd, eta_effective(A1,hd),'r-');
+%plot(hd, eta_effective(A2,hd),'r-');

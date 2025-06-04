@@ -18,10 +18,11 @@ phi_list = unique(dataTable(:,1));
 plot_indices = 1:length(phi_list);
 
 
-
-y_optimal = y_red_handpicked;
-modelHandle = @modelSmoothFunctions;
+optimize_C_jardy_03_19;
+y_optimal = y_lsq_0V;
+modelHandle = @modelHandpickedAllExp0V;
 [~,~,~,~,~,delta_eta,eta_hat] = modelHandle(dataTable, y_optimal);
+phi_fudge = zeros(size(phi_list));
 
 minPhi = 0.18;
 maxPhi = 0.62;

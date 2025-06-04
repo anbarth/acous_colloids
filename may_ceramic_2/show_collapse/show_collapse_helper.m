@@ -2,7 +2,8 @@ function show_collapse_helper(option,stressTable,paramsVector,modelHandle,vararg
 % option:
 % 0 = F vs x
 % 1 = F vs xc-x
-% 2 = cardy
+% 2 = jardy
+% 3 = eta*g^2/alpha
 
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">",">",">",">",">"];
 
@@ -16,6 +17,7 @@ showLines = false;
 showMeera = false;
 showInterpolatingFunction = false;
 showErrorBars = false;
+alpha=-1;
 
 for ii=1:2:length(varargin)
     if isa(varargin{ii},'char')
@@ -36,8 +38,15 @@ for ii=1:2:length(varargin)
             highlight_stress = varargin{ii+1};
         elseif strcmp(fieldName,'VolFracMarkers')
             my_vol_frac_markers = varargin{ii+1};
+        elseif strcmp(fieldName,'Alpha')
+            alpha = varargin{ii+1};
         end
     end
+end
+
+if option==3 && alpha==-1
+    disp('Cannot make this plot without alpha')
+    return
 end
 
 minPhi = min(phi_list);
@@ -66,6 +75,9 @@ elseif option==1
 elseif option==2
     ax_collapse.XLabel.String = "1/x-1/x_c";
     ax_collapse.YLabel.String = "H";
+elseif option==3
+    ax_collapse.XLabel.String = "1/x-1/x_c";
+    ax_collapse.YLabel.String = "H";
 end
 
 if showMeera
@@ -81,7 +93,7 @@ colormap(ax_collapse,cmap);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[x_all,F_all,delta_F_all,F_hat_all,~,~,~] = modelHandle(stressTable, paramsVector);
+[x_all,F_all,delta_F_all,F_hat_all,eta_all,~,~] = modelHandle(stressTable, paramsVector);
 
 if colorBy==3
     logMinE0 = log(acoustic_energy_density(5));
@@ -97,6 +109,7 @@ for ii = vol_frac_plotting_range
         myData = stressTable(:,1)==phi & stressTable(:,3)==voltage;
         x = x_all(myData);
         F = F_all(myData);
+        eta = eta_all(myData);
         delta_F = delta_F_all(myData);
 
 
@@ -120,6 +133,7 @@ for ii = vol_frac_plotting_range
         % sort in order of ascending x
         [x,sortIdx] = sort(x,'ascend');
         F = F(sortIdx);
+        eta = eta(sortIdx);
         delta_F = delta_F(sortIdx);
     
         x_axis_var = 0;
@@ -128,6 +142,8 @@ for ii = vol_frac_plotting_range
         elseif option==1
             x_axis_var = 1-x;
         elseif option==2
+            x_axis_var = 1./x-1;
+        elseif option==3
             x_axis_var = 1./x-1;
         end
 
@@ -138,6 +154,12 @@ for ii = vol_frac_plotting_range
             delta_y_axis_var=delta_F;
         elseif option==2
             y_axis_var=F.*x.^2;
+            delta_y_axis_var=0;
+        elseif option==3
+            %dphi = sqrt(F./eta);
+            %g=x.*(dphi).^alpha;
+            %y_axis_var=eta.*g.^2;
+            y_axis_var=eta.*x.^(2/alpha);
             delta_y_axis_var=0;
         end
         

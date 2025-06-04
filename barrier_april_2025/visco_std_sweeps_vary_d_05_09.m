@@ -63,3 +63,8 @@ plot(percentGapOpen(extraH),polyval(p,percentGapOpen(extraH)),'ro')
 
 disp([newtonianEtaVsH; polyval(p,percentGapOpen(extraH))])
 newtonianEtaVsH_05_09 = [newtonianEtaVsH; polyval(p,percentGapOpen(extraH))];
+
+disp('eta_solvent')
+disp(p(1)+p(2))
+disp('A')
+disp(p(2)/(p(1)+p(2)))

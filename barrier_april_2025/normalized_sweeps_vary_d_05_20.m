@@ -1,19 +1,19 @@
 barrierdatatable = phi61table_05_20;
 refdatatable = phi61_ref_table;
-%datatable = [barrierdatatable;refdatatable];
-datatable = barrierdatatable;
+datatable = [barrierdatatable;refdatatable];
 hList = unique(datatable(:,1));
 percentGapOpen = @(h) 1-0.88./(h+0.88);
 
-acsDesc = 1;
 
-load("newtonianEtaVsH_05_20.mat")
+% reference viscosity
+ref_sigma = refdatatable(:,2);
+ref_rate = refdatatable(:,3);
+
+acsDesc = 1;
 
 % plot stress sweeps for each d
 cmap=viridis(256);
 minH = min(hList); maxH = max(hList);
-%hColor = @(h) cmap(round(1+255*(h-minH)/(maxH-minH)),:);
-%hdColor = @(pGap) cmap(round(1+255*(pGap)),:);
 minhd = percentGapOpen(minH); maxhd = percentGapOpen(maxH);
 hdColor = @(hd) cmap(round(1+255*(hd-minhd)/(maxhd-minhd)),:);
 
@@ -34,11 +34,12 @@ for ii=1:length(hList)
     stress = datatable(myData,2);
     rate = datatable(myData,3);
     c = hdColor(hd);
-    %c=hColor(h);
-    %plot(stress,stress./rate,'-o','Color',c);
+    
+    [overlap_stresses,i_ref,i_h] = intersect(ref_sigma,stress);
+    eta_ref = ref_sigma(i_ref)./ref_rate(i_ref);
+    eta_h = stress(i_h)./rate(i_h);
+    plot(overlap_stresses,eta_h./eta_ref,'-o','Color',c);
 
-    myNewtonianEta = newtonianEtaVsH_05_20(hList==h);
-    plot(stress,stress./rate*5.034/myNewtonianEta,'-o','Color',c);
+
 end
 prettyplot
-
