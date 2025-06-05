@@ -76,8 +76,8 @@ elseif option==2
     ax_collapse.XLabel.String = "1/x-1/x_c";
     ax_collapse.YLabel.String = "H";
 elseif option==3
-    ax_collapse.XLabel.String = "1/x-1/x_c";
-    ax_collapse.YLabel.String = "H";
+    ax_collapse.XLabel.String = "1/x^{1/\alpha}-1/x_c^{1/\alpha}";
+    ax_collapse.YLabel.String = "\eta (B(\phi)f(\sigma))^{2/\alpha}";
 end
 
 if showMeera
@@ -144,7 +144,7 @@ for ii = vol_frac_plotting_range
         elseif option==2
             x_axis_var = 1./x-1;
         elseif option==3
-            x_axis_var = 1./x-1;
+            x_axis_var = x.^(-1/alpha)-1;
         end
 
         y_axis_var=0;
@@ -159,7 +159,7 @@ for ii = vol_frac_plotting_range
             %dphi = sqrt(F./eta);
             %g=x.*(dphi).^alpha;
             %y_axis_var=eta.*g.^2;
-            y_axis_var=eta.*x.^(2/alpha);
+            y_axis_var=F.*x.^(2/alpha);
             delta_y_axis_var=0;
         end
         
@@ -233,6 +233,8 @@ if showInterpolatingFunction
         plot(ax_collapse,1-x_all,F_hat_all,'-r','LineWidth',1.5)
     elseif option==2
         plot(ax_collapse,1./x_all-1,F_hat_all.*x_all.^2,'-r','LineWidth',2)
+    elseif option==3
+        plot(ax_collapse,x_all.^(-1/alpha)-1,F_hat_all.*x_all.^(2/alpha),'-r','LineWidth',2)
     end
 end
 

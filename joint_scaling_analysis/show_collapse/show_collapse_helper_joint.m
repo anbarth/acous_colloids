@@ -83,11 +83,13 @@ for mm = mat_plotting_range
 
     if colorBy == 2 % volume fraction
         if mm==1
-            cmap = flipud(viridis(256)); 
+            %cmap = flipud(viridis(256)); 
+            cmap = jet(256);
         elseif mm==2
             cmap = flipud(silica(256));
         elseif mm==3
-            cmap = jet(256);
+            %cmap = jet(256);
+            cmap = viridis(256);
         end
     elseif colorBy == 4 % stress
         cmap = winter(256);

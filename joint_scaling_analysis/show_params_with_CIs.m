@@ -15,14 +15,24 @@ dispParam(3)
 % now cycle through the different materials...
 numMaterials = 3;
 startIndex = 4;
+figure; hold on;
 for mm=1:numMaterials
 
     if mm==1
         s='CORNSTARCH';
+        marker = '-s';
+        c1 = '#cc2702';
+        c2 = '#ed9755';
     elseif mm==2
         s='SILICA';
+        marker = '-d';
+        c1 = '#62337d';
+        c2 = '#c572d4';
     else
         s='POLYDISPERSE SILICA';
+        marker = '-o';
+        c1='#094f0d';
+        c2='#229c53';
     end
     disp(s);
     
@@ -49,19 +59,25 @@ for mm=1:numMaterials
     disp('sigmastar')
     dispParam(startIndex+2)
 
-    figure; hold on;
-    title(s)
+    %figure; hold on;
+    %title(s)
     xlabel('\phi')
     ylabel('D(\phi)')
-    plot(phi_list,D_init,'-o','LineWidth',0.75);
+    %plot(phi_list,D_init,'-o','LineWidth',0.75);
     %plot(phi_list,D,'-o','LineWidth',2);
-    errorbar(phi_list,D,D_err,'-o','LineWidth',2);
+    %errorbar(phi_list,D,D_err,'-ok','LineWidth',1);
+    errorbar(phi_list,D,D_err,marker,'LineWidth',1,'Color',c1,'MarkerFaceColor',c2)
     prettyplot;
+    f1=gcf; f1.Position=[83,65,511,542];
 
     % move startIndex for next iteration
     startIndex = startIndex+3+numPhi;
 
 end
+
+xlim([0.15 0.65]);
+ylim([-0.4 1.2]);
+legend("CS","MS","PAS")
 
 
 
