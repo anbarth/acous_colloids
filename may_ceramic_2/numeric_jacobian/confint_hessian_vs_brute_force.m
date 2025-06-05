@@ -19,7 +19,7 @@ myModelHandle = @modelHandpickedAllExp0V; paramsVector = y_lsq_0V;
 % have to assume sigma*<1, which is... probably true.
 
 
-paramNum = 11;
+paramNum = 6;
 
 jacobian = numeric_jacobian(dataTable,paramsVector,myModelHandle);
 %jacobian = numeric_jacobian_loggily(dataTable,paramsVector,myModelHandle,3);
@@ -76,7 +76,7 @@ for ii = 1:length(paramRange)
      %    show_F_vs_xc_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true)
        show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); xlim([1e-2 1.5])
      % show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ShowLines',true,'VoltRange',paramNum-5); xlim([1e-2 1.5])
-       title(myParam-myParamOptimal)
+       title(myParam)
     end
 
     hessian_resnorm(ii) = (1/2)*(y-paramsVector)*hessian*(y-paramsVector)';

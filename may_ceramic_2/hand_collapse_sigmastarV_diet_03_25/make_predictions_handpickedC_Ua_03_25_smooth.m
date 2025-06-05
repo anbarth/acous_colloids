@@ -4,7 +4,10 @@ CSS = (50/19)^3;
 
 y = y_smooth_restricted;
 dataTable = may_ceramic_09_17;
-myModelHandle = @modelHandpickedSigmastarV_CSV;
+myModelHandle = @modelHandpickedSigmastarV;
+
+minSigma = min(unique(dataTable(:,2)));
+maxSigma = max(unique(dataTable(:,2)));
 
 % collapse all data
 %show_F_vs_x(dataTable,y,myModelHandle,'ColorBy',1); xlim([1e-5 1.5])
@@ -24,21 +27,28 @@ for jj=excluded_V_indices
     for ii=1:length(phi_list)
         phi = phi_list(ii);
         myData = dataTable(:,1)==phi & dataTable(:,3)==v;
-        if isempty(myData)
+        if sum(myData)==0
             continue
         end
         mySigma = dataTable(myData,2)*CSS;
-        myEta = eta(myData); % taken from output of model, so it already includes CSV
-        myEtaErr = delta_eta(myData);
-        myEtaHat = eta_hat(myData);
+        myEta = eta(myData)*CSS; 
+        myEtaErr = delta_eta(myData)*CSS;
 
         [mySigma,sortIdx]=sort(mySigma);
         myEta=myEta(sortIdx);
         myEtaErr=myEtaErr(sortIdx);
-        myEtaHat=myEtaHat(sortIdx);
-
+        
+        % plot data
         errorbar(mySigma,myEta,myEtaErr,my_vol_frac_markers(ii),'Color',myColorPhi(phi),'MarkerFaceColor',myColorPhi(phi))
-        plot(mySigma,myEtaHat,'Color',myColorPhi(phi),'LineWidth',1)
+
+        % plot predictions
+        %sigma_fake=logspace(log10(minSigma),log10(maxSigma))';
+        sigma_fake=1/CSS*logspace(-1,4.5)';
+        myEtaHat = viscosity_prediction(phi,sigma_fake,v,dataTable,y,myModelHandle);
+
+        sigma_fake=sigma_fake*CSS;
+        myEtaHat=myEtaHat*CSS;
+        plot(sigma_fake,myEtaHat,'Color',myColorPhi(phi),'LineWidth',1)
         
         
     end

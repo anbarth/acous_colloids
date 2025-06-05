@@ -1,6 +1,6 @@
 %dataTable = may_ceramic_09_17;
 %dataTable = dataTable(dataTable(:,3)==0,:);
-%optimize_C_jardy_03_19;
+optimize_C_jardy_03_19;
 
 myModelHandle = @modelHandpickedAllExp0V; paramsVector = y_lsq_0V;
 
