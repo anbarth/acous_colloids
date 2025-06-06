@@ -66,8 +66,9 @@ for mm=1:numMaterials
     %plot(phi_list,D_init,'-o','LineWidth',0.75);
     %plot(phi_list,D,'-o','LineWidth',2);
     %errorbar(phi_list,D,D_err,'-ok','LineWidth',1);
-    errorbar(phi_list,D,D_err,marker,'LineWidth',1,'Color',c1,'MarkerFaceColor',c2)
+    errorbar(phi0-phi_list,D,D_err,marker,'LineWidth',1,'Color',c1,'MarkerFaceColor',c2)
     prettyplot;
+    makeAxesLogLog
     f1=gcf; f1.Position=[83,65,511,542];
 
     % move startIndex for next iteration
@@ -75,8 +76,8 @@ for mm=1:numMaterials
 
 end
 
-xlim([0.15 0.65]);
-ylim([-0.4 1.2]);
+%xlim([0.15 0.65]);
+%ylim([-0.4 1.2]);
 legend("CS","MS","PAS")
 
 

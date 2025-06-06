@@ -67,3 +67,5 @@ for i=1:length(eta)
     plot(phi_equi,E_equi,'Color',colorEta(eta(i)));
 end
 
+
+
