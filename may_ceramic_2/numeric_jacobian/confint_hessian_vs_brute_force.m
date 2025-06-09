@@ -1,5 +1,5 @@
 dataTable = may_ceramic_09_17;
-dataTable = dataTable(dataTable(:,3)==0,:);
+
 
 
 %load("01_12_optimal_params.mat")
@@ -10,7 +10,7 @@ dataTable = dataTable(dataTable(:,3)==0,:);
 %myModelHandle = @modelHandpickedSigmastarV;paramsVector = y_lsq;
 %myModelHandle = @modelHandpickedSigmastarV_logsigmastar; y_log=y_fmincon; y_log(6:12)=log(y_fmincon(6:12)); paramsVector = y_log;
 
-%optimize_C_jardy_03_19;
+optimize_C_jardy_03_19; dataTable = dataTable(dataTable(:,3)==0,:);
 myModelHandle = @modelHandpickedAllExp0V; paramsVector = y_lsq_0V;
 %myModelHandle = @modelHandpickedAllExp0V_expsigmastar; y_exp=y_lsq_0V; y_exp(6) = exp(y_lsq_0V(6)); paramsVector = y_exp;
 %myModelHandle = @modelHandpickedAllExp0V_logsigmastar; y_log=y_lsq_0V; y_log(6) = log(y_lsq_0V(6)); paramsVector = y_log;
@@ -42,7 +42,8 @@ disp([myParamOptimal myHessianCI])
 
 deltaParam = myHessianCI*1;
 %deltaParam = 0.1;
-paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+deltaParam,9);
+%paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+deltaParam,9);
+paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+0.9,9);
 
 
 SSR = @(y) sum(get_residuals(dataTable, y, myModelHandle).^2); 
@@ -73,7 +74,7 @@ for ii = 1:length(paramRange)
 
     if myParam==myParamOptimal || first || ii==length(paramRange)
     %     show_cardy(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true)
-     %    show_F_vs_xc_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true)
+        show_F_vs_xc_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true);  title(myParam)
        show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); xlim([1e-2 1.5])
      % show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ShowLines',true,'VoltRange',paramNum-5); xlim([1e-2 1.5])
        title(myParam)

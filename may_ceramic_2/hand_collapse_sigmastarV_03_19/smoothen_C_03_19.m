@@ -7,7 +7,7 @@ confInts = get_conf_ints(may_ceramic_09_17,y_pointwise,myModelHandle);
 % optionally plot things
 makeSigmastarPlot = true;
 correctSigmastarPlotUnits = true;
-makeDplot = true;
+makeDplot = false;
 makeCplot = false;
 makeCollapsePlot = false;
 

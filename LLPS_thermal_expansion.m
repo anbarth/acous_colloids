@@ -1,7 +1,7 @@
-% some model for thermal expansion of a single phase
-a = @(phi) phi;
-b = @(phi) 0;
-u = @(phi,T) a(phi)+b(phi).*T;
+% some model for thermal expansion of the medium
+a = @(phi) 1;
+b = @(phi) 1/100;
+rho = @(phi,T) a(phi)+b(phi).*T;
 
 % parameters describing the shape of the phase boundary in the E-phi plane
 c_left = 0.03;
@@ -14,12 +14,15 @@ phi1 = @(T) phistar - c_left*(Tstar-T).^(1/2);
 phi2 = @(T) phistar + c_right*(Tstar-T).^(1/2);
 
 % n1, n2 are particle number densities of phase 1 and phase 2
-% eta = n1 eta1 + n2 eta2
-n1 = @(phi,phi1,phi2) phi1./phi .* (phi2-phi)./(phi2-phi1);
-n2 = @(phi,phi1,phi2) phi2./phi .* (phi-phi1)./(phi2-phi1);
-u1 = @(T) u(phi1(T),T);
-u2 = @(T) u(phi2(T),T);
-u_binodal = @(phi,T)  n1(phi,phi1(T),phi2(T)).*u1(T) + n2(phi,phi1(T),phi2(T)).*u2(T);
+%n1 = @(phi,phi1,phi2) phi1./phi .* (phi2-phi)./(phi2-phi1);
+%n2 = @(phi,phi1,phi2) phi2./phi .* (phi-phi1)./(phi2-phi1);
+v1 = @(phi,phi1,phi2) (phi2-phi)./(phi2-phi1);
+v2 = @(phi,phi1,phi2) (phi-phi1)./(phi2-phi1);
+rho1 = @(T) rho(phi1(T),T);
+rho2 = @(T) rho(phi2(T),T);
+
+% conservation of mass:
+rho_binodal = @(phi,T)  v1(phi,phi1(T),phi2(T)).*rho1(T) + v2(phi,phi1(T),phi2(T)).*rho2(T);
 
 
 
@@ -30,12 +33,19 @@ T = linspace(0,Tstar);
 plot(phi1(T),T,'k');
 plot(phi2(T),T,'k');
 
-phi = 0.58;
-xline(phi)
+% plot the line followed in the experiment
+phi = 0.58; % initial concentration
+
+T0 = max(T);
+%xline(phi)
+plot(phi*rho(T)/rho(T0),T,'r-')
+
+
+
 figure; hold on;
 xlabel('T'); ylabel('volume per particle u(T)')
 plot(T,u(phi,T),'k')
-plot(T,u_binodal(phi,T),'r')
+plot(T,rho_binodal(phi,T),'r')
 
 %%% wait shouldnt u1=V1/N1 just be 1/phi1?
 %%% I am definitely getting confused bc im thinking of a true one component

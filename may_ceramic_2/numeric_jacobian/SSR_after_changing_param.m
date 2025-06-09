@@ -1,4 +1,4 @@
-function myResnorm = SSR_after_changing_param(dataTable,paramsVector,myModelHandle,paramNum,myParam)
+function [myResnorm,y] = SSR_after_changing_param(dataTable,paramsVector,myModelHandle,paramNum,myParam)
 
 y_init = paramsVector;
 y_init(paramNum) = myParam;
@@ -6,6 +6,7 @@ y_init(paramNum) = myParam;
 % avoid crashing the optimizer
 [~,~,~,F_hat,~,~,~] = myModelHandle(dataTable,y_init);
 if any(imag(F_hat)~=0)
+    y=0;
     myResnorm=Inf;
 else 
     y = optimize_params_fix_one_param_loggily(dataTable,myModelHandle,y_init,paramNum,3);

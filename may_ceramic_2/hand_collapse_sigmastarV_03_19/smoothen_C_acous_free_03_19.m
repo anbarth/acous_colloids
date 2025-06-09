@@ -11,8 +11,8 @@ acoustics_free_data = may_ceramic_09_17(may_ceramic_09_17(:,3)==0,:);
 confInts = get_conf_ints(acoustics_free_data,y_pointwise,myModelHandle);
 
 % optionally plot things
-makeDplot = true;
-makeCplot = true;
+makeDplot = false;
+makeCplot = false;
 makeCollapsePlot = false;
 
 % extract alpha from D

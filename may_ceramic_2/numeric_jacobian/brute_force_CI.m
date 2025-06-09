@@ -1,6 +1,5 @@
-%dataTable = may_ceramic_09_17;
-%dataTable = dataTable(dataTable(:,3)==0,:);
-optimize_C_jardy_03_19;
+dataTable = may_ceramic_09_17;
+optimize_C_jardy_03_19; dataTable = dataTable(dataTable(:,3)==0,:);
 
 myModelHandle = @modelHandpickedAllExp0V; paramsVector = y_lsq_0V;
 
@@ -52,10 +51,14 @@ deltaSSRequals5_arctanh = @(arctanhParamValue) SSR_after_changing_param(dataTabl
 % entries... at some point there's no upper bound besides 1 lol
 deltaParam = myHessianCI;
 %ci_left = fzero(deltaSSRequals5,myParamOptimal-deltaParam);
-ci_right = fzero(deltaSSRequals5,myParamOptimal+deltaParam);
+%ci_right = fzero(deltaSSRequals5,myParamOptimal+deltaParam);
 
-ci_left = fzero(deltaSSRequals5,0.02);
+%ci_left = fzero(deltaSSRequals5,0.02);
 %ci_right = fzero(deltaSSRequals5,0.95);
+
+% sigma*0V for acoustics free
+ci_left = 0.0203;
+ci_right = 0.2871;
 
 % arctanhOptimalParam = myArcTanh(myParamOptimal);
 % arctanh_ci_left = fzero(deltaSSRequals5_arctanh,myArcTanh(myParamOptimal-deltaParam));
@@ -70,22 +73,25 @@ ci_left = fzero(deltaSSRequals5,0.02);
 %return
 first=true;
 paramRange = linspace(ci_left,ci_right,7);
+paramRange = [paramRange, myParamOptimal];
+paramRange = sort(paramRange);
 resnorm = zeros(size(paramRange));
 epsilon = zeros(size(paramRange));
 
 for ii = 1:length(paramRange)
     myParam = paramRange(ii);
     
-    myResnorm = SSR_after_changing_param(dataTable,paramsVector,myModelHandle,paramNum,myParam);                                                                                                                                                                                                                                        
+    [myResnorm,y] = SSR_after_changing_param(dataTable,paramsVector,myModelHandle,paramNum,myParam);                                                                                                                                                                                                                                        
 
     epsilon(ii) = myParam-myParamOptimal;
     resnorm(ii) = myResnorm-resnorm0;
 
-    %if myParam==myParamOptimal || first || ii==length(paramRange)
-    %   show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); xlim([1e-2 1.5])
+    if myParam==myParamOptimal || first || ii==length(paramRange)
+       show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); xlim([1e-2 1.5]);  title(myParam)
+       show_F_vs_xc_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true);  title(myParam)
       % show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ShowLines',true,'VoltRange',paramNum-5); xlim([1e-2 1.5])
     %   title(myParam-myParamOptimal)
-    %end
+    end
 
     first=false;
 end
