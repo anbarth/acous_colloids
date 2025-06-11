@@ -4,12 +4,18 @@ data_table = may_ceramic_09_17;
 alpha = -myft2.p1;
 D0 = exp(myft2.p2);
 myModelHandle = @modelHandpickedAllExp0V; paramsVector = y_lsq_0V;
+phi0=paramsVector(2);
+sigmastar = paramsVector(6);
+D = paramsVector(7:end);
 phi_list = unique(dataTable(:,1));
+
+alpha=1;
+D0 = D(end)*(phi0-phi_list(end))^alpha;
 
 CSS=(50/19)^3;
 
 % set up phiJ
-phiJ = @(sigma) interpConstantX(1,sigma,paramsVector,alpha,D0,phi_list);
+phiJ = @(sigma) interpConstantX(1,sigma,phi0,sigmastar,D,alpha,D0,phi_list);
 
 % set up cmap for stress
 stress_list = unique(dataTable(:,2));
@@ -85,10 +91,13 @@ end
 
 colormap(ax_phiJ,cmap);
 dphi = linspace(0.1,0.4);
-plot(ax_phiJ,dphi,CSS*dphi.^(-2),'r-')
+plot(ax_phiJ,dphi,0.2*dphi.^(-2),'r-')
 dphi = linspace(0.01,0.07);
-plot(ax_phiJ,dphi,CSS*dphi.^(-1),'r-')
+plot(ax_phiJ,dphi,20*dphi.^(-1.5),'r-')
+plot(ax_phiJ,dphi,30*dphi.^(-1),'r-')
 
 
 %yline(ax_phiJval,phi0);
 %yline(ax_phiJval,phimu);
+close(fig_phiJval)
+close(fig_phi0)

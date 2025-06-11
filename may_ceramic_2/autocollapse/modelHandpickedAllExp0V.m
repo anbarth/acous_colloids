@@ -53,6 +53,9 @@ H_hat = sqrt(A*eta0)* xi.^((-2+delta)/2) .* ((xi/xi0).^width+(xi/xi0).^(-width))
 
 F_hat = 1./x.^(2/alpha) .* H_hat;
 
+% addition 6/9 to take care of numerical issues
+F_hat(isinf(x.^(-2)))=0;
+
 eta_hat = zeros(N,1);
 for kk = 1:N
     phi = stressTable(kk,1);

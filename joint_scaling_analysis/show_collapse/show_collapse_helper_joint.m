@@ -3,6 +3,7 @@ function show_collapse_helper_joint(option,stressTable,paramsVector,modelHandle,
 % 0 = F vs x
 % 1 = F vs xc-x
 % 2 = J vs 1/x-1/xc
+% 3 = actual cardy (requires alpha)
 
 numMaterials = length(unique(stressTable(:,6)));
 mat_plotting_range = 1:numMaterials;
@@ -10,6 +11,7 @@ colorBy = 2; % 2 for phi, 4 for stress
 showLines = false;
 showInterpolatingFunction = false;
 showErrorBars = false;
+alpha = -1;
 
 for ii=1:2:length(varargin)
     if isa(varargin{ii},'char')
@@ -24,6 +26,8 @@ for ii=1:2:length(varargin)
             showInterpolatingFunction = varargin{ii+1};
         elseif strcmp(fieldName,'ShowErrorBars')
             showErrorBars = varargin{ii+1};
+        elseif strcmp(fieldName,'Alpha')
+            alpha = varargin{ii+1};
         end
     end
 end
@@ -49,6 +53,10 @@ elseif option==2
     ax_collapse.XLabel.String = "1/x-1/x_c";
     ax_collapse.YLabel.String = "x^2*F/F_0";
     xlim([1e-3 1e5])
+elseif option==3
+    ax_collapse.XLabel.String = "x^{-1/\alpha}-x_c^{-1/\alpha}";
+    ax_collapse.YLabel.String = "\eta(B_\alpha(\phi)f(\sigma))^{2/\alpha}/F_0";
+    %xlim([1e-3 1e5])
 end
 
 
@@ -136,7 +144,11 @@ for mm = mat_plotting_range
         elseif option==2
             x_axis_var = 1./x-1;
             y_axis_var = x.^2.*F;
-            y_axis_delta = delta_F;
+            y_axis_delta = 0;
+        elseif option==3
+            x_axis_var = x.^(-1/alpha)-1;
+            y_axis_var = x.^(2/alpha).*F;
+            y_axis_delta = 0;
         end
         
         
@@ -177,6 +189,8 @@ if showInterpolatingFunction
         plot(ax_collapse,1-x_all,F_hat_all,'-r','LineWidth',1)
     elseif option==2
         plot(ax_collapse,1./x_all-1,x_all.^2.*F_hat_all,'-r','LineWidth',1)
+    elseif option==3
+        plot(ax_collapse,x_all.^(-1/alpha)-1,x_all.^(2/alpha).*F_hat_all/10,'-r','LineWidth',1)
     end
 end
 

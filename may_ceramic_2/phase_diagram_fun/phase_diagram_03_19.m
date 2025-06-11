@@ -11,8 +11,8 @@ sigmastar = paramsVector(6);
 D = paramsVector(7:end);
 phi_list = unique(data_table(:,1));
 
-%CSS=(50/19)^3;
-CSS=1;
+CSS=(50/19)^3;
+%CSS=1;
 
 % pick V
 voltNum=1;
@@ -54,8 +54,11 @@ end
 
 mySigma = logspace(-3,3)';
 %for x=[0.5 0.9 0.95 1]
+myAlpha=alpha;
+%mySigmastar = sigmastar/alpha*myAlpha;
+%D0 = D(end)*(phi0-phi_list(end))^myAlpha;
 for x=1
-    myPhi = interpConstantX(x,mySigma,phi0,sigmastar,D,alpha,D0,phi_list);
+    myPhi = interpConstantX(x,mySigma,phi0,mySigmastar,D,myAlpha,D0,phi_list);
     plot(myPhi,mySigma*CSS,'k-','LineWidth',1.5)
 end
 colorbar;

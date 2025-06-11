@@ -31,10 +31,10 @@ show_F_vs_x(dataTable,y,@modelHandpicked,'ShowInterpolatingFunction',false,'Show
 %show_F_vs_xc_x(dataTable,y,@modelHandpicked,'ShowInterpolatingFunction',true); prettyplot;
 
 
-return
+%return
 % find alpha
 dphi = phi0-phi_list;
-cutoff_dphi = 0.17;
+cutoff_dphi = 0.12;
 fitregion = dphi < cutoff_dphi;
 
 linearfit = fittype('poly1');
