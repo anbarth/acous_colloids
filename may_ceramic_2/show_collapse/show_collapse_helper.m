@@ -70,7 +70,7 @@ if option == 0
     ax_collapse.XLabel.String = "x";
     ax_collapse.YLabel.String = "F";
 elseif option==1
-    ax_collapse.XLabel.String = "x_x-c";
+    ax_collapse.XLabel.String = "x_c-x";
     ax_collapse.YLabel.String = "F";
 elseif option==2
     ax_collapse.XLabel.String = "1/x-1/x_c";
@@ -245,7 +245,7 @@ if colorBy == 1
 elseif colorBy == 2
     clim(ax_collapse,[minPhi maxPhi]);
     c1.Ticks = phi_list;
-    c1.Ticks = round(phi_list*100)/100;
+    c1.TickLabels = num2cell(round(phi_list*100)/100);
 elseif colorBy ==3
     clim(ax_collapse,[log(acoustic_energy_density(5)) log(acoustic_energy_density(80))])
     c1.Ticks = log(acoustic_energy_density([5 10 20 40 60 80]));

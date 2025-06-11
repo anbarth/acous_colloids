@@ -41,14 +41,15 @@ end
 % calculate F_hat from x
 alpha=1;
 xi = x.^(-1/alpha)-1;
-logintersection = log(A/eta0)/(-delta-2);
-mediator = cosh(width*(log(xi)-logintersection));
-Hconst = exp(1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0));
-H_hat = Hconst * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));
-
-if delta==-2
-    H_hat = sqrt(A*eta0) * xi.^((delta-2)/2);
-end
+%logintersection = log(A/eta0)/(-delta-2);
+%mediator = cosh(width*(log(xi)-logintersection));
+%Hconst = exp(1/(2*width)*(-2-delta)*log(2)+(1/2)*log(A*eta0));
+%H_hat = Hconst * xi.^((delta-2)/2) .* (mediator).^((-2-delta)/(2*width));
+%if delta==-2
+%    H_hat = sqrt(A*eta0) * xi.^((delta-2)/2);
+%end
+xi0 = (A/eta0)^(1/(-2-delta));
+H_hat = sqrt(A*eta0)* xi.^((-2+delta)/2) .* ((xi/xi0).^width+(xi/xi0).^(-width)).^((-2-delta)/(2*width));
 
 F_hat = 1./x.^(2/alpha) .* H_hat;
 
