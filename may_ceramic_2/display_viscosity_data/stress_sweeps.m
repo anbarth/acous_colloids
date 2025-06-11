@@ -79,9 +79,9 @@ for ii=1:length(phi_list)
     errorbar(ax_eta,sigma*CSS,eta*CSS, delta_eta_total*CSS,strcat(myMarker,'-'),'Color',myColor,'LineWidth',1,'MarkerFaceColor',myColor);
     %plot(ax_eta,sigma,eta, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
     
-    plot(ax_rate,sigma./eta,sigma, '-d','Color',myColor,'LineWidth',1);
-    %plot(ax_eta,sigma*CSS,eta*CSS, strcat(myMarker,'-'),'Color',myColor,'LineWidth',1.5,'MarkerFaceColor',myColor);
-    %errorbar(ax_rate,sigma,sigma./eta,deltaEta./eta.^2,'.','Color',myColor,'LineWidth',1);
+    %plot(ax_rate,sigma./eta,sigma*CSS, '-d','Color',myColor,'LineWidth',1);
+    rate_err = deltaEta./eta.*sigma./eta;
+    errorbar(ax_rate,sigma./eta,sigma*CSS,rate_err,"horizontal",'-d','Color',myColor,'LineWidth',1,'MarkerFaceColor',myColor)
 
     plot(ax_eta_rescaled,sigma,eta*(phi0-phi_fudged)^2, '-d','Color',myColor,'LineWidth',1);
     errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);

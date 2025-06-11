@@ -10,13 +10,8 @@ f = @(sigma) exp(-sigmastar./sigma);
 phi = zeros(size(sigma));
 for ii=1:length(sigma)
     my_D = x/f(sigma(ii));
-    if my_D < min(D)
-        phi(ii)=NaN;
-    elseif my_D <= max(D)
-        phi(ii) = interp1(D,phi_list,my_D);
-    else
-        phi(ii) = phi0 - (my_D/D0)^(-1/alpha);
-    end
+    %disp(my_D)
+    phi(ii) = invD(my_D,D,phi_list,phi0,D0,alpha);
 end
 
 end

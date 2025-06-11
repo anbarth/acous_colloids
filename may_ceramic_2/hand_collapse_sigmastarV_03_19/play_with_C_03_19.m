@@ -24,9 +24,9 @@ D_0V = [0.0005 0.005 0.05 0.1 0.3 0.6 0.8 0.9 0.9 1 1 1 1.025]*1/1.01/1.02;
 y_handpicked_03_19 = [eta0, phi0, delta, A, width, sigmastar0V, D_0V];
 
 return
-phiRange = 13:-1:1;
+phiRange = 13:-1:12;
 show_F_vs_xc_x(dataTable,y_handpicked_03_19, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
-show_F_vs_x(dataTable,y_handpicked_03_19, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
+show_F_vs_x(dataTable,y_handpicked_03_19, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true); xlim([1e-5 1.5])
 return
 
 figure; hold on;

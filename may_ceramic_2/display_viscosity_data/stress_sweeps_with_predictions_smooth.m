@@ -56,16 +56,17 @@ for ii=1:length(phi_list)
     
     myMarker = my_vol_frac_markers(ii);
     
-    errorbar(ax_eta,sigma,eta, deltaEta, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-    plot(ax_rate,sigma./eta,sigma, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
-
+    errorbar(ax_eta,sigma*CSS,eta*CSS, deltaEta*CSS, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+    %plot(ax_rate,sigma./eta,sigma, strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor);
+    rate_err = deltaEta./eta.*sigma./eta;
+    errorbar(ax_rate,sigma./eta,sigma*CSS,rate_err,"horizontal", strcat(myMarker,''),'Color',myColor,'LineWidth',0.5,'MarkerFaceColor',myColor)
 
     % plot prediction
     sigma_fake = logspace(log10(minSigma),log10(maxSigma))';
     eta_hat = viscosity_prediction(phi,sigma_fake,voltage,dataTable,y,modelHandle);
-    plot(ax_eta,sigma_fake,eta_hat,'-','Color',myColor,'LineWidth',1.5);
-    plot(ax_rate,sigma_fake./eta_hat,sigma_fake,'-','Color',myColor,'LineWidth',1.5);
-
+    plot(ax_eta,sigma_fake*CSS,eta_hat*CSS,'-','Color',myColor,'LineWidth',1.5);
+    plot(ax_rate,sigma_fake./eta_hat,sigma_fake*CSS,'-','Color',myColor,'LineWidth',1.5);
+    
 
 
  
@@ -73,5 +74,5 @@ end
 title(ax_eta,strcat('V=',num2str(voltage)))
 colormap(ax_eta,cmap);
 c_eta = colorbar(ax_eta);
-c_eta.Ticks = phi_list+phi_fudge';
+c_eta.Ticks = phi_list;
 clim(ax_eta,[minPhi maxPhi]);

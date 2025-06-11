@@ -1,4 +1,4 @@
-play_with_C_03_19;
+make_sigmastar_even_bigger;
 y_init = y_handpicked_03_19;
 log_y_init = log(abs(y_init));
 myModelHandle = @modelHandpickedAllExp0V;
@@ -72,13 +72,8 @@ end
 phiRange = 13:-1:1;
 show_F_vs_x(dataTable,y_lsq_0V,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
 show_F_vs_xc_x(dataTable,y_lsq_0V,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
-delta = y_lsq_0V(3);
-A = y_lsq_0V(4);
-xc_x = logspace(-3,0);
-plot(xc_x,A*(xc_x).^delta,'r-')
 
 
-%%
 D_init = y_init(7:end);
 D_fminsearch = y_fminsearch_0V_alt(7:end);
 D_lsq = y_lsq_0V_alt(7:end);
