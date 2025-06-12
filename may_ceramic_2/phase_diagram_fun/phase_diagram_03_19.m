@@ -54,9 +54,10 @@ end
 
 mySigma = logspace(-3,3)';
 %for x=[0.5 0.9 0.95 1]
-myAlpha=alpha;
+myAlpha=1;
 %mySigmastar = sigmastar/alpha*myAlpha;
-%D0 = D(end)*(phi0-phi_list(end))^myAlpha;
+D0 = D(end)*(phi0-phi_list(end))^myAlpha;
+mySigmastar = sigmastar;
 for x=1
     myPhi = interpConstantX(x,mySigma,phi0,mySigmastar,D,myAlpha,D0,phi_list);
     plot(myPhi,mySigma*CSS,'k-','LineWidth',1.5)

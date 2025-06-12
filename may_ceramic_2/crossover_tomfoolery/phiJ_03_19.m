@@ -1,6 +1,6 @@
 % import data and params
 data_table = may_ceramic_09_17;
-%smoothen_C_acous_free_03_19;
+smoothen_C_acous_free_03_19;
 alpha = -myft2.p1;
 D0 = exp(myft2.p2);
 myModelHandle = @modelHandpickedAllExp0V; paramsVector = y_lsq_0V;
@@ -10,7 +10,11 @@ D = paramsVector(7:end);
 phi_list = unique(dataTable(:,1));
 
 alpha=1;
-D0 = D(end)*(phi0-phi_list(end))^alpha;
+%D0 = D(end)*(phi0-phi_list(end))^alpha;
+D0 = D(end)*(phi0-phi_list(end))^alpha * 0.86;
+
+phimu = invD(1,D,phi_list,phi0,D0,alpha);
+disp(phimu)
 
 CSS=(50/19)^3;
 
@@ -31,7 +35,7 @@ phiJ_phi = [];
 % set up plots
 fig_phiJ = figure;
 ax_phiJ = axes('Parent', fig_phiJ,'YScale','log','XScale','log');
-ax_phiJ.XLabel.String = '\phi_J-\phi';
+ax_phiJ.XLabel.String = '\phi_J(\sigma)-\phi';
 ax_phiJ.YLabel.String = '\eta (Pa s)';
 hold(ax_phiJ,'on');
 
@@ -93,8 +97,10 @@ colormap(ax_phiJ,cmap);
 dphi = linspace(0.1,0.4);
 plot(ax_phiJ,dphi,0.2*dphi.^(-2),'r-')
 dphi = linspace(0.01,0.07);
-plot(ax_phiJ,dphi,20*dphi.^(-1.5),'r-')
-plot(ax_phiJ,dphi,30*dphi.^(-1),'r-')
+plot(ax_phiJ,dphi,0.4*dphi.^(-1.5),'r-')
+plot(ax_phiJ,dphi,50*dphi.^(-1),'r-')
+%dphi = logspace(-4,-2);
+%plot(ax_phiJ,dphi,1000*dphi.^(-0.33),'r-')
 
 
 %yline(ax_phiJval,phi0);

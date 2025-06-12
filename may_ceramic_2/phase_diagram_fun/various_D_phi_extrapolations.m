@@ -1,6 +1,6 @@
 % import data and params
 data_table = may_ceramic_09_17;
-%smoothen_C_acous_free_03_19;
+smoothen_C_acous_free_03_19;
 alpha = -myft2.p1;
 D0 = exp(myft2.p2);
 
@@ -10,8 +10,9 @@ sigmastar = paramsVector(6);
 D = paramsVector(7:end);
 phi_list = unique(data_table(:,1));
 
-myAlpha=alpha;
+myAlpha=1;
 %D0 = D(end)*(phi0-phi_list(end))^myAlpha;
+D0 = D(end)*(phi0-phi_list(end))^myAlpha * 0.86;
 
 figure; hold on; prettyplot;
 xlabel('\phi'); ylabel('D')

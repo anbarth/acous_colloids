@@ -27,10 +27,14 @@ sigma_v_calculated = 1/2*rho_s * A.^2 .* (2*pi*f).^2;
 
 
 rate_c = ovarlez_data(:,2);
+
+eta_at_thickening = 1e3./rate_c;
+
 sigma_c = 10*rate_c;
 sigma_v = ovarlez_data(:,1);
 
-rate_OSP = 2*pi*f .* A/(28e-3);
+rate_OSP = 2*pi*f .* A/(14e-3);
+%rate_OSP = 2*pi*f .* A/(500e-3);
 
 
 
@@ -48,9 +52,13 @@ plot(x,k_v*x,'b-')
 %rate_OSP = (sigma_v*2/200).^(1/2)/(28*10^-3); % proportional to gamma_OSP but missing prefactor
 figure; hold on;
 xlabel('rate_{OSP}'); ylabel('rate_c')
-plot(rate_OSP,rate_c,'o')
-plot(0,0,'ko','MarkerFaceColor','k')
-k_OSP = 0.5;
+plot(rate_OSP,rate_c,'ko')
+plot(0,0,'ks','MarkerFaceColor','k','LineWidth',2)
+%k_OSP = 0.5;
 %offset_OSP = -0.5;
+p_OSP = polyfit(rate_OSP,rate_c,1);
+k_OSP = p_OSP(1);
+offset_OSP = p_OSP(2);
 x = linspace(min(rate_OSP),max(rate_OSP));
 plot(x,k_OSP*x+offset_OSP,'b-')
+prettyplot

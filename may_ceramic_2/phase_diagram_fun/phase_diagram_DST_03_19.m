@@ -52,19 +52,20 @@ for kk=1:size(data_table,1)
     sigma = data_table(kk,2);
     eta = data_table(kk,4);
     F = eta*(phi0-phi)^2;
-    scatter(phi,sigma*CSS,200,myColor(eta),'filled','s');
+    scatter(phi,sigma*CSS,400,myColor(eta),'filled','s');
 
     % mark DST points with an X
     ii = find(phi_list==phi);
    % if (ii==13 && (sigma==0.3 || sigma==0.5)) || (ii==12 && (sigma==0.2 || sigma==0.3))
    if (ii==13 && (sigma==0.3 || sigma==0.5)) 
-        scatter(phi,sigma*CSS,400,'kx','LineWidth',1)
+        scatter(phi,sigma*CSS,100,'kx','LineWidth',1)
    end
 end
 
 myAlpha=1;
 %mySigmastar = sigmastar/alpha*myAlpha;
-D0 = D(end)*(phi0-phi_list(end))^myAlpha;
+%D0 = D(end)*(phi0-phi_list(end))^myAlpha;
+D0 = D(end)*(phi0-phi_list(end))^myAlpha * 0.86;
 
 % plot jamming line
 xc=1;
