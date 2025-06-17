@@ -1,6 +1,6 @@
 % import data and params
 data_table = may_ceramic_09_17;
-%smoothen_C_acous_free_03_19;
+smoothen_C_acous_free_03_19;
 alpha = -myft2.p1;
 D0 = exp(myft2.p2);
 
@@ -62,10 +62,10 @@ for kk=1:size(data_table,1)
    end
 end
 
-myAlpha=1;
+myAlpha=alpha;
 %mySigmastar = sigmastar/alpha*myAlpha;
 %D0 = D(end)*(phi0-phi_list(end))^myAlpha;
-D0 = D(end)*(phi0-phi_list(end))^myAlpha * 0.86;
+D0 = D(end)*(phi0-phi_list(end))^myAlpha * 1.001;
 
 % plot jamming line
 xc=1;

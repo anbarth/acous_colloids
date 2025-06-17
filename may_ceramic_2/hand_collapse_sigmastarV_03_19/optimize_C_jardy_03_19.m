@@ -70,10 +70,15 @@ end
 
 %%
 phiRange = 13:-1:1;
-show_F_vs_x(dataTable,y_lsq_0V,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
-show_F_vs_xc_x(dataTable,y_lsq_0V,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
 delta = y_lsq_0V(3);
 A = y_lsq_0V(4);
+eta0 = y_lsq_0V(1);
+xi0 = (A/eta0)^(1/(-2-delta));
+xstar = 1/(1+xi0);
+show_F_vs_x(dataTable,y_lsq_0V,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
+xline(xstar)
+show_F_vs_xc_x(dataTable,y_lsq_0V,myModelHandle,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
+xline(xstar)
 xc_x = logspace(-3,0);
 plot(xc_x,A*(xc_x).^delta,'r-')
 
