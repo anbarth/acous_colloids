@@ -1,6 +1,6 @@
 % import data and params
 data_table = may_ceramic_09_17;
-smoothen_C_acous_free_03_19;
+%smoothen_C_acous_free_03_19;
 alpha = -myft2.p1;
 D0 = exp(myft2.p2);
 
@@ -55,17 +55,18 @@ for kk=1:size(data_table,1)
     scatter(phi,sigma*CSS,400,myColor(eta),'filled','s');
 
     % mark DST points with an X
-    ii = find(phi_list==phi);
+   % ii = find(phi_list==phi);
    % if (ii==13 && (sigma==0.3 || sigma==0.5)) || (ii==12 && (sigma==0.2 || sigma==0.3))
-   if (ii==13 && (sigma==0.3 || sigma==0.5)) 
-        scatter(phi,sigma*CSS,100,'kx','LineWidth',1)
-   end
+  % if (ii==13 && (sigma==0.3 || sigma==0.5)) 
+  %      scatter(phi,sigma*CSS,100,'kx','LineWidth',1)
+   %end
 end
 
-myAlpha=alpha;
+%myAlpha=alpha;
+myAlpha=1;
 %mySigmastar = sigmastar/alpha*myAlpha;
 %D0 = D(end)*(phi0-phi_list(end))^myAlpha;
-D0 = D(end)*(phi0-phi_list(end))^myAlpha * 1.001;
+D0 = D(end)*(phi0-phi_list(end))^myAlpha * 0.86;
 
 % plot jamming line
 xc=1;
@@ -74,6 +75,17 @@ myPhi = interpConstantX(xc,mySigma,phi0,sigmastar,D,myAlpha,D0,phi_list);
 plot(myPhi,mySigma*CSS,'k-','LineWidth',1.5)
 
 % plot DST line
-mySigma = logspace(-3,3)';
-myPhi = getDST(mySigma,sigmastar,paramsVector,myAlpha,D0,phi_list);
-plot(myPhi,mySigma*CSS,'k-','LineWidth',1.5)
+% mySigma = logspace(-3,3)';
+% myPhi = getDST(mySigma,sigmastar,paramsVector,myAlpha,D0,phi_list);
+% plot(myPhi,mySigma*CSS,'k-','LineWidth',1.5)
+
+% plot crossover line
+% set up phi_crossover
+A = paramsVector(4);
+eta0 = paramsVector(1);
+delta = paramsVector(3);
+xi0 = (A/eta0)^(1/(-2-delta));
+xstar = (xi0+1)^(-1*myAlpha);
+mySigma = logspace(-3,3,1000)';
+phi_crossover = interpConstantX(xstar,mySigma,phi0,sigmastar,D,myAlpha,D0,phi_list);
+plot(phi_crossover,mySigma*CSS,'k-','LineWidth',1.5)
