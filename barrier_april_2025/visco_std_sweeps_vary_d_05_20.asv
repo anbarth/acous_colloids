@@ -36,7 +36,7 @@ for ii=1:length(hList)
     c=hColor(h);
     viscosity = stress./rate*extraCorrection;
     plot(stress,viscosity,'-o','Color',c);
-    newtonianEtaVsH(ii) = mean(viscosity);
+    newtonianEtaVsH(ii) = mean(vis);
     yline(newtonianEtaVsH(ii),'--','Color',c)
 end
 %yline(5.034,'r')

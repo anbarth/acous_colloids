@@ -33,7 +33,9 @@ eta_at_thickening = 1e3./rate_c;
 sigma_c = 10*rate_c;
 sigma_v = ovarlez_data(:,1);
 
-rate_OSP = 2*pi*f .* A/(14e-3);
+d=60e-3;
+%d=14e-3;
+rate_OSP = 2*pi*f .* A/d;
 %rate_OSP = 2*pi*f .* A/(500e-3);
 
 

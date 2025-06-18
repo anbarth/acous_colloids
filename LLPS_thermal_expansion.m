@@ -1,7 +1,8 @@
 % some model for thermal expansion of the medium
-a = @(phi) 1+phi;
-b = @(phi) 1/1000;
+a = @(phi) 1;
+b = @(phi) -1/1000;
 rho = @(phi,T) a(phi)+b(phi).*T;
+phi_m_T = @(m,T) fzero( @(x) rho(x,T)/m-x ,0.5);
 
 
 
@@ -16,16 +17,12 @@ phi1 = @(T) phistar - c_left*(Tstar-T).^(1/2);
 phi2 = @(T) phistar + c_right*(Tstar-T).^(1/2);
 
 % n1, n2 are particle number densities of phase 1 and phase 2
-u1 = @(phi1,phi2,rho1,rho2,m) (phi2*m-rho2)./(phi2.*rho1-phi1.*rho2);
-u2 = @(phi1,phi2,rho1,rho2,m) (rho1-phi1*m)./(phi2.*rho1-phi1.*rho2);
+u1 = @(m,T) (phi2(T)*m-rho2(T))./(phi2(T).*rho1(T)-phi1(T).*rho2(T));
+u2 = @(m,T) (rho1(T)-phi1(T)*m)./(phi2(T).*rho1(T)-phi1(T).*rho2(T));
 rho1 = @(T) rho(phi1(T),T);
 rho2 = @(T) rho(phi2(T),T);
-%phi_LLPS = @(m,T) (phi2(T).*rho1(T) - phi1(T).*rho2(T)) ./ (m*(phi2(T)-phi1(T))+rho1(T)-rho2(T));
-phi_LLPS = @(m,T) 1./(u1(phi1(T),phi2(T),rho1(T),rho2(T),m)+u2(phi1(T),phi2(T),rho1(T),rho2(T),m));
-%rho_LLPS = @(m,T) m./(u1(phi1(T),phi2(T),rho1(T),rho2(T),m)+u2(phi1(T),phi2(T),rho1(T),rho2(T),m));
+phi_LLPS = @(m,T) 1./(u1(m,T)+u2(m,T));
 
-% conservation of mass:
-rho_binodal = @(phi,T)  u1(phi,phi1(T),phi2(T)).*rho1(T) + u2(phi,phi1(T),phi2(T)).*rho2(T);
 
 
 
@@ -39,19 +36,16 @@ xlim([min(phi1(T)) max(phi2(T))])
 ylim([min(T) max(T)])
 
 % plot the line followed in the experiment
-phi_i = 0.58; % initial concentration
+phi_i = 0.59; % initial concentration
 T_exp = linspace(Tstar,0); % temperature range
-rho_i = rho(phi,T_exp(1)); % initial density
+rho_i = rho(phi_i,T_exp(1)); % initial density
 m = rho_i/phi_i; % mass M/N
 
-% TODO need to make it kink at the boundary
-% this equation is only OK bc rho doesn't actually have any
-% phi-dependence.... how does it work when there is phi-dependence
-%rho_without_LLPS = rho(phi_i,T_exp);
-rho_without_LLPS = (a(0)+b(0)*T)/(m-1)*m;
-phi_without_LLPS = rho_without_LLPS/m;
+phi_without_LLPS = zeros(size(T_exp));
+
 phi_exp = zeros(size(T_exp));
 for i = 1:length(T_exp)
+    phi_without_LLPS(i) = phi_m_T(m,T_exp(i));
     if phi_without_LLPS(i) > phi1(T_exp(i)) && phi_without_LLPS(i) < phi2(T_exp(i))
         phi_exp(i) = phi_LLPS(m,T_exp(i));
     else
@@ -62,8 +56,18 @@ plot(phi_without_LLPS,T_exp,'r-')
 plot(phi_exp,T_exp,'k-')
 
 rho_exp = m*phi_exp;
+rho_without_LLPS = m*phi_exp;
 figure; hold on; xlabel('T'); ylabel('\rho')
-plot(T_exp,m*phi_without_LLPS,'r-')
+plot(T_exp,rho_without_LLPS,'r-')
 plot(T_exp,rho_exp,'k-')
 %plot(T_exp,rho1(T_exp),'b-')
 %plot(T_exp,rho2(T_exp),'g-')
+
+figure; hold on; xlabel('T'); ylabel('u1, u2')
+plot(T_exp,u1(m,T_exp))
+plot(T_exp,u2(m,T_exp))
+plot(T_exp, u1(m,T_exp)+u2(m,T_exp))
+
+figure; hold on; xlabel('T'); ylabel('phi')
+plot(T_exp,rho_without_LLPS)
+plot(T_exp,m*phi_LLPS(m,T_exp))

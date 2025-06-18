@@ -22,4 +22,4 @@ my_stress_list_rheo_units = my_stress_list/CSS;
 load("phi61_unobstructed_rate_hat.mat")
 delta_rate_hat = 0; % being lazy for now
 gap = Inf;
-phi61_ref_table = [gap*ones(size(my_stress_list)), my_stress_list, rate_hat, delta_rate_hat*ones(size(my_stress_list)),ones(size(my_stress_list))];
+phi61_ref_table = [gap*ones(size(my_stress_list)), my_stress_list, phi61_rate_hat, delta_rate_hat*ones(size(my_stress_list)),ones(size(my_stress_list))];
