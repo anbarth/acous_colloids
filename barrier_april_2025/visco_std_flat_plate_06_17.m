@@ -47,9 +47,5 @@ figure; hold on; prettyplot;
 ylabel('\eta_{eff}')
 
 % plot measured viscosities
-plot(hList, newtonianEtaVsH,'-o'); xlabel('d (mm)'); 
+plot(hList, newtonianEtaVsH,'-o'); xlabel('gap (mm)'); 
 
-% fit to line 
-p = polyfit(hList,newtonianEtaVsH,1);
-hFake = linspace(0.1,0.8);
-plot(hFake,p(2)+p(1)*hFake,'r-')

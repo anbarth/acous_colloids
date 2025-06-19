@@ -1,5 +1,8 @@
 %dataTable = phi61table_05_14;
 dataTable = phi61table_05_20;
+%dataTable = visco_std_flat_table_06_17;
+%dataTable = visco_std_table_06_17;
+%dataTable = visco_std_table_05_20;
 hList = unique(dataTable(:,1));
 %percentGapOpen = @(h) 1-0.9173./(h+0.9173); % 05/09, 05/14
 percentGapOpen = @(h) 1-0.88./(h+0.88); % 05/20
@@ -25,6 +28,7 @@ for ii=1:length(hList)
     ylabel('\eta (Pa s)')
     %ylabel('rate (1/s)')
     title(strcat("h=",num2str(h),"mm, h/d=",num2str(pGap)));
+    %title(strcat("gap=",num2str(h),"mm"));
     
     
     myDataAsc = dataTable(:,1)==h & dataTable(:,5)==1;

@@ -16,7 +16,7 @@ hold(ax_eta,'on');
 
 fig_rate = figure;
 ax_rate = axes('Parent', fig_rate,'XScale','log','YScale','log');
-ax_rate.YLabel.String = '\sigma (Pa)';
+ax_rate.YLabel.String = '\eta (Pa s)';
 ax_rate.XLabel.String = 'shear rate (1/s)';
 hold(ax_rate,'on');
 
@@ -81,7 +81,8 @@ for ii=1:length(phi_list)
     
     %plot(ax_rate,sigma./eta,sigma*CSS, '-d','Color',myColor,'LineWidth',1);
     rate_err = deltaEta./eta.*sigma./eta;
-    errorbar(ax_rate,sigma./eta,sigma*CSS,rate_err,"horizontal",'-d','Color',myColor,'LineWidth',1,'MarkerFaceColor',myColor)
+    %errorbar(ax_rate,sigma./eta,sigma*CSS,rate_err,"horizontal",'-d','Color',myColor,'LineWidth',1,'MarkerFaceColor',myColor)
+    errorbar(ax_rate,sigma./eta,eta*CSS,delta_eta_total*CSS,delta_eta_total*CSS,rate_err,rate_err,'-d','Color',myColor,'LineWidth',1,'MarkerFaceColor',myColor)
 
     plot(ax_eta_rescaled,sigma,eta*(phi0-phi_fudged)^2, '-d','Color',myColor,'LineWidth',1);
     errorbar(ax_eta_rescaled,sigma,eta*(phi0-phi)^2,deltaEta*(phi0-phi)^2,'.','Color',myColor,'LineWidth',1);

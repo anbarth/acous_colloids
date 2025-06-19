@@ -1,11 +1,10 @@
-%datatable = visco_std_table_05_20;
-datatable = visco_std_table_06_17;
+datatable = visco_std_table_05_20;
+%datatable = visco_std_table_06_17;
 hList = unique(datatable(:,1));
 percentGapOpen = @(h) 1-0.88./(h+0.88);
 
 newtonianEtaVsH = zeros(size(hList));
 
-extraCorrection = 100/38;
 
 acsDesc = 1;
 
@@ -34,7 +33,7 @@ for ii=1:length(hList)
     rate = datatable(myData,3);
     %c = gapColor(pGap);
     c=hColor(h);
-    viscosity = stress./rate*extraCorrection;
+    viscosity = stress./rate;
     plot(stress,viscosity,'-o','Color',c);
     newtonianEtaVsH(ii) = mean(viscosity);
     yline(newtonianEtaVsH(ii),'--','Color',c)
@@ -44,8 +43,8 @@ prettyplot
 %close
 
 %eta_solvent=1;
-%eta_solvent = 5.034;
-eta_solvent=100;
+eta_solvent = 5.034;
+%eta_solvent=100;
 
 % set up plot
 figure; hold on; prettyplot;
@@ -67,8 +66,8 @@ disp('A')
 disp(p(2)/(p(1)+p(2)))
 
 % extrapolate to extra h values
-%extraH = [0.9; 1.4; 2];
-extraH=[];
+extraH = [0.9; 1.4; 2];
+%extraH=[];
 plot(percentGapOpen(extraH),polyval(p,percentGapOpen(extraH)),'ro')
 disp([newtonianEtaVsH; polyval(p,percentGapOpen(extraH))])
 newtonianEtaVsH_05_20 = [newtonianEtaVsH; polyval(p,percentGapOpen(extraH))];
@@ -80,5 +79,5 @@ eta_effective = @(A,hd) eta_solvent*(A+hd*(1-A));
 
 
 hd = linspace(0,1);
-plot(hd, eta_effective(A1,hd),'r-');
+%plot(hd, eta_effective(A1,hd),'r-');
 %plot(hd, eta_effective(A2,hd),'r-');

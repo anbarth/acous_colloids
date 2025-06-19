@@ -15,7 +15,7 @@ dataTableAsc = zeros(0,3);
 dataTableDesc = zeros(0,3);
 
 sigma = getStress(mySweep); % in Pa
-%eta = getViscosity(mySweep); % in Pa s
+eta = getViscosity(mySweep); % in Pa s
 rate = getRate(mySweep); % in 1/s
 t = getTime(mySweep); % in s
 
@@ -33,7 +33,7 @@ for ii = 1:(size(mySweep.data,1)+1)
     if mySigma ~= prevSigma || ii==size(mySweep.data,1)+1 
         % process previous interval, which is over now
         intervalEndIndex = ii-1;
-        %myEta = eta(intervalStartIndex:intervalEndIndex);
+        myEta = eta(intervalStartIndex:intervalEndIndex);
         myRate = rate(intervalStartIndex:intervalEndIndex);
         myT = t(intervalStartIndex:intervalEndIndex);
         
@@ -42,11 +42,11 @@ for ii = 1:(size(mySweep.data,1)+1)
             continue
         end
         
-        % average last 10 seconds of the interval
+        % average last N seconds of the interval
         myAveragingWindow = myT > myT(end)-averagingTime;
-        %myEtaAvg = mean(myEta(myAveragingWindow));
-        %myDeltaEta = std(myEta(myAveragingWindow));
+
         myRateAvg = mean(myRate(myAveragingWindow));
+        %myRateAvg = prevSigma/mean(myEta(myAveragingWindow));
         myDeltaRate = std(myRate(myAveragingWindow));
         if ascending
             %dataTableAsc(end+1,1:3) = [mySigma,myEtaAvg,myDeltaEta];
@@ -55,14 +55,12 @@ for ii = 1:(size(mySweep.data,1)+1)
             % if we _just started_ the descent, put the previous stress in both
             % tables, unless it'll be redundant in a pooled table
             if mySigma < prevSigma && ascendingDescending~=2
-                %dataTableDesc(end+1,1:3) = [prevSigma,myEtaAvg,myDeltaEta];
                 dataTableDesc(end+1,1:3) = [prevSigma,myRateAvg,myDeltaRate];
                 ascendingInterval = 1:intervalEndIndex;
                 descendingInterval = intervalStartIndex:length(t);
                 ascending = false;
             end
         else
-            %dataTableDesc(end+1,1:3) = [prevSigma,myEtaAvg,myDeltaEta];
             dataTableDesc(end+1,1:3) = [prevSigma,myRateAvg,myDeltaRate];
         end
        
@@ -88,15 +86,22 @@ elseif ascendingDescending==2
 end
 
 if showPlot
-    figure; hold on; xlabel('t (s)'); %ylabel('\eta (rheo Pa s)')
+    figure; hold on; xlabel('t (s)'); ylabel('\eta (rheo Pa s)')
     ax1=gca; ax1.YScale = 'log'; %ax1.XScale = 'log';
-    %plot(t(myInterval),eta(myInterval));
-    plot(t(myInterval),rate(myInterval));
-    %plot(sigma(myInterval),rate(myInterval))
-    averages = unique(dataTable(:,2));
-    for ii = 1:length(averages)
-        yline(averages(ii))
+    plot(t(myInterval),eta(myInterval));
+    %plot(t(myInterval),rate(myInterval));
+    %rate_averages = unique(dataTable(:,2));
+    %for ii = 1:length(rate_averages)
+    %    yline(rate_averages(ii))
+    %end
+    eta_averages = dataTable(:,1)./dataTable(:,2);
+    rate_averages = dataTable(:,2);
+    for ii = 1:length(eta_averages)
+       yline(eta_averages(ii))
     end
+    figure; hold on; xlabel('rate (1/s)'); ylabel('\eta (rheo Pa s)')
+    ax1=gca; ax1.YScale = 'log'; ax1.XScale = 'log';
+    plot(rate_averages,eta_averages,'o-')
 end
 
 

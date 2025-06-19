@@ -19,9 +19,9 @@ ylabel('\eta (Pa s)')
 
 hList = unique(barrierDataTable(:,1));
 
-load("newtonianEtaVsH_05_20.mat")
-correctionFactors = 5.034./newtonianEtaVsH_05_20;
-%correctionFactors = ones(size(hList));
+load("newtonianEtaVsH_05_20_corrected.mat")
+%correctionFactors = 5.034./newtonianEtaVsH_05_20;
+correctionFactors = ones(size(hList));
 
 
 
