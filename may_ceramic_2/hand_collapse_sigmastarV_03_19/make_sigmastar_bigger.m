@@ -14,6 +14,7 @@ sigmastar0V = sigmastar0V*10;
 %return
 
 % not important here
+
 %eta0=eta0*1.1;
 delta = -1.5; A = 2; width = 10;
 xi0 = (A/eta0)^(1/(-2-delta));
@@ -28,11 +29,13 @@ y_handpicked_03_19 = [eta0, phi0, delta, A, width, sigmastar0V, D_0V];
 
 %return
 phiRange = 13:-1:1;
+
 show_F_vs_xc_x(dataTable,y_handpicked_03_19, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true); prettyplot
 show_F_vs_x(dataTable,y_handpicked_03_19, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true); xlim([1e-10 1.5]); prettyplot
 show_cardy(dataTable,y_handpicked_03_19, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false); prettyplot; %xlim([1e-3 200])
 %x1 = logspace(-3,2); x2 = logspace(-2,4);
 %plot(x1,A*x1.^delta,'b-'); plot(x2,eta0*x2.^(-2),'b-'); xline(xi0);
+
 return
 
 %%
