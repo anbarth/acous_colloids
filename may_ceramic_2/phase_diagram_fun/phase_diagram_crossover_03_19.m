@@ -1,6 +1,6 @@
 % import data and params
 data_table = may_ceramic_09_17;
-%smoothen_C_acous_free_03_19;
+smoothen_C_acous_free_03_19;
 alpha = -myft2.p1;
 D0 = exp(myft2.p2);
 
@@ -63,10 +63,14 @@ for kk=1:size(data_table,1)
 end
 
 %myAlpha=alpha;
-myAlpha=1;
+myAlpha=0.5;
 %mySigmastar = sigmastar/alpha*myAlpha;
 %D0 = D(end)*(phi0-phi_list(end))^myAlpha;
-D0 = D(end)*(phi0-phi_list(end))^myAlpha * 0.86;
+%D0 = D(end)*(phi0-phi_list(end))^myAlpha * 0.86;
+D0 = D(end)*(phi0-phi_list(end))^myAlpha * 0.9;
+
+phimu = invD(1,D,phi_list,phi0,D0,myAlpha);
+disp(phimu)
 
 % plot jamming line
 xc=1;
@@ -89,3 +93,11 @@ xstar = (xi0+1)^(-1*myAlpha);
 mySigma = logspace(-3,3,1000)';
 phi_crossover = interpConstantX(xstar,mySigma,phi0,sigmastar,D,myAlpha,D0,phi_list);
 plot(phi_crossover,mySigma*CSS,'k-','LineWidth',1.5)
+
+figure; hold on;
+Dfake=linspace(0,2)';
+phifake = invD(Dfake,D,phi_list,phi0,D0,myAlpha);
+%plot(phifake,Dfake,'b-');
+%plot(phi_list,D,'bo');
+plot(phifake,Dfake.*(phi0-phifake).^myAlpha,'b-');
+plot(phi_list,D'.*(phi0-phi_list).^myAlpha,'bo');
