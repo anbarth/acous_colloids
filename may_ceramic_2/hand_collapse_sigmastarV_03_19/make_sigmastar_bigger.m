@@ -14,7 +14,7 @@ sigmastar0V = sigmastar0V*10;
 %return
 
 % not important here
-delta = -0.5; A = 2; width = 1;
+delta = -1.5; A = 0.2; width = 1;
 
 
 % guess D
@@ -26,8 +26,8 @@ y_handpicked_03_19 = [eta0, phi0, delta, A, width, sigmastar0V, D_0V];
 
 %return
 phiRange = 13:-1:1;
-show_F_vs_xc_x(dataTable,y_handpicked_03_19, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true)
-show_F_vs_x(dataTable,y_handpicked_03_19, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',true); xlim([1e-10 1.5])
+show_F_vs_xc_x(dataTable,y_handpicked_03_19, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',true,'ShowErrorBars',true)
+show_F_vs_x(dataTable,y_handpicked_03_19, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',true,'ShowErrorBars',true); xlim([1e-10 1.5])
 %show_cardy(dataTable,y_handpicked_03_19, @modelHandpickedAllExp0V,'PhiRange',phiRange,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',true); xlim([1e-3 200])
 %x = logspace(-3,2);
 %plot(x,A*x.^delta,'b-')
