@@ -22,3 +22,9 @@ title('\alpha=0.02')
 xline(xi0)
 %plot(xifake,A*(alpha)^delta*xifake.^delta);
 %plot(xifake,eta0*xifake.^(-2));
+
+alpha=0.5;
+show_collapse_helper(3,dataTable,y,modelHandle,'Alpha',alpha,'ColorBy',2,'ShowInterpolatingFunction',interp); 
+prettyplot
+title('\alpha=0.5')
+xline(xi0)

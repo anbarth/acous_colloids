@@ -99,5 +99,6 @@ Dfake=linspace(0,2)';
 phifake = invD(Dfake,D,phi_list,phi0,D0,myAlpha);
 %plot(phifake,Dfake,'b-');
 %plot(phi_list,D,'bo');
-plot(phifake,Dfake.*(phi0-phifake).^myAlpha,'b-');
-plot(phi_list,D'.*(phi0-phi_list).^myAlpha,'bo');
+plot(phifake,Dfake.*(phi0-phifake).^myAlpha,'b-','LineWidth',1.5);
+plot(phi_list,D'.*(phi0-phi_list).^myAlpha,'bo','LineWidth',1.5);
+xlabel('\phi'); ylabel('B'); prettyplot

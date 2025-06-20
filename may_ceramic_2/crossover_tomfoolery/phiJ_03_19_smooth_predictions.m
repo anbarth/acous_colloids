@@ -11,9 +11,10 @@ phi_list = unique(dataTable(:,1));
 
 
 
-%alpha=1;
+alpha=0.5;
 %D0 = D(end)*(phi0-phi_list(end))^alpha;
 %D0 = D(end)*(phi0-phi_list(end))^alpha * 0.86;
+D0 = D(end)*(phi0-phi_list(end))^alpha * 0.9;
 
 phimu = invD(1,D,phi_list,phi0,D0,alpha);
 disp(phimu)
