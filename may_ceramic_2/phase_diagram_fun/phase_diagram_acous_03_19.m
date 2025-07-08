@@ -1,6 +1,6 @@
 % import data and params
 data_table = may_ceramic_09_17;
-%smoothen_C_03_19;
+smoothen_C_03_19;
 alpha = -myft2.p1;
 D0 = exp(myft2.p2);
 

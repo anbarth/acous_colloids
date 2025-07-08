@@ -19,7 +19,7 @@ myModelHandle = @modelHandpickedAllExp0V; paramsVector = y_lsq_0V;
 % have to assume sigma*<1, which is... probably true.
 
 
-paramNum = 6;
+paramNum = 3;
 
 jacobian = numeric_jacobian(dataTable,paramsVector,myModelHandle);
 %jacobian = numeric_jacobian_loggily(dataTable,paramsVector,myModelHandle,3);
@@ -42,8 +42,8 @@ disp([myParamOptimal myHessianCI])
 
 deltaParam = myHessianCI*1;
 %deltaParam = 0.1;
-%paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+deltaParam,9);
-paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+0.9,9);
+paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+deltaParam,9);
+%paramRange = linspace(myParamOptimal-deltaParam,myParamOptimal+0.9,9);
 
 
 SSR = @(y) sum(get_residuals(dataTable, y, myModelHandle).^2); 
@@ -92,6 +92,7 @@ ylabel('\Delta SSR')
 xlabel('parameter')
 xline(myParamOptimal-myHessianCI)
 xline(myParamOptimal+myHessianCI)
+prettyplot
 
 % figure;
 % hold on;
