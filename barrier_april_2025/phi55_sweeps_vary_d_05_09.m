@@ -1,5 +1,5 @@
-%datatable = phi55table_05_09;
-datatable = phi61table_05_14;
+datatable = phi55table_05_09;
+%datatable = phi61table_05_14;
 hList = unique(datatable(:,1));
 percentGapOpen = @(h) 1-0.9173./(h+0.9173);
 
@@ -16,7 +16,7 @@ minhd = percentGapOpen(minH); maxhd = percentGapOpen(maxH);
 hdColor = @(hd) cmap(round(1+255*(hd-minhd)/(maxhd-minhd)),:);
 
 figure; hold on; makeAxesLogLog;
-xlabel('\sigma (Pa)'); ylabel('\eta (Pa s)')
+xlabel('rate (1/s)'); ylabel('\eta (Pa s)')
 colormap(cmap)
 c1=colorbar;
 clim([percentGapOpen(minH) percentGapOpen(maxH)])
@@ -35,8 +35,15 @@ for ii=1:length(hList)
     %c=hColor(h);
     %plot(stress,stress./rate,'-o','Color',c);
 
-    myNewtonianEta = newtonianEtaVsH_05_09(hList==h);
-    plot(stress,stress./rate*5.034/myNewtonianEta,'-o','Color',c);
+    %myNewtonianEta = newtonianEtaVsH_05_09(hList==h);
+    %plot(stress,stress./rate*5.034/myNewtonianEta,'-o','Color',c);
+    plot(rate,stress./rate,'-o','Color',c);
 end
 prettyplot
+return
+% add reference
+refdatatable = phi56_ref_table;
+stress = refdatatable(:,2);
+rate = refdatatable(:,3);
+plot(rate,stress./rate,'-ok');
 

@@ -59,16 +59,19 @@ for mm=1:numMaterials
     disp('sigmastar')
     dispParam(startIndex+2)
 
-    %figure; hold on;
-    %title(s)
+
+    %xlabel('\phi')
+    %ylabel('D(\phi)')
+    %errorbar(phi0-phi_list,D,D_err,marker,'LineWidth',1,'Color',c1,'MarkerFaceColor',c2)
+
     xlabel('\phi')
-    ylabel('D(\phi)')
-    %plot(phi_list,D_init,'-o','LineWidth',0.75);
-    %plot(phi_list,D,'-o','LineWidth',2);
-    %errorbar(phi_list,D,D_err,'-ok','LineWidth',1);
-    errorbar(phi0-phi_list,D,D_err,marker,'LineWidth',1,'Color',c1,'MarkerFaceColor',c2)
+    ylabel('C(\phi)')
+    C = D.*(phi0-phi_list)';
+    C_err = D_err.*(phi0-phi_list)';
+    errorbar(phi_list,C,C_err,marker,'LineWidth',1,'Color',c1,'MarkerFaceColor',c2)
+
     prettyplot;
-    makeAxesLogLog
+   % makeAxesLogLog
     f1=gcf; f1.Position=[83,65,511,542];
 
     % move startIndex for next iteration

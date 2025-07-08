@@ -8,7 +8,9 @@ confInts = get_conf_ints(may_ceramic_09_17,y_pointwise,myModelHandle);
 makeSigmastarPlot = true;
 correctSigmastarPlotUnits = true;
 makeDplot = false;
-makeCplot = false;
+makeBplot = false;
+makeCplot = true;
+
 makeCollapsePlot = false;
 
 % extract alpha from D
@@ -36,18 +38,31 @@ if makeDplot
 end
 
 % fit a logistic curve to C
-C = D'.*dphi.^alpha;
+B = D'.*dphi.^alpha;
 logistic = @(L,k,x0,x) L./(1+exp(-k*(x-x0)));
 logisticFit = fittype(logistic);
 %cFit = fit(phi_list,C,logisticFit,'StartPoint',[0.95, 50, 0.4]);
-cFit = fit(phi_list,C,logisticFit,'StartPoint',[0.95, 50, 0.4],'Weights',1./D_ci);
+cFit = fit(phi_list,B,logisticFit,'StartPoint',[0.95, 50, 0.4],'Weights',1./D_ci);
+
+if makeBplot
+    figure; hold on;
+    xlabel('\phi'); ylabel('B')
+    %plot(phi_list,C,'ko')
+    errorbar(phi_list,B,D_ci,'ko')
+    plot(phi_list,logistic(cFit.L,cFit.k,cFit.x0,phi_list));
+end
 
 if makeCplot
+    C = D'.*dphi;
+    C_ci = D_ci.*dphi;
+
     figure; hold on;
     xlabel('\phi'); ylabel('C')
-    %plot(phi_list,C,'ko')
-    errorbar(phi_list,C,D_ci,'ko')
-    plot(phi_list,logistic(cFit.L,cFit.k,cFit.x0,phi_list));
+    errorbar(phi_list,C,C_ci,'ko','MarkerFaceColor','k')
+
+    prettyPlot;
+    myfig = gcf;
+    myfig.Position=[100,100,414,323];
 end
 
 % fit a quadratic to sigma*

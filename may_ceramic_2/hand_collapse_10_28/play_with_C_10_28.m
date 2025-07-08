@@ -21,4 +21,5 @@ C(:,1) = D_0V;
 
 y_handpicked_10_28 = zipParamsHandpickedAll(eta0, phi0, delta, A, width, sigmastar, C, phi_fudge);
 
-%show_F_vs_xc_x(dataTable,y_handpicked_10_28, @modelHandpickedAll,'PhiRange',13:-1:1,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',false)
+show_F_vs_xc_x(dataTable,y_handpicked_10_28, @modelHandpickedAll,'PhiRange',13:-1:1,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',false)
+show_F_vs_x(dataTable,y_handpicked_10_28, @modelHandpickedAll,'PhiRange',13:-1:1,'ShowLines',true,'VoltRange',1,'ColorBy',2,'ShowInterpolatingFunction',false,'ShowErrorBars',false)

@@ -30,8 +30,8 @@ hold(ax_eta_rescaled,'on');
 %phi_high = [0.44,0.48,0.52,0.56,0.59];
 phi_list = unique(dataTable(:,1));
 %phi_list_plot = phi_list(1:end);
-plot_indices = 1:length(phi_list);
-
+%plot_indices = 1:length(phi_list);
+plot_indices=10:11;
 
 %load("y_optimal_crossover_post_fudge_1percent_06_27.mat"); [eta0, phi0, delta, A, width, sigmastar, C, phi_fudge] = unzipParams(y_optimal,13); 
 phi_fudge = zeros(1,length(phi_list)); phi0 = 0.718;

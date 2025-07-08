@@ -1,4 +1,6 @@
 barrierdatatable = phi61table_05_20;
+
+
 refdatatable = phi61_ref_table;
 %datatable = [barrierdatatable;refdatatable];
 datatable = barrierdatatable;

@@ -2,6 +2,7 @@ load("phi61_05_14.mat");
 
 CSS = (50/19)^3;
 %CSS=1;
+CSR = 1/(50/19);
 
 phi61_rheo_structs = {phi61_05_14.h2_sweep, phi61_05_14.h14_sweep, phi61_05_14.h09_sweep, ...
     phi61_05_14.h06_sweep, phi61_05_14.h04_sweep, phi61_05_14.h03_sweep, phi61_05_14.h022_sweep_45s, ...
@@ -25,3 +26,4 @@ end
 
 % correct stress units
 phi61table_05_14(:,2) = CSS*phi61table_05_14(:,2);
+phi61table_05_14(:,3) = CSR*phi61table_05_14(:,3);

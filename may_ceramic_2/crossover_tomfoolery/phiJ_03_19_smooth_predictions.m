@@ -54,7 +54,7 @@ hold(ax_phiJ,'on');
 
 
 L={};
-for kk=7
+for kk=15
 %for kk = 1:length(stress_list)
     % identify stress
     sigma = stress_list(kk);

@@ -2,6 +2,7 @@ load("phi55_05_09.mat");
 load("visco_std_05_09.mat");
 
 CSS = (50/19)^3;
+CSR = 1/(50/19);
 %CSS=1;
 
 phi55_rheo_structs = {phi55_05_09.h2_sweep,phi55_05_09.h14_sweep,phi55_05_09.h09_sweep,...
@@ -44,4 +45,6 @@ end
 % correct stress units
 phi55table_05_09(:,2) = CSS*phi55table_05_09(:,2);
 viscostdtable_05_09(:,2) = CSS*viscostdtable_05_09(:,2);
+phi55table_05_09(:,3) = CSR*phi55table_05_09(:,3);
+viscostdtable_05_09(:,3) = CSR*viscostdtable_05_09(:,3);
 

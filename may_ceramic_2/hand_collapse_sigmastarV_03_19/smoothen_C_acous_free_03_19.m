@@ -1,4 +1,5 @@
-optimize_C_jardy_03_19;
+%optimize_C_jardy_03_19;
+
 %optimize_C_powerlaw_03_19;
 %optimize_C_logsigmastar_03_19;
 
@@ -12,7 +13,8 @@ confInts = get_conf_ints(acoustics_free_data,y_pointwise,myModelHandle);
 
 % optionally plot things
 makeDplot = false;
-makeCplot = false;
+makeBplot = false;
+makeCplot = true;
 makeCollapsePlot = false;
 
 % extract alpha from D
@@ -40,20 +42,34 @@ if makeDplot
 end
 
 % fit a logistic curve to C
-C = D'.*dphi.^alpha;
+B = D'.*dphi.^alpha;
 logistic = @(L,k,x0,x) L./(1+exp(-k*(x-x0)));
 logisticFit = fittype(logistic);
 %cFit = fit(phi_list,C,logisticFit,'StartPoint',[0.95, 50, 0.4]);
-cFit = fit(phi_list,C,logisticFit,'StartPoint',[0.95, 50, 0.4],'Weights',1./D_ci);
+cFit = fit(phi_list,B,logisticFit,'StartPoint',[0.95, 50, 0.4],'Weights',1./D_ci);
 
-if makeCplot
+if makeBplot
     figure; hold on;
-    xlabel('\phi'); ylabel('C')
+    xlabel('\phi'); ylabel('B')
     %plot(phi_list,C,'ko')
-    errorbar(phi_list,C,D_ci,'ko','MarkerFaceColor','k')
+    errorbar(phi_list,B,D_ci,'ko','MarkerFaceColor','k')
 
     phifake = linspace(min(phi_list),max(phi_list));
     plot(phifake,logistic(cFit.L,cFit.k,cFit.x0,phifake));
+    xlim([0.1 0.7])
+    prettyPlot;
+    myfig = gcf;
+    myfig.Position=[100,100,414,323];
+end
+
+if makeCplot
+    C = D'.*dphi;
+    C_ci = D_ci.*dphi;
+
+    figure; hold on;
+    xlabel('\phi'); ylabel('C')
+    %plot(phi_list,C,'ko')
+    errorbar(phi_list,C,C_ci,'ko','MarkerFaceColor','k')
     xlim([0.1 0.7])
     prettyPlot;
     myfig = gcf;

@@ -13,7 +13,7 @@ phi61_rheo_structs = {phi61_05_20.h2_sweep,phi61_05_20.h14_sweep,phi61_05_20.h09
     phi61_05_20.h06_sweep,phi61_05_20.h04_sweep,phi61_05_20.h03_sweep_60s,phi61_05_20.h022_sweep_60s,...
     phi61_05_20.h016_sweep_60s,phi61_05_20.h01_sweep_60s};
 
-% make a table with columns: gap, stress, rate, ascending (1) or desc (2)
+% make a table with columns: gap, stress, rate, delta rate, ascending (1) or desc (2)
 phi61table_05_20 = zeros(0,5);
 for ii=1:length(phi61_rheo_structs)
     myRheoStruct = phi61_rheo_structs{ii};
