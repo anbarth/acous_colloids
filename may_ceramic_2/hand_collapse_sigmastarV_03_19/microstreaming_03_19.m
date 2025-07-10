@@ -1,4 +1,4 @@
-optimize_sigmastarV_03_19;
+%optimize_sigmastarV_03_19;
 
 makeVplot = false;
 makeUplot = true;
@@ -67,8 +67,8 @@ if makeUplot
         U = acoustic_energy_density(my_volt_list(jj));
         colorU = cmap(round(1+255*(log(U)-logMinE0)/( logMaxE0-logMinE0 )),:);
         %errorbar(acoustic_energy_density(my_volt_list(jj)),sigmastar_acous(jj),CSS*sigmastar_ci(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',5,'LineWidth',1.5);
-        %plot(U,sigmastar_acous(jj),'o','Color',colorU,'MarkerFaceColor',colorU,'MarkerSize',5,'LineWidth',1.5);
-        plot(U,sigmastar_acous(jj),'o','Color',colorU,'MarkerSize',5,'LineWidth',1.5);
+        plot(U,sigmastar_acous(jj),'o','Color',colorU,'MarkerFaceColor',colorU,'MarkerSize',5,'LineWidth',1.5);
+        %plot(U,sigmastar_acous(jj),'o','Color',colorU,'MarkerSize',5,'LineWidth',1.5);
     end
     prettyPlot;
     
@@ -76,10 +76,10 @@ if makeUplot
     %plot(acoustic_energy_density(V),CSS*polyval([sigmastarFit.a sigmastarFit.b sigmastarFit.c],V)-CSS*sigmastar(1),'r-');
     
     myfig = gcf;
-    myfig.Position=[50,50,414,323];
-    xlim([0.03 30])
+    myfig.Position=[1992,313,250,323];
+    xlim([0.044905934284051,44.90593428405083])
     xticks([10^-1 10^0 10^1])
-    ylim([0.03 30])
+    ylim([0.048817439781596,48.81743978159557])
     yticks([10^-1 10^0 10^1])
 end
 

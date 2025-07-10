@@ -49,8 +49,8 @@ for ii = 1:length(paramRange)
     hessian_resnorm(ii) = (1/2)*(y-paramsVector)*hessian*(y-paramsVector)';
 
     if myParam==myParamOptimal || first || ii==length(paramRange)
-       show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); xlim([1e-2 1.5]);  title(myParam)
-       show_F_vs_xc_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true);  title(myParam)
+       show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true); xlim([1e-2 1.5]);  title(myParam); prettyplot
+       show_F_vs_xc_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ColorBy',2,'ShowLines',true);  title(myParam); prettyplot
       % show_F_vs_x(dataTable,y,myModelHandle,'ShowInterpolatingFunction',true,'ShowLines',true,'VoltRange',paramNum-5); xlim([1e-2 1.5])
     %   title(myParam-myParamOptimal)
     end

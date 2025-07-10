@@ -22,13 +22,35 @@ sigmastarFit = fit(my_volt_list',sigmastar',quadfit,'StartPoint',[0.0001, 0.0005
 
 CSS=(50/19)^3;
 sigmastar_acous = CSS*(sigmastar-sigmastar(1));
-sigmastar_acous_ci = CSS*(sigmastar_ci-sigmastar_ci(1));
 
 % fit a line to sigma*_a(U)
 myfittype = fittype('a*x');
 myfit = fit(acoustic_energy_density(my_volt_list)',sigmastar_acous',myfittype,'StartPoint',1,'Weights',1./sigmastar_ci);
 
-
+if makeVplot
+    figure; hold on; 
+    xlabel('Acoustic voltage {\itV} (V)'); ylabel('\sigma^*_a (Pa)');
+    
+    % quadratic interpolation
+    V = linspace(0,80);
+    plot(V,CSS*polyval([sigmastarFit.a sigmastarFit.b sigmastarFit.c],V)-CSS*sigmastar(1),'r-');
+    
+    plot(V,acoustic_energy_density(V),'k-');
+    
+    % points with err bars
+    cmap = plasma(256);
+    myColor = @(V) cmap(round(1+255*V/80),:);
+    for jj=1:length(my_volt_list)
+        colorV = myColor(my_volt_list(jj));
+        plot(my_volt_list(jj),sigmastar_acous(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',5,'LineWidth',1.5);
+        
+        prettyPlot;
+        xlim([0 100])
+    end
+    
+    myfig = gcf;
+    myfig.Position=[50,50,268,323];
+end
 
 
 
@@ -46,7 +68,7 @@ if makeUplot
         colorU = cmap(round(1+255*(log(U)-logMinE0)/( logMaxE0-logMinE0 )),:);
         %errorbar(acoustic_energy_density(my_volt_list(jj)),sigmastar_acous(jj),CSS*sigmastar_ci(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',5,'LineWidth',1.5);
         %plot(U,sigmastar_acous(jj),'o','Color',colorU,'MarkerFaceColor',colorU,'MarkerSize',5,'LineWidth',1.5);
-        errorbar(U,sigmastar_acous(jj),sigmastar_acous_ci(jj),'ok','MarkerSize',5,'LineWidth',1.5);
+        plot(U,sigmastar_acous(jj),'o','Color',colorU,'MarkerSize',5,'LineWidth',1.5);
     end
     prettyPlot;
     
