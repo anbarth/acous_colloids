@@ -6,37 +6,39 @@ sigmastar = y(6:12);
 sigmastar_0 = sigmastar(1);
 sigmastar_a = sigmastar(2:end)-sigmastar(1);
 
-% transform into correct parameter space for finding CIs
-y_log = y; 
-y_log(6) = log(y(6));
-y_log(7:12) = log(y(7:12)-y(6));
-ci = get_conf_ints(dataTable,y_log,@modelHandpickedSigmastarV_logsigmastar)';
+[sigmastar_0_ci_u,sigmastar_0_ci_l,sigmastar_a_ci_u,sigmastar_a_ci_l] = get_sigmastar_a_confints_logspace(y,dataTable);
 
-
-log_sigmastar_0_ci = ci(6);
-log_sigmastar_a_ci = ci(7:12);
-
-sigmastar_0_upper = sigmastar_0*exp(log_sigmastar_0_ci);
-sigmastar_0_lower = sigmastar_0/exp(log_sigmastar_0_ci);
-sigmastar_a_upper = sigmastar_a.*exp(log_sigmastar_a_ci);
-sigmastar_a_lower = sigmastar_a./exp(log_sigmastar_a_ci);
-
-disp(sigmastar_0)
-disp(sigmastar_0_lower)
-disp(sigmastar_0_upper)
-disp(sigmastar_a)
-disp(sigmastar_a_lower)
-disp(sigmastar_a_upper)
-
-sigmastar_a_ci_u = sigmastar_a_upper-sigmastar_a;
-sigmastar_a_ci_l = sigmastar_a-sigmastar_a_lower;
 
 figure; hold on;
 makeAxesLogLog;
-prettyplot
+prettyPlot
 xlabel('U_a')
 ylabel('\sigma^*_a')
 V = [5 10 20 40 60 80];
 CSS=(50/19)^3;
-errorbar(acoustic_energy_density(V),CSS*sigmastar_a,CSS*sigmastar_a_ci_l,CSS*sigmastar_a_ci_u,'ok')
+cmap = plasma(256);
+%myColor = @(V) cmap(round(1+255*V/80),:);
+logMinE0 = log(acoustic_energy_density(5));
+logMaxE0 = log(acoustic_energy_density(80));
+myColor = @(U) cmap(round(1+255*(log(U)-logMinE0)/( logMaxE0-logMinE0 )),:);
+
+
+xpts = logspace(-5,5);
+plot(xpts,xpts,'k--')
+for ii=1:length(V)
+    disp(ii)
+    U = acoustic_energy_density(V(ii));
+    errorbar(U,CSS*sigmastar_a(ii),CSS*sigmastar_a_ci_l(ii),CSS*sigmastar_a_ci_u(ii),'o','Color',myColor(U),'MarkerFaceColor',myColor(U),'LineWidth',1.5)
+end
+
+myfig = gcf;
+myfig.Position=[1992,313,250,323];
+xlim([0.044905934284051,44.90593428405083])
+xticks([10^-1 10^0 10^1])
+ylim([0.002,100])
+yticks([10^-2 10^0 10^2])
+
+disp(sigmastar_0*CSS)
+disp(CSS*(sigmastar_0-sigmastar_0_ci_l))
+disp(CSS*(sigmastar_0+sigmastar_0_ci_u))
 

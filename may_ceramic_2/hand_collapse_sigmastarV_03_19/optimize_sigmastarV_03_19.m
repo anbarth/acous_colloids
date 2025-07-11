@@ -29,13 +29,14 @@ y_fmincon = logParamsToParams(log_y_fmincon,3);
 return
 %% SHOW CONF INTS
 ci = get_conf_ints(dataTable,y_lsq,@modelHandpickedSigmastarV);
+[ci_u,ci_l] = get_conf_ints_loggily(acoustics_free_data,y_lsq,@modelHandpickedSigmastarV);
 s = ["F0","phi0","delta","A","h","sigma*_0"];
 for ii=1:length(s)
     disp(s(ii))
     if ii==1 || ii==4 || ii==6
-        disp((50/19)^3*[y_init(ii) y_lsq(ii) ci(ii)])
+        disp((50/19)^3*[y_init(ii) y_lsq(ii) ci(ii) ci_l(ii) ci_u(ii)])
     else
-        disp([y_init(ii) y_lsq(ii) ci(ii)])
+        disp([y_init(ii) y_lsq(ii) ci(ii) ci_l(ii) ci_u(ii)])
     end
 %     if ii==6
 %         ci_l =  y_lsq_0V(ii) - exp(log(y_lsq(ii))-ci(ii));

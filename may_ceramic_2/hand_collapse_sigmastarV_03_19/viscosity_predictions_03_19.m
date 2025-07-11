@@ -39,7 +39,7 @@ for jj=1:length(volt_list)
 
         % plot predictions
         %sigma_fake=logspace(log10(minSigma),log10(maxSigma))';
-        sigma_fake=1/CSS*logspace(-1,4.5)';
+        sigma_fake=1/CSS*logspace(-3,4.5)';
         myEtaHat = viscosity_prediction(phi,sigma_fake,v,dataTable,y,myModelHandle);
 
         sigma_fake=sigma_fake*CSS;

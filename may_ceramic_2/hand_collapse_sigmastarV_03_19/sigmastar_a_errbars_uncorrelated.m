@@ -1,31 +1,37 @@
-optimize_sigmastarV_03_19;
+%optimize_sigmastarV_03_19;
 
 makeVplot = false;
 makeUplot = true;
 
 y_pointwise = y_fmincon; myModelHandle = @modelHandpickedSigmastarV;
-confInts = get_conf_ints(may_ceramic_09_17,y_pointwise,myModelHandle);
+confIntsWithSigma0 = get_conf_ints(may_ceramic_09_17,y_pointwise,myModelHandle);
+
+sigmastar0 = y_pointwise(6);
+sigmastar0_ci = confIntsWithSigma0(6);
+
+jacobian = numeric_jacobian(may_ceramic_09_17,y_pointwise,myModelHandle);
+jacobian(:,6) = [];
+hessian = transpose(jacobian)*jacobian;
+variances = diag(pinv(hessian));
+dof = size(jacobian,1)-size(jacobian,2); % dof = N-P
+confInts = sqrt(variances)*tinv(0.975,dof);
 
 
-sigmastar = y_pointwise(6:12);
-sigmastar_ci = confInts(6:12);
-volt_list = [0 5 10 20 40 60 80];
-s = sigmastar~=0;
-sigmastar = sigmastar(s);
-my_volt_list = volt_list(s);
-
-quadfit = fittype("a*x^2+b*x+c");
-%sigmastarFit = fit(my_volt_list',sigmastar',quadfit,'StartPoint',[0.0001, 0.0005, 0.07]);
-sigmastarFit = fit(my_volt_list',sigmastar',quadfit,'StartPoint',[0.0001, 0.0005, 0.07],'Weights',1./sigmastar_ci);
+sigmastar_tot = y_pointwise(7:12);
+sigmastar_tot_ci = confInts(6:11);
+my_volt_list = [5 10 20 40 60 80];
+s = sigmastar_tot~=0;
+sigmastar_tot = sigmastar_tot(s);
+my_volt_list = my_volt_list(s);
 
 
 CSS=(50/19)^3;
-sigmastar_acous = CSS*(sigmastar-sigmastar(1));
-sigmastar_acous_ci = CSS*(sigmastar_ci-sigmastar_ci(1));
+sigmastar_acous = CSS*(sigmastar_tot-sigmastar0);
+sigmastar_acous_ci = CSS*(sigmastar_tot_ci);
 
 % fit a line to sigma*_a(U)
 myfittype = fittype('a*x');
-myfit = fit(acoustic_energy_density(my_volt_list)',sigmastar_acous',myfittype,'StartPoint',1,'Weights',1./sigmastar_ci);
+myfit = fit(acoustic_energy_density(my_volt_list)',sigmastar_acous',myfittype,'StartPoint',1,'Weights',1./sigmastar_acous_ci);
 
 
 
@@ -40,7 +46,7 @@ if makeUplot
     logMinE0 = log(acoustic_energy_density(5));
     logMaxE0 = log(acoustic_energy_density(80));
     cmap = plasma(256);
-    for jj=2:length(my_volt_list)
+    for jj=1:length(my_volt_list)
         U = acoustic_energy_density(my_volt_list(jj));
         colorU = cmap(round(1+255*(log(U)-logMinE0)/( logMaxE0-logMinE0 )),:);
         %errorbar(acoustic_energy_density(my_volt_list(jj)),sigmastar_acous(jj),CSS*sigmastar_ci(jj),'p','Color',colorV,'MarkerFaceColor',colorV,'MarkerSize',5,'LineWidth',1.5);
@@ -65,5 +71,5 @@ return
 figure; hold on; 
 xlabel('E_0'); ylabel('\sigma^* (Pa)');
 makeAxesLogLog
-plot(acoustic_energy_density(my_volt_list),sigmastar*CSS,'o-');
+plot(acoustic_energy_density(my_volt_list),sigmastar_tot*CSS,'o-');
 plot(acoustic_energy_density(my_volt_list),sigmastarFit(my_volt_list));
