@@ -1,28 +1,22 @@
-function etaVsT(myStruct,pas,rheoUnits,myColorNum)
+function etaVsT(myStruct,rheoUnits,pas,myColorNum)
 % pas: 1 for pa s, 0 for mpa s (default: pa s)
-% rheoUnits: 0 for rheometer units ARE real units (default), 1 for show me
-% plain uncorrected rheometer units, 2 for rheometer units are incorrect
-% and please correct them
+% rheoUnits: correction factor
 
 
-if nargin < 3
+if nargin < 2
     rheoUnits = 0;
 end
-if nargin < 2
+if nargin < 3
     pas = 1;
 end
 
 
-rheometerStr = "rheometer ";
+
 mpasStr = '';
 if pas == 0
     mpasStr = 'm';
 end
-if rheoUnits == 2
-    rheometerStr = '';
-elseif rheoUnits == 0
-    rheometerStr = '';
-end
+
 
 %figure;
 %hold on;
@@ -38,7 +32,7 @@ else
     myColor = cmap(round(1+255*myColorNum/80),:);
     plot(t,eta,'LineWidth',1.5,'Color',myColor);
 end
-ylabel(strcat( 'Viscosity, \eta (',rheometerStr,mpasStr,'Pa.s',')' ));
+ylabel(strcat( 'Viscosity, \eta (',mpasStr,'Pa.s',')' ));
 xlabel('Time, {\it t} (s)');
 title(myStruct.name);
 ax1 = gca;

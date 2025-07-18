@@ -33,7 +33,7 @@ phi55_flat_table_07_08(:,3) = CSR*phi55_flat_table_07_08(:,3);
 datatable = phi55_flat_table_07_08;
 
 % plot stress sweeps for each d
-dList = unique(datatable(:,1)); minD = min(dList); maxD = max(dList);
+hList_pp = unique(datatable(:,1)); minD = min(hList_pp); maxD = max(hList_pp);
 cmap=viridis(256);
 dColor = @(d) cmap(round(1+255*(d-minD)/(maxD-minD)),:);
 
@@ -42,11 +42,12 @@ xlabel('rate (1/s)'); ylabel('\eta (Pas)')
 colormap(cmap)
 c1=colorbar;
 clim([minD maxD])
-c1.Ticks = dList;
+c1.Ticks = hList_pp;
 
 %for ii=1
-for ii=1:length(dList)
-    d = dList(ii);
+beta_pp = zeros(size(hList_pp));
+for ii=1:length(hList_pp)
+    d = hList_pp(ii);
     myData = datatable(:,1)==d; % & datatable(:,5)==acsDesc;
     stress = datatable(myData,2);
     rate = datatable(myData,3);
@@ -57,10 +58,12 @@ for ii=1:length(dList)
 
     %myNewtonianEta = newtonianEtaVsH_05_20(hList==h);
     %plot(stress,stress./rate*5.034/myNewtonianEta,'-o','Color',c);
+    
+    eta = stress./rate;
+    dlogeta = log(eta(2:end))-log(eta(1:end-1));
+    dlograte = log(rate(2:end))-log(rate(1:end-1));
+    beta_pp(ii) = max(dlogeta./dlograte);
 end
 prettyplot
 
-% stress_in_dataset = datatable(:,2);
-% myStress = logspace(log10(min(stress_in_dataset)),1.2*log10(max(stress_in_dataset)));
-% myRatesRef = phi61_ref_rate(myStress);
-% plot(myRatesRef,myStress./myRatesRef,'r-')
+

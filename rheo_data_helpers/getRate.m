@@ -1,15 +1,9 @@
-function rate = getRate(rheoData,rheoUnits)
-% rheoUnits: 0 for rheometer units ARE real units (default), 1 for show me
-% plain uncorrected rheometer units, 2 for rheometer units are incorrect
-% and please correct them
+function rate = getRate(rheoData,CSR)
+% rheoUnits: correction factor
 
 if nargin < 2
-    rheoUnits = 0;
+    CSR = 0;
 end
-
-CSS = 19;
-CSV = 50;
-CSR = CSS/CSV; 
 
 rateColumn = find(strcmp(rheoData.headers,'Shear Rate'));
 
@@ -21,7 +15,7 @@ else
 end
 
 
-if rheoUnits == 2
+if CSR ~= 0
     unitFactor = unitFactor*CSR;
 end
 

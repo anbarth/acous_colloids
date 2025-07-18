@@ -33,3 +33,4 @@ errorbar(phi_list,C_acous,C_acous_ci,'ko','MarkerFaceColor','k')
 prettyPlot;
 myfig = gcf;
 myfig.Position=[100,100,414,323];
+xlim([0.15 0.65])
