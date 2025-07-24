@@ -24,15 +24,15 @@ myColor = @(U) cmap(round(1+255*(log(U)-logMinE0)/( logMaxE0-logMinE0 )),:);
 
 
 xpts = logspace(-5,5);
-plot(xpts,xpts,'k--')
+plot(xpts,xpts,'k--','LineWidth',1.5)
 for ii=1:length(V)
     disp(ii)
     U = acoustic_energy_density(V(ii));
-    errorbar(U,CSS*sigmastar_a(ii),CSS*sigmastar_a_ci_l(ii),CSS*sigmastar_a_ci_u(ii),'o','Color',myColor(U),'MarkerFaceColor',myColor(U),'LineWidth',1.5)
+    errorbar(U,CSS*sigmastar_a(ii),CSS*sigmastar_a_ci_l(ii),CSS*sigmastar_a_ci_u(ii),'o','Color',myColor(U),'MarkerFaceColor',myColor(U),'LineWidth',2,'MarkerSize',10)
 end
 
 myfig = gcf;
-myfig.Position=[1992,313,250,323];
+myfig.Position=[1417,248,423,491];
 xlim([0.044905934284051,44.90593428405083])
 xticks([10^-1 10^0 10^1])
 ylim([0.002,100])

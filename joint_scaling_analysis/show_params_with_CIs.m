@@ -1,8 +1,9 @@
-%optimize_collapse;
+optimize_collapse;
 
 confInts = get_conf_ints(dataTable,y,myModelHandle);
 confInts = confInts';
-dispParam = @(paramNum) disp([y_init(paramNum) y(paramNum) confInts(paramNum)]);
+[ci_u,ci_l] = get_conf_ints_loggily(dataTable,y,myModelHandle);
+dispParam = @(paramNum) disp([y_init(paramNum) y(paramNum) confInts(paramNum) ci_l(paramNum) ci_u(paramNum)]);
 
 disp('delta')
 dispParam(1)
