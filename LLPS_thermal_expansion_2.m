@@ -1,9 +1,5 @@
 % some model for thermal expansion of the medium
-a = @(phi) 1;
-b = @(phi) -1/1000;
-rho = @(phi,T) a(phi)+b(phi).*T;
-phi_m_T = @(m,T) fzero( @(x) rho(x,T)/m-x ,0.5);
-
+V_M_N_T = @(M,N,T) 1-T/1000;
 
 
 % parameters describing the shape of the phase boundary in the E-phi plane
@@ -16,13 +12,11 @@ phistar = 0.6;
 phi1 = @(T) phistar - c_left*(Tstar-T).^(1/2);
 phi2 = @(T) phistar + c_right*(Tstar-T).^(1/2);
 
-% u_i = V_i/N
-% n_i = N_i/N
-u1 = @(m,T) (phi2(T)*m-rho2(T))./(phi2(T).*rho1(T)-phi1(T).*rho2(T));
-u2 = @(m,T) (rho1(T)-phi1(T)*m)./(phi2(T).*rho1(T)-phi1(T).*rho2(T));
-rho1 = @(T) rho(phi1(T),T);
+V1 = @(M,N,T) (phi2(T)*M-rho2(T)*N)./(phi2(T).*rho1(T)-phi1(T).*rho2(T));
+V2 = @(M,N,T) (rho1(T)*N-phi1(T)*M)./(phi2(T).*rho1(T)-phi1(T).*rho2(T));
+rho1 = @(T) rho(M1,T);
 rho2 = @(T) rho(phi2(T),T);
-phi_LLPS = @(m,T) 1./(u1(m,T)+u2(m,T));
+rho_LLPS = @(M,T) M./(V1(M,N,T)+V2(M,N,T));
 
 
 
@@ -40,7 +34,7 @@ ylim([min(T) max(T)])
 phi_i = 0.59; % initial concentration
 T_exp = linspace(Tstar,0); % temperature range
 rho_i = rho(phi_i,T_exp(1)); % initial density
-m = rho_i/phi_i; % mass M/N
+m = rho_i/phi_i; % m=M/N is a constant
 
 phi_without_LLPS = zeros(size(T_exp));
 
