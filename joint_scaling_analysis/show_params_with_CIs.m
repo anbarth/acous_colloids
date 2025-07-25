@@ -1,4 +1,4 @@
-optimize_collapse;
+%optimize_collapse;
 
 confInts = get_conf_ints(dataTable,y,myModelHandle);
 confInts = confInts';
@@ -71,9 +71,9 @@ for mm=1:numMaterials
     C_err = D_err.*(phi0-phi_list)';
     errorbar(phi_list,C,C_err,marker,'LineWidth',1,'Color',c1,'MarkerFaceColor',c2)
 
-    prettyplot;
+    prettyPlot;
    % makeAxesLogLog
-    f1=gcf; f1.Position=[83,65,511,542];
+    f1=gcf; f1.Position=[1051,51,469,449];
 
     % move startIndex for next iteration
     startIndex = startIndex+3+numPhi;

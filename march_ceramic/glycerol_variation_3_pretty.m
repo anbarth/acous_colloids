@@ -69,11 +69,12 @@ ax1 = gca;
 ax1.XScale = 'log';
 ax1.YScale = 'log';
 title('\phi=44%')
-xlabel('\sigma (Pa)')
-ylabel('\eta (Pa s)')
+xlabel('Shear stress \sigma (Pa)')
+ylabel('Viscosity \eta (Pa s)')
 xlim([1e-2 10^(2.5)])
 ylim([4 30])
-prettyplot
+prettyPlot
+xticks([1e-2 1e0 1e2])
 
 % plot samples
 sigma_all = [];
@@ -114,9 +115,11 @@ ax1 = gca;
 ax1.XScale = 'log';
 ax1.YScale = 'log';
 title('\phi=59%')
-xlabel('\sigma (Pa)')
-ylabel('\eta (Pa s)')
-prettyplot
+xlabel('Shear stress \sigma (Pa)')
+ylabel('Viscosity \eta (Pa s)')
+prettyPlot
+xticks([1e-2 1e0 1e2 1e4])
+xlim([1e-2 1e4])
 
 sigma_all = [];
 eta_all = [];
@@ -179,7 +182,7 @@ xlabel('\sigma (Pa)')
 ylabel('\eta (Pa s)')
 %xlim([1e-2 10^(2.5)])
 %ylim([4 30])
-prettyplot
+prettyPlot
 
 % plot samples
 sigma_all = [];

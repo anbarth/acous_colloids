@@ -52,11 +52,11 @@ mySweeps = allPhi{myPhiNum-5};
 
 
 % set up figure
-figure; hold on; prettyplot
+figure; hold on; prettyPlot
 CSS = (50/19)^3;
 %ylabel(strcat('\eta({\itt})/\eta_{dataset}'))
 xlabel('time {\itt} (hr)')
-%title(strcat('\phi=',num2str(myPhi)))
+title(strcat('\phi=',num2str(myPhi)))
 L = {};
 
 for ii=1:length(sigma_list)
@@ -113,8 +113,8 @@ end
 yline(1,'k','LineWidth',2)
 %deta_fractional = 2*(0.7-myPhi)^-1*0.02;
 deta_fractional = 1.5*myPhi-0.5;
-%a=0.15;
-a=deta_fractional;
+a=0.15;
+%a=deta_fractional;
 yline(1-a,'k--','LineWidth',2)
 yline(1+a,'k--','LineWidth',2)
 ylim([0.5 1.5])
@@ -125,7 +125,7 @@ end
 
 %legend(L);
 f1=gcf;
-f1.Position = [1276,298,307,350];
+f1.Position = [1535,360,266,350];
 
 fname = strcat("C:\Users\Anna Barth\Desktop\acous_scalnig_figs\05_21_stability_",num2str(round(myPhi*100)),".png");
 %exportgraphics(gcf, fname,'Resolution',900)
