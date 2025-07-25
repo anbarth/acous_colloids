@@ -4,8 +4,8 @@ CSS = (50/19)^3;
 
 
 phi_list = unique(dataTable(:,1));
-for phiNum = 9
-%for phiNum=6:13
+%for phiNum = 9
+for phiNum=6:13
     
 phi = phi_list(phiNum);
 
@@ -75,7 +75,7 @@ myfig.Position=[60, 60,414,323];
 ax1=gca;
 ax1.XScale = 'log';
 ax1.YScale = 'log';
-xlim([0.05 50])
-xticks([10^-1 10^0 10^1])
-ylim([9 165])
+%xlim([0.05 50])
+%xticks([10^-1 10^0 10^1])
+%ylim([9 165])
 end
