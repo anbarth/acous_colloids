@@ -28,7 +28,7 @@ xlim([-5 10])
 ylim([400 15000])
 
 
-xlabel('{\itt}-{\itt}_{acous} (s)')
+xlabel('Time since perturbation (s)')
 ylabel('Viscosity \eta (Pa s)')
 prettyPlot;
 
@@ -40,3 +40,5 @@ c1=colorbar;
 
 myfig = gcf;
 myfig.Position=[100,100,465,323];
+ax1=gca;
+ax1.YTick = [1e3 1e4];

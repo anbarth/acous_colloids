@@ -70,12 +70,17 @@ legend(L)
 
 prettyPlot;
 myfig = gcf;
-myfig.Position=[60, 60,414,323];
+myfig.Position=[457,388,414,343];
 
 ax1=gca;
 ax1.XScale = 'log';
 ax1.YScale = 'log';
-%xlim([0.05 50])
-%xticks([10^-1 10^0 10^1])
-%ylim([9 165])
+
+yticks([10 100]);
+xlim([0.05 50])
+xticks([10^-1 10^0 10^1])
+ylim([9 165])
+
+%title(phi)
+
 end

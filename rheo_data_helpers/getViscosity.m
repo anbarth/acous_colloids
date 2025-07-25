@@ -1,19 +1,14 @@
-function eta = getViscosity(rheoData,pas,rheoUnits)
+function eta = getViscosity(rheoData,pas,CSV)
 % pas: 1 for pa s, 0 for mpa s (default: pa s)
-% rheoUnits: 0 for rheometer units ARE real units (default), 1 for show me
-% plain uncorrected rheometer units, 2 for rheometer units are incorrect
-% and please correct them
+% rheoUnits: correction factor
 
 if nargin < 3
-    rheoUnits = 0;
+    CSV = 0;
 end
 if nargin < 2
     pas = 1;
 end
 
-CSS = 19;
-CSV = 25;
-CSR = CSS/CSV;
 
 etaColumn = find(strcmp(rheoData.headers,'Viscosity'));
 
@@ -29,7 +24,7 @@ end
 if pas == 0
     unitFactor = unitFactor*1000;
 end
-if rheoUnits == 2
+if CSV ~= 0
     unitFactor = unitFactor*CSV;
 end
 

@@ -61,5 +61,5 @@ for jj=1:length(volt_list)
         yticks([1e1 1e4])
     end
     myfig = gcf;
-    myfig.Position=[1492,715,312,383];
+    myfig.Position=[416,613,346,390];
 end

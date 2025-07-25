@@ -73,7 +73,7 @@ if makeCplot
     xlim([0.1 0.7])
     prettyPlot;
     myfig = gcf;
-    myfig.Position=[100,100,414,323];
+    myfig.Position=[1846,288,411,256];
 end
 
 y = y_pointwise;
