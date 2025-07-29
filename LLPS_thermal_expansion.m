@@ -1,6 +1,6 @@
 % some model for thermal expansion of the medium
-a = @(phi) 1;
-b = @(phi) -1/1000;
+a = @(phi) 1+phi;
+b = @(phi) 0.001+0.01*phi+0.01*phi.^2;
 rho = @(phi,T) a(phi)+b(phi).*T;
 phi_m_T = @(m,T) fzero( @(x) rho(x,T)/m-x ,0.5);
 
@@ -18,10 +18,10 @@ phi2 = @(T) phistar + c_right*(Tstar-T).^(1/2);
 
 % u_i = V_i/N
 % n_i = N_i/N
-u1 = @(m,T) (phi2(T)*m-rho2(T))./(phi2(T).*rho1(T)-phi1(T).*rho2(T));
-u2 = @(m,T) (rho1(T)-phi1(T)*m)./(phi2(T).*rho1(T)-phi1(T).*rho2(T));
 rho1 = @(T) rho(phi1(T),T);
 rho2 = @(T) rho(phi2(T),T);
+u1 = @(m,T) (phi2(T)*m-rho2(T))./(phi2(T).*rho1(T)-phi1(T).*rho2(T));
+u2 = @(m,T) (rho1(T)-phi1(T)*m)./(phi2(T).*rho1(T)-phi1(T).*rho2(T));
 phi_LLPS = @(m,T) 1./(u1(m,T)+u2(m,T));
 
 
@@ -69,6 +69,11 @@ plot(T_exp,u1(m,T_exp))
 plot(T_exp,u2(m,T_exp))
 plot(T_exp, u1(m,T_exp)+u2(m,T_exp))
 
-figure; hold on; xlabel('T'); ylabel('phi')
-plot(T_exp,rho_without_LLPS)
-plot(T_exp,m*phi_LLPS(m,T_exp))
+%figure; hold on; xlabel('T'); ylabel('phi')
+%plot(T_exp,rho_without_LLPS)
+%plot(T_exp,m*phi_LLPS(m,T_exp))
+
+figure; hold on; xlabel('T'); ylabel('\rho_1, \rho_2')
+T = linspace(0,Tstar);
+plot(T,rho1(T))
+plot(T,rho2(T))
