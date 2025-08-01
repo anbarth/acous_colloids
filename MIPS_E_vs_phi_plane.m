@@ -2,7 +2,7 @@
 MIPS_with_stress_frictional;
 
 % pick a stress [0,100] and a range of (phi, E)
-sigma=100;
+sigma=25;
 phi_low = 0.4;
 phi_high = phi0-0.01;
 E_low = 0;
@@ -20,12 +20,16 @@ colorEta = @(eta) cmap( min(256,max(1,round(1+255*(log(eta)-log(minEta))/(log(ma
 
 % plot the binodal line
 E_binodal = linspace(Estar,Estar*5);
+%plot(phi1(E_binodal,0),E_binodal,'k');
+%plot(phi2(E_binodal,0),E_binodal,'k');
+
 plot(phi1(E_binodal,sigma),E_binodal,'k');
 plot(phi2(E_binodal,sigma),E_binodal,'k');
-
+prettyplot
+%return
 % calculate eta for discrete values of phi, E
-E = linspace(E_low,E_high,30);
-phi = linspace(phi_low,phi_high,20);
+E = linspace(E_low,E_high,100);
+phi = linspace(phi_low,phi_high,100);
 eta_mat = zeros(length(phi),length(E));
 for i=1:length(phi)
     for j=1:length(E)
@@ -60,7 +64,7 @@ eta = logspace(log10(minEta),log10(maxEta),10);
 for i=1:length(eta)
     epsilon=0.01;
     near_eta = eta_interpolated/eta(i) < 1+epsilon & eta_interpolated/eta(i) > 1-epsilon;
-    plot(phi_finer_mat(near_eta),E_finer_mat(near_eta),'w')
+    %plot(phi_finer_mat(near_eta),E_finer_mat(near_eta),'w')
 end
 
 % plot equi-viscosity lines analytically (ONLY WORKS FOR FRICTIONLESS RHEOLOGY)

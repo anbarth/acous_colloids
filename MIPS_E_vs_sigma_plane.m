@@ -2,7 +2,7 @@
 MIPS_with_stress_frictional;
 
 % pick a volume fraction and a range of (sigma,E)
-phi=0.55;
+phi=0.36;
 E_low = 0;
 E_high = 5*Estar;
 sigma_low = 0;
@@ -10,7 +10,7 @@ sigma_high = 100;
 
 
 % make the sigma-E plane
-figure; hold on;
+figure; hold on; prettyplot
 xlabel('\sigma'); ylabel('E');
 xlim([sigma_low sigma_high]); ylim([E_low E_high])
 

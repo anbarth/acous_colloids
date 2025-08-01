@@ -9,18 +9,15 @@ sigma_low = 0;
 sigma_high = 100;
 
 % make the E-phi plane
-figure; hold on; prettyplot
-xlabel('\phi'); ylabel('\sigma')
+figure; hold on;
+xlabel('\phi'); ylabel('sigma')
 xlim([phi_low phi0]); ylim([sigma_low sigma_high])
 
 % draw binodal
 sig_plot=linspace(sigma_low,sigma_high);
-plot(phi1(E,sig_plot),sig_plot,'k');
-plot(phi2(E,sig_plot),sig_plot,'k');
-
-%plot(phi1(Estar*4,sig_plot),sig_plot,'r');
-%plot(phi2(Estar*4,sig_plot),sig_plot,'r');
-%return
+plot(sig_plot,phi1(E,sig_plot),'k');
+plot(sig_plot,phi2(E,sig_plot),'k');
+plot(phi2(E,sigma),E_binodal,'k');
 
 
 % define a colormap for viscosity (NOTE that there's cutoff values!)
@@ -36,7 +33,7 @@ eta_mat = zeros(length(phi),length(E));
 for i=1:length(phi)
     for j=1:length(sigma)
         % use the appropriate formula if (phi,E) is in the 2 phase region
-        if E > Estar && phi(i) > phi1(E,sigma(j)) && phi(i) < phi2(E,sigma(j)) 
+        if E > Estar && phi(i) > phi1(E,sigma(j)) && phi < phi2(E,sigma(j)) 
             eta = eta_binodal(phi(i),E,sigma(j));
         else
             eta = eta_0V(phi(i),sigma(j));
@@ -48,7 +45,7 @@ for i=1:length(phi)
        %     eta=Inf;
        % end
 
-        plot(phi(i),sigma(j),'s','Color',colorEta(eta))
+        %plot(phi(i),sigma(j),'s','Color',colorEta(eta))
         eta_mat(i,j) = eta;
     end
 end
