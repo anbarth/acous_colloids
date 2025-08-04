@@ -67,7 +67,7 @@ if makeCplot
     C_ci = D_ci.*dphi;
 
     figure; hold on;
-    xlabel('\phi'); ylabel('C')
+    xlabel('Volume fraction \phi'); %ylabel('C(\phi)')
     %plot(phi_list,C,'ko')
     errorbar(phi_list,C,C_ci,'ko','MarkerFaceColor','k')
     xlim([0.1 0.7])
