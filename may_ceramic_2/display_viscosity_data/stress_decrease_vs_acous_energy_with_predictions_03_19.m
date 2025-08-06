@@ -1,5 +1,7 @@
 %optimize_sigmastarV_03_19;
-y = y_fmincon; myModelHandle = @modelHandpickedSigmastarV;
+y = y_fmincon; 
+myModelHandle = @modelHandpickedSigmastarV;
+%myModelHandle = @modelSigmastarUa;
 
 dataTable = may_ceramic_09_17;
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
@@ -7,9 +9,9 @@ CSS = (50/19)^3;
 
 
 phi_list = unique(dataTable(:,1));
-%for phiNum = 10
-for phiNum=6:13
-    
+for phiNum = 10
+%for phiNum=6:13
+    L = {};
     phi = phi_list(phiNum);
     markerCode = strcat('-',my_vol_frac_markers(phiNum));
     
@@ -17,7 +19,7 @@ for phiNum=6:13
     fig_eta = figure;
     ax_eta = axes('Parent', fig_eta);
     ax_eta.XLabel.String = 'Acoustic energy density{\it U_a} (Pa)';
-    ax_eta.YLabel.String = '\Delta\sigma (Pa)';
+    ax_eta.YLabel.String = '\sigma+U_a (Pa)';
     ax_eta.Title.String = strcat("\phi=",num2str(phi));
     hold(ax_eta,'on');
     cmap = winter(256);
@@ -35,27 +37,26 @@ for phiNum=6:13
     
     for rate = logspace(log10(min(rate_list)),log10(max(rate_list)),8)
 
-        solveMe =  @(logsigma) exp(logsigma)/viscosity_prediction(phi,exp(logsigma),0,dataTable,y,myModelHandle)-rate;
-        sigma0V = CSS*exp(fzero(solveMe,1.5));
+        sigma0V = CSS*sigma_predicted(rate,phi,0,dataTable,y,myModelHandle);
 
         myColor = cmap(round(1+255*(log(rate)-minLogRate)/(maxLogRate-minLogRate)),:);
         v_list = [5 10 20 40 60 80];
         sigma_list = zeros(size(v_list));
         for kk = 1:length(v_list)
             v = v_list(kk);
-            solveMe =  @(logsigma) exp(logsigma)/viscosity_prediction(phi,exp(logsigma),v,dataTable,y,myModelHandle)-rate;
-            sigma_list(kk) = CSS*exp(fzero(solveMe,1.5));
+            sigma_list(kk) = CSS*sigma_predicted(rate,phi,v,dataTable,y,myModelHandle);
         end
-        plot(acoustic_energy_density(v_list),sigma0V-sigma_list,'Color',myColor)
+        plot(acoustic_energy_density(v_list),sigma_list+acoustic_energy_density(v_list),'Color',myColor)
         %yline(sigma0V,'Color',myColor)
+        L{end+1} = num2str(rate);
     end
     
-    xfake = logspace(-1,1.4);
-    plot(xfake,xfake,'k--');
+    %xfake = logspace(-1,1.4);
+    %plot(xfake,xfake,'k--');
 
     c1 = colorbar(ax_eta);
     clim(ax_eta,[minLogRate maxLogRate]);
-    %legend(L)
+    legend(L)
     
     
     
