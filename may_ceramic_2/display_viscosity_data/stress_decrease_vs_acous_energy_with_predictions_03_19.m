@@ -9,33 +9,58 @@ CSS = (50/19)^3;
 
 
 phi_list = unique(dataTable(:,1));
-for phiNum = 10
-%for phiNum=6:13
+%for phiNum = 10
+for phiNum=6:13
     L = {};
     phi = phi_list(phiNum);
     markerCode = strcat('-',my_vol_frac_markers(phiNum));
-    
-    
+
+    % set up figure
     fig_eta = figure;
     ax_eta = axes('Parent', fig_eta);
     ax_eta.XLabel.String = 'Acoustic energy density{\it U_a} (Pa)';
-    ax_eta.YLabel.String = '\sigma+U_a (Pa)';
+    ax_eta.YLabel.String = '\Delta\sigma (Pa)';
     ax_eta.Title.String = strcat("\phi=",num2str(phi));
     hold(ax_eta,'on');
-    cmap = winter(256);
+    cmap = jet(256);
     colormap(ax_eta,cmap);
     
-
-    %myData = dataTable(dataTable(:,1)==phi , :);
+    % pick out data
     myData = dataTable(dataTable(:,1)==phi & dataTable(:,3)>0, :);
     myData0V = dataTable(dataTable(:,1)==phi & dataTable(:,3)==0, :);
     
-    rate_list = myData0V(:,2)./myData0V(:,4);
+    rate_list = myData(:,2)./myData(:,4);
     minLogRate = log(min(rate_list));
     maxLogRate = log(max(rate_list));
+    %maxLogRate = 0.5;
+
+    for ii=1:size(myData,1)
+        % get data from this row
+        phi = myData(ii,1);
+        sigma = CSS*myData(ii,2);
+        V = myData(ii,3);
+        eta = CSS*myData(ii,4);
+        rate = sigma/eta;
+        
+        % predict sigma0V
+        sigma0V = CSS*sigma_predicted(rate,phi,0,dataTable,y,myModelHandle);
+    
+        myColor = cmap(round(1+255*(log(rate)-minLogRate)/(maxLogRate-minLogRate)),:);
+    
+        deltaEta = max(CSS*myData(ii,5),eta*0.15);
+        delta_phi = 0.02;
+        delta_eta_volumefraction = eta*2*(0.7-phi)^(-1)*delta_phi;
+        delta_eta_total = sqrt(deltaEta.^2+delta_eta_volumefraction.^2);
+    
+        delta_rate = rate * delta_eta_total/eta;
+        
+    
+        plot(ax_eta,acoustic_energy_density(V),sigma0V-sigma, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+    
+    end
     
     
-    for rate = logspace(log10(min(rate_list)),log10(max(rate_list)),8)
+    for rate = logspace(log10(min(rate_list)),log10(max(rate_list)),6)
 
         sigma0V = CSS*sigma_predicted(rate,phi,0,dataTable,y,myModelHandle);
 
@@ -46,17 +71,20 @@ for phiNum = 10
             v = v_list(kk);
             sigma_list(kk) = CSS*sigma_predicted(rate,phi,v,dataTable,y,myModelHandle);
         end
-        plot(acoustic_energy_density(v_list),sigma_list+acoustic_energy_density(v_list),'Color',myColor)
+        plot(acoustic_energy_density(v_list),sigma0V-sigma_list,'Color',myColor)
         %yline(sigma0V,'Color',myColor)
         L{end+1} = num2str(rate);
     end
     
-    %xfake = logspace(-1,1.4);
-    %plot(xfake,xfake,'k--');
+    xfake = logspace(-1,1.4);
+    plot(xfake,xfake,'k--');
 
     c1 = colorbar(ax_eta);
     clim(ax_eta,[minLogRate maxLogRate]);
-    legend(L)
+    myticks = linspace(minLogRate,maxLogRate,5);
+    c1.Ticks = myticks;
+    c1.TickLabels = num2cell(round(exp(myticks)*100)/100);
+    %legend(L)
     
     
     

@@ -18,8 +18,8 @@ colorPos = @(delta_E) cmap_pos(round(1+255*(log(delta_E)-minLogE)/(maxLogE-minLo
 colorNeg = @(delta_E) cmap_pos(round(1+255*(log(-1*delta_E)-minLogE)/(maxLogE-minLogE)),:);
 
 
-%for phiNum = 10
-for phiNum=6:13
+for phiNum = 7
+%for phiNum=6:13
     
     phi = phi_list(phiNum);
     markerCode = strcat('-',my_vol_frac_markers(phiNum));
@@ -78,5 +78,10 @@ for phiNum=6:13
     %scatter(ua_mat(pos_data),rate_mat(pos_data),[],colorPos(deltaE(pos_data)),'filled','s');
     %scatter(ua_mat(neg_data),rate_mat(neg_data),[],colorNeg(deltaE(neg_data)),'filled','s');
 
-    colorbar
+    c1 = colorbar;
+    minDeltaE = min(log(abs(delta_sigma_mat(:)-ua_mat(:))));
+    maxDeltaE = max(log(abs(delta_sigma_mat(:)-ua_mat(:))));
+    myticks = linspace(minDeltaE,maxDeltaE,4);
+    c1.Ticks = myticks;
+    c1.TickLabels = num2cell(round(exp(myticks)*100)/100);
 end
