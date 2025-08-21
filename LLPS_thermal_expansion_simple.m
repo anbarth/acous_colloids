@@ -28,11 +28,11 @@ phi2 = @(m,T) u2(m,T).*c_LLPS(m,T); % V2/V
 
 
 % plot the binodal line
-figure; hold on;
+figure; hold on; prettyplot;
 xlabel('T'); ylabel('c')
 T = linspace(0,Tstar);
-plot(T,c1(T),'r');
-plot(T,c2(T),'b');
+plot(T,c1(T),'r','LineWidth',2);
+plot(T,c2(T),'b','LineWidth',2);
 %ylim([min(c1(T)) max(c2(T))])
 %xlim([min(T) max(T)])
 
@@ -44,12 +44,12 @@ for i=1:length(T)
     c_experiment(i) = c_consistent(m,T(i));
 end
 plot(T(end),c_experiment(end),'kp')
-plot(T,c_experiment,'k')
+plot(T,c_experiment,'k','LineWidth',2)
 
 % plot c vs T inside the binodal
-plot(T,c_LLPS(m,T),'g--')
+plot(T,c_LLPS(m,T),'g--','LineWidth',2)
 
-figure; hold on;
+figure; hold on; prettyplot;
 xlabel('T'); ylabel('\phi_1,\phi_2')
 %ylim([0,1])
 Tllps = T(T<=Tstar);

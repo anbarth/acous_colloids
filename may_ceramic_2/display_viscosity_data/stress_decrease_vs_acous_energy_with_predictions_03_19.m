@@ -1,4 +1,4 @@
-%optimize_sigmastarV_03_19;
+optimize_sigmastarV_03_19;
 y = y_fmincon; 
 myModelHandle = @modelHandpickedSigmastarV;
 %myModelHandle = @modelSigmastarUa;

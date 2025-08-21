@@ -2,7 +2,7 @@
 MIPS_with_stress_frictional;
 
 % pick a stress [0,100] and a range of (phi, E)
-sigma=25;
+sigma=0;
 phi_low = 0.4;
 phi_high = phi0-0.01;
 E_low = 0;
@@ -26,7 +26,7 @@ E_binodal = linspace(Estar,Estar*5);
 plot(phi1(E_binodal,sigma),E_binodal,'k');
 plot(phi2(E_binodal,sigma),E_binodal,'k');
 prettyplot
-%return
+return
 % calculate eta for discrete values of phi, E
 E = linspace(E_low,E_high,100);
 phi = linspace(phi_low,phi_high,100);
