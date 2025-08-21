@@ -9,7 +9,7 @@ CSS = (50/19)^3;
 
 
 phi_list = unique(dataTable(:,1));
-%for phiNum = 10
+%for phiNum = [7,12]
 for phiNum=6:13
     L = {};
     phi = phi_list(phiNum);
@@ -24,6 +24,12 @@ for phiNum=6:13
     hold(ax_eta,'on');
     cmap = jet(256);
     colormap(ax_eta,cmap);
+    xlim([0.044905934284051,44.90593428405083])
+    xticks([10^-1 10^0 10^1])
+    if phiNum<13
+        ylim([1e-3 1e4])
+        yticks([1e-2 1e0 1e2 1e4])
+    end
     
     % pick out data
     myData = dataTable(dataTable(:,1)==phi & dataTable(:,3)>0, :);
@@ -71,12 +77,12 @@ for phiNum=6:13
             v = v_list(kk);
             sigma_list(kk) = CSS*sigma_predicted(rate,phi,v,dataTable,y,myModelHandle);
         end
-        plot(acoustic_energy_density(v_list),sigma0V-sigma_list,'Color',myColor)
+        %plot(acoustic_energy_density(v_list),sigma0V-sigma_list,'Color',myColor)
         %yline(sigma0V,'Color',myColor)
         L{end+1} = num2str(rate);
     end
     
-    xfake = logspace(-1,1.4);
+    xfake = logspace(-2,2);
     plot(xfake,xfake,'k--');
 
     c1 = colorbar(ax_eta);
@@ -97,11 +103,6 @@ for phiNum=6:13
     ax1.XScale = 'log';
     ax1.YScale = 'log';
     
-    %yticks([10 100]);
-    %xlim([0.05 50])
-    %xticks([10^-1 10^0 10^1])
-    %ylim([9 165])
-    
-    %title(phi)
+
 
 end
