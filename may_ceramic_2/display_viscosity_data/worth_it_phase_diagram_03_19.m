@@ -18,7 +18,7 @@ colorPos = @(delta_E) cmap_pos(round(1+255*(log(delta_E)-minLogE)/(maxLogE-minLo
 colorNeg = @(delta_E) cmap_pos(round(1+255*(log(-1*delta_E)-minLogE)/(maxLogE-minLogE)),:);
 
 
-for phiNum = 7
+for phiNum = [7, 12]
 %for phiNum=6:13
     
     phi = phi_list(phiNum);
@@ -31,7 +31,10 @@ for phiNum = 7
     ax_eta.YLabel.String = 'rate (1/s)';
     ax_eta.Title.String = strcat("\phi=",num2str(phi));
     hold(ax_eta,'on');
-    ylim([1e-3 1e1])
+    ylim([1e-3 6])
+    yticks([1e-3 1e-2 1e-1 1e0])
+    xlim([0.1 30])
+    xticks([1e-1 1e0 1e1])
 
     colormap(ax_eta,viridis(256));
     prettyPlot;
@@ -51,7 +54,8 @@ for phiNum = 7
     minLogRate = log(min(all_rate_list));
     maxLogRate = log(max(all_rate_list));
     
-    rate_list = logspace(log10(min(all_rate_list)),log10(max(all_rate_list)),22);
+    rate_list = logspace(-3,log10(5),20);
+    %rate_list = logspace(log10(min(all_rate_list)),log10(max(all_rate_list)),22);
     v_list = logspace(log10(5),log10(80),20);
 
     ua_list = acoustic_energy_density(v_list);
@@ -66,7 +70,7 @@ for phiNum = 7
             delta_sigma_mat(ii,jj) = sigma0V-sigma;
         end
     end
-    markerSize=100;
+    markerSize=200;
     [ua_mat,rate_mat] = meshgrid(ua_list,rate_list);
     scatter(ua_mat(:),rate_mat(:),markerSize,log(abs(delta_sigma_mat(:)-ua_mat(:))),"filled",'s')
     neg_data = delta_sigma_mat(:)-ua_mat(:) < 0;

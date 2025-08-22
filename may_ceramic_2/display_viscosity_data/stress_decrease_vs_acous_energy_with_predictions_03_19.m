@@ -9,8 +9,8 @@ CSS = (50/19)^3;
 
 
 phi_list = unique(dataTable(:,1));
-%for phiNum = [7,12]
-for phiNum=6:13
+for phiNum = [7,12]
+%for phiNum=6:13
     L = {};
     phi = phi_list(phiNum);
     markerCode = strcat('-',my_vol_frac_markers(phiNum));
