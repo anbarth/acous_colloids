@@ -10,6 +10,7 @@ CSS = (50/19)^3;
 c = 2000;
 A = pi*(19/2*1e-3)^2;
 
+
 phi_list = unique(dataTable(:,1));
 for phiNum = [7,12]
 %for phiNum=6:13
@@ -28,10 +29,10 @@ for phiNum = [7,12]
     colormap(ax_eta,cmap);
     xlim([0.044905934284051,44.90593428405083])
     xticks([10^-1 10^0 10^1])
-    if phiNum<13
-        ylim([1e-3 1e4])
-        yticks([1e-2 1e0 1e2 1e4])
-    end
+    %if phiNum<13
+        %ylim([1e-3 1e4])
+        %yticks([1e-2 1e0 1e2 1e4])
+    %end
     
     % pick out data
     myData = dataTable(dataTable(:,1)==phi & dataTable(:,3)>0, :);
