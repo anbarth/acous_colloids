@@ -20,8 +20,8 @@ colorPos = @(delta_E) cmap_pos(round(1+255*(log(delta_E)-minLogE)/(maxLogE-minLo
 colorNeg = @(delta_E) cmap_pos(round(1+255*(log(-1*delta_E)-minLogE)/(maxLogE-minLogE)),:);
 
 
-%for phiNum = 7
-for phiNum=6:13
+for phiNum = [7, 12]
+%for phiNum=6:13
     
     phi = phi_list(phiNum);
     markerCode = strcat('-',my_vol_frac_markers(phiNum));
@@ -53,6 +53,7 @@ for phiNum=6:13
     minLogRate = log(min(all_rate_list));
     maxLogRate = log(max(all_rate_list));
     
+     %rate_list = logspace(-3,log10(5),20);
     rate_list = logspace(log10(min(all_rate_list)),log10(max(all_rate_list)),22);
     v_list = logspace(log10(5),log10(80),25);
 

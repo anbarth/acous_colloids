@@ -1,4 +1,4 @@
-%optimize_sigmastarV_03_19;
+optimize_sigmastarV_03_19;
 y = y_fmincon; 
 myModelHandle = @modelHandpickedSigmastarV;
 %myModelHandle = @modelSigmastarUa;
@@ -11,8 +11,8 @@ c = 2000;
 A = pi*(19/2*1e-3)^2;
 
 phi_list = unique(dataTable(:,1));
-%for phiNum = [7,12]
-for phiNum=6:13
+for phiNum = [7,12]
+%for phiNum=6:13
     L = {};
     phi = phi_list(phiNum);
     markerCode = strcat('-',my_vol_frac_markers(phiNum));
