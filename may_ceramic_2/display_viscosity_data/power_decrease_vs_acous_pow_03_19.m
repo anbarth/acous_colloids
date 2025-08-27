@@ -9,7 +9,7 @@ CSS = (50/19)^3;
 
 c = 2000;
 A = pi*(19/2*1e-3)^2;
-
+h = 0.211e-3;
 
 phi_list = unique(dataTable(:,1));
 for phiNum = [7,12]
@@ -63,8 +63,8 @@ for phiNum = [7,12]
     
         delta_rate = rate * delta_eta_total/eta;
         
-    
-        plot(ax_eta,acoustic_energy_density(V)*c*A,rate*(sigma0V-sigma), markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+        %plot(ax_eta,acoustic_energy_density(V),sigma0V-sigma, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+        plot(ax_eta,acoustic_energy_density(V)*c*A,rate*(sigma0V-sigma)*A*h/2, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
     
     end
         

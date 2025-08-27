@@ -9,6 +9,7 @@ CSS = (50/19)^3;
 
 c = 2000;
 A = pi*(19/2*1e-3)^2;
+h = 0.211e-3;
 
 phi_list = unique(dataTable(:,1));
 
@@ -53,8 +54,8 @@ for phiNum = [7, 12]
     minLogRate = log(min(all_rate_list));
     maxLogRate = log(max(all_rate_list));
     
-     %rate_list = logspace(-3,log10(5),20);
-    rate_list = logspace(log10(min(all_rate_list)),log10(max(all_rate_list)),22);
+     rate_list = logspace(-3,log10(5),100);
+    %rate_list = logspace(log10(min(all_rate_list)),log10(max(all_rate_list)),22);
     v_list = logspace(log10(5),log10(80),25);
 
     acous_power_list = acoustic_energy_density(v_list)*c*A;
@@ -66,14 +67,14 @@ for phiNum = [7, 12]
         for jj = 1:length(v_list)
             v = v_list(jj);
             sigma = CSS*sigma_predicted(rate,phi,v,dataTable,y,myModelHandle);
-            delta_stress_power_mat(ii,jj) = rate*(sigma0V-sigma);
+            delta_stress_power_mat(ii,jj) = rate*(sigma0V-sigma)*A*h/2;
         end
     end
     markerSize=100;
     [acous_power_mat,rate_mat] = meshgrid(acous_power_list,rate_list);
     scatter(acous_power_mat(:),rate_mat(:),markerSize,log(abs(delta_stress_power_mat(:)-acous_power_mat(:))),"filled",'s')
     neg_data = delta_stress_power_mat(:)-acous_power_mat(:) < 0;
-    scatter(acous_power_mat(neg_data),rate_mat(neg_data),markerSize,"filled",'sk')
+    %scatter(acous_power_mat(neg_data),rate_mat(neg_data),markerSize,"filled",'sk')
 
     c1 = colorbar;
     minDeltaE = min(log(abs(delta_stress_power_mat(:)-acous_power_mat(:))));
