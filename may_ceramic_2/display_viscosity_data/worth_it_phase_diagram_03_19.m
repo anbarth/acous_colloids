@@ -10,15 +10,16 @@ CSS = (50/19)^3;
 
 phi_list = unique(dataTable(:,1));
 
-cmap_pos = orangey(256);
-cmap_neg = purpley(256);
-minLogE = -7.5;
-maxLogE = 8.1;
-colorPos = @(delta_E) cmap_pos(round(1+255*(log(delta_E)-minLogE)/(maxLogE-minLogE)),:);
-colorNeg = @(delta_E) cmap_pos(round(1+255*(log(-1*delta_E)-minLogE)/(maxLogE-minLogE)),:);
+%cmap_pos = orangey(256);
+%cmap_neg = purpley(256);
+%minLogE = -7.5;
+%maxLogE = 8.1;
+%colorPos = @(delta_E) cmap_pos(round(1+255*(log(delta_E)-minLogE)/(maxLogE-minLogE)),:);
+%colorNeg = @(delta_E) cmap_pos(round(1+255*(log(-1*delta_E)-minLogE)/(maxLogE-minLogE)),:);
 
-
-for phiNum = [7, 12]
+maxEnergyDifference = 3100;
+minEnergyDifference = exp(-8);
+for phiNum = [7 12]
 %for phiNum=6:13
     
     phi = phi_list(phiNum);
@@ -39,7 +40,7 @@ for phiNum = [7, 12]
     colormap(ax_eta,viridis(256));
     prettyPlot;
     myfig = gcf;
-    myfig.Position=[457,250,414,343];
+    myfig.Position=[589,476,439,343];
     
     ax1=gca;
     ax1.XScale = 'log';
@@ -73,6 +74,8 @@ for phiNum = [7, 12]
     markerSize=200;
     [ua_mat,rate_mat] = meshgrid(ua_list,rate_list);
     scatter(ua_mat(:),rate_mat(:),markerSize,log(abs(delta_sigma_mat(:)-ua_mat(:))),"filled",'s')
+    scatter(0,0,markerSize,log(maxEnergyDifference),"filled",'s')
+    scatter(0,0,markerSize,log(minEnergyDifference),"filled",'s')
     neg_data = delta_sigma_mat(:)-ua_mat(:) < 0;
     scatter(ua_mat(neg_data),rate_mat(neg_data),markerSize,"filled",'sk')
 
@@ -83,9 +86,13 @@ for phiNum = [7, 12]
     %scatter(ua_mat(neg_data),rate_mat(neg_data),[],colorNeg(deltaE(neg_data)),'filled','s');
 
     c1 = colorbar;
-    minDeltaE = min(log(abs(delta_sigma_mat(:)-ua_mat(:))));
-    maxDeltaE = max(log(abs(delta_sigma_mat(:)-ua_mat(:))));
-    myticks = linspace(minDeltaE,maxDeltaE,4);
+    %minDeltaE = min(log(abs(delta_sigma_mat(:)-ua_mat(:))));
+    %maxDeltaE = max(log(abs(delta_sigma_mat(:)-ua_mat(:))));
+    minDeltaE = log(minEnergyDifference);
+    maxDeltaE = log(maxEnergyDifference);
+    %myticks = linspace(minDeltaE,maxDeltaE,4);
+    %myticks = [-8 -4  0  4  8];
+    myticks = log([1e-3 1e-1 1e1 1e3]);
     c1.Ticks = myticks;
     c1.TickLabels = num2cell(round(exp(myticks)*100)/100);
 end

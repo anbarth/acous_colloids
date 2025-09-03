@@ -1,4 +1,4 @@
-optimize_sigmastarV_03_19;
+%optimize_sigmastarV_03_19;
 y = y_fmincon; 
 myModelHandle = @modelHandpickedSigmastarV;
 %myModelHandle = @modelSigmastarUa;
@@ -36,9 +36,8 @@ for phiNum = [7,12]
     myData0V = dataTable(dataTable(:,1)==phi & dataTable(:,3)==0, :);
     
     rate_list = myData(:,2)./myData(:,4);
-    minLogRate = log(min(rate_list));
-    maxLogRate = log(max(rate_list));
-    %maxLogRate = 0.5;
+    %minLogRate = log(min(rate_list)); maxLogRate = log(max(rate_list));
+    minLogRate = log(0.01); maxLogRate = log(10);
 
     for ii=1:size(myData,1)
         % get data from this row
@@ -97,8 +96,8 @@ for phiNum = [7,12]
     
     prettyPlot;
     myfig = gcf;
-    myfig.Position=[457,250,414,343];
-    
+    %myfig.Position=[457,250,414,343];
+    myfig.Position=[589,476,448,343];
     ax1=gca;
     ax1.XScale = 'log';
     ax1.YScale = 'log';

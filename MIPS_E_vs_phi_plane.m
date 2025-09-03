@@ -25,6 +25,13 @@ E_binodal = linspace(Estar,Estar*5);
 
 plot(phi1(E_binodal,sigma),E_binodal,'k');
 plot(phi2(E_binodal,sigma),E_binodal,'k');
+
+cmap = viridis(6);
+l = [1.5,1.75,2,2.5,3,4];
+for ii=1:length(l)
+    yline(Estar*l(ii),'Color',cmap(ii,:))
+end
+
 prettyplot
 return
 % calculate eta for discrete values of phi, E
@@ -66,6 +73,13 @@ for i=1:length(eta)
     near_eta = eta_interpolated/eta(i) < 1+epsilon & eta_interpolated/eta(i) > 1-epsilon;
     %plot(phi_finer_mat(near_eta),E_finer_mat(near_eta),'w')
 end
+
+c1=colorbar;
+%ticklist = [4,6,8,10,12,14];
+ticklist = [1 100 1e4 1e6];
+c1.Ticks = log(ticklist);
+c1.TickLabels = num2cell(ticklist);
+
 
 % plot equi-viscosity lines analytically (ONLY WORKS FOR FRICTIONLESS RHEOLOGY)
 % eta_show_lines = logspace(log10(minEta),log10(maxEta),20);

@@ -19,13 +19,17 @@ phi1 = @(E,sigma) phistar - a_left(sigma)*(E-Estar).^(1/2);
 phi2 = @(E,sigma) min(phi0*ones(size(sigma)), phistar + a_right(sigma)*(E-Estar).^(1/2));
 
 % calculating the viscosity for a suspension in the 2-phase region:
-% n1, n2 are particle number densities of phase 1 and phase 2
+% n1, n2 are particle number densities of phase 1 and phase 2 (ie N1/N,
+% N2/N)
 % eta = n1 eta1 + n2 eta2
 n1 = @(phi,phi1,phi2) phi1/phi * (phi2-phi)/(phi2-phi1);
 n2 = @(phi,phi1,phi2) phi2/phi * (phi-phi1)/(phi2-phi1);
+v1 = @(phi,phi1,phi2) (phi2-phi)/(phi2-phi1); % V1/V
+v1 = @(phi,phi1,phi2) (phi-phi1)/(phi2-phi1); % V2/V
 eta1 = @(E,sigma) eta_0V(phi1(E,sigma),sigma);
 eta2 = @(E,sigma) eta_0V(phi2(E,sigma),sigma);
-eta_binodal = @(phi,E,sigma)  n1(phi,phi1(E,sigma),phi2(E,sigma))*eta1(E,sigma) + n2(phi,phi1(E,sigma),phi2(E,sigma))*eta2(E,sigma);
+%eta_binodal = @(phi,E,sigma)  n1(phi,phi1(E,sigma),phi2(E,sigma))*eta1(E,sigma) + n2(phi,phi1(E,sigma),phi2(E,sigma))*eta2(E,sigma);
+eta_binodal = @(phi,E,sigma)  n1(phi,phi1(E,sigma),phi2(E,sigma))*eta1(E,sigma)*phi/phi1(E,sigma) + n2(phi,phi1(E,sigma),phi2(E,sigma))*eta2(E,sigma)*phi/phi2(E,sigma);
 
 % for a given viscosity, solve for the equi-viscosity line phi(E)
 phi_equi_viscosity = @(eta,E,sigma) phi1(E,sigma).*phi2(E,sigma).*(eta1(E,sigma)-eta2(E,sigma)) ./ ( eta*(phi2(E,sigma)-phi1(E,sigma))+eta1(E,sigma).*phi1(E,sigma)-eta2(E,sigma).*phi2(E,sigma) );

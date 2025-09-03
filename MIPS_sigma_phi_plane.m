@@ -14,13 +14,27 @@ xlabel('\phi'); ylabel('\sigma')
 xlim([phi_low phi0]); ylim([sigma_low sigma_high])
 
 % draw binodal
+cmap = viridis(6);
 sig_plot=linspace(sigma_low,sigma_high);
-plot(phi1(E,sig_plot),sig_plot,'k');
-plot(phi2(E,sig_plot),sig_plot,'k');
+l = [1.5,1.75,2,2.5,3,4];
+for ii=1:length(l)
+    plot(phi1(Estar*l(ii),sig_plot),sig_plot,'Color',cmap(ii,:));
+    plot(phi2(Estar*l(ii),sig_plot),sig_plot,'Color',cmap(ii,:));
+end
 
-%plot(phi1(Estar*4,sig_plot),sig_plot,'r');
-%plot(phi2(Estar*4,sig_plot),sig_plot,'r');
-%return
+
+% plot(phi1(Estar*2,sig_plot),sig_plot,'k');
+% plot(phi2(Estar*2,sig_plot),sig_plot,'k');
+% 
+% plot(phi1(Estar*3,sig_plot),sig_plot,'r');
+% plot(phi2(Estar*3,sig_plot),sig_plot,'r');
+% 
+% plot(phi1(Estar*4,sig_plot),sig_plot,'g');
+% plot(phi2(Estar*4,sig_plot),sig_plot,'g');
+% 
+% plot(phi1(Estar*5,sig_plot),sig_plot,'b');
+% plot(phi2(Estar*5,sig_plot),sig_plot,'b');
+return
 
 
 % define a colormap for viscosity (NOTE that there's cutoff values!)
