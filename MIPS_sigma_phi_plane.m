@@ -1,26 +1,32 @@
 % set up
-MIPS_with_stress_frictional;
+%MIPS_with_stress_frictional;
+MIPS_yield_stress;
 
 % pick an E and a range of (phi, sigma)
 E=0;
-phi_low = 0.3;
+phi_low = 0.4;
 phi_high = phi0-0.01;
 sigma_low = 0;
-sigma_high = 100;
+sigma_high = 10;
 
 % make the E-phi plane
 figure; hold on; prettyplot
 xlabel('\phi'); ylabel('\sigma')
 xlim([phi_low phi0]); ylim([sigma_low sigma_high])
 
-% draw binodal
-cmap = viridis(6);
-sig_plot=linspace(sigma_low,sigma_high);
-l = [1.5,1.75,2,2.5,3,4];
-for ii=1:length(l)
-    plot(phi1(Estar*l(ii),sig_plot),sig_plot,'Color',cmap(ii,:));
-    plot(phi2(Estar*l(ii),sig_plot),sig_plot,'Color',cmap(ii,:));
-end
+% draw the binodal
+%sig_plot=linspace(sigma_low,sigma_high);
+%plot(phi1(E,sig_plot),sig_plot,'Color','k');
+%plot(phi2(E,sig_plot),sig_plot,'Color','k');
+
+% draw binodal at different Es
+% cmap = viridis(6);
+% sig_plot=linspace(sigma_low,sigma_high);
+% l = [1.5,1.75,2,2.5,3,4];
+% for ii=1:length(l)
+%     plot(phi1(Estar*l(ii),sig_plot),sig_plot,'Color',cmap(ii,:));
+%     plot(phi2(Estar*l(ii),sig_plot),sig_plot,'Color',cmap(ii,:));
+% end
 
 
 % plot(phi1(Estar*2,sig_plot),sig_plot,'k');
@@ -34,7 +40,7 @@ end
 % 
 % plot(phi1(Estar*5,sig_plot),sig_plot,'b');
 % plot(phi2(Estar*5,sig_plot),sig_plot,'b');
-return
+%return
 
 
 % define a colormap for viscosity (NOTE that there's cutoff values!)

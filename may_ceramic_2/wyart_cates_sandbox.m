@@ -1,6 +1,6 @@
 phi0 = 0.64;
 phimu = 0.62;
-sigmastar = 1;
+%sigmastar = 1;
 eta0 = 1;
 %f = @(sigma) sigma ./ (sigma+sigmastar);
 f = @(sigma) exp(-sigmastar./sigma);

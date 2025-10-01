@@ -1,9 +1,10 @@
 % set up
-MIPS_with_stress_frictional;
+%MIPS_with_stress_frictional;
+MIPS_yield_stress;
 
 % pick a stress [0,100] and a range of (phi, E)
-sigma=0;
-phi_low = 0.4;
+sigma=2;
+phi_low = 0.3;
 phi_high = phi0-0.01;
 E_low = 0;
 E_high = 5*Estar;
@@ -16,7 +17,7 @@ xlim([phi_low phi0]); ylim([E_low E_high])
 % define a colormap for viscosity (NOTE that there's cutoff values, but theyre not currently used)
 minEta = 1e1; maxEta = 1e7;
 cmap = viridis(256); colormap(cmap);
-colorEta = @(eta) cmap( min(256,max(1,round(1+255*(log(eta)-log(minEta))/(log(maxEta)-log(minEta))))) ,:);
+%colorEta = @(eta) cmap( min(256,max(1,round(1+255*(log(eta)-log(minEta))/(log(maxEta)-log(minEta))))) ,:);
 
 % plot the binodal line
 E_binodal = linspace(Estar,Estar*5);
@@ -26,14 +27,14 @@ E_binodal = linspace(Estar,Estar*5);
 plot(phi1(E_binodal,sigma),E_binodal,'k');
 plot(phi2(E_binodal,sigma),E_binodal,'k');
 
-cmap = viridis(6);
-l = [1.5,1.75,2,2.5,3,4];
-for ii=1:length(l)
-    yline(Estar*l(ii),'Color',cmap(ii,:))
-end
+% cmap = viridis(6);
+% l = [1.5,1.75,2,2.5,3,4];
+% for ii=1:length(l)
+%     yline(Estar*l(ii),'Color',cmap(ii,:))
+% end
 
 prettyplot
-return
+%return
 % calculate eta for discrete values of phi, E
 E = linspace(E_low,E_high,100);
 phi = linspace(phi_low,phi_high,100);
@@ -61,6 +62,7 @@ end
 % plot equi-viscosity lines by solving for them numerically
 [E_mat,phi_mat] = meshgrid(E,phi);
 scatter(phi_mat(:),E_mat(:),[],log(eta_mat(:)),"filled",'s')
+%scatter(0,0,[],log(1e7))
 
 E_finer = linspace(0,Estar*5,1000);
 phi_finer = linspace(0,phi0-0.01,1000);
@@ -76,7 +78,7 @@ end
 
 c1=colorbar;
 %ticklist = [4,6,8,10,12,14];
-ticklist = [1 100 1e4 1e6];
+ticklist = [1 10 100 1e3 1e4 1e5 1e6 1e7];
 c1.Ticks = log(ticklist);
 c1.TickLabels = num2cell(ticklist);
 

@@ -1,4 +1,4 @@
-optimize_sigmastarV_03_19;
+%optimize_sigmastarV_03_19;
 y = y_fmincon; 
 myModelHandle = @modelHandpickedSigmastarV;
 %myModelHandle = @modelSigmastarUa;
@@ -10,6 +10,7 @@ CSS = (50/19)^3;
 c = 2000;
 A = pi*(19/2*1e-3)^2;
 h = 0.211e-3;
+h=1e6*h;
 
 phi_list = unique(dataTable(:,1));
 for phiNum = [7,12]
