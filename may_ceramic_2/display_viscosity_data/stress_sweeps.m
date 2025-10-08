@@ -95,7 +95,7 @@ c_eta.Ticks = round((phi_list+phi_fudge')*100)/100;
 clim(ax_eta,[minPhi maxPhi]);
 
 
-close(fig_rate)
+%close(fig_rate)
 close(fig_eta_rescaled)
 
 

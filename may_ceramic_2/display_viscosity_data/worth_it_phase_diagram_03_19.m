@@ -9,16 +9,16 @@ CSS = (50/19)^3;
 
 
 phi_list = unique(dataTable(:,1));
-
-%cmap_pos = orangey(256);
-%cmap_neg = purpley(256);
-%minLogE = -7.5;
-%maxLogE = 8.1;
-%colorPos = @(delta_E) cmap_pos(round(1+255*(log(delta_E)-minLogE)/(maxLogE-minLogE)),:);
-%colorNeg = @(delta_E) cmap_pos(round(1+255*(log(-1*delta_E)-minLogE)/(maxLogE-minLogE)),:);
-
 maxEnergyDifference = 3100;
 minEnergyDifference = exp(-8);
+cmap_pos = cool_tones_to_blk(256);
+cmap_neg = warm_tones_to_blk(256);
+minLogE = log(minEnergyDifference);
+maxLogE = log(maxEnergyDifference);
+colorPos = @(delta_E) cmap_pos(round(1+255*(log(delta_E)-minLogE)/(maxLogE-minLogE)),:);
+colorNeg = @(delta_E) cmap_neg(round(1+255*(log(-1*delta_E)-minLogE)/(maxLogE-minLogE)),:);
+
+
 for phiNum = [7 12]
 %for phiNum=6:13
     
@@ -40,7 +40,7 @@ for phiNum = [7 12]
     colormap(ax_eta,viridis(256));
     prettyPlot;
     myfig = gcf;
-    myfig.Position=[589,476,439,343];
+    myfig.Position=[189,176,439,343];
     
     ax1=gca;
     ax1.XScale = 'log';
@@ -79,11 +79,11 @@ for phiNum = [7 12]
     neg_data = delta_sigma_mat(:)-ua_mat(:) < 0;
     scatter(ua_mat(neg_data),rate_mat(neg_data),markerSize,"filled",'sk')
 
-    %pos_data = delta_sigma_mat(:)-ua_mat(:) > 0;
-    %neg_data = delta_sigma_mat(:)-ua_mat(:) < 0;
-    %deltaE = delta_sigma_mat(:)-ua_mat(:);
-    %scatter(ua_mat(pos_data),rate_mat(pos_data),[],colorPos(deltaE(pos_data)),'filled','s');
-    %scatter(ua_mat(neg_data),rate_mat(neg_data),[],colorNeg(deltaE(neg_data)),'filled','s');
+    pos_data = delta_sigma_mat(:)-ua_mat(:) > 0;
+    neg_data = delta_sigma_mat(:)-ua_mat(:) < 0;
+    deltaE = delta_sigma_mat(:)-ua_mat(:);
+    scatter(ua_mat(pos_data),rate_mat(pos_data),markerSize,colorPos(deltaE(pos_data)),'filled','s');
+    scatter(ua_mat(neg_data),rate_mat(neg_data),markerSize,colorNeg(deltaE(neg_data)),'filled','s');
 
     c1 = colorbar;
     %minDeltaE = min(log(abs(delta_sigma_mat(:)-ua_mat(:))));

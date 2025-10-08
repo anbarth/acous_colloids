@@ -1,12 +1,13 @@
 % set up
-MIPS_with_stress_frictional;
+%MIPS_with_stress_frictional;
+MIPS_yield_stress;
 
 % pick a volume fraction and a range of (sigma,E)
-phi=0.36;
+phi=0.45;
 E_low = 0;
 E_high = 5*Estar;
 sigma_low = 0;
-sigma_high = 100;
+sigma_high = 10;
 
 
 % make the sigma-E plane
@@ -37,19 +38,32 @@ end
 % plot values of eta in color 
 % NOTE that there's a max cutoff imposed here
 [E_mat,sigma_mat] = meshgrid(E,sigma);
-eta_color_mat = min(eta_mat,1e5);
+%eta_color_mat = min(eta_mat,1e5);
+eta_color_mat = eta_mat;
 scatter(sigma_mat(:),E_mat(:),[],log(eta_color_mat(:)),"filled",'s')
 
+%jammed = eta_mat>3000;
+%scatter(sigma_mat(jammed),E_mat(jammed),[],"filled",'s')
+scatter(0,0,[],log(1e7))
+
+
+c1=colorbar;
+ticklist = [1 10 100 1e3 1e4 1e5 1e6];
+c1.Ticks = log(ticklist);
+c1.TickLabels = num2cell(ticklist);
+
+return
 % plot equi-viscosity lines by solving numerically
-% E_finer = linspace(0,Emin*5,1000);
-% sigma_finer = linspace(0,100,1000);
-% [E_finer_mat,sigma_finer_mat] = meshgrid(E_finer,sigma_finer);
-% eta_interpolated = interp2(E_mat,sigma_mat,eta_mat,E_finer_mat,sigma_finer_mat);
-% scatter(sigma_finer_mat(:),E_finer_mat(:),[],log(eta_interpolated(:)),'.')
-% eta = logspace(log10(minEta),log10(maxEta),10);
-% for i=1:length(eta)
-%     epsilon=0.05;
-%     near_eta = eta_interpolated/eta(i) < 1+epsilon & eta_interpolated/eta(i) > 1-epsilon;
-%     plot(sigma_finer_mat(near_eta),E_finer_mat(near_eta))
-% end
+E_finer = linspace(E_low,E_high,1000);
+sigma_finer = linspace(sigma_low,sigma_high,1000);
+[E_finer_mat,sigma_finer_mat] = meshgrid(E_finer,sigma_finer);
+eta_interpolated = interp2(E_mat,sigma_mat,eta_mat,E_finer_mat,sigma_finer_mat);
+%scatter(sigma_finer_mat(:),E_finer_mat(:),[],log(eta_interpolated(:)),'.')
+eta = logspace(log10(minEta),log10(maxEta),10);
+%eta = 3000;
+for i=1:length(eta)
+    epsilon=0.01;
+    near_eta = eta_interpolated/eta(i) < 1+epsilon & eta_interpolated/eta(i) > 1-epsilon;
+    plot(sigma_finer_mat(near_eta),E_finer_mat(near_eta),'w-')
+end
 

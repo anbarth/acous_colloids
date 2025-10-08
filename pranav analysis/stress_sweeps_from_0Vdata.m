@@ -4,7 +4,7 @@ phisToInclude = [0.2,0.25,0.3,0.35,0.4,0.44,0.46,0.48,0.5,0.52,.53,.54,.55];
 %phisToInclude = [0.46,0.48,0.5,0.52,0.54];
 
 
-%figure;hold on;
+figure;hold on;
 ax1 = gca;
 ax1.XScale = 'log';
 ax1.YScale = 'log';
