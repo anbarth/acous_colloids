@@ -17,8 +17,12 @@ al_disk_top = al_disk_bottom-al_disk_height;
 medium.sound_speed(kgrid.x_vec>al_disk_top, :) = 6240;       % [m/s]
 medium.density(kgrid.x_vec>al_disk_top, :) = 2700;          % [kg/m^3]
 
+figure; pcolor(kgrid.x_vec,kgrid.y_vec,medium.density)
+%figure; pcolor(kgrid.x_vec,kgrid.y_vec,medium.sound_speed)
+%return
+
 % create the time array
-t_end = 10e-6;
+t_end = 6e-6;
 kgrid.makeTime(medium.sound_speed, [], t_end);
 
 %% create transducer source
