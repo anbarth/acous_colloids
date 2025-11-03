@@ -121,7 +121,7 @@ colormap(flipud(gray));
 
 
 %% run the simulation
-input_args = {'RecordMovie', true, 'MovieName', 'plastic_attachment', 'MovieProfile', 'MPEG-4'};
+input_args = {'RecordMovie', true, 'MovieName', 'hologram', 'MovieProfile', 'MPEG-4'};
 sensor_data = kspaceFirstOrder2D(kgrid, medium, source, sensor, input_args{:});
 
 %% plot stuff

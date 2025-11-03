@@ -1,10 +1,5 @@
-% set up parameters
-Nx = 100;
-Ny = Nx;
+% set up material properties
 p_source = 10;
-z0 = 0.5e-3;
-L = 20e-3; % [m]
-dx = L/Nx;
 f = 1.15e6; % [Hz]
 c0 = 2000; % glycerol
 rho0 = 1260; % glycerol
@@ -19,16 +14,30 @@ Zh = rho_h*c_h;
 Zm = rho0*c0;
 T0 = 1e-3; % [m]
 
+% piezo dimensions
+R = 19e-3/2;
+
+% set up grid
+Nx = 400;
+Ny = Nx;
+lambda = c0/f;
+z0 = 4*lambda; % image plane height
+L = 6*R; % grid dimensions
+dx = L/Nx;
+plate_shape = circle_matrix(Nx,Ny,R/dx);
+
 % specify desired pressure field in image plane
-plate_shape = circle_matrix(Nx,Ny,9.5e-3/dx);
-%mygrad = linspace(-1,1,Nx);
+mygrad = linspace(-1,1,Nx);
 %ptarget = repmat(mygrad,Ny,1).*plate_shape;
 ptarget = xor(circle_matrix(Nx,Ny,5e-3/dx),circle_matrix(Nx,Ny,4.5e-3/dx));
-%figure; hold on; title('target'); p=pcolor(abs(ptarget)); p.EdgeColor="none"; colorbar; 
+figure; hold on; title('target'); p=pcolor(abs(ptarget)); p.EdgeColor="none"; colorbar; 
+%return
 
 % calculate initial pressure field in hologram plane
 phat0 = p_source*plate_shape;
 %phat0 = p_source*ones(Nx,Ny);
+figure; hold on; title('source'); p=pcolor(abs(phat0)); p.EdgeColor="none"; colorbar; 
+%return
 
 deltaPhi0 = zeros(Nx,Ny);
 p0 = phat0.*exp(1i*deltaPhi0);
@@ -41,14 +50,20 @@ ky_vec = 2*pi/(Ny*dx) * (0:Ny-1);
 Hup = exp(1i*z0*sqrt(k_m^2-kx.^2-ky.^2));
 % from image to hologram
 Hdown = exp(1i*(-z0)*sqrt(k_m^2-kx.^2-ky.^2));
+k_cutoff = pi*2*L/(lambda*sqrt( 1/4*(2*L)^2 + z0^2 ));
+% kill off parts of the propagator that exceed the cutoff k
+Hup = Hup.*heaviside(k_cutoff-sqrt(kx.^2+ky.^2));
+Hdown = Hdown.*heaviside(k_cutoff-sqrt(kx.^2+ky.^2));
 
-for ii=1:5
+for ii=1:50
     % propagate to image plane
     P0 = fft2(p0);
     Pz = P0.*Hup;
     pz = ifft2(Pz);
 
-    figure; hold on; title(ii); p=pcolor(abs(pz)); p.EdgeColor="none"; colorbar;
+    if mod(ii,10)==0
+        figure; hold on; title(ii); p=pcolor(abs(pz)); p.EdgeColor="none"; colorbar;
+    end
     
     % in image plane, set magnitude to target magnitude (leaving the phase alone)
     pz_targ = pz ./ abs(pz) * ptarget;
@@ -69,7 +84,9 @@ for ii=1:5
     alphaT = 4*Zt*Zh^2*Zm ./ (Zh^2*(Zt+Zm)^2 * cos(k_h*T).^2 + (Zh^2+Zt*Zm)^2 * sin(k_h*T).^2 );
     
     % in hologram plane, adjust all amplitudes by transmission coefficient
-    p0 = phat0.*alphaT;
+    p0 = phat0.*sqrt(alphaT).*exp(1i*deltaPhi);
+    % kill off everything outside the transducer area
+    p0 = p0.*plate_shape;
 end
 
 % figure; hold on;

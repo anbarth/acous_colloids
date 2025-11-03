@@ -13,7 +13,8 @@ myfig = gcf;
 myfig.Position=[20,100,414,323];
 ylim([1e-1 2e2])
 xlim([1e-21 10])
-close
+%close
+
 
 show_F_vs_x(dataTable,y,myModelHandle,'ColorBy',colorBy,'ShowInterpolatingFunction',interp); prettyPlot;
 myfig = gcf;
@@ -36,10 +37,10 @@ y_noV(6:12) = sigmastar_noV;
 
 show_F_vs_x(dataTable,y_noV,myModelHandle,'ColorBy',colorBy); prettyPlot;
 myfig = gcf;
-myfig.Position=[20,100,414,323];
+myfig.Position=[20,10,414,323];
 ylim([1e-1 2e2])
 xlim([1e-21 10])
-close
+%close
 
 show_F_vs_x(dataTable,y_noV,myModelHandle,'ColorBy',colorBy); prettyPlot;
 myfig = gcf;
