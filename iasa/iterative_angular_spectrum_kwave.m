@@ -1,21 +1,85 @@
-Nx = 100;
+% set up material properties
+p_source_amp = 10;
+f = 1.15e6; % [Hz]
+c0 = 2000; % glycerol
+rho0 = 1260; % glycerol
+c_h = 2246; % PLA
+rho_h = 1240; % PLA
+c_al = 6240; % Al
+rho_al = 2700; % Al
+k_m = 2*pi*f/c0;
+k_h = 2*pi*f/c_h;
+Zt = rho_al*c_al;
+Zh = rho_h*c_h;
+Zm = rho0*c0;
+T0 = 1e-3; % [m]
+
+% piezo dimensions
+R = 19e-3/2;
+
+% set up grid
+Nx = 500; % choose something even pls
 Ny = Nx;
-p_source = 10;
-proj_dist = 0.5e-3;
-c0 = 2000;
-
-L = 19e-3; % [m]
-
+lambda = c0/f;
+z0 = 4*lambda; % image plane height
+L = 6*R; % grid dimensions
 dx = L/Nx;
+plate_shape = circle_matrix(Nx,Ny,R/dx);
 
-p0 = p_source*ones(Nx,Ny);
-p0(:,1:50)=0;
+% specify desired pressure field in image plane
+mygrad = linspace(-1,1,Nx);
+%p_target = repmat(mygrad,Ny,1).*plate_shape;
+p_target = xor(circle_matrix(Nx,Ny,5e-3/dx),circle_matrix(Nx,Ny,4.5e-3/dx));
+figure; hold on; title('target'); p=pcolor(abs(p_target)); p.EdgeColor="none"; colorbar; axis square;
+%return
+
+% calculate initial pressure field in hologram plane
+p_source = p_source_amp*plate_shape;
+%phat0 = p_source*ones(Nx,Ny);
+figure; hold on; title('source'); p=pcolor(abs(p_source)); p.EdgeColor="none"; colorbar; axis square;
+%return
+
 deltaPhi0 = zeros(Nx,Ny);
+p0 = p_source.*exp(1i*deltaPhi0);
 
-[~, plane_2_as] = angularSpectrum(p0.*exp(1i*deltaPhi0), dx, 1, proj_dist, c0);
 
-figure; hold on;
-p=pcolor(p0); p.EdgeColor="none"; colorbar;
+for ii=1:2
+    % propagate to image plane
+    pz = angularSpectrumCW(p0, dx, z0, f, c0);
 
-figure; hold on;
-p=pcolor(plane_2_as); p.EdgeColor="none"; colorbar;
+   % if mod(ii,2)==0
+        figure; hold on; title(ii); p=pcolor(abs(pz)); p.EdgeColor="none"; colorbar; axis square;
+   % end
+    
+    % in image plane, set magnitude to target magnitude (leaving the phase alone)
+    pz_phase = angle(pz);
+    pz_targ = p_target * exp(1i*pz_phase);
+    
+    % propagate back to hologram plane
+    p0 = angularSpectrumCW(pz_targ, dx, -1*z0, f, c0);
+
+    %figure; hold on; title('p0'); p=pcolor(abs(p0)); p.EdgeColor="none"; colorbar;
+    
+    % using the phase of the back-propagated field, find thickness
+    deltaPhi = angle(p0);
+    deltaT = deltaPhi/(k_m-k_h);
+    T = T0+deltaT;
+    
+    % from thickness, find transmission coefficient
+    %alphaT = 4*Zt*Zh^2*Zm ./ (Zh^2*(Zt+Zm)^2 * cos(k_h*T).^2 + (Zh^2+Zt*Zm)^2 * sin(k_h*T).^2 );
+    
+    % in hologram plane, adjust all amplitudes by transmission coefficient
+    %p0 = phat0.*sqrt(alphaT).*exp(1i*deltaPhi);
+
+    % in hologram plane, set magnitude to source magnitude (leaving phase alone)
+    p0 = p_source.*exp(1i*deltaPhi);
+
+end
+
+% figure; hold on;
+% title('p0')
+% p=pcolor(abs(p0)); p.EdgeColor="none"; colorbar;
+% 
+% figure; hold on;
+% title('pz')
+% p=pcolor(abs(pz)); p.EdgeColor="none"; colorbar;
