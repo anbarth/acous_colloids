@@ -8,9 +8,10 @@ allData = {phi44_05_29,phi46_06_19,phi48_05_31,phi52_05_29,phi54_06_01,phi56_05_
 
 
 phi_list = unique(dataTable(:,1));
-phi = phi_list(12);
-disp(phi)
-sigma=50;
+
+%phi = phi_list(13); sigma=50;
+phi = phi_list(10); sigma=20;
+
 CSV = (50/19)^3;
 disp(sigma*CSV)
 
@@ -28,6 +29,8 @@ for jj=2:length(volt_list)
 end
 xlim([-5 10])
 ylim([250 2700])
+%ylim([400 15000])
+
 
 
 xlabel('Time since perturbation (s)')

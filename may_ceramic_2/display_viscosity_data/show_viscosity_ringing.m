@@ -8,11 +8,16 @@ allData = {phi44_05_29,phi46_06_19,phi48_05_31,phi52_05_29,phi54_06_01,phi56_05_
 
 
 phi_list = unique(dataTable(:,1));
+
 phi = phi_list(13);
 %sigma=2;
+%phi = phi_list(12);
+%sigma=5;
+
 CSV = (50/19)^3;
 CSS = (50/19)^3;
 beta=2*pi/180;
+
 
 figure; hold on; ax1=gca; ax1.YScale='log';
 for sigma = 20
@@ -30,6 +35,7 @@ for jj=2:length(volt_list)
 end
 end
 xlim([-5 10])
+%yticks([0 0.01 0.02 0.03 0.04 0.05])
 
 
 
@@ -45,8 +51,6 @@ c1=colorbar;
 
 myfig = gcf;
 myfig.Position=[100,100,465,323];
-ax1=gca;
-ax1.YTick = [1e3 1e4];
 
 return
 %%

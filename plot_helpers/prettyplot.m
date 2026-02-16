@@ -1,7 +1,7 @@
 box on;
 ax = gca;
 ax.FontName = 'Cambria Math';
-ax.FontSize = 15;
+ax.FontSize = 19;
 ax.LabelFontSizeMultiplier = 1.2;
 %set(gcf, 'Position',  [50, 50, 250, 350])
 fig=gcf;
