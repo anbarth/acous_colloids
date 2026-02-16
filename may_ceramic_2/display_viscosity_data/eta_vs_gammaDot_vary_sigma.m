@@ -4,11 +4,10 @@ my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagra
 
 
 phi_list = unique(dataTable(:,1));
-%for phiNum=6:13
-for phiNum = 9
+
 
 fig_eta = figure;
-ax_eta = axes('Parent', fig_eta,'YScale','log');
+ax_eta = axes('Parent', fig_eta,'YScale','log','XScale','log');
 %ax_eta = axes('Parent', fig_eta);
 ax_eta.XLabel.String = 'rate_{acoustic}/rate_{shear}';
 ax_eta.YLabel.String = 'Viscosity \eta (Pa s)';
@@ -16,7 +15,8 @@ hold(ax_eta,'on');
 cmap = winter(256);
 colormap(ax_eta,cmap);
 
-
+%for phiNum=6:13
+for phiNum = 6
     
 phi = phi_list(phiNum);
 
@@ -31,8 +31,9 @@ ax_eta.Title.String = strcat("\phi=",num2str(phi));
 myData = dataTable(dataTable(:,1)==phi, :);
 sigma_list = unique(myData(:,2));
 minLogSig = log(min(sigma_list));
-%minLogSig = log(1);
-maxLogSig = log(max(sigma_list));
+maxLogSig = log(50);
+%maxLogSig = log(max(sigma_list));
+
 
 L = {};
 for ii=1:length(sigma_list)
@@ -51,11 +52,12 @@ for ii=1:length(sigma_list)
     [V,sortIdx] = sort(V,'ascend');
     eta = eta(sortIdx);
 
-    d33 = 400e-12;
+    d33 = 300e-12;
     f = 1.15e6;
-    gammaDotAcous = V*d33*f; % SI units
+    h=211e-6;
+    gammaDotAcous = V*d33*f/h; % SI units
     %gammaDotShear = sigma*19/(eta0V*25); % SI units
-    gammaDotShear = sigma*19./(eta*25); % SI units
+    gammaDotShear = sigma./eta; % SI units
 
     plot(ax_eta,gammaDotAcous./gammaDotShear,eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
 

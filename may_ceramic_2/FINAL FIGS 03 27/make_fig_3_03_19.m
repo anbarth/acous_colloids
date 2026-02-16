@@ -1,4 +1,4 @@
-%optimize_sigmastarV_03_19;
+optimize_sigmastarV_03_19;
 
 y = y_fmincon;
 myModelHandle = @modelHandpickedSigmastarV_CSV;
@@ -27,8 +27,9 @@ show_F_vs_xc_x(dataTable,y,myModelHandle,'ColorBy',colorBy,'ShowInterpolatingFun
 myfig = gcf;
 myfig.Position=[351,357,569,497];
 ylim([1e-1 2e2])
-yticks([1e-1 1e2])
+yticks([1e-1 1e0 1e1 1e2])
 xticks([1e-3 1e-2 1e-1 1])
+ax=gca;ax.TickLength=[.02 .02];
 
 sigmastar = y(6:12);
 sigmastar_noV = sigmastar(1)*ones(size(sigmastar));
@@ -53,7 +54,8 @@ show_F_vs_xc_x(dataTable,y_noV,myModelHandle,'ColorBy',colorBy); prettyPlot;
 myfig = gcf;
 myfig.Position=[351,357,569,497];
 ylim([1e-1 2e2])
-yticks([1e-1 1e2])
+yticks([1e-1 1e0 1e1 1e2])
 xticks([1e-3 1e-2 1e-1 1])
+ax=gca;ax.TickLength=[.02 .02];
 
 

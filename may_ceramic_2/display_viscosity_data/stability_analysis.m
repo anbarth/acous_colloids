@@ -53,7 +53,7 @@ CSS = (50/19)^3;
 ylabel(strcat('\Delta\eta/\eta(t=0) at \sigma=',num2str(round(sigma*CSS*10)/10),' Pa'))
 xlabel('t (hr)')
 
-%for ii=4
+%for ii=8
 for ii=1:length(allPhi)
     mySweeps = allPhi{ii};
     phi = phi_list(ii);

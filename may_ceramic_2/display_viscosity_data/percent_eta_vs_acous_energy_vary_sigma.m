@@ -56,9 +56,9 @@ for ii=1:length(sigma_list)
     percent_eta = eta ./ eta(1);
     delta_percent_eta = percent_eta .* sqrt( (eta./delta_eta_total).^2 + (eta(1)/delta_eta_total(1)).^2 );
     
-    %plot(ax_eta,acoustic_energy_density(V),percent_eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+    plot(ax_eta,acoustic_energy_density(V),percent_eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
     %errorbar(ax_eta,acoustic_energy_density(V),percent_eta,delta_percent_eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
-    errorbar(ax_eta,acoustic_energy_density(V),eta,delta_eta_total, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+    %errorbar(ax_eta,acoustic_energy_density(V),eta,delta_eta_total, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
 
 end
 
@@ -72,14 +72,15 @@ end
 
 prettyPlot;
 myfig = gcf;
-%myfig.Position=[457,388,414,343];
 myfig.Position=[970,304,259,343];
-yticks([1  10  100  1000]);
+yticks([0 0.5 1]);
 
 ax1=gca;
 ax1.XScale = 'log';
-ax1.YScale = 'log';
+%ax1.YScale = 'log';
 
+% percent eta
+ylim([0 1])
 
 % phi=0.52
 %yticks([10 100]);

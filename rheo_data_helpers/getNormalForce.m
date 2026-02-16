@@ -1,9 +1,5 @@
 function N = getNormalForce(rheoData)
 
-if nargin < 2
-    CSR = 0;
-end
-
 normalColumn = find(strcmp(rheoData.headers,'Normal Force'));
 
 if strcmp('[N]',rheoData.units{normalColumn})
