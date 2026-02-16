@@ -1,13 +1,14 @@
 % set up
+MIPS_with_stress_real_values;
 %MIPS_with_stress_frictional;
-MIPS_yield_stress;
+%MIPS_yield_stress;
 
 % pick a stress [0,100] and a range of (phi, E)
-sigma=2;
+sigma=0;
 phi_low = 0.3;
 phi_high = phi0-0.01;
 E_low = 0;
-E_high = 5*Estar;
+E_high = 10*Estar(0); %5*Estar;
 
 % make the E-phi plane
 figure; hold on;
@@ -20,12 +21,13 @@ cmap = viridis(256); colormap(cmap);
 %colorEta = @(eta) cmap( min(256,max(1,round(1+255*(log(eta)-log(minEta))/(log(maxEta)-log(minEta))))) ,:);
 
 % plot the binodal line
-E_binodal = linspace(Estar,Estar*5);
+E_binodal = linspace(Estar(0),Estar(0)*10);
 %plot(phi1(E_binodal,0),E_binodal,'k');
 %plot(phi2(E_binodal,0),E_binodal,'k');
 
 plot(phi1(E_binodal,sigma),E_binodal,'k');
 plot(phi2(E_binodal,sigma),E_binodal,'k');
+xline(phi0,'k')
 
 % cmap = viridis(6);
 % l = [1.5,1.75,2,2.5,3,4];
@@ -42,7 +44,7 @@ eta_mat = zeros(length(phi),length(E));
 for i=1:length(phi)
     for j=1:length(E)
         % use the appropriate formula if (phi,E) is in the 2 phase region
-        if E(j) > Estar && phi(i) > phi1(E(j),sigma) && phi(i) < phi2(E(j),sigma) 
+        if E(j) > Estar(sigma) && phi(i) > phi1(E(j),sigma) && phi(i) < phi2(E(j),sigma) 
             eta = eta_binodal(phi(i),E(j),sigma);
         else
             eta = eta_0V(phi(i),sigma);
@@ -59,12 +61,13 @@ for i=1:length(phi)
 end
 
 
-% plot equi-viscosity lines by solving for them numerically
+
 [E_mat,phi_mat] = meshgrid(E,phi);
 scatter(phi_mat(:),E_mat(:),[],log(eta_mat(:)),"filled",'s')
 %scatter(0,0,[],log(1e7))
 
-E_finer = linspace(0,Estar*5,1000);
+% plot equi-viscosity lines by solving for them numerically
+E_finer = linspace(0,Estar(0)*5,1000);
 phi_finer = linspace(0,phi0-0.01,1000);
 [E_finer_mat,phi_finer_mat] = meshgrid(E_finer,phi_finer);
 eta_interpolated = interp2(E_mat,phi_mat,eta_mat,E_finer_mat,phi_finer_mat);

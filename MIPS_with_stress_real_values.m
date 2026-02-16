@@ -1,22 +1,26 @@
 % material parameters
-phi0 = 0.658;
-eta0 = 1;
-sigmastar = 80;
-phimu = 0.62;
+phi0 = 0.62;
+eta0 = 0.23; % [ Pa s ]
 
 % activity-free rheology
-%eta_0V = @(phi,sigma) eta_WC(eta0,phi0,phimu,sigmastar,phi,sigma);
+%eta_0V = @(phi,sigma) min(1e7, eta0*(phi0-phi).^(-2));
+%eta_0V = @(phi,sigma) eta0*(phi0-phi).^(-2).*( max(0,sigma-1) ).^-1;
 eta_0V = @(phi,sigma) eta0*(phi0-phi).^(-2);
 
 % parameters describing the shape of the phase boundary in the E-phi plane
-a_left = @(sigma) 0.1-0.085/100*sigma;
-a_right = @(sigma) 0.03;
-Estar = 1;
-phistar = 0.6;
+f = @(sigma) exp(-1*sigma/10);
+a_left = @(sigma) 0.1*f(sigma);
+a_right = @(sigma) 0.03*(f(sigma)).^(1/5);
+%a_left = @(sigma) 0.1; a_right = @(sigma) 0.015;
+%Estar = @(sigma) 0.4+(sigma/10)^(1/6);
+%Estar = @(sigma) 0.4+0.03*sigma; % [ MV/m ]
+Estar = @(sigma) 0.4;
+%phistar = @(sigma) 0.6;
+phistar = @(sigma) 0.58;
 
 % left & right branches of the phase boundary in the E-phi plane
-phi1 = @(E,sigma) phistar - a_left(sigma)*(E-Estar).^(1/2);
-phi2 = @(E,sigma) min(phi0*ones(size(sigma)), phistar + a_right(sigma)*(E-Estar).^(1/2));
+phi1 = @(E,sigma) phistar(sigma) - a_left(sigma)*(E-Estar(sigma)).^(1/2);
+phi2 = @(E,sigma) min(phi0*ones(size(sigma)), phistar(sigma) + a_right(sigma)*(E-Estar(sigma)).^(1/2));
 
 % calculating the viscosity for a suspension in the 2-phase region:
 % n1, n2 are particle number densities of phase 1 and phase 2 (ie N1/N, N2/N)

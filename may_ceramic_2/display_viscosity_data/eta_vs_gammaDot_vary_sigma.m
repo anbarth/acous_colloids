@@ -1,11 +1,11 @@
 dataTable = may_ceramic_09_17;
 my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagram","v","d",">"];
 
-
+CSS = (50/19)^3;
 
 phi_list = unique(dataTable(:,1));
 %for phiNum=6:13
-for phiNum = 9
+for phiNum = 7
 
 fig_eta = figure;
 ax_eta = axes('Parent', fig_eta,'YScale','log');
@@ -51,13 +51,14 @@ for ii=1:length(sigma_list)
     [V,sortIdx] = sort(V,'ascend');
     eta = eta(sortIdx);
 
-    d33 = 400e-12;
+    d33 = 3e-10;
     f = 1.15e6;
-    gammaDotAcous = V*d33*f; % SI units
-    %gammaDotShear = sigma*19/(eta0V*25); % SI units
-    gammaDotShear = sigma*19./(eta*25); % SI units
+    gap = 0.211*1e-3;
+    gammaDotAcous = V*d33/gap*f; % SI units
+    %gammaDotShear = sigma/eta0V; % SI units
+    gammaDotShear = sigma./eta; % SI units
 
-    plot(ax_eta,gammaDotAcous./gammaDotShear,eta, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
+    plot(ax_eta,gammaDotAcous./gammaDotShear,eta*CSS, markerCode,'Color',myColor,'MarkerFaceColor',myColor,'LineWidth',1);
 
 end
 
@@ -65,6 +66,7 @@ end
 c1 = colorbar(ax_eta);
 clim(ax_eta,[minLogSig maxLogSig]);
 legend(L)
-
+ax1=gca;ax1.XScale='log';
+prettyPlot
 
 end
