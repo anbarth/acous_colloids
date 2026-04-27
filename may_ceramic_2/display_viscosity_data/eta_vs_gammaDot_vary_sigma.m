@@ -4,11 +4,12 @@ my_vol_frac_markers = ["o","o","o","o","o","square","<","hexagram","^","pentagra
 CSS = (50/19)^3;
 
 phi_list = unique(dataTable(:,1));
-%for phiNum=6:13
-for phiNum = 7
+
+
+
 
 fig_eta = figure;
-ax_eta = axes('Parent', fig_eta,'YScale','log');
+ax_eta = axes('Parent', fig_eta,'YScale','log','XScale','log');
 %ax_eta = axes('Parent', fig_eta);
 ax_eta.XLabel.String = 'rate_{acoustic}/rate_{shear}';
 ax_eta.YLabel.String = 'Viscosity \eta (Pa s)';
@@ -16,7 +17,8 @@ hold(ax_eta,'on');
 cmap = winter(256);
 colormap(ax_eta,cmap);
 
-
+%for phiNum=6:13
+for phiNum = 6
     
 phi = phi_list(phiNum);
 
@@ -31,8 +33,9 @@ ax_eta.Title.String = strcat("\phi=",num2str(phi));
 myData = dataTable(dataTable(:,1)==phi, :);
 sigma_list = unique(myData(:,2));
 minLogSig = log(min(sigma_list));
-%minLogSig = log(1);
-maxLogSig = log(max(sigma_list));
+maxLogSig = log(50);
+%maxLogSig = log(max(sigma_list));
+
 
 L = {};
 for ii=1:length(sigma_list)
@@ -50,6 +53,7 @@ for ii=1:length(sigma_list)
     % sort in order of ascending V
     [V,sortIdx] = sort(V,'ascend');
     eta = eta(sortIdx);
+
 
     d33 = 3e-10;
     f = 1.15e6;
