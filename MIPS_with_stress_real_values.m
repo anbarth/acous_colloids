@@ -36,7 +36,3 @@ eta_binodal = @(phi,E,sigma)  v1(phi,phi1(E,sigma),phi2(E,sigma))*eta1(E,sigma) 
 %eta_binodal = @(phi,E,sigma) 1./( v1(phi,phi1(E,sigma),phi2(E,sigma))./eta1(E,sigma) + v2(phi,phi1(E,sigma),phi2(E,sigma))./eta2(E,sigma) );
 
 
-
-% for a given viscosity, solve for the equi-viscosity line phi(E)
-phi_equi_viscosity = @(eta,E,sigma) phi1(E,sigma).*phi2(E,sigma).*(eta1(E,sigma)-eta2(E,sigma)) ./ ( eta*(phi2(E,sigma)-phi1(E,sigma))+eta1(E,sigma).*phi1(E,sigma)-eta2(E,sigma).*phi2(E,sigma) );
-

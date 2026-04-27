@@ -1,15 +1,14 @@
-% set up
+% set up rheological parameters
 %MIPS_with_stress_frictional;
 %MIPS_yield_stress;
 MIPS_with_stress_real_values;
 
-% pick a volume fraction and a range of (sigma,E)
+% pick a volume fraction and a range of (sigma,E) to plot
 phi=0.58;
 E_low = 0;
 E_high = 10*Estar(0); %5*Estar;
 sigma_low = 1;
 sigma_high = 100;
-
 
 % make the sigma-E plane
 figure; hold on; prettyplot
@@ -20,10 +19,8 @@ xlim([sigma_low sigma_high]); ylim([E_low E_high])
 % define a colormap for viscosity
 cmap = viridis(256); colormap(cmap);
 
-
 % calculate eta for discrete values of sigma, E
 E = linspace(E_low,E_high,100);
-%sigma = linspace(sigma_low,sigma_high,100);
 sigma = logspace(log10(sigma_low),log10(sigma_high),100);
 eta_mat = zeros(length(sigma),length(E));
 for i=1:length(sigma)
@@ -39,14 +36,17 @@ for i=1:length(sigma)
 end
 
 % plot values of eta in color 
+% note that the colormap maxes out at 1e7
 [E_mat,sigma_mat] = meshgrid(E,sigma);
 %eta_color_mat = eta_mat;
 eta_color_mat = min(eta_mat,1e7); eta_color_mat = max(eta_color_mat,10);
 scatter(sigma_mat(:),E_mat(:),[],log(eta_color_mat(:)),"filled",'s')
 
-%jammed = eta_mat>3000;
+% color in the jammed region in black
+%jammed = eta_mat>1e7;
 %scatter(sigma_mat(jammed),E_mat(jammed),[],"filled",'s')
 
+% this makes the colorbar bounds go from 10 to 1e7
 scatter(0,0,[],log(1e7))
 scatter(0,0,[],log(10))
 
