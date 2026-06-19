@@ -60,7 +60,8 @@ end
 colorbar;
 
 % WC prediction for the phase boundary
-[eta0,sigmastar,phimu,phi0WC] = wyart_cates(data_table);
+f=@(sigma,sigmastar)exp(-sigmastar./sigma);
+[eta0,sigmastar,phimu,phi0WC] = wyart_cates(data_table,f);
 myPhi = [linspace(phimu,phi0WC-0.011) phi0WC-logspace(-2,-4)];
 Q = @(p) (phi0WC-p)/(phi0WC-phimu);
 %plot(myPhi,sigmastar*(Q(myPhi)./(1-Q(myPhi))),'-r')
